@@ -25,7 +25,7 @@ setup(
     ],
     install_requires=[
         'moderngl',
-        'PyQt5==5.11.3',
+        'PyQt5~=5.12',
     ],
     extras_require={
         "glfw": ['glfw==1.7.0'],
