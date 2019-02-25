@@ -3,8 +3,8 @@ import platform
 import moderngl
 import pyglet
 
-from window.pyglet.keys import Keys
-from window.base import BaseWindow
+from moderngl_window.pyglet.keys import Keys
+from moderngl_window.base import BaseWindow
 
 
 if platform.system() == "Darwin":

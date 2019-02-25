@@ -6,7 +6,7 @@ from importlib import import_module
 from pathlib import Path
 from typing import List
 
-from window.base import Example, BaseWindow
+from moderngl_window.base import Example, BaseWindow
 
 OPTIONS_TRUE = ['yes', 'on', 'true', 't', 'y', '1']
 OPTIONS_FALSE = ['no', 'off', 'false', 'f', 'n', '0']
@@ -59,7 +59,7 @@ def get_window_cls(window: str) -> BaseWindow:
     """
     Attept to obtain the configured window class
     """
-    return import_string('window.{}.window.Window'.format(window))
+    return import_string('moderngl_window.{}.window.Window'.format(window))
 
 
 def parse_args(args=None):

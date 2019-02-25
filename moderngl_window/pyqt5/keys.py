@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
 
-from window.base import BaseKeys
+from moderngl_window.base import BaseKeys
 
 
 class Keys(BaseKeys):
