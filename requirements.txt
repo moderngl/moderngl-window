@@ -1,0 +1,6 @@
+# For quick install of all requirements in development
+
+moderngl<6
+
+# Optional
+Pillow~=5.4
