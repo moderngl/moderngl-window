@@ -24,11 +24,11 @@ setup(
         'Programming Language :: Python :: 3 :: Only',
     ],
     install_requires=[
-        'moderngl',
+        'moderngl<6',
         'PyQt5~=5.12',
     ],
     extras_require={
-        "glfw": ['glfw==1.7.0'],
+        "glfw": ['glfw==1.7.1'],
         "pyglet": ['pyglet==1.3.2'],
         "PySDL2": ['PySDL2==0.9.6'],
     },
