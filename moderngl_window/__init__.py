@@ -6,14 +6,19 @@ from importlib import import_module
 from pathlib import Path
 from typing import List
 
-from moderngl_window.base import Example, BaseWindow
+from moderngl_window.base import WindowConfig, BaseWindow
+
+IGNORE_DIRS = [
+    '__pycache__',
+    'base',
+]
 
 OPTIONS_TRUE = ['yes', 'on', 'true', 't', 'y', '1']
 OPTIONS_FALSE = ['no', 'off', 'false', 'f', 'n', '0']
 OPTIONS_ALL = OPTIONS_TRUE + OPTIONS_FALSE
 
 
-def run_example(example_cls: Example, args=None):
+def run_example(config_cls: WindowConfig, args=None):
     """
     Run an example entering a blocking main loop
 
@@ -25,18 +30,18 @@ def run_example(example_cls: Example, args=None):
     window_cls = get_window_cls(values.window)
 
     window = window_cls(
-        title=example_cls.title,
-        size=example_cls.window_size,
+        title=config_cls.title,
+        size=config_cls.window_size,
         fullscreen=values.fullscreen,
-        resizable=example_cls.resizable,
-        gl_version=example_cls.gl_version,
-        aspect_ratio=example_cls.aspect_ratio,
+        resizable=config_cls.resizable,
+        gl_version=config_cls.gl_version,
+        aspect_ratio=config_cls.aspect_ratio,
         vsync=values.vsync,
         samples=values.samples,
         cursor=values.cursor,
     )
 
-    window.example = example_cls(ctx=window.ctx, wnd=window)
+    window.config = config_cls(ctx=window.ctx, wnd=window)
 
     start_time = time.time()
     current_time = start_time
@@ -108,7 +113,7 @@ def find_window_classes() -> List[str]:
     """
     return [
         path.parts[-1] for path in Path(__file__).parent.iterdir()
-        if path.is_dir() and not path.parts[-1].startswith('__')
+        if path.is_dir() and path.parts[-1] not in IGNORE_DIRS
     ]
 
 

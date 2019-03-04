@@ -2,53 +2,7 @@ import sys
 from typing import Any, Tuple
 
 import moderngl
-
-
-class BaseKeys:
-    """
-    Namespace for mapping key constants.
-    This is simply a template for what keys should be mapped for all window libraries
-    """
-    # Fallback press/release action when window libraries don't have this
-    ACTION_PRESS = 'ACTION_PRESS'
-    ACTION_RELEASE = 'ACTION_RELEASE'
-
-    ESCAPE = None
-    SPACE = None
-    ENTER = None
-    PAGE_UP = None
-    PAGE_DOWN = None
-    LEFT = None
-    RIGHT = None
-    UP = None
-    DOWN = None
-
-    A = None
-    B = None
-    C = None
-    D = None
-    E = None
-    F = None
-    G = None
-    H = None
-    I = None
-    J = None
-    K = None
-    L = None
-    M = None
-    N = None
-    O = None
-    P = None
-    Q = None
-    R = None
-    S = None
-    T = None
-    U = None
-    V = None
-    W = None
-    X = None
-    Y = None
-    Z = None
+from moderngl_window.base import WindowConfig
 
 
 class BaseWindow:
@@ -71,6 +25,7 @@ class BaseWindow:
             samples (int): Number of MSAA samples for the default framebuffer
             cursor (bool): Enable/disable displaying the cursor inside the window
         """
+        # Window parameters
         self.title = title
         self.gl_version = gl_version
         self.width, self.height = size
@@ -82,13 +37,39 @@ class BaseWindow:
         self.samples = samples
         self.cursor = cursor
 
+        # Callback functions
+        self.render_func = dummy_func
+        self.resize_func = dummy_func
+        self.key_event_func = dummy_func
+        self.mouse_position_event_func = dummy_func
+        self.mouse_press_event_func = dummy_func
+        self.mouse_release_event_func = dummy_func
+
+        # Internal states
         self.ctx = None  # type: moderngl.Context
-        self.example = None  # type: Example
         self.frames = 0  # Frame counter
         self._close = False
+        self._config = None
 
         if not self.keys:
             raise ValueError("Window {} class missing keys".format(self.__class__))
+
+    @property
+    def config(self) -> WindowConfig:
+        """Get the current WindowConfig instance"""
+        return self._config
+
+    @config.setter
+    def config(self, config):
+        """Set up the WindowConfig instance"""
+        self.render_func = getattr(config, 'render', dummy_func)
+        self.resize_func = getattr(config, 'resize', dummy_func)
+        self.key_event_func = getattr(config, 'key_event', dummy_func)
+        self.mouse_position_event_func = getattr(config, 'mouse_position_event', dummy_func)
+        self.mouse_press_event_func = getattr(config, 'mouse_press_event', dummy_func)
+        self.mouse_release_event_func = getattr(config, 'mouse_release_event', dummy_func)
+
+        self._config = config
 
     @property
     def size(self) -> Tuple[int, int]:
@@ -111,43 +92,43 @@ class BaseWindow:
         """
         return self._close
 
-    def close(self):
+    def close(self) -> None:
         """
         Signal for the window to close
         """
         self._close = True
 
-    def render(self, time: float, frame_time: float):
+    def render(self, time: float, frame_time: float) -> None:
         """
-        Renders the assigned example
+        Renders a frame
 
         Args:
             time (float): Current time in seconds
             frame_time (float): Delta time from last frame in seconds
         """
-        self.example.render(time, frame_time)
+        self.render_func(time, frame_time)
 
-    def swap_buffers(self):
+    def swap_buffers(self) -> None:
         """
-        A library specific buffer swap method is required
+        Library specific buffer swap method
         """
         raise NotImplementedError()
 
-    def resize(self, width, height):
+    def resize(self, width, height) -> None:
         """
         Should be called every time window is resized
         so the example can adapt to the new size if needed
         """
-        if self.example:
-            self.example.resize(width, height)
+        if self.config:
+            self.config.resize(width, height)
 
-    def destroy(self):
+    def destroy(self) -> None:
         """
         A library specific destroy method is required
         """
         raise NotImplementedError()
 
-    def set_default_viewport(self):
+    def set_default_viewport(self) -> None:
         """
         Calculates the viewport based on the configured aspect ratio.
         Will add black borders and center the viewport if the window
@@ -198,78 +179,6 @@ class BaseWindow:
         print('code:', self.ctx.version_code)
 
 
-class Example:
-    """
-    Base class for making an example.
-    Examples can be rendered by any supported window library and platform.
-    """
-    window_size = (1280, 720)
-    resizable = True
-    gl_version = (3, 3)
-    title = "Example"
-    aspect_ratio = 16 / 9
-
-    def __init__(self, ctx=None, wnd=None, **kwargs):
-        self.ctx = ctx
-        self.wnd = wnd
-
-    def render(self, time: float, frame_time: float):
-        """
-        Renders the assigned effect
-
-        Args:
-            time (float): Current time in seconds
-            frame_time (float): Delta time from last frame in seconds
-        """
-        raise NotImplementedError("Example:render not implemented")
-
-    def resize(self, width: int, height: int):
-        """
-        Called every time the window is resized
-        in case the example needs to do internal adjustments.
-
-        Width and height are reported in buffer size (not window size)
-        """
-        pass
-
-    def key_event(self, key: Any, action: Any):
-        """
-        Called for every key press and release
-
-        Args:
-            key (int): The key that was press. Compare with self.wnd.keys.
-            action: self.wnd.keys.ACTION_PRESS or ACTION_RELEASE
-        """
-        pass
-
-    def mouse_position_event(self, x: int, y: int):
-        """
-        Reports the current mouse cursor position in the window
-
-        Args:
-            x (int): X postion of the mouse cursor
-            y Iint): Y position of the mouse cursor
-        """
-        pass
-
-    def mouse_press_event(self, x: int, y: int, button: int):
-        """
-        Called when a mouse button in pressed
-
-        Args:
-            x (int): X position the press occured
-            y (int): Y position the press occured
-            button (int): 1 = Left button, 2 = right button
-        """
-        pass
-
-    def mouse_release_event(self, x: int, y: int, button: int):
-        """
-        Called when a mouse button in released
-
-        Args:
-            x (int): X position the release occured
-            y (int): Y position the release occured
-            button (int): 1 = Left button, 2 = right button
-        """
-        pass
+def dummy_func(*args, **kwargs) -> None:
+    """Dummy function used as the default for callbacks"""
+    pass

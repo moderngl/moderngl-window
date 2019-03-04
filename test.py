@@ -4,7 +4,7 @@ import moderngl
 import moderngl_window as mglw
 
 
-class Test(mglw.Example):
+class Test(mglw.WindowConfig):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
