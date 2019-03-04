@@ -90,12 +90,12 @@ class Window(BaseWindow):
         """
         for event in sdl2.ext.get_events():
             if event.type == sdl2.SDL_MOUSEMOTION:
-                self.example.mouse_position_event(event.motion.x, event.motion.y)
+                self.mouse_position_event_func(event.motion.x, event.motion.y)
 
             elif event.type == sdl2.SDL_MOUSEBUTTONUP:
                 # Support left and right mouse button for now
                 if  event.button.button in [1, 3]:
-                    self.example.mouse_press_event(
+                    self.mouse_press_event_func(
                         event.motion.x, event.motion.y,
                         1 if event.button.button == 1 else 2,
                     )
@@ -103,7 +103,7 @@ class Window(BaseWindow):
             elif event.type == sdl2.SDL_MOUSEBUTTONDOWN:
                 # Support left and right mouse button for now
                 if  event.button.button in [1, 3]:
-                    self.example.mouse_release_event(
+                    self.mouse_release_event_func(
                         event.motion.x, event.motion.y,
                         1 if event.button.button == 1 else 2,
                     )
@@ -112,7 +112,7 @@ class Window(BaseWindow):
                 if event.key.keysym.sym == sdl2.SDLK_ESCAPE:
                     self.close()
 
-                self.example.key_event(event.key.keysym.sym, event.type)
+                self.key_event_func(event.key.keysym.sym, event.type)
 
             elif event.type == sdl2.SDL_QUIT:
                 self.close()

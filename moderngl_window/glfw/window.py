@@ -103,7 +103,7 @@ class Window(BaseWindow):
         if key == self.keys.ESCAPE:
             self.close()
 
-        self.example.key_event(key, action)
+        self.key_event_func(key, action)
 
     def mouse_event_callback(self, window, xpos, ypos):
         """
@@ -116,7 +116,7 @@ class Window(BaseWindow):
             ypos: viewport y pos
         """
         # screen coordinates relative to the top-left corner
-        self.example.mouse_position_event(xpos, ypos)
+        self.mouse_position_event_func(xpos, ypos)
 
     def mouse_button_callback(self, window, button, action, mods):
         """
@@ -131,9 +131,9 @@ class Window(BaseWindow):
         xpos, ypos = glfw.get_cursor_pos(self.window)
 
         if action == glfw.PRESS:
-            self.example.mouse_press_event(xpos, ypos, button)
+            self.mouse_press_event_func(xpos, ypos, button)
         else:
-            self.example.mouse_release_event(xpos, ypos, button)
+            self.mouse_release_event_func(xpos, ypos, button)
 
     def window_resize_callback(self, window, width, height):
         """

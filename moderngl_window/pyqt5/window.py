@@ -128,19 +128,19 @@ class Window(BaseWindow):
         if event.key() == self.keys.ESCAPE:
             self.close()
 
-        self.example.key_event(event.key(), self.keys.ACTION_PRESS)
+        self.key_event_func(event.key(), self.keys.ACTION_PRESS)
 
     def key_release_event(self, event):
         """
         Process Qt key release events forwarding them to the example
         """
-        self.example.key_event(event.key(), self.keys.ACTION_RELEASE)
+        self.key_event_func(event.key(), self.keys.ACTION_RELEASE)
 
     def mouse_move_event(self, event):
         """
         Forward mouse cursor position events to the example
         """
-        self.example.mouse_position_event(event.x(), event.y())
+        self.mouse_position_event_func(event.x(), event.y())
 
     def mouse_press_event(self, event):
         """
@@ -150,7 +150,7 @@ class Window(BaseWindow):
         if event.button() not in [1, 2]:
             return
 
-        self.example.mouse_press_event(event.x(), event.y(), event.button())
+        self.mouse_press_event_func(event.x(), event.y(), event.button())
 
     def mouse_release_event(self, event):
         """
@@ -160,7 +160,7 @@ class Window(BaseWindow):
         if event.button() not in [1, 2]:
             return
 
-        self.example.mouse_release_event(event.x(), event.y(), event.button())
+        self.mouse_release_event_func(event.x(), event.y(), event.button())
 
     def close_event(self, event):
         """

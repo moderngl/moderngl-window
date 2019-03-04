@@ -98,14 +98,14 @@ class Window(BaseWindow):
         Pyglet specific key press callback.
         Forwards and translates the events to the example
         """
-        self.example.key_event(symbol, self.keys.ACTION_PRESS)
+        self.key_event_func(symbol, self.keys.ACTION_PRESS)
 
     def on_key_release(self, symbol, modifiers):
         """
         Pyglet specific key release callback.
         Forwards and translates the events to the example
         """
-        self.example.key_event(symbol, self.keys.ACTION_RELEASE)
+        self.key_event_func(symbol, self.keys.ACTION_RELEASE)
 
     def on_mouse_motion(self, x, y, dx, dy):
         """
@@ -115,14 +115,14 @@ class Window(BaseWindow):
         # Screen coordinates relative to the lower-left corner
         # so we have to flip the y axis to make this consistent with
         # other window libraries
-        self.example.mouse_position_event(x, self.buffer_height - y)
+        self.mouse_position_event_func(x, self.buffer_height - y)
 
     def on_mouse_press(self, x: int, y: int, button, mods):
         """
         Handle mouse press events and forward to example window
         """
         if button in [1, 4]:
-            self.example.mouse_press_event(
+            self.mouse_press_event_func(
                 x, self.buffer_height - y,
                 1 if button == 1 else 2,
             )
@@ -132,7 +132,7 @@ class Window(BaseWindow):
         Handle mouse release events and forward to example window
         """
         if button in [1, 4]:
-            self.example.mouse_release_event(
+            self.mouse_release_event_func(
                 x, self.buffer_height - y,
                 1 if button == 1 else 2,
             )
