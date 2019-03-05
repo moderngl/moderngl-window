@@ -43,52 +43,52 @@ class Window(BaseWindow):
             glfw.window_hint(glfw.BLUE_BITS, mode.bits.blue)
             glfw.window_hint(glfw.REFRESH_RATE, mode.refresh_rate)
 
-        self.window = glfw.create_window(self.width, self.height, self.title, monitor, None)
+        self._window = glfw.create_window(self.width, self.height, self.title, monitor, None)
 
-        if not self.window:
+        if not self._window:
             glfw.terminate()
             raise ValueError("Failed to create window")
 
         if not self.cursor:
-            glfw.set_input_mode(self.window, glfw.CURSOR, glfw.CURSOR_DISABLED)
+            glfw.set_input_mode(self._window, glfw.CURSOR, glfw.CURSOR_DISABLED)
 
-        self.buffer_width, self.buffer_height = glfw.get_framebuffer_size(self.window)
-        glfw.make_context_current(self.window)
+        self._buffer_width, self._buffer_height = glfw.get_framebuffer_size(self._window)
+        glfw.make_context_current(self._window)
 
         if self.vsync:
             glfw.swap_interval(1)
 
-        glfw.set_key_callback(self.window, self.key_event_callback)
-        glfw.set_cursor_pos_callback(self.window, self.mouse_event_callback)
-        glfw.set_mouse_button_callback(self.window, self.mouse_button_callback)
-        glfw.set_window_size_callback(self.window, self.window_resize_callback)
+        glfw.set_key_callback(self._window, self.glfw_key_event_callback)
+        glfw.set_cursor_pos_callback(self._window, self.glfw_mouse_event_callback)
+        glfw.set_mouse_button_callback(self._window, self.glfw_mouse_button_callback)
+        glfw.set_window_size_callback(self._window, self.glfw_window_resize_callback)
 
-        self.ctx = moderngl.create_context(require=self.gl_version_code)
-        self.print_context_info()
+        self._ctx = moderngl.create_context(require=self.gl_version_code)
         self.set_default_viewport()
+        self.print_context_info()
 
     def close(self):
         """
         Suggest to glfw the window should be closed soon
         """
-        glfw.set_window_should_close(self.window, True)
+        glfw.set_window_should_close(self._window, True)
 
     @property
     def is_closing(self):
         """
         Checks if the window is scheduled for closing
         """
-        return glfw.window_should_close(self.window)
+        return glfw.window_should_close(self._window)
 
     def swap_buffers(self):
         """
         Swap buffers, increment frame counter and pull events
         """
-        glfw.swap_buffers(self.window)
-        self.frames += 1
+        glfw.swap_buffers(self._window)
+        self._frames += 1
         glfw.poll_events()
 
-    def key_event_callback(self, window, key, scancode, action, mods):
+    def glfw_key_event_callback(self, window, key, scancode, action, mods):
         """
         Key event callback for glfw.
         Translates and forwards keyboard event to :py:func:`keyboard_event`
@@ -103,9 +103,9 @@ class Window(BaseWindow):
         if key == self.keys.ESCAPE:
             self.close()
 
-        self.key_event_func(key, action)
+        self._key_event_func(key, action)
 
-    def mouse_event_callback(self, window, xpos, ypos):
+    def glfw_mouse_event_callback(self, window, xpos, ypos):
         """
         Mouse event callback from glfw.
         Translates the events forwarding them to :py:func:`cursor_event`.
@@ -116,9 +116,9 @@ class Window(BaseWindow):
             ypos: viewport y pos
         """
         # screen coordinates relative to the top-left corner
-        self.mouse_position_event_func(xpos, ypos)
+        self._mouse_position_event_func(xpos, ypos)
 
-    def mouse_button_callback(self, window, button, action, mods):
+    def glfw_mouse_button_callback(self, window, button, action, mods):
         """
         Handle mouse button events and forward them to the example
         """
@@ -128,14 +128,14 @@ class Window(BaseWindow):
         if button not in [1, 2]:
             return
 
-        xpos, ypos = glfw.get_cursor_pos(self.window)
+        xpos, ypos = glfw.get_cursor_pos(self._window)
 
         if action == glfw.PRESS:
-            self.mouse_press_event_func(xpos, ypos, button)
+            self._mouse_press_event_func(xpos, ypos, button)
         else:
-            self.mouse_release_event_func(xpos, ypos, button)
+            self._mouse_release_event_func(xpos, ypos, button)
 
-    def window_resize_callback(self, window, width, height):
+    def glfw_window_resize_callback(self, window, width, height):
         """
         Window resize callback for glfw
 
@@ -144,11 +144,11 @@ class Window(BaseWindow):
             width: New width
             height: New height
         """
-        self.width, self.height = width, height
-        self.buffer_width, self.buffer_height = glfw.get_framebuffer_size(self.window)
+        self._width, self._height = width, height
+        self._buffer_width, self._buffer_height = glfw.get_framebuffer_size(self._window)
         self.set_default_viewport()
 
-        super().resize(self.buffer_width, self.buffer_height)
+        super().resize(self._buffer_width, self._buffer_height)
 
     def destroy(self):
         """
