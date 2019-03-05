@@ -1,4 +1,5 @@
 import argparse
+import os
 import sys
 import time
 
@@ -64,6 +65,7 @@ def get_window_cls(window: str) -> BaseWindow:
     """
     Attept to obtain the configured window class
     """
+    window = os.environ.get('MODERNGL_WINDOW') or window
     return import_string('moderngl_window.context.{}.Window'.format(window))
 
 
