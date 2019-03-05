@@ -20,6 +20,47 @@ class Keys(BaseKeys):
     UP = sdl2.SDLK_UP
     DOWN = sdl2.SDLK_DOWN
 
+    TAB = sdl2.SDLK_TAB
+    COMMA = sdl2.SDLK_COMMA
+    MINUS = sdl2.SDLK_MINUS
+    PERIOD = sdl2.SDLK_PERIOD
+    SLASH = sdl2.SDLK_SLASH
+    SEMICOLON = sdl2.SDLK_SEMICOLON
+    EQUAL = sdl2.SDLK_EQUALS
+    LEFT_BRACKET = sdl2.SDLK_LEFTBRACKET
+    RIGHT_BRACKET = sdl2.SDLK_RIGHTBRACKET
+    BACKSLASH = sdl2.SDLK_BACKSLASH
+    BACKSPACE = sdl2.SDLK_BACKSPACE
+    INSERT = sdl2.SDLK_INSERT
+    DELETE = sdl2.SDLK_DELETE
+    HOME = sdl2.SDLK_HOME
+    END = sdl2.SDLK_END
+    CAPS_LOCK = sdl2.SDLK_CAPSLOCK
+
+    F1 = sdl2.SDLK_F1
+    F2 = sdl2.SDLK_F2
+    F3 = sdl2.SDLK_F3
+    F4 = sdl2.SDLK_F4
+    F5 = sdl2.SDLK_F5
+    F6 = sdl2.SDLK_F6
+    F7 = sdl2.SDLK_F7
+    F8 = sdl2.SDLK_F8
+    F9 = sdl2.SDLK_F9
+    F10 = sdl2.SDLK_F10
+    F11 = sdl2.SDLK_F11
+    F12 = sdl2.SDLK_F12
+
+    NUMBER_0 = sdl2.SDLK_0
+    NUMBER_1 = sdl2.SDLK_1
+    NUMBER_2 = sdl2.SDLK_2
+    NUMBER_3 = sdl2.SDLK_3
+    NUMBER_4 = sdl2.SDLK_4
+    NUMBER_5 = sdl2.SDLK_5
+    NUMBER_6 = sdl2.SDLK_6
+    NUMBER_7 = sdl2.SDLK_7
+    NUMBER_8 = sdl2.SDLK_8
+    NUMBER_9 = sdl2.SDLK_9
+
     A = sdl2.SDLK_a
     B = sdl2.SDLK_b
     C = sdl2.SDLK_c
