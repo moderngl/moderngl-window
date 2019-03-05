@@ -45,7 +45,7 @@ class Window(BaseWindow):
                 flags |= sdl2.SDL_WINDOW_RESIZABLE
 
         # Create the window
-        self.window = sdl2.SDL_CreateWindow(
+        self._window = sdl2.SDL_CreateWindow(
             self.title.encode(),
             sdl2.SDL_WINDOWPOS_UNDEFINED,
             sdl2.SDL_WINDOWPOS_UNDEFINED,
@@ -54,13 +54,13 @@ class Window(BaseWindow):
             flags,
         )
 
-        if not self.window:
+        if not self._window:
             raise ValueError("Failed to create window:", sdl2.SDL_GetError())
 
-        self.context = sdl2.SDL_GL_CreateContext(self.window)
+        self._context = sdl2.SDL_GL_CreateContext(self._window)
         sdl2.video.SDL_GL_SetSwapInterval(1 if self.vsync else 0)
 
-        self.ctx = moderngl.create_context(require=self.gl_version_code)
+        self._ctx = moderngl.create_context(require=self.gl_version_code)
         self.set_default_viewport()
         self.print_context_info()
 
@@ -68,34 +68,30 @@ class Window(BaseWindow):
         """
         Swap buffers, set viewport, trigger events and increment frame counter
         """
-        sdl2.SDL_GL_SwapWindow(self.window)
+        sdl2.SDL_GL_SwapWindow(self._window)
         self.set_default_viewport()
         self.process_events()
-        self.frames += 1
+        self._frames += 1
 
     def resize(self, width, height):
-        """
-        Sets the new size and buffer size internally
-        """
-        self.width = width
-        self.height = height
-        self.buffer_width, self.buffer_height = self.width, self.height
+        """Update internal size values"""
+        self._width = width
+        self._height = height
+        self._buffer_width, self._buffer_height = self._width, self._height
         self.set_default_viewport()
 
-        super().resize(self.buffer_width, self.buffer_height)
+        super().resize(self._buffer_width, self._buffer_height)
 
     def process_events(self):
-        """
-        Loop through and handle all the queued events.
-        """
+        """Handle all queued events in sdl2"""
         for event in sdl2.ext.get_events():
             if event.type == sdl2.SDL_MOUSEMOTION:
-                self.mouse_position_event_func(event.motion.x, event.motion.y)
+                self._mouse_position_event_func(event.motion.x, event.motion.y)
 
             elif event.type == sdl2.SDL_MOUSEBUTTONUP:
                 # Support left and right mouse button for now
                 if  event.button.button in [1, 3]:
-                    self.mouse_press_event_func(
+                    self._mouse_press_event_func(
                         event.motion.x, event.motion.y,
                         1 if event.button.button == 1 else 2,
                     )
@@ -103,7 +99,7 @@ class Window(BaseWindow):
             elif event.type == sdl2.SDL_MOUSEBUTTONDOWN:
                 # Support left and right mouse button for now
                 if  event.button.button in [1, 3]:
-                    self.mouse_release_event_func(
+                    self._mouse_release_event_func(
                         event.motion.x, event.motion.y,
                         1 if event.button.button == 1 else 2,
                     )
@@ -112,7 +108,7 @@ class Window(BaseWindow):
                 if event.key.keysym.sym == sdl2.SDLK_ESCAPE:
                     self.close()
 
-                self.key_event_func(event.key.keysym.sym, event.type)
+                self._key_event_func(event.key.keysym.sym, event.type)
 
             elif event.type == sdl2.SDL_QUIT:
                 self.close()
@@ -122,9 +118,7 @@ class Window(BaseWindow):
                     self.resize(event.window.data1, event.window.data2)
 
     def destroy(self):
-        """
-        Gracefully close the window
-        """
-        sdl2.SDL_GL_DeleteContext(self.context)
-        sdl2.SDL_DestroyWindow(self.window)
+        """Gracefully close the window"""
+        sdl2.SDL_GL_DeleteContext(self._context)
+        sdl2.SDL_DestroyWindow(self._window)
         sdl2.SDL_Quit()
