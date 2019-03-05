@@ -240,6 +240,7 @@ class BaseWindow:
             time (float): Current time in seconds
             frame_time (float): Delta time from last frame in seconds
         """
+        self._ctx.screen.use()
         self.render_func(time, frame_time)
 
     def swap_buffers(self) -> None:
