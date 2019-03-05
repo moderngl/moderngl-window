@@ -25,6 +25,14 @@ class Window(BaseWindow):
     """
     keys = Keys
 
+    # Pyglet supports three mouse buttons
+    # Pyglet key id -> Generic key id
+    _mouse_button_map = {
+        1: 1,
+        4: 2,
+        2: 3,
+    }
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -122,20 +130,22 @@ class Window(BaseWindow):
         """
         Handle mouse press events and forward to example window
         """
-        if button in [1, 4]:
+        button = self._mouse_button_map.get(button, None)
+        if button is not None:
             self._mouse_press_event_func(
                 x, self._buffer_height - y,
-                1 if button == 1 else 2,
+                button,
             )
 
     def on_mouse_release(self, x: int, y: int, button, mods):
         """
         Handle mouse release events and forward to example window
         """
-        if button in [1, 4]:
+        button = self._mouse_button_map.get(button, None)
+        if button is not None:
             self._mouse_release_event_func(
                 x, self._buffer_height - y,
-                1 if button == 1 else 2,
+                button,
             )
 
     def on_resize(self, width: int, height: int):

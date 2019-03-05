@@ -11,6 +11,13 @@ class Window(BaseWindow):
     """
     keys = Keys
 
+    # GLFW do support other buttons, but we are limited by other libraries
+    _mouse_button_map = {
+        0: 1,
+        1: 2,
+        2: 3,
+    }
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -127,10 +134,8 @@ class Window(BaseWindow):
         """
         Handle mouse button events and forward them to the example
         """
-        # Offset button index by 1 to make it match the other libraries
-        button += 1
-        # Support left and right mouse button for now
-        if button not in [1, 2]:
+        button = self._mouse_button_map.get(button, None)
+        if button is None:
             return
 
         xpos, ypos = glfw.get_cursor_pos(self._window)

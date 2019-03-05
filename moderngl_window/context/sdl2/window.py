@@ -13,6 +13,13 @@ class Window(BaseWindow):
     """
     keys = Keys
 
+    # SDL2 supports more buttons but we are limited by other libraries
+    _mouse_button_map = {
+        1: 1,
+        3: 2,
+        2: 3,
+    }
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -88,20 +95,20 @@ class Window(BaseWindow):
             if event.type == sdl2.SDL_MOUSEMOTION:
                 self._mouse_position_event_func(event.motion.x, event.motion.y)
 
-            elif event.type == sdl2.SDL_MOUSEBUTTONUP:
-                # Support left and right mouse button for now
-                if  event.button.button in [1, 3]:
-                    self._mouse_press_event_func(
-                        event.motion.x, event.motion.y,
-                        1 if event.button.button == 1 else 2,
-                    )
-
             elif event.type == sdl2.SDL_MOUSEBUTTONDOWN:
-                # Support left and right mouse button for now
-                if  event.button.button in [1, 3]:
+                button = self._mouse_button_map.get(event.button.button, None)
+                if button is not None:
                     self._mouse_release_event_func(
                         event.motion.x, event.motion.y,
-                        1 if event.button.button == 1 else 2,
+                        button,
+                    )
+
+            elif event.type == sdl2.SDL_MOUSEBUTTONUP:
+                button = self._mouse_button_map.get(event.button.button, None)
+                if button is not None:
+                    self._mouse_press_event_func(
+                        event.motion.x, event.motion.y,
+                        button,
                     )
 
             elif event.type in [sdl2.SDL_KEYDOWN, sdl2.SDL_KEYUP]:

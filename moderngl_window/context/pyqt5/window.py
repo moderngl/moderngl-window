@@ -18,6 +18,13 @@ class Window(BaseWindow):
     """
     keys = Keys
 
+    # PyQt supports mode buttons, but we are limited by other libraries
+    _mouse_button_map = {
+        1: 1,
+        2: 2,
+        4: 3,
+    }
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -148,21 +155,21 @@ class Window(BaseWindow):
         """
         Forward mouse press events to the example
         """
-        # Support left and right mouse button for now
-        if event.button() not in [1, 2]:
+        button = self._mouse_button_map.get(event.button())
+        if button is None:
             return
 
-        self.mouse_press_event_func(event.x(), event.y(), event.button())
+        self.mouse_press_event_func(event.x(), event.y(), button)
 
     def mouse_release_event(self, event):
         """
         Forward mouse release events to the example
         """
-        # Support left and right mouse button for now
-        if event.button() not in [1, 2]:
+        button = self._mouse_button_map.get(event.button())
+        if button is None:
             return
 
-        self.mouse_release_event_func(event.x(), event.y(), event.button())
+        self.mouse_release_event_func(event.x(), event.y(), button)
 
     def close_event(self, event):
         """
