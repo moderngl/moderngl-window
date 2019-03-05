@@ -102,7 +102,6 @@ class Window(BaseWindow):
         self._buffer_height = self._height * self.widget.devicePixelRatio()
 
         self.set_default_viewport()
-        self.print_context_info()
 
     def swap_buffers(self):
         """

@@ -41,6 +41,7 @@ def run_example(config_cls: WindowConfig, args=None):
         samples=values.samples,
         cursor=values.cursor,
     )
+    window.print_context_info()
 
     window.config = config_cls(ctx=window.ctx, wnd=window)
 

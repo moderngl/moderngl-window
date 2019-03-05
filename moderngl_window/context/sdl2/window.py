@@ -69,7 +69,6 @@ class Window(BaseWindow):
 
         self._ctx = moderngl.create_context(require=self.gl_version_code)
         self.set_default_viewport()
-        self.print_context_info()
 
     def swap_buffers(self):
         """
