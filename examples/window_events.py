@@ -31,4 +31,4 @@ class WindowEvents(mglw.WindowConfig):
         print("Mouse button {} released at {}, {}".format(button, x, y))
 
 
-mglw.run_example(WindowEvents)
+mglw.run_window_config(WindowEvents)

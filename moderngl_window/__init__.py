@@ -19,12 +19,12 @@ OPTIONS_FALSE = ['no', 'off', 'false', 'f', 'n', '0']
 OPTIONS_ALL = OPTIONS_TRUE + OPTIONS_FALSE
 
 
-def run_example(config_cls: WindowConfig, args=None):
+def run_window_config(config_cls: WindowConfig, args=None) -> None:
     """
-    Run an example entering a blocking main loop
+    Run an WindowConfig entering a blocking main loop
 
     Args:
-        example_cls: The exmaple class to render
+        config_cls: The WindowConfig class to render
         args: Override sys.args
     """
     values = parse_args(args)

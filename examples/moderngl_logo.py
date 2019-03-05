@@ -59,4 +59,4 @@ class Test(mglw.WindowConfig):
         self.vao.render(instances=10)
 
 
-mglw.run_example(Test)
+mglw.run_window_config(Test)

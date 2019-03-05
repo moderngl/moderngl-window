@@ -12,4 +12,4 @@ class BasicWindowConfig(mglw.WindowConfig):
         pass
 
 
-mglw.run_example(BasicWindowConfig)
+mglw.run_window_config(BasicWindowConfig)
