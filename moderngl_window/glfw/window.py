@@ -34,7 +34,7 @@ class Window(BaseWindow):
             # Use the primary monitors current resolution
             monitor = glfw.get_primary_monitor()
             mode = glfw.get_video_mode(monitor)
-            self.width, self.height = mode.size.width, mode.size.height
+            self._width, self._height = mode.size.width, mode.size.height
 
             # Make sure video mode switching will not happen by
             # matching the desktops current video mode

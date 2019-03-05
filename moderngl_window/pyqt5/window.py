@@ -45,10 +45,10 @@ class Window(BaseWindow):
         # If fullscreen we change the window to match the desktop on the primary screen
         if self.fullscreen:
             rect = QtWidgets.QDesktopWidget().screenGeometry()
-            self.width = rect.width()
-            self.height = rect.height()
-            self.buffer_width = rect.width() * self.widget.devicePixelRatio()
-            self.buffer_height = rect.height() * self.widget.devicePixelRatio()
+            self._width = rect.width()
+            self._height = rect.height()
+            self._buffer_width = rect.width() * self.widget.devicePixelRatio()
+            self._buffer_height = rect.height() * self.widget.devicePixelRatio()
 
         if self.resizable:
             # Ensure a valid resize policy when window is resizable

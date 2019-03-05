@@ -46,7 +46,7 @@ class Window(BaseWindow):
             platform = pyglet.window.get_platform()
             display = platform.get_default_display()
             screen = display.get_default_screen()
-            self.width, self.height = screen.width, screen.height
+            self._width, self._height = screen.width, screen.height
 
         self._window = PygletWrapper(
             width=self.width, height=self.height,
