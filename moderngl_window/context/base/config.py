@@ -37,7 +37,11 @@ class WindowConfig:
 
     def key_event(self, key: Any, action: Any):
         """
-        Called for every key press and release
+        Called for every key press and release.
+        Depending on the library used, key events may
+        trigger repeating events during the pressed duration
+        based on the configured key repeat on the users
+        operating system.
 
         Args:
             key (int): The key that was press. Compare with self.wnd.keys.
