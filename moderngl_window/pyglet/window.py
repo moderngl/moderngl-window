@@ -28,8 +28,8 @@ class Window(BaseWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        # Disable all error checking
         pyglet.options['debug_gl'] = False
+        pyglet.options['shadow_window'] = False
 
         # Set context parameters
         config = pyglet.gl.Config()
@@ -48,8 +48,7 @@ class Window(BaseWindow):
             screen = display.get_default_screen()
             self.width, self.height = screen.width, screen.height
 
-        # Create window wrapper
-        self.window = PygletWrapper(
+        self._window = PygletWrapper(
             width=self.width, height=self.height,
             caption=self.title,
             resizable=self.resizable,
@@ -57,18 +56,18 @@ class Window(BaseWindow):
             fullscreen=self.fullscreen,
         )
 
-        # Show/hide mouse cursor
-        self.window.set_mouse_visible(self.cursor)
+        self._window.set_mouse_visible(self.cursor)
 
-        # Override the default event callbacks
-        self.window.event(self.on_key_press)
-        self.window.event(self.on_key_release)
-        self.window.event(self.on_mouse_motion)
-        self.window.event(self.on_resize)
-        self.window.event(self.on_mouse_press)
-        self.window.event(self.on_mouse_release)
+        # Override the default event callbacks in pyglet
+        # These functions are identified by name
+        self._window.event(self.on_key_press)
+        self._window.event(self.on_key_release)
+        self._window.event(self.on_mouse_motion)
+        self._window.event(self.on_resize)
+        self._window.event(self.on_mouse_press)
+        self._window.event(self.on_mouse_release)
 
-        self.ctx = moderngl.create_context(require=self.gl_version_code)
+        self._ctx = moderngl.create_context(require=self.gl_version_code)
         self.set_default_viewport()
         self.print_context_info()
 
@@ -77,35 +76,35 @@ class Window(BaseWindow):
         """
         Check pyglet's internal exit state
         """
-        return self.window.has_exit
+        return self._window.has_exit
 
     def close(self):
         """
         Close the pyglet window directly
         """
-        self.window.close()
+        self._window.close()
 
     def swap_buffers(self):
         """
         Swap buffers, increment frame counter and pull events
         """
-        self.window.flip()
-        self.frames += 1
-        self.window.dispatch_events()
+        self._window.flip()
+        self._frames += 1
+        self._window.dispatch_events()
 
     def on_key_press(self, symbol, modifiers):
         """
         Pyglet specific key press callback.
         Forwards and translates the events to the example
         """
-        self.key_event_func(symbol, self.keys.ACTION_PRESS)
+        self._key_event_func(symbol, self.keys.ACTION_PRESS)
 
     def on_key_release(self, symbol, modifiers):
         """
         Pyglet specific key release callback.
         Forwards and translates the events to the example
         """
-        self.key_event_func(symbol, self.keys.ACTION_RELEASE)
+        self._key_event_func(symbol, self.keys.ACTION_RELEASE)
 
     def on_mouse_motion(self, x, y, dx, dy):
         """
@@ -115,15 +114,15 @@ class Window(BaseWindow):
         # Screen coordinates relative to the lower-left corner
         # so we have to flip the y axis to make this consistent with
         # other window libraries
-        self.mouse_position_event_func(x, self.buffer_height - y)
+        self._mouse_position_event_func(x, self._buffer_height - y)
 
     def on_mouse_press(self, x: int, y: int, button, mods):
         """
         Handle mouse press events and forward to example window
         """
         if button in [1, 4]:
-            self.mouse_press_event_func(
-                x, self.buffer_height - y,
+            self._mouse_press_event_func(
+                x, self._buffer_height - y,
                 1 if button == 1 else 2,
             )
 
@@ -132,8 +131,8 @@ class Window(BaseWindow):
         Handle mouse release events and forward to example window
         """
         if button in [1, 4]:
-            self.mouse_release_event_func(
-                x, self.buffer_height - y,
+            self._mouse_release_event_func(
+                x, self._buffer_height - y,
                 1 if button == 1 else 2,
             )
 
@@ -141,16 +140,15 @@ class Window(BaseWindow):
         """
         Pyglet specific callback for window resize events.
         """
-        self.width, self.height = width, height
-        self.buffer_width, self.buffer_height = width, height
+        self._width, self._height = width, height
+        self._buffer_width, self._buffer_height = width, height
         self.set_default_viewport()
 
-        super().resize(self.buffer_width, self.buffer_height)
+        super().resize(self._buffer_width, self._buffer_height)
 
     def destroy(self):
-        """
-        Nothing to do here as close() is doing the cleanup
-        """
+        """Destroy the pyglet window"""
+        # Nothing to do here as close() covers this for pyglet already
         pass
 
 
