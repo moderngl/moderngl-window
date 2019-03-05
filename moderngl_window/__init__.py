@@ -5,7 +5,7 @@ import time
 
 from importlib import import_module
 from pathlib import Path
-from typing import List
+from typing import List, Type
 
 from moderngl_window.context.base import WindowConfig, BaseWindow
 
@@ -28,7 +28,7 @@ def run_example(config_cls: WindowConfig, args=None):
         args: Override sys.args
     """
     values = parse_args(args)
-    window_cls = get_window_cls(values.window)
+    window_cls = get_local_window_cls(values.window)
 
     window = window_cls(
         title=config_cls.title,
@@ -61,12 +61,38 @@ def run_example(config_cls: WindowConfig, args=None):
     print("Duration: {0:.2f}s @ {1:.2f} FPS".format(duration, window.frames / duration))
 
 
-def get_window_cls(window: str) -> BaseWindow:
+def get_window_cls(window: str = None) -> Type[BaseWindow]:
     """
-    Attept to obtain the configured window class
+    Attept to obtain a window class using the full dotted
+    python path. This can be used to import custom or modified
+    window classes.
+
+    Args:
+        window (str): Name of the window
+
+    Returns:
+        A reference to the requested window class. Raises exception if not found.
+    """
+    print("Attempting to load window class:", window)
+    return import_string(window)
+
+
+def get_local_window_cls(window: str = None) ->  Type[BaseWindow]:
+    """
+    Attept to obtain a window class in the moderngl_window package
+    using short window names such as `pyqt5` or `glfw`.
+
+    Args:
+        window (str): Name of the window
+
+    Returns:
+        A reference to the requested window class. Raises exception if not found.
     """
     window = os.environ.get('MODERNGL_WINDOW') or window
-    return import_string('moderngl_window.context.{}.Window'.format(window))
+    if not window:
+        window = 'pyqt5'
+
+    return get_window_cls('moderngl_window.context.{}.Window'.format(window))
 
 
 def parse_args(args=None):
