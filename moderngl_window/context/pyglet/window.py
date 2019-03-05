@@ -97,6 +97,7 @@ class Window(BaseWindow):
         Pyglet specific key press callback.
         Forwards and translates the events to the example
         """
+        self._key_pressed_map[symbol] = True
         self._key_event_func(symbol, self.keys.ACTION_PRESS)
 
     def on_key_release(self, symbol, modifiers):
@@ -104,6 +105,7 @@ class Window(BaseWindow):
         Pyglet specific key release callback.
         Forwards and translates the events to the example
         """
+        self._key_pressed_map[symbol] = False
         self._key_event_func(symbol, self.keys.ACTION_RELEASE)
 
     def on_mouse_motion(self, x, y, dx, dy):

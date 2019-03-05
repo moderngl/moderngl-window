@@ -103,6 +103,11 @@ class Window(BaseWindow):
         if key == self.keys.ESCAPE:
             self.close()
 
+        if action == self.keys.ACTION_PRESS:
+            self._key_pressed_map[key] = True
+        elif action == self.keys.ACTION_RELEASE:
+            self._key_pressed_map[key] = False
+
         self._key_event_func(key, action)
 
     def glfw_mouse_event_callback(self, window, xpos, ypos):

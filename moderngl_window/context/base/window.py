@@ -62,6 +62,7 @@ class BaseWindow:
         self._frames = 0  # Frame counter
         self._close = False
         self._config = None
+        self._key_pressed_map = {}
 
         if not self.keys:
             raise ValueError("Window class {} missing keys attribute".format(self.__class__))
@@ -217,6 +218,10 @@ class BaseWindow:
     def ctx(self) -> moderngl.Context:
         """moderngl.Context: The ModernGL context for the window"""
         return self._ctx
+
+    def is_key_pressed(self, key) -> bool:
+        """Returns: The press state of a key"""
+        return self._key_pressed_map.get(key) == True
 
     @property
     def is_closing(self) -> bool:

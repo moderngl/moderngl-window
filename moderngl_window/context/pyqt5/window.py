@@ -128,12 +128,14 @@ class Window(BaseWindow):
         if event.key() == self.keys.ESCAPE:
             self.close()
 
+        self._key_pressed_map[event.key()] = True
         self.key_event_func(event.key(), self.keys.ACTION_PRESS)
 
     def key_release_event(self, event):
         """
         Process Qt key release events forwarding them to the example
         """
+        self._key_pressed_map[event.key()] = False
         self.key_event_func(event.key(), self.keys.ACTION_RELEASE)
 
     def mouse_move_event(self, event):

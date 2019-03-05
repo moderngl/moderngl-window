@@ -108,6 +108,11 @@ class Window(BaseWindow):
                 if event.key.keysym.sym == sdl2.SDLK_ESCAPE:
                     self.close()
 
+                if event.type == sdl2.SDL_KEYDOWN:
+                    self._key_pressed_map[event.key.keysym.sym] = True
+                elif event.type == sdl2.SDL_KEYUP:
+                    self._key_pressed_map[event.key.keysym.sym] = False
+
                 self._key_event_func(event.key.keysym.sym, event.type)
 
             elif event.type == sdl2.SDL_QUIT:
