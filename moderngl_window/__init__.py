@@ -6,7 +6,7 @@ from importlib import import_module
 from pathlib import Path
 from typing import List
 
-from moderngl_window.base import WindowConfig, BaseWindow
+from moderngl_window.context.base import WindowConfig, BaseWindow
 
 IGNORE_DIRS = [
     '__pycache__',
@@ -64,7 +64,7 @@ def get_window_cls(window: str) -> BaseWindow:
     """
     Attept to obtain the configured window class
     """
-    return import_string('moderngl_window.{}.window.Window'.format(window))
+    return import_string('moderngl_window.context.{}.Window'.format(window))
 
 
 def parse_args(args=None):
@@ -72,7 +72,7 @@ def parse_args(args=None):
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        '-w', '--window',
+        '-wnd', '--window',
         default="pyqt5",
         choices=find_window_classes(),
         help='Name for the window type to use',
@@ -112,7 +112,7 @@ def find_window_classes() -> List[str]:
         A list of avaialble window packages
     """
     return [
-        path.parts[-1] for path in Path(__file__).parent.iterdir()
+        path.parts[-1] for path in Path(__file__).parent.joinpath('context').iterdir()
         if path.is_dir() and path.parts[-1] not in IGNORE_DIRS
     ]
 

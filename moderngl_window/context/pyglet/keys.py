@@ -1,6 +1,6 @@
 from pyglet.window import key
 
-from moderngl_window.base import BaseKeys
+from moderngl_window.context.base import BaseKeys
 
 
 class Keys(BaseKeys):

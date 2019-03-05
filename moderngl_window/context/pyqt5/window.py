@@ -1,8 +1,8 @@
 import moderngl
 from PyQt5 import QtCore, QtOpenGL, QtWidgets
 
-from moderngl_window.base import BaseWindow
-from moderngl_window.pyqt5.keys import Keys
+from moderngl_window.context.base import BaseWindow
+from moderngl_window.context.pyqt5.keys import Keys
 
 
 class Window(BaseWindow):

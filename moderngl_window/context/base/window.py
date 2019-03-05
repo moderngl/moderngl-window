@@ -3,7 +3,7 @@ import sys
 from typing import Any, Tuple
 
 import moderngl
-from moderngl_window.base import WindowConfig
+from moderngl_window.context.base import WindowConfig
 
 
 def require_callable(func):

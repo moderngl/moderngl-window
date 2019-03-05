@@ -3,8 +3,8 @@ import sdl2.ext
 import sdl2.video
 import moderngl
 
-from moderngl_window.base import BaseWindow
-from moderngl_window.sdl2.keys import Keys
+from moderngl_window.context.base import BaseWindow
+from moderngl_window.context.sdl2.keys import Keys
 
 
 class Window(BaseWindow):

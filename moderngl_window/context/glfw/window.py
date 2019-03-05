@@ -1,8 +1,8 @@
 import glfw
 import moderngl
 
-from moderngl_window.base import BaseWindow
-from moderngl_window.glfw.keys import Keys
+from moderngl_window.context.base import BaseWindow
+from moderngl_window.context.glfw.keys import Keys
 
 
 class Window(BaseWindow):
