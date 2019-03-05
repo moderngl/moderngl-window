@@ -106,6 +106,11 @@ class BaseWindow:
         return self._viewport
 
     @property
+    def frames(self) -> int:
+        """int: Number of frames rendered"""
+        return self._frames
+
+    @property
     def resizable(self) -> bool:
         """bool: Window is resizable"""
         return self._resizable
@@ -215,7 +220,7 @@ class BaseWindow:
 
     @property
     def is_closing(self) -> bool:
-        """(bool) Is the window about to close?"""
+        """bool: Is the window about to close?"""
         return self._close
 
     def close(self) -> None:
