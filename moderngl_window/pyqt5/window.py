@@ -79,7 +79,7 @@ class Window(BaseWindow):
         # We want mouse position events
         self.widget.setMouseTracking(True)
 
-        # Override event functions
+        # Override event functions in qt
         self.widget.keyPressEvent = self.key_pressed_event
         self.widget.keyReleaseEvent = self.key_release_event
         self.widget.mouseMoveEvent = self.mouse_move_event
@@ -88,11 +88,11 @@ class Window(BaseWindow):
         self.widget.closeEvent = self.close_event
 
         # Attach to the context
-        self.ctx = moderngl.create_context(require=self.gl_version_code)
+        self._ctx = moderngl.create_context(require=self.gl_version_code)
 
         # Ensure retina and 4k displays get the right viewport
-        self.buffer_width = self.width * self.widget.devicePixelRatio()
-        self.buffer_height = self.height * self.widget.devicePixelRatio()
+        self._buffer_width = self._width * self.widget.devicePixelRatio()
+        self._buffer_height = self._height * self.widget.devicePixelRatio()
 
         self.set_default_viewport()
         self.print_context_info()
@@ -104,22 +104,22 @@ class Window(BaseWindow):
         self.widget.swapBuffers()
         self.set_default_viewport()
         self.app.processEvents()
-        self.frames += 1
+        self._frames += 1
 
     def resize(self, width: int,  height: int):
         """
         Replacement for Qt's resizeGL method.
         """
-        self.width = width // self.widget.devicePixelRatio()
-        self.height = height // self.widget.devicePixelRatio()
-        self.buffer_width = width
-        self.buffer_height = height
+        self._width = width // self.widget.devicePixelRatio()
+        self._height = height // self.widget.devicePixelRatio()
+        self._buffer_width = width
+        self._buffer_height = height
 
-        if self.ctx:
+        if self._ctx:
             self.set_default_viewport()
 
         # Make sure we notify the example about the resize
-        super().resize(self.buffer_width, self.buffer_height)
+        super().resize(self._buffer_width, self._buffer_height)
 
     def key_pressed_event(self, event):
         """
