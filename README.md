@@ -40,3 +40,18 @@ class Test(mglw.WindowConfig):
 
 mglw.run_example(Test)
 ```
+
+# Misc
+
+This section contains misc temporary notes
+
+Windows (PowerShell)
+
+```powershell
+PS > Set-Item Env:MODERNGL_WINDOW glfw
+PS > Get-Item Env:\MODERNGL_WINDOW
+
+Name                           Value
+----                           -----
+MODERNGL_WINDOW                glfw
+```
