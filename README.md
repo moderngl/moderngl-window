@@ -38,7 +38,7 @@ class Test(mglw.WindowConfig):
         self.ctx.clear(1.0, 0.0, 0.0, 0.0)
 
 
-mglw.run_example(Test)
+mglw.run_window_config(Test)
 ```
 
 # Misc
