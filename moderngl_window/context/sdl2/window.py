@@ -88,6 +88,11 @@ class Window(BaseWindow):
 
         super().resize(self._buffer_width, self._buffer_height)
 
+    def _handle_mods(self):
+        mods = sdl2.SDL_GetModState()
+        self._modifiers.shift = mods & sdl2.KMOD_SHIFT
+        self._modifiers.ctrl = mods & sdl2.KMOD_CTRL
+
     def process_events(self):
         """Handle all queued events in sdl2"""
         for event in sdl2.ext.get_events():
@@ -111,6 +116,8 @@ class Window(BaseWindow):
                     )
 
             elif event.type in [sdl2.SDL_KEYDOWN, sdl2.SDL_KEYUP]:
+                self._handle_mods()
+
                 if event.key.keysym.sym == sdl2.SDLK_ESCAPE:
                     self.close()
 
@@ -119,7 +126,7 @@ class Window(BaseWindow):
                 elif event.type == sdl2.SDL_KEYUP:
                     self._key_pressed_map[event.key.keysym.sym] = False
 
-                self._key_event_func(event.key.keysym.sym, event.type)
+                self._key_event_func(event.key.keysym.sym, event.type, self._modifiers)
 
             elif event.type == sdl2.SDL_QUIT:
                 self.close()

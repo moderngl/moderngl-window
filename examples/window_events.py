@@ -2,6 +2,9 @@ import moderngl_window as mglw
 
 
 class WindowEvents(mglw.WindowConfig):
+    """
+    Demonstrates handling mouse, keyboard, render and resize events
+    """
     gl_version = (3, 3)
     title = "Window Events"
 
@@ -9,14 +12,28 @@ class WindowEvents(mglw.WindowConfig):
         super().__init__(**kwargs)
 
     def render(self, time, frametime):
+        # We can also check if a key is in press state here
         if self.wnd.is_key_pressed(self.wnd.keys.SPACE):
             print("User is holding SPACE button")
 
-    def key_event(self, key, action):
+    def resize(self, width: int, height: int):
+        print("Window was resized. buffer size is {} x {}".format(width, height))
+
+    def key_event(self, key, action, modifiers):
+        # Key presses
         if action == self.wnd.keys.ACTION_PRESS:
             if key == self.wnd.keys.SPACE:
                 print("SPACE key was pressed")
 
+            # Using modifiers (shift and ctrl)
+
+            if key == self.wnd.keys.Z and modifiers.shift:
+                print("Shift + Z was pressed")
+
+            if key == self.wnd.keys.Z and modifiers.ctrl:
+                print("ctrl + Z was pressed")
+
+        # Key releases
         elif action == self.wnd.keys.ACTION_RELEASE:
             if key == self.wnd.keys.SPACE:
                 print("SPACE key was released")

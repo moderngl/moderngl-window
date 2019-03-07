@@ -94,6 +94,10 @@ class Window(BaseWindow):
         self._frames += 1
         glfw.poll_events()
 
+    def _handle_modifiers(self, mods):
+        self._modifiers.shift = mods & 1 == 1
+        self._modifiers.ctrl = mods & 2 == 2
+
     def glfw_key_event_callback(self, window, key, scancode, action, mods):
         """
         Key event callback for glfw.
@@ -109,12 +113,14 @@ class Window(BaseWindow):
         if key == self.keys.ESCAPE:
             self.close()
 
+        self._handle_modifiers(mods)
+
         if action == self.keys.ACTION_PRESS:
             self._key_pressed_map[key] = True
         elif action == self.keys.ACTION_RELEASE:
             self._key_pressed_map[key] = False
 
-        self._key_event_func(key, action)
+        self._key_event_func(key, action, self._modifiers)
 
     def glfw_mouse_event_callback(self, window, xpos, ypos):
         """

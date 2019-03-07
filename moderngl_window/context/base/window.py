@@ -1,9 +1,9 @@
 from functools import wraps
 import sys
-from typing import Any, Tuple
+from typing import Any, Tuple, Type
 
 import moderngl
-from moderngl_window.context.base import WindowConfig
+from moderngl_window.context.base import WindowConfig, KeyModifiers
 
 
 def require_callable(func):
@@ -63,6 +63,7 @@ class BaseWindow:
         self._close = False
         self._config = None
         self._key_pressed_map = {}
+        self._modifiers = KeyModifiers
 
         if not self.keys:
             raise ValueError("Window class {} missing keys attribute".format(self.__class__))
@@ -213,6 +214,11 @@ class BaseWindow:
     @require_callable
     def mouse_release_event_func(self, func):
         self._mouse_release_event_func = func
+
+    @property
+    def modifiers(self) -> Type[KeyModifiers]:
+        """(KeyModifiers) The current keyboard modifiers"""
+        return self._modifiers
 
     @property
     def ctx(self) -> moderngl.Context:

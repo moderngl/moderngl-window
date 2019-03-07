@@ -1,3 +1,4 @@
+from moderngl_window.context.base import KeyModifiers
 from typing import Any, Tuple
 
 
@@ -35,7 +36,7 @@ class WindowConfig:
         """
         pass
 
-    def key_event(self, key: Any, action: Any):
+    def key_event(self, key: Any, action: Any, modifiers: KeyModifiers):
         """
         Called for every key press and release.
         Depending on the library used, key events may
@@ -46,6 +47,7 @@ class WindowConfig:
         Args:
             key (int): The key that was press. Compare with self.wnd.keys.
             action: self.wnd.keys.ACTION_PRESS or ACTION_RELEASE
+            modifiers: Modifier state for shift and ctrl
         """
         pass
 

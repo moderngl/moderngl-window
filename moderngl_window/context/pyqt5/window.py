@@ -127,6 +127,10 @@ class Window(BaseWindow):
         # Make sure we notify the example about the resize
         super().resize(self._buffer_width, self._buffer_height)
 
+    def _handle_modifiers(self, mods):
+        self._modifiers.shift = mods & QtCore.Qt.ShiftModifier
+        self._modifiers.ctrl = mods & QtCore.Qt.ControlModifier
+
     def key_pressed_event(self, event):
         """
         Process Qt key press events forwarding them to the example
@@ -134,15 +138,17 @@ class Window(BaseWindow):
         if event.key() == self.keys.ESCAPE:
             self.close()
 
+        self._handle_modifiers(event.modifiers())
         self._key_pressed_map[event.key()] = True
-        self.key_event_func(event.key(), self.keys.ACTION_PRESS)
+        self.key_event_func(event.key(), self.keys.ACTION_PRESS, self._modifiers)
 
     def key_release_event(self, event):
         """
         Process Qt key release events forwarding them to the example
         """
+        self._handle_modifiers(event.modifiers())
         self._key_pressed_map[event.key()] = False
-        self.key_event_func(event.key(), self.keys.ACTION_RELEASE)
+        self.key_event_func(event.key(), self.keys.ACTION_RELEASE, self._modifiers)
 
     def mouse_move_event(self, event):
         """

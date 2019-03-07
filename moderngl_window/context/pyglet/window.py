@@ -99,13 +99,18 @@ class Window(BaseWindow):
         self._frames += 1
         self._window.dispatch_events()
 
+    def _handle_modifiers(self, mods):
+        self._modifiers.shift = mods & 1 == 1
+        self._modifiers.ctrl = mods & 2 == 2
+
     def on_key_press(self, symbol, modifiers):
         """
         Pyglet specific key press callback.
         Forwards and translates the events to the example
         """
         self._key_pressed_map[symbol] = True
-        self._key_event_func(symbol, self.keys.ACTION_PRESS)
+        self._handle_modifiers(modifiers)
+        self._key_event_func(symbol, self.keys.ACTION_PRESS, self._modifiers)
 
     def on_key_release(self, symbol, modifiers):
         """
@@ -113,7 +118,8 @@ class Window(BaseWindow):
         Forwards and translates the events to the example
         """
         self._key_pressed_map[symbol] = False
-        self._key_event_func(symbol, self.keys.ACTION_RELEASE)
+        self._handle_modifiers(modifiers)
+        self._key_event_func(symbol, self.keys.ACTION_RELEASE, self._modifiers)
 
     def on_mouse_motion(self, x, y, dx, dy):
         """

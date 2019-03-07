@@ -1,4 +1,10 @@
 
+class KeyModifiers:
+    """Namespace for storing key modifiers"""
+    shift = False
+    ctrl = False
+
+
 class BaseKeys:
     """
     Namespace for mapping key constants.
