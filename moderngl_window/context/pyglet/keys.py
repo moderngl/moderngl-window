@@ -83,4 +83,4 @@ class Keys(BaseKeys):
     W = key.W
     X = key.X
     Y = key.Y
-    Z = key.Y
+    Z = key.Z
