@@ -54,6 +54,7 @@ def run_window_config(config_cls: WindowConfig, args=None) -> None:
         current_time, prev_time = time.time(), current_time
         frame_time = max(current_time - prev_time, 1 / 1000)
 
+        window.ctx.screen.use()
         window.render(current_time - start_time, frame_time)
         window.swap_buffers()
 
