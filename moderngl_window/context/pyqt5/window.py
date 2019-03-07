@@ -95,7 +95,8 @@ class Window(BaseWindow):
         self.widget.closeEvent = self.close_event
 
         # Attach to the context
-        self._ctx = moderngl.create_context(require=self.gl_version_code)
+        if self._create_mgl_context:
+            self.init_mgl_context()
 
         # Ensure retina and 4k displays get the right viewport
         self._buffer_width = self._width * self.widget.devicePixelRatio()

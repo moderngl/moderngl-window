@@ -23,7 +23,8 @@ class BaseWindow:
     keys = None  # type: BaseKeys
 
     def __init__(self, title="Example", gl_version=(3, 3), size=(1280, 720), resizable=True,
-                 fullscreen=False, vsync=True, aspect_ratio=16/9, samples=4, cursor=True, **kwargs):
+                 fullscreen=False, vsync=True, aspect_ratio=16/9, samples=4, cursor=True,
+                 create_mgl_context=True, **kwargs):
         """
         Args:
             title (str): The window title
@@ -35,6 +36,7 @@ class BaseWindow:
             aspect_ratio (float): The desired aspect ratio. Can be set to None.
             samples (int): Number of MSAA samples for the default framebuffer
             cursor (bool): Enable/disable displaying the cursor inside the window
+            create_mgl_context (bool): Auto create a ModernGL context
         """
         # Window parameters
         self._title = title
@@ -62,11 +64,30 @@ class BaseWindow:
         self._frames = 0  # Frame counter
         self._close = False
         self._config = None
+        self._create_mgl_context = create_mgl_context
         self._key_pressed_map = {}
         self._modifiers = KeyModifiers
 
         if not self.keys:
             raise ValueError("Window class {} missing keys attribute".format(self.__class__))
+
+    def init_mgl_context(self, ctx=None) -> None:
+        """
+        Create or assign a ModernGL context. If no context is supplied a context will be
+        created using the window's gl_version.
+
+        Keyword Args:
+            ctx: An optional custom ModernGL context
+        """
+        if self._ctx:
+            raise ValueError("A ModernGL context is already assigned")
+
+        self._ctx = ctx or moderngl.create_context(require=self.gl_version_code)
+
+    @property
+    def ctx(self) -> moderngl.Context:
+        """moderngl.Context: The ModernGL context for the window"""
+        return self._ctx
 
     @property
     def title(self) -> str:
@@ -219,11 +240,6 @@ class BaseWindow:
     def modifiers(self) -> Type[KeyModifiers]:
         """(KeyModifiers) The current keyboard modifiers"""
         return self._modifiers
-
-    @property
-    def ctx(self) -> moderngl.Context:
-        """moderngl.Context: The ModernGL context for the window"""
-        return self._ctx
 
     def is_key_pressed(self, key) -> bool:
         """Returns: The press state of a key"""

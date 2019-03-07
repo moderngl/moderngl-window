@@ -65,9 +65,12 @@ class Window(BaseWindow):
             raise ValueError("Failed to create window:", sdl2.SDL_GetError())
 
         self._context = sdl2.SDL_GL_CreateContext(self._window)
+
         sdl2.video.SDL_GL_SetSwapInterval(1 if self.vsync else 0)
 
-        self._ctx = moderngl.create_context(require=self.gl_version_code)
+        if self._create_mgl_context:
+            self.init_mgl_context()
+
         self.set_default_viewport()
 
     def swap_buffers(self):

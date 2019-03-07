@@ -75,7 +75,9 @@ class Window(BaseWindow):
         self._window.event(self.on_mouse_press)
         self._window.event(self.on_mouse_release)
 
-        self._ctx = moderngl.create_context(require=self.gl_version_code)
+        if self._create_mgl_context:
+            self.init_mgl_context()
+
         self.set_default_viewport()
 
     @property
