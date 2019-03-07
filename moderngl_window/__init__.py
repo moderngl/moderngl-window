@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import List, Type
 
 from moderngl_window.context.base import WindowConfig, BaseWindow
+from moderngl_window.timers.clock import Timer
 
 IGNORE_DIRS = [
     '__pycache__',
@@ -19,7 +20,7 @@ OPTIONS_FALSE = ['no', 'off', 'false', 'f', 'n', '0']
 OPTIONS_ALL = OPTIONS_TRUE + OPTIONS_FALSE
 
 
-def run_window_config(config_cls: WindowConfig, args=None) -> None:
+def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     """
     Run an WindowConfig entering a blocking main loop
 
@@ -45,20 +46,17 @@ def run_window_config(config_cls: WindowConfig, args=None) -> None:
 
     window.config = config_cls(ctx=window.ctx, wnd=window)
 
-    start_time = time.time()
-    current_time = start_time
-    prev_time = start_time
-    frame_time = 0
+    timer = Timer()
+    timer.start()
 
     while not window.is_closing:
-        current_time, prev_time = time.time(), current_time
-        frame_time = max(current_time - prev_time, 1 / 1000)
+        current_time, delta = timer.next_frame()
 
         window.ctx.screen.use()
-        window.render(current_time - start_time, frame_time)
+        window.render(current_time, delta)
         window.swap_buffers()
 
-    duration = time.time() - start_time
+    _, duration = timer.stop()
     window.destroy()
     print("Duration: {0:.2f}s @ {1:.2f} FPS".format(duration, window.frames / duration))
 

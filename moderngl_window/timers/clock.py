@@ -1,4 +1,6 @@
 import time
+from typing import Tuple
+
 
 from moderngl_window.timers.base import BaseTimer
 
@@ -11,6 +13,7 @@ class Timer(BaseTimer):
         self._start_time = None
         self._stop_time = None
         self._pause_time = None
+        self._last_frame = None
         self._offset = 0
 
     @property
@@ -31,6 +34,9 @@ class Timer(BaseTimer):
         Returns:
             The current time in seconds
         """
+        if self._start_time is None:
+            raise ValueError("Timer not started")
+
         if self.is_paused:
             return self._pause_time - self._offset - self._start_time
 
@@ -49,13 +55,26 @@ class Timer(BaseTimer):
 
         self._offset += self.time - value
 
+    def next_frame(self) -> Tuple[float, float]:
+        """
+        Get the time and frametime for the next frame.
+        This should only be called once per frame.
+
+        Returns:
+            (float, float) current time and frametime
+        """
+        current = self.time
+        delta, self._last_frame = current - self._last_frame, current
+        return current, delta
+
     def start(self):
         """
         Start the timer by recoding the current ``time.time()``
         preparing to report the number of seconds since this timestamp.
         """
         if self._start_time is None:
-            self.start_time = time.time()
+            self._start_time = time.time()
+            self._last_frame = self._start_time
         else:
             self._offset += time.time() - self._pause_time
             self._pause_time = None
@@ -73,11 +92,12 @@ class Timer(BaseTimer):
         else:
             self.pause()
 
-    def stop(self) -> float:
+    def stop(self) -> Tuple[float, float]:
         """
-        Stop the timer
+        Stop the timer. Should only be called once when stopping the timer.
+
         Returns:
-            The time the timer was stopped
+            (float, float) Current position in the timer, actual running duration
         """
         self._stop_time = time.time()
-        return self._stop_time - self._start_time - self._offset
+        return self._stop_time - self._start_time - self._offset, self._stop_time - self._start_time

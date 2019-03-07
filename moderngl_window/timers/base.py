@@ -1,3 +1,5 @@
+from typing import Tuple
+
 
 class BaseTimer:
     """
@@ -42,6 +44,12 @@ class BaseTimer:
         """
         raise NotImplementedError()
 
+    def next_frame(self) -> Tuple[float, float]:
+        """
+        Get the time and frametime for the next frame
+        """
+        raise NotImplementedError()
+
     def start(self):
         """
         Start the timer initially or resume after pause
@@ -58,11 +66,11 @@ class BaseTimer:
         """Toggle pause state"""
         raise NotImplementedError()
 
-    def stop(self) -> float:
+    def stop(self) -> Tuple[float, float]:
         """
         Stop the timer. Should only be called once when stopping the timer.
 
         Returns:
-            The time the timer was stopped
+            (float, float) Current position in the timer, actual running duration
         """
         raise NotImplementedError()
