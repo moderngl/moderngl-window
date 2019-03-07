@@ -38,13 +38,10 @@ class Window(BaseWindow):
 
         monitor = None
         if self.fullscreen:
-            # Use the primary monitors current resolution
             monitor = glfw.get_primary_monitor()
             mode = glfw.get_video_mode(monitor)
             self._width, self._height = mode.size.width, mode.size.height
 
-            # Make sure video mode switching will not happen by
-            # matching the desktops current video mode
             glfw.window_hint(glfw.RED_BITS, mode.bits.red)
             glfw.window_hint(glfw.GREEN_BITS, mode.bits.green)
             glfw.window_hint(glfw.BLUE_BITS, mode.bits.blue)

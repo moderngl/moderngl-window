@@ -13,7 +13,6 @@ class Window(BaseWindow):
     """
     keys = Keys
 
-    # SDL2 supports more buttons but we are limited by other libraries
     _mouse_button_map = {
         1: 1,
         3: 2,
@@ -26,7 +25,6 @@ class Window(BaseWindow):
         if sdl2.SDL_Init(sdl2.SDL_INIT_VIDEO) != 0:
             raise ValueError("Failed to initialize sdl2")
 
-        # Configure OpenGL context
         sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MAJOR_VERSION, self.gl_version[0])
         sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MINOR_VERSION, self.gl_version[1])
         sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_PROFILE_MASK, sdl2.SDL_GL_CONTEXT_PROFILE_CORE)
@@ -34,24 +32,19 @@ class Window(BaseWindow):
         sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_DOUBLEBUFFER, 1)
         sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_DEPTH_SIZE, 24)
 
-        # Display/hide mouse cursor
         sdl2.SDL_ShowCursor(sdl2.SDL_ENABLE if self.cursor else sdl2.SDL_DISABLE)
 
-        # Configure multisampling
         if self.samples > 1:
             sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_MULTISAMPLEBUFFERS, 1)
             sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_MULTISAMPLESAMPLES, self.samples)
 
-        # Built the window flags
         flags = sdl2.SDL_WINDOW_OPENGL
         if self.fullscreen:
-            # Use primary desktop screen resolution
             flags |= sdl2.SDL_WINDOW_FULLSCREEN_DESKTOP
         else:
             if self.resizable:
                 flags |= sdl2.SDL_WINDOW_RESIZABLE
 
-        # Create the window
         self._window = sdl2.SDL_CreateWindow(
             self.title.encode(),
             sdl2.SDL_WINDOWPOS_UNDEFINED,

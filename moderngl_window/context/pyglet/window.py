@@ -25,8 +25,6 @@ class Window(BaseWindow):
     """
     keys = Keys
 
-    # Pyglet supports three mouse buttons
-    # Pyglet key id -> Generic key id
     _mouse_button_map = {
         1: 1,
         4: 2,
@@ -39,17 +37,14 @@ class Window(BaseWindow):
         pyglet.options['debug_gl'] = False
         pyglet.options['shadow_window'] = False
 
-        # Set context parameters
         config = pyglet.gl.Config()
         config.double_buffer = True
         config.major_version = self.gl_version[0]
         config.minor_version = self.gl_version[1]
         config.forward_compatible = True
-        # MISSING: Core context flag
         config.sample_buffers = 1 if self.samples > 1 else 0
         config.samples = self.samples
 
-        # Obtain the default destop screen's resolution
         if self.fullscreen:
             platform = pyglet.window.get_platform()
             display = platform.get_default_display()
@@ -66,8 +61,6 @@ class Window(BaseWindow):
 
         self._window.set_mouse_visible(self.cursor)
 
-        # Override the default event callbacks in pyglet
-        # These functions are identified by name
         self._window.event(self.on_key_press)
         self._window.event(self.on_key_release)
         self._window.event(self.on_mouse_motion)
@@ -128,7 +121,7 @@ class Window(BaseWindow):
         Pyglet specific mouse motion callback.
         Forwards and traslates the event to the example
         """
-        # Screen coordinates relative to the lower-left corner
+        # NOTE: Screen coordinates relative to the lower-left corner
         # so we have to flip the y axis to make this consistent with
         # other window libraries
         self._mouse_position_event_func(x, self._buffer_height - y)
@@ -167,7 +160,6 @@ class Window(BaseWindow):
 
     def destroy(self):
         """Destroy the pyglet window"""
-        # Nothing to do here as close() covers this for pyglet already
         pass
 
 
