@@ -68,6 +68,10 @@ class BaseWindow:
         self._key_pressed_map = {}
         self._modifiers = KeyModifiers
 
+        # Do not allow resize in fullscreen
+        if self.fullscreen:
+            self.resizable = False
+
         if not self.keys:
             raise ValueError("Window class {} missing keys attribute".format(self.__class__))
 
