@@ -1,6 +1,6 @@
 # moderngl_window
 
-**WORK IN PROGRESS**: This is currently only a direct copy of `moderngl/examples/window`
+**WORK IN PROGRESS**: This is currently only derived work from `moderngl/examples/window`
 and is not a working package at this moment.
 
 Easily create a window for ModernGL using the most popular window libraries
@@ -12,7 +12,7 @@ Easily create a window for ModernGL using the most popular window libraries
 
 ## Features
 
-* Easily create a window for ModernGL using PyQt5, GLFW, SDL2 or Pyglet supporing basic keyboard and mouse controls in a generic way.
+* Easily create a window for ModernGL using Pyglet, PyQt5, GLFW or SDL2 supporing basic keyboard and mouse controls in a generic way.
 
 ## Supported Platforms
 
