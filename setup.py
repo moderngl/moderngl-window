@@ -25,11 +25,11 @@ setup(
     ],
     install_requires=[
         'moderngl<6',
-        'PyQt5~=5.12',
+        'pyglet==1.4.0b1',
     ],
     extras_require={
+        "pyqt5": ['PyQt5~=5.12'],
         "glfw": ['glfw==1.7.1'],
-        "pyglet": ['pyglet==1.3.2'],
         "PySDL2": ['PySDL2==0.9.6'],
     },
 )

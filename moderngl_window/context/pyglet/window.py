@@ -1,27 +1,15 @@
-import platform
-
 import moderngl
 import pyglet
+pyglet.options['shadow_window'] = False
+pyglet.options['debug_gl'] = False
 
 from moderngl_window.context.pyglet.keys import Keys
 from moderngl_window.context.base import BaseWindow
 
 
-if platform.system() == "Darwin":
-    raise RuntimeError((
-        "Pyglet 1.x do not support OpenGL core contexts "
-        "and will only be able to support version 2.1 on OS X.\n"
-        "Please use another window driver for this platform "
-        "until a pyglet 2.x window is created"
-))
-
-
 class Window(BaseWindow):
     """
     Window based on Pyglet 1.x.
-
-    This pyglet version is not able to create forward compatible
-    core contexts and do not work on OS X until 2.x is out.
     """
     keys = Keys
 
@@ -34,16 +22,15 @@ class Window(BaseWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        pyglet.options['debug_gl'] = False
-        pyglet.options['shadow_window'] = False
-
-        config = pyglet.gl.Config()
-        config.double_buffer = True
-        config.major_version = self.gl_version[0]
-        config.minor_version = self.gl_version[1]
-        config.forward_compatible = True
-        config.sample_buffers = 1 if self.samples > 1 else 0
-        config.samples = self.samples
+        config = pyglet.gl.Config(
+            major_version=self.gl_version[0],
+            minor_version=self.gl_version[1],
+            forward_compatible=True,
+            depth_size=24,
+            double_buffer=True,
+            sample_buffers=1 if self.samples > 1 else 0,
+            samples=self.samples,
+        )
 
         if self.fullscreen:
             platform = pyglet.window.get_platform()
@@ -57,6 +44,7 @@ class Window(BaseWindow):
             resizable=self.resizable,
             vsync=self.vsync,
             fullscreen=self.fullscreen,
+            config=config,
         )
 
         self._window.set_mouse_visible(self.cursor)
@@ -71,6 +59,7 @@ class Window(BaseWindow):
         if self._create_mgl_context:
             self.init_mgl_context()
 
+        self._buffer_width, self._buffer_height = self._window.get_viewport_size()
         self.set_default_viewport()
 
     @property
@@ -153,7 +142,7 @@ class Window(BaseWindow):
         Pyglet specific callback for window resize events.
         """
         self._width, self._height = width, height
-        self._buffer_width, self._buffer_height = width, height
+        self._buffer_width, self._buffer_height = self._window.get_viewport_size()
         self.set_default_viewport()
 
         super().resize(self._buffer_width, self._buffer_height)
