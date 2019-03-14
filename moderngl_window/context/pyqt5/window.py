@@ -67,7 +67,7 @@ class Window(BaseWindow):
             self.widget.resize(self.width, self.height)
         else:
             self.widget.setFixedSize(self.width, self.height)
-        
+
         # Center the window on the screen if in window mode
         if not self.fullscreen:
             self.widget.move(QtWidgets.QDesktopWidget().rect().center() - self.widget.rect().center())
