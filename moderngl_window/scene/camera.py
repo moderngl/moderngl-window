@@ -53,9 +53,9 @@ class Camera:
         self.position = Vector3([x, y, z])
 
     @property
-    def view_matrix(self):
+    def matrix(self):
         """
-        :return: The current view matrix for the camera
+        Returns: The current view matrix for the camera
         """
         self._update_yaw_and_pitch()
         return self._gl_look_at(self.position, self.position + self.dir, self._up)
@@ -203,9 +203,9 @@ class SystemCamera(Camera):
         self._update_yaw_and_pitch()
 
     @property
-    def view_matrix(self):
+    def matrix(self):
         """
-        :return: The current view matrix for the camera
+        Returns: The current view matrix for the camera
         """
         # Use separate time in camera so we can move it when the demo is paused
         now = time.time()
