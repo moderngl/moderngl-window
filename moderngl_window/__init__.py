@@ -90,7 +90,7 @@ def get_local_window_cls(window: str = None) ->  Type[BaseWindow]:
     """
     window = os.environ.get('MODERNGL_WINDOW') or window
     if not window:
-        window = 'pyqt5'
+        window = 'pyglet'
 
     return get_window_cls('moderngl_window.context.{}.Window'.format(window))
 
@@ -101,7 +101,6 @@ def parse_args(args=None):
 
     parser.add_argument(
         '-wnd', '--window',
-        default="pyqt5",
         choices=find_window_classes(),
         help='Name for the window type to use',
     )
