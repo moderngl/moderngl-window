@@ -51,6 +51,7 @@ class Window(BaseWindow):
         self._window.event(self.on_key_press)
         self._window.event(self.on_key_release)
         self._window.event(self.on_mouse_motion)
+        self._window.event(self.on_mouse_drag)
         self._window.event(self.on_resize)
         self._window.event(self.on_mouse_press)
         self._window.event(self.on_mouse_release)
@@ -112,6 +113,14 @@ class Window(BaseWindow):
         # NOTE: Screen coordinates relative to the lower-left corner
         # so we have to flip the y axis to make this consistent with
         # other window libraries
+        self._mouse_position_event_func(x, self._buffer_height - y)
+
+    def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
+        """
+        Pyglet specific mouse drag event.
+        When a mouse button is pressed this is the only way
+        to capture mouse posision events
+        """
         self._mouse_position_event_func(x, self._buffer_height - y)
 
     def on_mouse_press(self, x: int, y: int, button, mods):
