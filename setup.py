@@ -28,8 +28,8 @@ setup(
         'pyglet==1.4.0b1',
     ],
     extras_require={
-        "pyqt5": ['PyQt5~=5.12'],
-        "glfw": ['glfw==1.7.1'],
-        "PySDL2": ['PySDL2==0.9.6'],
+        "pyqt5": ['PyQt5>=5.12'],
+        "glfw": ['glfw>=1.7'],
+        "PySDL2": ['PySDL2>=0.9.6'],
     },
 )
