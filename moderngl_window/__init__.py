@@ -58,9 +58,14 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     values = parse_args(args)
     window_cls = get_local_window_cls(values.window)
 
+    # Calculate window size
+    size = values.size or config_cls.window_size
+    size = size[0] * values.size_mult, size[1] * values.size_mult
+    print(size)
+
     window = window_cls(
         title=config_cls.title,
-        size=values.size or config_cls.window_size,
+        size=size,
         fullscreen=values.fullscreen,
         resizable=config_cls.resizable,
         gl_version=config_cls.gl_version,
@@ -138,7 +143,7 @@ def parse_args(args=None):
     )
     parser.add_argument(
         '-vs', '--vsync',
-        type=str2bool,
+        type=valid_bool,
         default="1",
         help="Enable or disable vsync",
     )
@@ -150,7 +155,7 @@ def parse_args(args=None):
     )
     parser.add_argument(
         '-c', '--cursor',
-        type=str2bool,
+        type=valid_bool,
         default="true",
         help="Enable or disable displaying the mouse cursor",
     )
@@ -158,6 +163,12 @@ def parse_args(args=None):
         '--size',
         type=valid_window_size,
         help="Window size",
+    )
+    parser.add_argument(
+        '--size_mult',
+        type=valid_window_size_multiplier,
+        default=1.0,
+        help="Multiplier for the window size making it easy scale the window",
     )
 
     return parser.parse_args(args or sys.argv[1:])
@@ -201,7 +212,7 @@ def import_string(dotted_path):
             module_path, class_name)) from err
 
 
-def str2bool(value):
+def valid_bool(value):
     """Validator for bool values"""
     value = value.lower()
 
@@ -228,4 +239,22 @@ def valid_window_size(value):
 
     raise argparse.ArgumentTypeError(
         "Valid size format: int]x[int]. Example '1920x1080'",
+    )
+
+
+def valid_window_size_multiplier(value):
+    """
+    Validates window size multiplier
+
+    Must be an integer or float creater than 0
+    """
+    try:
+        val = float(value)
+        if val > 0:
+            return val
+    except ValueError:
+        pass
+
+    raise argparse.ArgumentTypeError(
+        "Must be a positive int or float",
     )
