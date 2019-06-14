@@ -20,6 +20,33 @@ OPTIONS_FALSE = ['no', 'off', 'false', 'f', 'n', '0']
 OPTIONS_ALL = OPTIONS_TRUE + OPTIONS_FALSE
 
 
+class ContextRefs:
+    WINDOW = None
+    CONTEXT = None
+
+
+def activate_window(window: BaseWindow):
+    """Set the currently active window"""
+    ContextRefs.WINDOW = window
+    ContextRefs.CONTEXT = window.ctx
+
+
+def window():
+    """Obtain the active window"""
+    if ContextRefs.WINDOW:
+        return ContextRefs.WINDOW
+
+    raise ValueError("No active window and context. Call activate_window.")
+
+
+def ctx():
+    """Obtain the active context"""
+    if ContextRefs.CONTEXT:
+        return ContextRefs.CONTEXT
+
+    raise ValueError("No active window and context. Call activate_window.")
+
+
 def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     """
     Run an WindowConfig entering a blocking main loop
@@ -43,7 +70,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         cursor=values.cursor,
     )
     window.print_context_info()
-
+    activate_window(window)
     window.config = config_cls(ctx=window.ctx, wnd=window)
 
     timer = Timer()
