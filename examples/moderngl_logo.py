@@ -10,11 +10,15 @@ class ModernglLogo(mglw.WindowConfig):
         self.prog = self.ctx.program(
             vertex_shader='''
                 #version 330
+
                 in vec2 vert;
                 in vec4 vert_color;
-                out vec4 frag_color;
+
                 uniform vec2 scale;
                 uniform float rotation;
+
+                out vec4 frag_color;
+
                 void main() {
                     frag_color = vert_color;
                     float r = rotation * (0.5 + gl_InstanceID * 0.05);
@@ -24,8 +28,10 @@ class ModernglLogo(mglw.WindowConfig):
             ''',
             fragment_shader='''
                 #version 330
+
                 in vec4 frag_color;
                 out vec4 color;
+
                 void main() {
                     color = vec4(frag_color);
                 }
@@ -59,4 +65,4 @@ class ModernglLogo(mglw.WindowConfig):
 
 
 if __name__ == '__main__':
-    mglw.run_window_config(ModernlLogo)
+    mglw.run_window_config(ModernglLogo)
