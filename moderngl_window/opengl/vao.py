@@ -272,10 +272,10 @@ class VAO:
 
         # Create the vao
         if self._index_buffer:
-            vao = context.ctx().vertex_array(program, vao_content,
+            vao = self.ctx.vertex_array(program, vao_content,
                                              self._index_buffer, self._index_element_size)
         else:
-            vao = context.ctx().vertex_array(program, vao_content)
+            vao = self.ctx.vertex_array(program, vao_content)
 
         self.vaos[program.glo] = vao
         return vao
