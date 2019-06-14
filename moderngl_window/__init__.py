@@ -85,6 +85,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         current_time, delta = timer.next_frame()
 
         window.ctx.screen.use()
+        window.ctx.screen.clear()
         window.render(current_time, delta)
         window.swap_buffers()
 
