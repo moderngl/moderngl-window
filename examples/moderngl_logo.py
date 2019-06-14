@@ -1,10 +1,9 @@
 import numpy as np
 import moderngl
-
 import moderngl_window as mglw
 
 
-class Test(mglw.WindowConfig):
+class ModernglLogo(mglw.WindowConfig):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -60,4 +59,4 @@ class Test(mglw.WindowConfig):
 
 
 if __name__ == '__main__':
-    mglw.run_window_config(Test)
+    mglw.run_window_config(ModernlLogo)
