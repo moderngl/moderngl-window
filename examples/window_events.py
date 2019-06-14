@@ -48,4 +48,5 @@ class WindowEvents(mglw.WindowConfig):
         print("Mouse button {} released at {}, {}".format(button, x, y))
 
 
-mglw.run_window_config(WindowEvents)
+if __name__ == '__main__':
+    mglw.run_window_config(WindowEvents)

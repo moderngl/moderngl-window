@@ -59,4 +59,5 @@ class Test(mglw.WindowConfig):
         self.vao.render(instances=10)
 
 
-mglw.run_window_config(Test)
+if __name__ == '__main__':
+    mglw.run_window_config(Test)

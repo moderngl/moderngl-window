@@ -12,4 +12,5 @@ class BasicWindowConfig(mglw.WindowConfig):
         pass
 
 
-mglw.run_window_config(BasicWindowConfig)
+if __name__ == '__main__':
+    mglw.run_window_config(BasicWindowConfig)
