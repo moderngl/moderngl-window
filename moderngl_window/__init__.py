@@ -60,7 +60,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
 
     window = window_cls(
         title=config_cls.title,
-        size=config_cls.window_size,
+        size=values.size or config_cls.window_size,
         fullscreen=values.fullscreen,
         resizable=config_cls.resizable,
         gl_version=config_cls.gl_version,
@@ -154,6 +154,11 @@ def parse_args(args=None):
         default="true",
         help="Enable or disable displaying the mouse cursor",
     )
+    parser.add_argument(
+        '--size',
+        type=valid_window_size,
+        help="Window size",
+    )
 
     return parser.parse_args(args or sys.argv[1:])
 
@@ -197,6 +202,7 @@ def import_string(dotted_path):
 
 
 def str2bool(value):
+    """Validator for bool values"""
     value = value.lower()
 
     if value in OPTIONS_TRUE:
@@ -206,3 +212,20 @@ def str2bool(value):
         return False
 
     raise argparse.ArgumentTypeError('Boolean value expected. Options: {}'.format(OPTIONS_ALL))
+
+
+def valid_window_size(value):
+    """
+    Validator for window size parameter.
+
+    Valid format is "[int]x[int]". For example "1920x1080".
+    """
+    try:
+        width, height = value.split('x')
+        return int(width), int(height)
+    except ValueError:
+        pass
+
+    raise argparse.ArgumentTypeError(
+        "Valid size format: int]x[int]. Example '1920x1080'",
+    )
