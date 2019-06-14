@@ -1,13 +1,14 @@
 # For quick install of all requirements in development
+# Normally you should do : python setup.py develop
 
 moderngl<6
 
 # Optional
 pyglet==1.4.0b1
-PyQt5==5.12
-glfw~=1.7
-PySDL2~=0.9
-pyrr~=0.10
+PyQt5>=5.12
+glfw>=1.7
+PySDL2>=0.9
+pyrr>=0.10
 
-Pillow~=5.4
-numpy
+Pillow>=5
+numpy>=1.16
