@@ -16,9 +16,9 @@ Easily create a window for ModernGL using the most popular window libraries
 
 ## Supported Platforms
 
-- [x] Windows
-- [x] Linux
-- [x] Mac OS X
+* [x] Windows
+* [x] Linux
+* [x] Mac OS X
 
 ## Sample Usage
 
@@ -41,7 +41,7 @@ class Test(mglw.WindowConfig):
 mglw.run_window_config(Test)
 ```
 
-# Misc
+## Misc
 
 This section contains misc temporary notes
 
