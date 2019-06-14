@@ -96,7 +96,6 @@ class VAO:
             name (str): The name for debug purposes
             mode (int): Default draw mode
         """
-        self.ctx = context.ctx()
         self.name = name
         self.mode = mode
 
@@ -111,6 +110,10 @@ class VAO:
 
         self.vertex_count = 0
         self.vaos = {}
+
+    @property
+    def ctx(self):
+        return mglw.ctx()
 
     def render(self, program: moderngl.Program, mode=None, vertices=-1, first=0, instances=1):
         """
@@ -295,4 +298,4 @@ class VAO:
 
 
 class VAOError(Exception):
-pass
+    pass
