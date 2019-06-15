@@ -7,6 +7,7 @@ from importlib import import_module
 from pathlib import Path
 from typing import List, Type
 
+import moderngl
 from moderngl_window.context.base import WindowConfig, BaseWindow
 from moderngl_window.timers.clock import Timer
 
@@ -25,10 +26,10 @@ class ContextRefs:
     CONTEXT = None
 
 
-def activate_window(window: BaseWindow):
+def activate_context(context: moderngl.Context, window: BaseWindow = None):
     """Set the currently active window"""
     ContextRefs.WINDOW = window
-    ContextRefs.CONTEXT = window.ctx
+    ContextRefs.CONTEXT = context
 
 
 def window():
@@ -61,7 +62,6 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     # Calculate window size
     size = values.size or config_cls.window_size
     size = size[0] * values.size_mult, size[1] * values.size_mult
-    print(size)
 
     window = window_cls(
         title=config_cls.title,
@@ -75,7 +75,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         cursor=values.cursor,
     )
     window.print_context_info()
-    activate_window(window)
+    activate_context(window.ctx, window=window)
     window.config = config_cls(ctx=window.ctx, wnd=window)
 
     timer = Timer()
