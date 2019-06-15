@@ -3,9 +3,11 @@
 
 ## Basic WindowConfig
 
-## Custom Callbacks
+Minimal running example
 
-Demonstrates 
+```
+python examples/basic_windowconfig.py
+```
 
 ## Window Events
 
