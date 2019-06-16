@@ -12,10 +12,30 @@ SETTINGS_ENV_VAR = "MODERNGL_WINDOW_SETTINGS_MODULE"
 
 
 class Settings:
-    SETTINGS_MODULE = None
-
+    """
+    Bag of settings values.
+    New attributes can be freely added (values or functions)
+    """
     def __init__(self):
         """Initialize settins with default values"""
+        # Set default entires. Mainly for code completion
+        self.WINDOW = None
+        # Finders
+        self.PROGRAM_FINDERS = None
+        self.TEXTURE_FINDERS = None
+        self.SCENE_FINDERS = None
+        self.DATA_FINDERS = None
+        # Finder dirs
+        self.PROGRAM_DIRS = None
+        self.TEXTURE_DIRS = None
+        self.SCENE_DIRS = None
+        self.DATA_DIRS = None
+        # Loaders
+        self.PROGRAM_LOADERS = None
+        self.TEXTURE_LOADERS = None
+        self.SCENE_LOADERS = None
+        self.DATA_LOADERS = None
+
         self.apply_default_settings()
 
     def setup(self, setting_module=None, settings_module_name=None, **kwargs):
@@ -26,23 +46,18 @@ class Settings:
             settings_module (module): Reference to a settings module
             settings_module_name (str): Full pythonpath to a settings module
         """
-        self.SETTINGS_MODULE = setting_module
+        settings_module_name = settings_module_name or os.environ.get(SETTINGS_ENV_VAR)
         if not setting_module:
-            settings_module = os.environ.get(SETTINGS_ENV_VAR)
+            module = importlib.import_module(settings_module_name)
+            if not module:
+                raise ImproperlyConfigured(
+                    "Settings module '{}' not found. ".format(settings_module_name)
+                )
 
-        # Apply settings module of supplied
-        self.SETTINGS_MODULE = settings_module
-        module = importlib.import_module(self.SETTINGS_MODULE)
-        if not module:
-            raise ImproperlyConfigured(
-                "Settings module '{}' not found. ".format(self.SETTINGS_MODULE)
-            )
+        if setting_module:
+            self.apply_module(setting_module)
 
-        for setting in dir(module):
-            if setting.isupper():
-                value = getattr(module, setting)
-                # TODO: Add more validation here
-                setattr(self, setting, value)
+        self.apply_dict(kwargs)
 
     def update(self, **kwargs):
         """Override settings values"""
@@ -54,6 +69,17 @@ class Settings:
         for setting in dir(default):
             if setting.isupper():
                 setattr(self, setting, getattr(default, setting))
+
+    def apply_dict(self, data):
+        for name, value in data.items():
+            setattr(self, name, value)
+
+    def apply_module(self, module):
+        for setting in dir(module):
+            if setting.isupper():
+                value = getattr(module, setting)
+                # TODO: Add more validation here
+                setattr(self, setting, value)
 
     def __repr__(self):
         return '<{cls} "{data}>"'.format(
