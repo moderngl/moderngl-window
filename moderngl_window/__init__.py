@@ -10,7 +10,7 @@ import moderngl
 from moderngl_window.context.base import WindowConfig, BaseWindow
 from moderngl_window.timers.clock import Timer
 from moderngl_window.conf import settings
-from moderngl_window import utils
+from moderngl_window.utils.module_loading import import_string
 
 IGNORE_DIRS = [
     '__pycache__',
@@ -62,7 +62,7 @@ def get_window_cls(window: str = None) -> Type[BaseWindow]:
         A reference to the requested window class. Raises exception if not found.
     """
     print("Attempting to load window class:", window)
-    return utils.import_string(window)
+    return import_string(window)
 
 
 def get_local_window_cls(window: str = None) ->  Type[BaseWindow]:
@@ -100,7 +100,7 @@ def create_window_from_settings() -> BaseWindow:
     """
     Creates a window using configured values in settings.WINDOW
     """
-    window_cls = utils.import_string(settings.WINDOW['class'])
+    window_cls = import_string(settings.WINDOW['class'])
     return window_cls(**settings.WINDOW)
 
 
