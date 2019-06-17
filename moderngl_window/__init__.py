@@ -9,6 +9,7 @@ from typing import List, Type
 import moderngl
 from moderngl_window.context.base import WindowConfig, BaseWindow
 from moderngl_window.timers.clock import Timer
+from moderngl_window.conf import settings
 from moderngl_window import utils
 
 IGNORE_DIRS = [
@@ -93,6 +94,14 @@ def find_window_classes() -> List[str]:
         path.parts[-1] for path in Path(__file__).parent.joinpath('context').iterdir()
         if path.is_dir() and path.parts[-1] not in IGNORE_DIRS
     ]
+
+
+def create_window_from_settings() -> BaseWindow:
+    """
+    Creates a window using configured values in settings.WINDOW
+    """
+    window_cls = utils.import_string(settings.WINDOW['class'])
+    return window_cls(**settings.WINDOW)
 
 
 # --- The simple window config system ---
