@@ -28,12 +28,12 @@ class Projection:
     def fov(self, value) -> float:
         """Current field of view"""
         return self._far
-    
+
     @property
     def near(self) -> float:
         """Current near plane value"""
         return self._near
-    
+
     @property
     def far(self) -> float:
         """Current far plane value"""
