@@ -6,7 +6,7 @@
 Minimal running example
 
 ```
-python examples/basic_windowconfig.py
+python examples/basic_windowconfig/main.py
 ```
 
 ## Window Events
@@ -14,7 +14,7 @@ python examples/basic_windowconfig.py
 Basic demo on handling keyboard, mouse and resize events.
 
 ```
-python examples/window_events.py
+python examples/window_events/main.py
 ```
 
 ## ModernGL Logo
@@ -22,7 +22,7 @@ python examples/window_events.py
 The well known ModernGL logo..
 
 ```
-python examples/moderngl_logo.py
+python examples/moderngl_logo/main.py
 ```
 
 ## Custom Main Loop
