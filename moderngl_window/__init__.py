@@ -27,10 +27,19 @@ class ContextRefs:
     CONTEXT = None
 
 
-def activate_context(context: moderngl.Context, window: BaseWindow = None):
-    """Set the currently active window"""
+def activate_context(window: BaseWindow = None, ctx: moderngl.Context = None):
+    """
+    Register the active window and context.
+    If only a window is supplied the context is taken from the window.
+
+    Keyword Args:
+        window (window): The currenty active window
+        ctx (moderngl.Context): The active moderngl context
+    """
     ContextRefs.WINDOW = window
-    ContextRefs.CONTEXT = context
+    ContextRefs.CONTEXT = ctx
+    if not ctx:
+        ContextRefs.CONTEXT = window.ctx
 
 
 def window():
@@ -133,7 +142,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         cursor=values.cursor,
     )
     window.print_context_info()
-    activate_context(window.ctx, window=window)
+    activate_context(window=window)
     window.config = config_cls(ctx=window.ctx, wnd=window)
 
     timer = Timer()
