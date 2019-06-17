@@ -1,7 +1,7 @@
 import time
 from math import cos, radians, sin
 
-from moderngl_window.scene.projection import Projection
+from moderngl_window.opengl.projection import Projection
 from pyrr import Vector3, matrix44, vector, vector3
 
 # Direction Definitions
