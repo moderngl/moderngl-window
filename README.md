@@ -1,12 +1,12 @@
 # moderngl_window
 
-**WORK IN PROGRESS**: This is currently only derived work from `moderngl/examples/window`
-and is not a working package at this moment.
+**WORK IN PROGRESS**: This package is currently under development. It will
+be released with PyPI packages soon. Testing and feedback is appreciated.
 
 Easily create a window for ModernGL using the most popular window libraries
 
-* [moderngl_window documentation]()
-* [moderngl_window on PyPI]()
+* moderngl_window documentation
+* moderngl_window on PyPI
 * [moderngl_window on Github](https://github.com/moderngl/moderngl_window)
 * [ModernGL](https://github.com/moderngl/moderngl)
 
