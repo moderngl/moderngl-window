@@ -17,7 +17,7 @@ class Settings:
     New attributes can be freely added (values or functions)
     """
     def __init__(self):
-        """Initialize settins with default values"""
+        """Initialize settings with default values"""
         # Set default entires. Mainly for code completion
         self.WINDOW = dict()
         # Finders
@@ -38,7 +38,7 @@ class Settings:
 
         self.apply_default_settings()
 
-    def setup(self, setting_module=None, settings_module_name=None, settings_cls=None, **kwargs):
+    def setup(self, settings_module=None, settings_module_name=None, settings_cls=None, **kwargs):
         """
         Apply settings values from various sources
 
@@ -48,15 +48,15 @@ class Settings:
             settings_cls (class): Class namespace with settings values
         """
         settings_module_name = settings_module_name or os.environ.get(SETTINGS_ENV_VAR)
-        if not setting_module:
+        if settings_module_name:
             module = importlib.import_module(settings_module_name)
             if not module:
                 raise ImproperlyConfigured(
                     "Settings module '{}' not found. ".format(settings_module_name)
                 )
 
-        if setting_module:
-            self.apply_module(setting_module)
+        if settings_module:
+            self.apply_module(settings_module)
 
         if settings_cls:
             self.apply_cls(settings_cls)
