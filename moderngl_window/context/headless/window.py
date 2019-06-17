@@ -34,7 +34,7 @@ class Window(BaseWindow):
         """Bind the window's framebuffer"""
         self._fbo.use()
 
-    def clear(self, red=0, green=0, blue=0, alpha=0, depth=0, viewport=None):
+    def clear(self, red=0.0, green=0.0, blue=0.0, alpha=0.0, depth=1.0, viewport=None):
         """
         Clear the default framebuffer
 
@@ -46,7 +46,7 @@ class Window(BaseWindow):
             depth (float): depth value
             viewport (tuple): The viewport
         """
-        self._fbo.clear(red=red, green=green, blue=blue, depth=depth, viewport=viewport)
+        self._fbo.clear(red=red, green=green, blue=blue, alpha=alpha, depth=depth, viewport=viewport)
 
     def swap_buffers(self) -> None:
         """
