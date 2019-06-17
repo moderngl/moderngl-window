@@ -1,6 +1,7 @@
 import moderngl
 import moderngl_window as mglw
 from moderngl_window import geometry
+
 from pyrr import Matrix44, matrix44, Vector3
 
 
@@ -43,7 +44,7 @@ class SimpleCube(mglw.WindowConfig):
         self.ctx.enable_only(moderngl.CULL_FACE | moderngl.DEPTH_TEST)
 
         m_rot = Matrix44.from_eulers(Vector3((time, time, time)))
-        m_trans = trans = matrix44.create_from_translation(Vector3((0.0, 0.0, -3.0)))
+        m_trans = matrix44.create_from_translation(Vector3((0.0, 0.0, -3.0)))
         m_mv = matrix44.multiply(m_rot, m_trans)
 
         self.prog['m_mv'].write(m_mv.astype('f4').tobytes())
