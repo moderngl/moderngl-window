@@ -45,20 +45,20 @@ class Settings:
         # Set default entires. Mainly for code completion
         self.WINDOW = dict()
         # Finders
-        self.PROGRAM_FINDERS = tuple()
-        self.TEXTURE_FINDERS = tuple()
-        self.SCENE_FINDERS = tuple()
-        self.DATA_FINDERS = tuple()
+        self.PROGRAM_FINDERS = []
+        self.TEXTURE_FINDERS = []
+        self.SCENE_FINDERS = []
+        self.DATA_FINDERS = []
         # Finder dirs
-        self.PROGRAM_DIRS = tuple()
-        self.TEXTURE_DIRS = tuple()
-        self.SCENE_DIRS = tuple()
-        self.DATA_DIRS = tuple()
+        self.PROGRAM_DIRS = []
+        self.TEXTURE_DIRS = []
+        self.SCENE_DIRS = []
+        self.DATA_DIRS = []
         # Loaders
-        self.PROGRAM_LOADERS = tuple()
-        self.TEXTURE_LOADERS = tuple()
-        self.SCENE_LOADERS = tuple()
-        self.DATA_LOADERS = tuple()
+        self.PROGRAM_LOADERS = []
+        self.TEXTURE_LOADERS = []
+        self.SCENE_LOADERS = []
+        self.DATA_LOADERS = []
 
         self.apply_default_settings()
 
