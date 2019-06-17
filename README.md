@@ -5,10 +5,10 @@ and is not a working package at this moment.
 
 Easily create a window for ModernGL using the most popular window libraries
 
-* [moderngl_window documenation]()
+* [moderngl_window documentation]()
 * [moderngl_window on PyPI]()
 * [moderngl_window on Github]()
-* [ModernGL](https://github.com/cprogrammer1994/ModernGL)
+* [ModernGL](https://github.com/moderngl/moderngl)
 
 ## Features
 
