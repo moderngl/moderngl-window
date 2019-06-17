@@ -19,22 +19,22 @@ class Settings:
     def __init__(self):
         """Initialize settins with default values"""
         # Set default entires. Mainly for code completion
-        self.WINDOW = None
+        self.WINDOW = dict()
         # Finders
-        self.PROGRAM_FINDERS = None
-        self.TEXTURE_FINDERS = None
-        self.SCENE_FINDERS = None
-        self.DATA_FINDERS = None
+        self.PROGRAM_FINDERS = tuple()
+        self.TEXTURE_FINDERS = tuple()
+        self.SCENE_FINDERS = tuple()
+        self.DATA_FINDERS = tuple()
         # Finder dirs
-        self.PROGRAM_DIRS = None
-        self.TEXTURE_DIRS = None
-        self.SCENE_DIRS = None
-        self.DATA_DIRS = None
+        self.PROGRAM_DIRS = tuple()
+        self.TEXTURE_DIRS = tuple()
+        self.SCENE_DIRS = tuple()
+        self.DATA_DIRS = tuple()
         # Loaders
-        self.PROGRAM_LOADERS = None
-        self.TEXTURE_LOADERS = None
-        self.SCENE_LOADERS = None
-        self.DATA_LOADERS = None
+        self.PROGRAM_LOADERS = tuple()
+        self.TEXTURE_LOADERS = tuple()
+        self.SCENE_LOADERS = tuple()
+        self.DATA_LOADERS = tuple()
 
         self.apply_default_settings()
 
