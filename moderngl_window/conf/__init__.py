@@ -6,7 +6,9 @@ import types
 import os
 
 from collections.abc import Iterable
+from pprint import pformat
 from typing import Union
+
 
 from moderngl_window.conf import default
 from moderngl_window.exceptions import ImproperlyConfigured
@@ -34,6 +36,9 @@ class Settings:
 
         # Fallback in code
         value = getattr(settings, 'VALUE', 'default_value')
+
+        # Pretty printed string represenation for easy inspection
+        print(settings)
     """
     def __init__(self):
         """Initialize settings with default values"""
@@ -174,10 +179,7 @@ class Settings:
                 setattr(self, name, value)
 
     def __repr__(self) -> str:
-        return '<{cls} "{data}>"'.format(
-            cls=self.__class__.__name__,
-            data=None,
-        )
+        return "\n".join("{}={}".format(k, pformat(v, indent=2)) for k, v in self.__dict__.items() if k.isupper())
 
 
 settings = Settings()

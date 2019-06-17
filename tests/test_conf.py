@@ -60,3 +60,20 @@ class SettingsTests(TestCase):
         settings = Settings()
         settings.apply_from_cls(MyConfig)
         self.assertEqual(settings.WINDOW, self.window_setting)
+
+    def test_apply_from_generator(self):
+        """Test generators specifically"""
+        def gen():
+            yield 'WINDOW', self.window_setting
+            yield 'SOMETHING', 1
+
+        settings = Settings()
+        settings.apply_from_iterable(gen())
+        self.assertEqual(settings.WINDOW, self.window_setting)
+        self.assertEqual(settings.SOMETHING, 1)
+
+    def test_repr(self):
+        """Ensure string represenation is somewhat reasonable"""
+        value = str(Settings())
+        self.assertIsInstance(value, str)
+        self.assertGreater(len(value), 100)
