@@ -48,6 +48,80 @@ def ctx():
     raise ValueError("No active window and context. Call activate_window.")
 
 
+def get_window_cls(window: str = None) -> Type[BaseWindow]:
+    """
+    Attept to obtain a window class using the full dotted
+    python path. This can be used to import custom or modified
+    window classes.
+
+    Args:
+        window (str): Name of the window
+
+    Returns:
+        A reference to the requested window class. Raises exception if not found.
+    """
+    print("Attempting to load window class:", window)
+    return import_string(window)
+
+
+def get_local_window_cls(window: str = None) ->  Type[BaseWindow]:
+    """
+    Attept to obtain a window class in the moderngl_window package
+    using short window names such as `pyqt5` or `glfw`.
+
+    Args:
+        window (str): Name of the window
+
+    Returns:
+        A reference to the requested window class. Raises exception if not found.
+    """
+    window = os.environ.get('MODERNGL_WINDOW') or window
+    if not window:
+        window = 'pyglet'
+
+    return get_window_cls('moderngl_window.context.{}.Window'.format(window))
+
+
+def find_window_classes() -> List[str]:
+    """
+    Find available window packages
+
+    Returns:
+        A list of avaialble window packages
+    """
+    return [
+        path.parts[-1] for path in Path(__file__).parent.joinpath('context').iterdir()
+        if path.is_dir() and path.parts[-1] not in IGNORE_DIRS
+    ]
+
+
+def import_string(dotted_path):
+    """
+    Import a dotted module path and return the attribute/class designated by the
+    last name in the path. Raise ImportError if the import failed.
+
+    Args:
+        dotted_path: The path to attempt importing
+
+    Returns:
+        Imported class/attribute
+    """
+    try:
+        module_path, class_name = dotted_path.rsplit('.', 1)
+    except ValueError as err:
+        raise ImportError("%s doesn't look like a module path" % dotted_path) from err
+
+    module = import_module(module_path)
+
+    try:
+        return getattr(module, class_name)
+    except AttributeError as err:
+        raise ImportError('Module "%s" does not define a "%s" attribute/class' % (
+            module_path, class_name)) from err
+
+
+# --- The simple window config system ---
+
 def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     """
     Run an WindowConfig entering a blocking main loop
@@ -92,40 +166,6 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     _, duration = timer.stop()
     window.destroy()
     print("Duration: {0:.2f}s @ {1:.2f} FPS".format(duration, window.frames / duration))
-
-
-def get_window_cls(window: str = None) -> Type[BaseWindow]:
-    """
-    Attept to obtain a window class using the full dotted
-    python path. This can be used to import custom or modified
-    window classes.
-
-    Args:
-        window (str): Name of the window
-
-    Returns:
-        A reference to the requested window class. Raises exception if not found.
-    """
-    print("Attempting to load window class:", window)
-    return import_string(window)
-
-
-def get_local_window_cls(window: str = None) ->  Type[BaseWindow]:
-    """
-    Attept to obtain a window class in the moderngl_window package
-    using short window names such as `pyqt5` or `glfw`.
-
-    Args:
-        window (str): Name of the window
-
-    Returns:
-        A reference to the requested window class. Raises exception if not found.
-    """
-    window = os.environ.get('MODERNGL_WINDOW') or window
-    if not window:
-        window = 'pyglet'
-
-    return get_window_cls('moderngl_window.context.{}.Window'.format(window))
 
 
 def parse_args(args=None):
@@ -175,43 +215,7 @@ def parse_args(args=None):
     return parser.parse_args(args or sys.argv[1:])
 
 
-def find_window_classes() -> List[str]:
-    """
-    Find available window packages
-
-    Returns:
-        A list of avaialble window packages
-    """
-    return [
-        path.parts[-1] for path in Path(__file__).parent.joinpath('context').iterdir()
-        if path.is_dir() and path.parts[-1] not in IGNORE_DIRS
-    ]
-
-
-def import_string(dotted_path):
-    """
-    Import a dotted module path and return the attribute/class designated by the
-    last name in the path. Raise ImportError if the import failed.
-
-    Args:
-        dotted_path: The path to attempt importing
-
-    Returns:
-        Imported class/attribute
-    """
-    try:
-        module_path, class_name = dotted_path.rsplit('.', 1)
-    except ValueError as err:
-        raise ImportError("%s doesn't look like a module path" % dotted_path) from err
-
-    module = import_module(module_path)
-
-    try:
-        return getattr(module, class_name)
-    except AttributeError as err:
-        raise ImportError('Module "%s" does not define a "%s" attribute/class' % (
-            module_path, class_name)) from err
-
+# --- Validators ---
 
 def valid_bool(value):
     """Validator for bool values"""
