@@ -7,7 +7,7 @@ Easily create a window for ModernGL using the most popular window libraries
 
 * [moderngl_window documentation]()
 * [moderngl_window on PyPI]()
-* [moderngl_window on Github]()
+* [moderngl_window on Github](https://github.com/moderngl/moderngl_window)
 * [ModernGL](https://github.com/moderngl/moderngl)
 
 ## Features
