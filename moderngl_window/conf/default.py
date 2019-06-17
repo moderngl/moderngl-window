@@ -4,12 +4,12 @@ import os
 # Window / context properties
 WINDOW = {
     "gl_version": (3, 3),
-    "class": "demosys.context.pyqt.GLFW_Window",
+    "class": "moderngl_window.context.pyglet.Window",
     "size": (1280, 720),
     "aspect_ratio": 16 / 9,
     "fullscreen": False,
     "resizable": True,
-    "title": "demosys-py",
+    "title": "ModernGL Window",
     "vsync": True,
     "cursor": True,
     "samples": 0,
