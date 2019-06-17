@@ -22,7 +22,7 @@ class SettingsTests(TestCase):
     def test_apply_dict(self):
         """Supply config values as dict"""
         settings = Settings()
-        settings.setup(WINDOW=self.window_setting)
+        settings.apply_from_dict({'WINDOW': self.window_setting})
         self.assertEqual(settings.WINDOW, self.window_setting)
 
     def test_apply_cls(self):
@@ -31,5 +31,5 @@ class SettingsTests(TestCase):
             WINDOW=self.window_setting
 
         settings = Settings()
-        settings.setup(settings_cls=MyConfig)
+        settings.apply_from_cls(MyConfig)
         self.assertEqual(settings.WINDOW, self.window_setting)

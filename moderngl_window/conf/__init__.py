@@ -2,19 +2,25 @@
 Bag of settings values
 """
 import importlib
+import types
 import os
+
+from collections.abc import Iterable
+from typing import Union
+
 from moderngl_window.conf import default
 from moderngl_window.exceptions import ImproperlyConfigured
 
 SETTINGS_ENV_VAR = "MODERNGL_WINDOW_SETTINGS_MODULE"
 
-# pylint: disable=C0103
-
 
 class Settings:
     """
-    Bag of settings values.
-    New attributes can be freely added (values or functions)
+    Bag of settings values. New attributes can be freely added runtime.
+    Various apply* methods are supplied so the user have full control over how
+    settings values are initialized. This is especially useful for more custom usage.
+
+    Attribute names must currently be in upper case to be recognized.
     """
     def __init__(self):
         """Initialize settings with default values"""
@@ -38,59 +44,97 @@ class Settings:
 
         self.apply_default_settings()
 
-    def setup(self, settings_module=None, settings_module_name=None, settings_cls=None, **kwargs):
+    def apply_default_settings(self) -> None:
         """
-        Apply settings values from various sources
+        Apply keys and values from the default settings module
+        located in this package. This is to ensure we always
+        have the minimnal settings for the system to run.
 
-        Keyword Args:
-            settings_module (module): Reference to a settings module
-            settings_module_name (str): Full pythonpath to a settings module
-            settings_cls (class): Class namespace with settings values
+        If replacing or customizing the settings class
+        you must always apply default settings to ensure
+        compatibility when new settings are added.
         """
-        settings_module_name = settings_module_name or os.environ.get(SETTINGS_ENV_VAR)
-        if settings_module_name:
-            module = importlib.import_module(settings_module_name)
-            if not module:
-                raise ImproperlyConfigured(
-                    "Settings module '{}' not found. ".format(settings_module_name)
-                )
+        self.apply_from_module(default)
 
-        if settings_module:
-            self.apply_module(settings_module)
+    def apply_settings_from_env(self) -> None:
+        """
+        Apply settings from MODERNGL_WINDOW_SETTINGS_MODULE environment variable.
+        If the enviroment variable is undefined no action will be taken.
 
-        if settings_cls:
-            self.apply_cls(settings_cls)
+        Example::
 
-        self.apply_dict(kwargs)
+            import os
+            os.environ['MODERNGL_WINDOW_SETTINGS_MODULE'] = 'python.path.to.module'
+            settings.apply_settings_from_env()
+        """
+        name = os.environ.get(SETTINGS_ENV_VAR)
+        if name:
+            self.apply_from_module_name(name)
 
-    def update(self, **kwargs):
-        """Override settings values"""
-        for name, value in kwargs.items():
-            setattr(self, name, value)
+    def apply_from_module_name(self, settings_module_name: str) -> None:
+        module = importlib.import_module(settings_module_name)
+        if not module:
+            raise ImproperlyConfigured(
+                "Settings module '{}' not found. ".format(settings_module_name)
+            )
+        self.apply_from_module(module)
 
-    def apply_default_settings(self):
-        """Apply keys and values from the default settings module"""
-        for setting in dir(default):
-            if setting.isupper():
-                setattr(self, setting, getattr(default, setting))
+    def apply_from_dict(self, data: dict) -> None:
+        """
+        Apply settings values from a dictionary
 
-    def apply_dict(self, data):
-        for name, value in data.items():
-            setattr(self, name, value)
+        Example::
 
-    def apply_module(self, module):
-        for setting in dir(module):
-            if setting.isupper():
-                value = getattr(module, setting)
-                # TODO: Add more validation here
-                setattr(self, setting, value)
+            >> settings.apply_dict({'SOME_VALUE': 1})
+            >> settings.SOME_VALUE
+            1
+        """
+        self.apply_from_iterable(data.items())
 
-    def apply_cls(self, cls):
+    def apply_from_module(self, module) -> None:
+        """
+        Apply settings values from a python module
+
+        Example::
+
+            my_settings.py module containing the following line:
+            SOME_VALUE = 1
+
+            >> import my_settings
+            >> settings.apply_module(my_settings)
+            >> settings.SOME_VALUE
+            1
+        """
+        self.apply_from_iterable(module.__dict__.items())
+
+    def apply_from_cls(self, cls) -> None:
+        """
+        Apply settings values from a class namespace
+
+        Example::
+
+            >> class MySettings:
+            >>    SOME_VALUE = 1
+            >>
+            >> settings.apply(MySettings)
+            >> settings.SOME_VALUE
+            1
+        """
         for name, value in cls.__dict__.items():
             if name.isupper():
                 setattr(self, name, value)
 
-    def __repr__(self):
+    def apply_from_iterable(self, iterable: Union[Iterable, types.GeneratorType]) -> None:
+        if not isinstance(iterable, Iterable) and not isinstance(self, types.GeneratorType):
+            raise ValueError(
+                "Input value is not a generator or interable, but of type: {}".format(type(iterable))
+            )
+
+        for name, value in iterable:
+            if name.isupper():
+                setattr(self, name, value)
+
+    def __repr__(self) -> str:
         return '<{cls} "{data}>"'.format(
             cls=self.__class__.__name__,
             data=None,
