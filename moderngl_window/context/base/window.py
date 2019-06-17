@@ -41,7 +41,7 @@ class BaseWindow:
         # Window parameters
         self._title = title
         self._gl_version = gl_version
-        self._width, self._height = size
+        self._width, self._height = int(size[0]), int(size[1])
         self._resizable = resizable
         self._buffer_width, self._buffer_height = size
         self._fullscreen = fullscreen

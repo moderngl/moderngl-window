@@ -135,7 +135,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
 
     # Calculate window size
     size = values.size or config_cls.window_size
-    size = size[0] * values.size_mult, size[1] * values.size_mult
+    size = int(size[0] * values.size_mult), int(size[1] * values.size_mult)
 
     window = window_cls(
         title=config_cls.title,
