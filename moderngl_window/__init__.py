@@ -107,11 +107,16 @@ def find_window_classes() -> List[str]:
 
 def create_window_from_settings() -> BaseWindow:
     """
-    Creates a window using configured values in settings.WINDOW
+    Creates a window using configured values in settings.WINDOW.
+    This will also activate the window/context.
+
+    Returns:
+        The Window instance
     """
     window_cls = import_string(settings.WINDOW['class'])
-    return window_cls(**settings.WINDOW)
-
+    window = window_cls(**settings.WINDOW)
+    activate_context(window=window)
+    return window
 
 # --- The simple window config system ---
 
