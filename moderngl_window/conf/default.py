@@ -3,7 +3,7 @@ import os
 
 # Window / context properties
 WINDOW = {
-    "opengl_version": (3, 3),
+    "gl_version": (3, 3),
     "class": "demosys.context.pyqt.GLFW_Window",
     "size": (1280, 720),
     "aspect_ratio": 16 / 9,
