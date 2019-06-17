@@ -21,6 +21,19 @@ class Settings:
     settings values are initialized. This is especially useful for more custom usage.
 
     Attribute names must currently be in upper case to be recognized.
+
+    Some examples of usage::
+
+        from moderngl_window.conf import settings
+
+        # Mandatory settings values
+        try:
+            value = settings.VALUE
+        except KeyError:
+            raise ValueError("This settings value is required")
+
+        # Fallback in code
+        value = getattr(settings, 'VALUE', 'default_value')
     """
     def __init__(self):
         """Initialize settings with default values"""
@@ -60,23 +73,45 @@ class Settings:
         """
         Apply settings from MODERNGL_WINDOW_SETTINGS_MODULE environment variable.
         If the enviroment variable is undefined no action will be taken.
+        Normally this would be used to easily be able to switch between
+        different configuration by setting env vars before executing the program.
 
         Example::
 
             import os
+            from moderngl_window.conf import settings
+
             os.environ['MODERNGL_WINDOW_SETTINGS_MODULE'] = 'python.path.to.module'
             settings.apply_settings_from_env()
+
+        Raises:
+            ImproperlyConfigured if the module was not found     
         """
         name = os.environ.get(SETTINGS_ENV_VAR)
         if name:
             self.apply_from_module_name(name)
 
     def apply_from_module_name(self, settings_module_name: str) -> None:
-        module = importlib.import_module(settings_module_name)
-        if not module:
+        """
+        Apply settings from a python module by supplying the full
+        pythonpath to the module.
+
+        Args:
+            settings_module_name (str): Full python path to the module
+
+        Raises:
+            ImproperlyConfigured if the module was not found     
+        """
+        try:
+            module = importlib.import_module(settings_module_name)
+        except ModuleNotFoundError as ex:
             raise ImproperlyConfigured(
-                "Settings module '{}' not found. ".format(settings_module_name)
+                "Settings module '{}' not found. From importlib: {}".format(
+                    settings_module_name,
+                    ex,
+                )
             )
+
         self.apply_from_module(module)
 
     def apply_from_dict(self, data: dict) -> None:
@@ -85,13 +120,14 @@ class Settings:
 
         Example::
 
+            >> from moderngl_window.conf import settings
             >> settings.apply_dict({'SOME_VALUE': 1})
             >> settings.SOME_VALUE
             1
         """
         self.apply_from_iterable(data.items())
 
-    def apply_from_module(self, module) -> None:
+    def apply_from_module(self, module: types.ModuleType) -> None:
         """
         Apply settings values from a python module
 
@@ -100,6 +136,7 @@ class Settings:
             my_settings.py module containing the following line:
             SOME_VALUE = 1
 
+            >> from moderngl_window.conf import settings
             >> import my_settings
             >> settings.apply_module(my_settings)
             >> settings.SOME_VALUE
@@ -113,6 +150,7 @@ class Settings:
 
         Example::
 
+            >> from moderngl_window.conf import settings
             >> class MySettings:
             >>    SOME_VALUE = 1
             >>
@@ -120,11 +158,12 @@ class Settings:
             >> settings.SOME_VALUE
             1
         """
-        for name, value in cls.__dict__.items():
-            if name.isupper():
-                setattr(self, name, value)
+        self.apply_from_iterable(cls.__dict__.items())
 
     def apply_from_iterable(self, iterable: Union[Iterable, types.GeneratorType]) -> None:
+        """
+        Apply (key, value) pairs from an interable or generator
+        """
         if not isinstance(iterable, Iterable) and not isinstance(self, types.GeneratorType):
             raise ValueError(
                 "Input value is not a generator or interable, but of type: {}".format(type(iterable))
