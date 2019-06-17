@@ -38,7 +38,7 @@ class Window(BaseWindow):
             self._width, self._height = screen.width, screen.height
 
         self._window = PygletWrapper(
-            width=self.width, height=self.height,
+            width=int(self.width), height=int(self.height),
             caption=self.title,
             resizable=self.resizable,
             vsync=self.vsync,
