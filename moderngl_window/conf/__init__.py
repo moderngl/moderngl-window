@@ -86,7 +86,7 @@ class Settings:
                 setattr(self, setting, value)
 
     def apply_cls(self, cls):
-        for name, value in cls.__dict__:
+        for name, value in cls.__dict__.items():
             if name.isupper():
                 setattr(self, name, value)
 
