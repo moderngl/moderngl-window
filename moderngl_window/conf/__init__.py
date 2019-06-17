@@ -38,13 +38,14 @@ class Settings:
 
         self.apply_default_settings()
 
-    def setup(self, setting_module=None, settings_module_name=None, **kwargs):
+    def setup(self, setting_module=None, settings_module_name=None, settings_cls=None, **kwargs):
         """
         Apply settings values from various sources
 
         Keyword Args:
             settings_module (module): Reference to a settings module
             settings_module_name (str): Full pythonpath to a settings module
+            settings_cls (class): Class namespace with settings values
         """
         settings_module_name = settings_module_name or os.environ.get(SETTINGS_ENV_VAR)
         if not setting_module:
@@ -56,6 +57,9 @@ class Settings:
 
         if setting_module:
             self.apply_module(setting_module)
+
+        if settings_cls:
+            self.apply_cls(settings_cls)
 
         self.apply_dict(kwargs)
 
@@ -80,6 +84,11 @@ class Settings:
                 value = getattr(module, setting)
                 # TODO: Add more validation here
                 setattr(self, setting, value)
+
+    def apply_cls(self, cls):
+        for name, value in cls.__dict__:
+            if name.isupper():
+                setattr(self, name, value)
 
     def __repr__(self):
         return '<{cls} "{data}>"'.format(
