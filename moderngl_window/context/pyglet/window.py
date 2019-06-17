@@ -56,9 +56,7 @@ class Window(BaseWindow):
         self._window.event(self.on_mouse_press)
         self._window.event(self.on_mouse_release)
 
-        if self._create_mgl_context:
-            self.init_mgl_context()
-
+        self.init_mgl_context()
         self._buffer_width, self._buffer_height = self._window.get_viewport_size()
         self.set_default_viewport()
 

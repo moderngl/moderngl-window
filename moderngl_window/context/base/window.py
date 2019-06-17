@@ -24,7 +24,7 @@ class BaseWindow:
 
     def __init__(self, title="Example", gl_version=(3, 3), size=(1280, 720), resizable=True,
                  fullscreen=False, vsync=True, aspect_ratio=16/9, samples=4, cursor=True,
-                 create_mgl_context=True, **kwargs):
+                 **kwargs):
         """
         Args:
             title (str): The window title
@@ -36,7 +36,6 @@ class BaseWindow:
             aspect_ratio (float): The desired aspect ratio. Can be set to None.
             samples (int): Number of MSAA samples for the default framebuffer
             cursor (bool): Enable/disable displaying the cursor inside the window
-            create_mgl_context (bool): Auto create a ModernGL context
         """
         # Window parameters
         self._title = title
@@ -64,7 +63,6 @@ class BaseWindow:
         self._frames = 0  # Frame counter
         self._close = False
         self._config = None
-        self._create_mgl_context = create_mgl_context
         self._key_pressed_map = {}
         self._modifiers = KeyModifiers
 
@@ -75,7 +73,7 @@ class BaseWindow:
         if not self.keys:
             raise ValueError("Window class {} missing keys attribute".format(self.__class__))
 
-    def init_mgl_context(self, ctx=None) -> None:
+    def init_mgl_context(self) -> None:
         """
         Create or assign a ModernGL context. If no context is supplied a context will be
         created using the window's gl_version.
@@ -83,15 +81,17 @@ class BaseWindow:
         Keyword Args:
             ctx: An optional custom ModernGL context
         """
-        if self._ctx:
-            raise ValueError("A ModernGL context is already assigned")
-
-        self._ctx = ctx or moderngl.create_context(require=self.gl_version_code)
+        self._ctx = moderngl.create_context(require=self.gl_version_code)
 
     @property
     def ctx(self) -> moderngl.Context:
         """moderngl.Context: The ModernGL context for the window"""
         return self._ctx
+
+    @property
+    def fbo(self) -> moderngl.Framebuffer:
+        """moderngl.Framebuffer: The default framebuffer"""
+        return self._ctx.screen
 
     @property
     def title(self) -> str:
@@ -257,6 +257,24 @@ class BaseWindow:
     def close(self) -> None:
         """Signal for the window to close"""
         self._close = True
+
+    def use(self):
+        """Bind the window's framebuffer"""
+        self._ctx.screen.use()
+
+    def clear(self, red=0, green=0, blue=0, alpha=0, depth=0, viewport=None):
+        """
+        Clear the default framebuffer
+
+        Args:
+            red (float): color component
+            green (float): color component
+            blue (float): color component
+            alpha (float): alpha component
+            depth (float): depth value
+            viewport (tuple): The viewport
+        """
+        self._ctx.screen.clear(red=red, green=green, blue=blue, depth=depth, viewport=viewport)
 
     def render(self, time: float, frame_time: float) -> None:
         """

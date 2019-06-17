@@ -61,8 +61,7 @@ class Window(BaseWindow):
 
         sdl2.video.SDL_GL_SetSwapInterval(1 if self.vsync else 0)
 
-        if self._create_mgl_context:
-            self.init_mgl_context()
+        self.init_mgl_context()
 
         self.set_default_viewport()
 

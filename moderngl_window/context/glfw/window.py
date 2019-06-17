@@ -67,9 +67,7 @@ class Window(BaseWindow):
         glfw.set_mouse_button_callback(self._window, self.glfw_mouse_button_callback)
         glfw.set_window_size_callback(self._window, self.glfw_window_resize_callback)
 
-        if self._create_mgl_context:
-            self.init_mgl_context()
-
+        self.init_mgl_context()
         self.set_default_viewport()
 
     def close(self):
