@@ -64,13 +64,13 @@ $ pip install -e .
 If you don't use a virtualenv, install with:
 
 ```bash
-python3.7 -m pip install . --user
+python3.7 -m pip install -e . --user
 ```
 
-## Building Wheel
+## Building wheel
 
 Installing this package from PyPI is the preferred way.
-If you for some reason need to build your own pacakge:
+If you for some reason need to build your own package:
 
 ```bash
 # Esure local tools are up to date
