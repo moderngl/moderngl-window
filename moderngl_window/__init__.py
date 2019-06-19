@@ -7,10 +7,10 @@ from pathlib import Path
 from typing import List, Type
 
 import moderngl
-from .context.base import WindowConfig, BaseWindow
-from .timers.clock import Timer
-from .conf import settings
-from .utils.module_loading import import_string
+from moderngl_window.context.base import WindowConfig, BaseWindow
+from moderngl_window.timers.clock import Timer
+from moderngl_window.conf import settings
+from moderngl_window.utils.module_loading import import_string
 
 IGNORE_DIRS = [
     '__pycache__',
