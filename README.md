@@ -12,7 +12,13 @@ Easily create a window for ModernGL using the most popular window libraries
 
 ## Features
 
-* Easily create a window for ModernGL using Pyglet, PyQt5, GLFW or SDL2 supporing basic keyboard and mouse controls in a generic way.
+* Easily create a window for ModernGL using Pyglet, PyQt5, GLFW or SDL2 supporing basic keyboard and mouse controls in a generic way
+* Easily load resources like textures, shaders, objects/scenes
+* A highly pluggable library. Create your own window types and loaders
+
+Also keep in mind this is a library. You are not required to use
+the windows or resource loaders we provide. It's all up to you.
+Just provide your `moderngl.Context` and you are good to go.
 
 ## Supported Platforms
 
@@ -40,3 +46,10 @@ class Test(mglw.WindowConfig):
 
 mglw.run_window_config(Test)
 ```
+
+## Some history about this library
+
+The majority of the code in this library comes from [demosys-py](https://github.com/Contraz/demosys-py) (somewhat modified).
+Because `demosys-py` is a framework we decided to split out a lot useful funtionality into this
+library. Frameworks are a lot less appealing to users and it would be a shame to not make this
+more avaialble to the ModernGL user base.
