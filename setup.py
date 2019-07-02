@@ -27,6 +27,7 @@ setup(
         'moderngl<6',
         'pyglet==1.4.0b1',
         'numpy>=1.16',
+        'pyrr>=0.10.3',
     ],
     extras_require={
         "pyqt5": ['PyQt5>=5.12'],

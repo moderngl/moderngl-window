@@ -47,7 +47,48 @@ class Test(mglw.WindowConfig):
 mglw.run_window_config(Test)
 ```
 
-## Some history about this library
+## Setup from source
+
+We highly recommend using virtualenvs so dependencies for
+this project do not interfere with other projects.
+
+### Linux / OS X
+
+```bash
+# Create and activate virtualenv
+$ python3.7 -m virtualenv .venv
+$ . .venv/bin/activate
+
+# Optional: Ensure local tools are up to date
+$ pip install -U pip setuptools wheel
+
+# Install the package in editable mode
+# (source code changes will be refleced in the installed package)
+$ pip install -e .
+```
+
+If you don't use a virtualenv, install with:
+
+```bash
+python3.7 -m pip install -e . --user
+```
+
+## Building wheel
+
+Installing this package from PyPI is the preferred way.
+If you for some reason need to build your own package:
+
+```bash
+# Esure local tools are up to date
+pip install -U pip setuptools wheel
+# Build the wheel
+python3.7 setup.py bdist_wheel
+```
+
+The `.whl` file will be located in the `dist/` directory
+and can be installed with `pip`.
+
+## Some History
 
 The majority of the code in this library comes from [demosys-py](https://github.com/Contraz/demosys-py) (somewhat modified).
 Because `demosys-py` is a framework we decided to split out a lot useful funtionality into this
