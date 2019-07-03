@@ -34,4 +34,7 @@ setup(
         "glfw": ['glfw>=1.7'],
         "PySDL2": ['PySDL2>=0.9.6'],
     },
+    project_urls={
+        'ModernGL': 'https://github.com/moderngl/moderngl',
+    },
 )
