@@ -19,12 +19,12 @@ class BaseFileSystemFinder:
     def __init__(self):
         if not hasattr(settings, self.settings_attr):
             raise ImproperlyConfigured(
-                "Settings don't define {}."
+                "Settings doesn't define {}. "
                 "This is required when using a FileSystemFinder.".format(self.settings_attr)
             )
         self.paths = getattr(settings, self.settings_attr)
 
-    def find(self, path: Path):
+    def find(self, path: Path) -> Path:
         """
         Find a file in the path. The file may exist in multiple
         paths. The last found file will be returned.
@@ -40,14 +40,12 @@ class BaseFileSystemFinder:
         if getattr(self, 'settings_attr', None):
             self.paths = getattr(settings, self.settings_attr)
 
-        path_found = None
-
         for entry in self.paths:
             abspath = entry / path
             if abspath.exists():
-                path_found = abspath
+                return
 
-        return path_found
+        return None
 
 
 @functools.lru_cache(maxsize=None)
@@ -68,4 +66,5 @@ def get_finder(import_path: str):
     Finder = import_string(import_path)
     if not issubclass(Finder, BaseFileSystemFinder):
         raise ImproperlyConfigured('Finder {} is not a subclass of .finders.FileSystemFinder'.format(import_path))
+
     return Finder()
