@@ -1,8 +1,8 @@
+from pyrr import Matrix44, matrix44, Vector3
+
 import moderngl
 import moderngl_window as mglw
 from moderngl_window import geometry
-
-from pyrr import Matrix44, matrix44, Vector3
 
 
 class SimpleCube(mglw.WindowConfig):

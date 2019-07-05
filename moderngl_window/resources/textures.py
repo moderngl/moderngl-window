@@ -1,4 +1,5 @@
 """Shader Registry"""
+# pylint: disable = invalid-name
 from moderngl_window.conf import settings
 from moderngl_window.resources.base import BaseRegistry
 from moderngl_window.utils.module_loading import import_string
