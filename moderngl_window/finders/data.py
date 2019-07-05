@@ -2,7 +2,7 @@ from moderngl_window.finders import base
 from moderngl_window.conf import settings
 
 
-class FileSystemFinder(base.BaseFileSystemFinder):
+class FileSystemFinder(base.BaseFilesystemFinder):
     """Find data in ``DATA_DIRS``"""
     settings_attr = 'DATA_DIRS'
 

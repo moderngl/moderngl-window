@@ -12,7 +12,7 @@ from moderngl_window.utils.module_loading import import_string
 FinderEntry = namedtuple('FinderEntry', ['path', 'abspath', 'exists'])
 
 
-class BaseFileSystemFinder:
+class BaseFilesystemFinder:
     """Base class for searching directories"""
     settings_attr = None
 
@@ -31,14 +31,14 @@ class BaseFileSystemFinder:
 
         Args:
             path (Path): The path to find
-
         Returns:
             The absolute path to the file or None if not found
         """
         # Update paths from settings to make them editable runtime
-        # This is only possible for FileSystemFinders
         if getattr(self, 'settings_attr', None):
             self.paths = getattr(settings, self.settings_attr)
+
+        path = Path(path)
 
         for entry in self.paths:
             abspath = entry / path
@@ -56,15 +56,13 @@ def get_finder(import_path: str):
 
     Args:
         import_path: string representing an import path
-
     Return:
         An instance of the finder
- 
     Raises:
         ImproperlyConfigured is the finder is not found
     """
     Finder = import_string(import_path)
-    if not issubclass(Finder, BaseFileSystemFinder):
+    if not issubclass(Finder, BaseFilesystemFinder):
         raise ImproperlyConfigured('Finder {} is not a subclass of .finders.FileSystemFinder'.format(import_path))
 
     return Finder()
