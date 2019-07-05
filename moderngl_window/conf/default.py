@@ -1,6 +1,3 @@
-import os
-
-
 # Window / context properties
 WINDOW = {
     "gl_version": (3, 3),
