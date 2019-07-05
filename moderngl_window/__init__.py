@@ -1,3 +1,4 @@
+# pylint: disable = redefined-outer-name, too-few-public-methods
 import argparse
 import os
 import sys
@@ -23,6 +24,7 @@ OPTIONS_ALL = OPTIONS_TRUE + OPTIONS_FALSE
 
 
 class ContextRefs:
+    """Namespace for window/context references"""
     WINDOW = None
     CONTEXT = None
 

@@ -1,6 +1,7 @@
 """
 Bag of settings values
 """
+# pylint: disable = invalid-name
 import importlib
 import types
 import os
@@ -90,7 +91,7 @@ class Settings:
             settings.apply_settings_from_env()
 
         Raises:
-            ImproperlyConfigured if the module was not found     
+            ImproperlyConfigured if the module was not found
         """
         name = os.environ.get(SETTINGS_ENV_VAR)
         if name:
@@ -105,7 +106,7 @@ class Settings:
             settings_module_name (str): Full python path to the module
 
         Raises:
-            ImproperlyConfigured if the module was not found     
+            ImproperlyConfigured if the module was not found
         """
         try:
             module = importlib.import_module(settings_module_name)

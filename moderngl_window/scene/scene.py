@@ -3,9 +3,9 @@ Wrapper for a loaded scene with properties.
 """
 from pyrr import matrix44, vector3
 
-from demosys import context, geometry
-from demosys.resources import programs
-from demosys.resources.meta import ProgramDescription
+import moderngl_window as mglw
+from moderngl_window.resources import programs
+from moderngl_window.resources.meta import ProgramDescription
 
 from .programs import (ColorProgram, FallbackProgram, MeshProgram,
                        TextureProgram)
@@ -41,7 +41,7 @@ class Scene:
 
     @property
     def ctx(self):
-        return context.ctx()
+        return mglw.ctx()
 
     @property
     def view_matrix(self):
@@ -100,11 +100,11 @@ class Scene:
             mesh_programs = [ColorProgram(), TextureProgram(), FallbackProgram()]
 
         for mesh in self.meshes:
-            for mp in mesh_programs:
+            for mesh_prog in mesh_programs:
                 instance = mp.apply(mesh)
                 if instance is not None:
                     if isinstance(instance, MeshProgram):
-                        mesh.mesh_program = mp
+                        mesh.mesh_program = mesh_prog
                         break
                     else:
                         raise ValueError("apply() must return a MeshProgram instance, not {}".format(type(instance)))
