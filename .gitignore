@@ -51,3 +51,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Misc local
+/test.py
