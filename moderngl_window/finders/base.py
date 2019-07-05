@@ -43,7 +43,7 @@ class BaseFileSystemFinder:
         for entry in self.paths:
             abspath = entry / path
             if abspath.exists():
-                return
+                return abspath
 
         return None
 
