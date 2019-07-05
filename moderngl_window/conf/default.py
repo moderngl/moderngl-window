@@ -21,11 +21,11 @@ PROGRAM_FINDERS = [
 ]
 
 TEXTURE_FINDERS = [
-    "moderngl_window.finders.textures.FileSystemFinder",
+    "moderngl_window.finders.texture.FileSystemFinder",
 ]
 
 SCENE_FINDERS = [
-    "moderngl_window.finders.scenes.FileSystemFinder",
+    "moderngl_window.finders.scene.FileSystemFinder",
 ]
 
 DATA_FINDERS = [
