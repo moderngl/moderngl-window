@@ -1,5 +1,6 @@
 from contextlib import contextmanager
-from copy import deepcopy
+import string
+import random
 
 from moderngl_window import conf
 
@@ -11,23 +12,12 @@ def settings(values: dict):
     Args:
         values (dict): Dictionary containing settings values
     """
-    class TempSettings:
-        pass
+    old_settings = conf.settings.to_dict()
+    conf.settings.apply_from_dict(values)
+    yield None
+    conf.settings.apply_from_dict(old_settings)
 
-    tmp_settings = TempSettings()
 
-    # Copy settings values from original settings module
-    for key, value in conf.settings.__dict__.items():
-        if key.upper():
-            setattr(tmp_settings, key, deepcopy(value))
-
-    # Apply values from input dict
-    for key, value in values.items():
-        setattr(tmp_settings, key, deepcopy(value))
-
-    # Replace settings instance
-    conf.settings, original_settings = tmp_settings, conf.settings
-    yield conf.settings
-
-    # Restore order
-    conf.settings = original_settings
+def rnd_string(length=16):
+    chars = string.ascii_letters + string.digits
+    return "".join(c for c in random.choices(chars, k=length))
