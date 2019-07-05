@@ -12,7 +12,7 @@ Easily create a window for ModernGL using the most popular window libraries
 
 ## Features
 
-* Easily create a window for ModernGL using Pyglet, PyQt5, GLFW or SDL2 supporing basic keyboard and mouse controls in a generic way
+* Easily create a window for ModernGL using Pyglet, PySide2, GLFW, SDL2 or PyQt5 supporing basic keyboard and mouse controls. These events are unified into a single system so we can switch to any window at any point in time.
 * Easily load resources like textures, shaders, objects/scenes
 * A highly pluggable library. Create your own window types and loaders
 

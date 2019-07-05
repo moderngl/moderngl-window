@@ -30,6 +30,7 @@ setup(
         'pyrr>=0.10.3',
     ],
     extras_require={
+        "PySide2": ['PySide2>=5.13'],
         "pyqt5": ['PyQt5>=5.12'],
         "glfw": ['glfw>=1.7'],
         "PySDL2": ['PySDL2>=0.9.6'],
