@@ -178,6 +178,15 @@ class Settings:
             if name.isupper():
                 setattr(self, name, value)
 
+    def to_dict(self):
+        """Create a dict represenation of the settings
+        Only uppercase attributes are included
+
+        Returns:
+            dict: dict represenation
+        """
+        return {k: v for k, v in self.__dict__.items() if k.upper()}
+
     def __repr__(self) -> str:
         return "\n".join("{}={}".format(k, pformat(v, indent=2)) for k, v in self.__dict__.items() if k.isupper())
 
