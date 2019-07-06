@@ -2,6 +2,8 @@
 Base finders
 """
 import functools
+import logging
+
 from collections import namedtuple
 from pathlib import Path
 
@@ -10,6 +12,8 @@ from moderngl_window.exceptions import ImproperlyConfigured
 from moderngl_window.utils.module_loading import import_string
 
 FinderEntry = namedtuple('FinderEntry', ['path', 'abspath', 'exists'])
+
+logger = logging.getLogger(__name__)
 
 
 class BaseFilesystemFinder:
@@ -39,10 +43,13 @@ class BaseFilesystemFinder:
             self.paths = getattr(settings, self.settings_attr)
 
         path = Path(path)
+        logger.debug("find %s", path)
 
         for entry in self.paths:
             abspath = entry / path
+            logger.debug("abspath %s", abspath)
             if abspath.exists():
+                logger.debug("found %s", abspath)
                 return abspath
 
         return None
