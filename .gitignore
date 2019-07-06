@@ -54,3 +54,4 @@ venv.bak/
 
 # Misc local
 /test.py
+.mypy_cache
