@@ -1,5 +1,9 @@
 import numpy
-import pywavefront
+try:
+    import pywavefront
+except ImportError as ex:
+    raise ImportError("Scene loader 'ObjLoader' requires pywavefront: {}".format(ex))
+
 from pywavefront import cache
 from pywavefront.obj import ObjParser
 

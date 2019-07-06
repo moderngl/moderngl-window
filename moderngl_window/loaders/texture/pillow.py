@@ -1,6 +1,9 @@
 from typing import Any
 
-from PIL import Image
+try:
+    from PIL import Image
+except ImportError as ex:
+    raise ImportError("Texture loader 'PillowLoader' requires Pillow: {}".format(ex))
 
 from moderngl_window.loaders.base import BaseLoader
 
