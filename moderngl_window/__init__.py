@@ -176,7 +176,7 @@ def _append_unique_path(path: Union[Path, str], dest: list):
         if Path(resource_path).samefile(path):
             break
     else:
-        dest.append(Path(path))
+        dest.append(Path(path).absolute())
 
 
 # --- The simple window config system ---
