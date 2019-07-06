@@ -4,11 +4,11 @@ from pywavefront import cache
 from pywavefront.obj import ObjParser
 
 import moderngl
-from demosys.loaders.scene.base import SceneLoader
-from demosys.opengl.vao import VAO
-from demosys.resources import textures
-from demosys.resources.meta import SceneDescription, TextureDescription
-from demosys.scene import Material, MaterialTexture, Mesh, Node, Scene
+from moderngl_window.loaders.scene.base import SceneLoader
+from moderngl_window.opengl.vao import VAO
+from moderngl_window.resources import textures
+from moderngl_window.resources.meta import SceneDescription, TextureDescription
+from moderngl_window.scene import Material, MaterialTexture, Mesh, Node, Scene
 
 
 def translate_buffer_format(vertex_format):

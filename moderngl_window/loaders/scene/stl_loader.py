@@ -4,9 +4,9 @@ import moderngl
 import numpy
 import trimesh
 
-from demosys.loaders.scene.base import SceneLoader
-from demosys.opengl.vao import VAO
-from demosys.scene import Material, Mesh, Node, Scene
+from moderngl_window.loaders.scene.base import SceneLoader
+from moderngl_window.opengl.vao import VAO
+from moderngl_window.scene import Material, Mesh, Node, Scene
 
 
 class STLLoader(SceneLoader):
