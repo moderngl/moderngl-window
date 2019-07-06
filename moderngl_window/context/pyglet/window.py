@@ -57,7 +57,7 @@ class Window(BaseWindow):
         self._window.event(self.on_mouse_release)
 
         self.init_mgl_context()
-        self._buffer_width, self._buffer_height = self._window.get_viewport_size()
+        self._buffer_width, self._buffer_height = self._window.get_framebuffer_size()
         self.set_default_viewport()
 
     @property
@@ -148,7 +148,7 @@ class Window(BaseWindow):
         Pyglet specific callback for window resize events.
         """
         self._width, self._height = width, height
-        self._buffer_width, self._buffer_height = self._window.get_viewport_size()
+        self._buffer_width, self._buffer_height = self._window.get_framebuffer_size()
         self.set_default_viewport()
 
         super().resize(self._buffer_width, self._buffer_height)
