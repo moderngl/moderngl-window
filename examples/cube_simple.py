@@ -5,7 +5,7 @@ import moderngl_window as mglw
 from moderngl_window import geometry
 
 
-class SimpleCube(mglw.WindowConfig):
+class CubeSimple(mglw.WindowConfig):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -40,7 +40,7 @@ class SimpleCube(mglw.WindowConfig):
         )
         self.prog['m_proj'].write(self.m_proj.tobytes())
 
-    def render(self, time, frametime):
+    def render(self, time: float, frametime: float):
         self.ctx.enable_only(moderngl.CULL_FACE | moderngl.DEPTH_TEST)
 
         m_rot = Matrix44.from_eulers(Vector3((time, time, time)))
@@ -52,4 +52,4 @@ class SimpleCube(mglw.WindowConfig):
 
 
 if __name__ == '__main__':
-    mglw.run_window_config(SimpleCube)
+    mglw.run_window_config(CubeSimple)
