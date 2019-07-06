@@ -32,7 +32,7 @@ class Scene:
         self.bbox_max = None
         self.diagonal_size = 1.0
 
-        self.bbox_vao = geometry.bbox()
+        # self.bbox_vao = geometry.bbox()
         self.bbox_program = programs.load(ProgramDescription(
             label='scene_default/bbox.glsl',
             path='scene_default/bbox.glsl'))
@@ -101,7 +101,7 @@ class Scene:
 
         for mesh in self.meshes:
             for mesh_prog in mesh_programs:
-                instance = mp.apply(mesh)
+                instance = mesh_prog.apply(mesh)
                 if instance is not None:
                     if isinstance(instance, MeshProgram):
                         mesh.mesh_program = mesh_prog
