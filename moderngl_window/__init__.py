@@ -1,5 +1,6 @@
 # pylint: disable = redefined-outer-name, too-few-public-methods
 import argparse
+import logging
 import os
 import sys
 import time
@@ -21,6 +22,18 @@ IGNORE_DIRS = [
 OPTIONS_TRUE = ['yes', 'on', 'true', 't', 'y', '1']
 OPTIONS_FALSE = ['no', 'off', 'false', 'f', 'n', '0']
 OPTIONS_ALL = OPTIONS_TRUE + OPTIONS_FALSE
+
+# Quick and dirty debug logging setup by default
+# See: https://docs.python.org/3/howto/logging.html#logging-advanced-tutorial
+logger = logging.getLogger(__name__)
+# Do not add a new handler if we already have one
+if not logger.handlers:
+    logger.propagate = False
+    logger.setLevel(logging.DEBUG)
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.DEBUG)
+    ch.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+    logger.addHandler(ch)
 
 
 class ContextRefs:
