@@ -1,3 +1,4 @@
+import logging
 from typing import Any
 
 try:
@@ -6,6 +7,8 @@ except ImportError as ex:
     raise ImportError("Texture loader 'PillowLoader' requires Pillow: {}".format(ex))
 
 from moderngl_window.loaders.base import BaseLoader
+
+logger = logging.getLogger(__name__)
 
 
 class PillowLoader(BaseLoader):
@@ -24,10 +27,9 @@ class PillowLoader(BaseLoader):
             self.image = self.meta.image
         else:
             self.meta.resolved_path = self.find_texture(self.meta.path)
+            logging.info("loading %s", self.meta.resolved_path)
             if not self.meta.resolved_path:
                 raise ValueError("Cannot find texture: {}".format(self.meta.path))
-
-            print("Loading:", self.meta.path)
 
             self.image = Image.open(self.meta.resolved_path)
 

@@ -1,3 +1,5 @@
+import logging
+
 import numpy
 try:
     import pywavefront
@@ -13,6 +15,8 @@ from moderngl_window.opengl.vao import VAO
 from moderngl_window.resources import textures
 from moderngl_window.resources.meta import SceneDescription, TextureDescription
 from moderngl_window.scene import Material, MaterialTexture, Mesh, Node, Scene
+
+logger = logging.getLogger(__name__)
 
 
 def translate_buffer_format(vertex_format):
@@ -76,6 +80,7 @@ class ObjLoader(SceneLoader):
     def load(self):
         """Deferred loading"""
         path = self.find_scene(self.meta.path)
+        logger.info("loading %s", path)
 
         if not path:
             raise ValueError("Scene '{}' not found".format(self.meta.path))
