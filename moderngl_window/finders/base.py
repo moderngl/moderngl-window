@@ -45,6 +45,10 @@ class BaseFilesystemFinder:
         path = Path(path)
         logger.debug("find %s", path)
 
+        # If absolute path we allow it to pass directly
+        if path.is_absolute():
+            return path
+
         for entry in self.paths:
             abspath = entry / path
             logger.debug("abspath %s", abspath)
