@@ -34,7 +34,6 @@ class WindowConfig:
 
         Width and height are reported in buffer size (not window size)
         """
-        pass
 
     def key_event(self, key: Any, action: Any, modifiers: KeyModifiers):
         """
@@ -49,7 +48,6 @@ class WindowConfig:
             action: self.wnd.keys.ACTION_PRESS or ACTION_RELEASE
             modifiers: Modifier state for shift and ctrl
         """
-        pass
 
     def mouse_position_event(self, x: int, y: int):
         """
@@ -59,7 +57,6 @@ class WindowConfig:
             x (int): X postion of the mouse cursor
             y Iint): Y position of the mouse cursor
         """
-        pass
 
     def mouse_press_event(self, x: int, y: int, button: int):
         """
@@ -70,7 +67,6 @@ class WindowConfig:
             y (int): Y position the press occured
             button (int): 1 = Left button, 2 = right button
         """
-        pass
 
     def mouse_release_event(self, x: int, y: int, button: int):
         """
@@ -81,4 +77,3 @@ class WindowConfig:
             y (int): Y position the release occured
             button (int): 1 = Left button, 2 = right button
         """
-        pass
