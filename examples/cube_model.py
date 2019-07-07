@@ -10,7 +10,6 @@ from moderngl_window.resources.meta import (
 )
 from moderngl_window.scene.camera import KeyboardCamera
 
-
 mglw.register_resource_dir(Path(__file__).parent / 'resources')
 
 
@@ -43,6 +42,9 @@ class CubeModel(mglw.WindowConfig):
 
     def mouse_position_event(self, x: int, y: int):
         self.camera.rot_state(x, y)
+
+    def resize(self, width: int, height: int):
+        self.camera.projection.update(aspect_ratio=self.wnd.aspect_ratio)
 
 
 if __name__ == '__main__':
