@@ -14,22 +14,6 @@ from moderngl_window.timers.clock import Timer
 from moderngl_window.conf import settings
 from moderngl_window.utils.module_loading import import_string
 
-__all__ = [
-    'ContextRefs',
-    'activate_context',
-    'window',
-    'ctx',
-    'get_window_cls',
-    'get_local_window_cls',
-    'find_window_classes',
-    'create_window_from_settings',
-    'register_resource_dir',
-    'register_program_dir',
-    'register_texture_dir',
-    'register_scene_dir',
-    'register_data_dir',
-    'run_window_config',
-]
 
 IGNORE_DIRS = [
     '__pycache__',

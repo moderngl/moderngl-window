@@ -3,11 +3,3 @@ from moderngl_window.resources.textures import textures  # noqa
 # from moderngl_window.resources.tracks import tracks  # noqa
 from moderngl_window.resources.scenes import scenes  # noqa
 from moderngl_window.resources.data import data  # noqa
-
-
-__all__ = [
-    'programs',
-    'textures',
-    'scenes',
-    'data',
-]
