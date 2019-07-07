@@ -1,3 +1,5 @@
+import platform
+
 import moderngl
 import pyglet
 pyglet.options['shadow_window'] = False
@@ -5,6 +7,10 @@ pyglet.options['debug_gl'] = False
 
 from moderngl_window.context.pyglet.keys import Keys
 from moderngl_window.context.base import BaseWindow
+
+# OSX
+# get_framebuffer_size 1280 720
+# get_viewport_size 2560 1440
 
 
 class Window(BaseWindow):
@@ -57,7 +63,8 @@ class Window(BaseWindow):
         self._window.event(self.on_mouse_release)
 
         self.init_mgl_context()
-        self._buffer_width, self._buffer_height = self._window.get_framebuffer_size()
+        self._buffer_width, self._buffer_height = self._window.get_viewport_size()
+        print('*********', self._buffer_width, self._buffer_height)
         self.set_default_viewport()
 
     @property
@@ -148,7 +155,7 @@ class Window(BaseWindow):
         Pyglet specific callback for window resize events.
         """
         self._width, self._height = width, height
-        self._buffer_width, self._buffer_height = self._window.get_framebuffer_size()
+        self._buffer_width, self._buffer_height = self._window.get_viewport_size()
         self.set_default_viewport()
 
         super().resize(self._buffer_width, self._buffer_height)
