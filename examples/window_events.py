@@ -11,7 +11,7 @@ class WindowEvents(mglw.WindowConfig):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def render(self, time, frametime):
+    def render(self, time: float, frametime: float):
         # We can also check if a key is in press state here
         if self.wnd.is_key_pressed(self.wnd.keys.SPACE):
             print("User is holding SPACE button")
