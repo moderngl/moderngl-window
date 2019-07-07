@@ -1,5 +1,6 @@
-# For quick install of all requirements in development
-# Normally you should do : python setup.py develop
+# For quick install of optional requirements in development
+# Get the main requirements by installing the package in editable mode:
+# pip install -e .
 
 moderngl<6
 
