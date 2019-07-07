@@ -49,9 +49,16 @@ class BaseFilesystemFinder:
         if path.is_absolute():
             return path
 
-        for entry in self.paths:
-            abspath = entry / path
+        for search_path in self.paths:
+            search_path = Path(search_path)
+
+            # Keep ensuring all search paths are absolute
+            if not search_path.is_absolute():
+                raise ImproperlyConfigured("Resource search path '{}' is not an absolute path")
+
+            abspath = search_path / path
             logger.debug("abspath %s", abspath)
+
             if abspath.exists():
                 logger.debug("found %s", abspath)
                 return abspath
