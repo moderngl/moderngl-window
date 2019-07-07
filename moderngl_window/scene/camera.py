@@ -2,6 +2,7 @@ import time
 from math import cos, radians, sin
 
 from moderngl_window.opengl.projection import Projection
+from moderngl_window.context.base import BaseKeys
 from pyrr import Vector3, matrix44, vector, vector3
 
 # Direction Definitions
@@ -118,10 +119,11 @@ class Camera:
         return matrix44.multiply(translate, rotate)
 
 
-class SystemCamera(Camera):
-    """System camera controlled by mouse and keyboard"""
-    def __init__(self, fov=60, aspect=1.0, near=1, far=100):
+class KeyboardCamera(Camera):
+    """Camera controlled by mouse and keyboard"""
+    def __init__(self, keys: BaseKeys, fov=60, aspect=1.0, near=1, far=100):
         # Position movement states
+        self.keys = keys
         self._xdir = STILL
         self._zdir = STILL
         self._ydir = STILL
@@ -134,6 +136,47 @@ class SystemCamera(Camera):
         self.last_y = None
 
         super().__init__(fov=fov, aspect=aspect, near=near, far=far)
+
+    def key_input(self, key, action, modifiers):
+        """Process key inputs and move camera"""
+        # Right
+        if key == self.keys.D:
+            if action == self.keys.ACTION_PRESS:
+                self.move_right(True)
+            elif action == self.keys.ACTION_RELEASE:
+                self.move_right(False)
+        # Left
+        elif key == self.keys.A:
+            if action == self.keys.ACTION_PRESS:
+                self.move_left(True)
+            elif action == self.keys.ACTION_RELEASE:
+                self.move_left(False)
+        # Forward
+        elif key == self.keys.W:
+            if action == self.keys.ACTION_PRESS:
+                self.move_forward(True)
+            if action == self.keys.ACTION_RELEASE:
+                self.move_forward(False)
+        # Backwards
+        elif key == self.keys.S:
+            if action == self.keys.ACTION_PRESS:
+                self.move_backward(True)
+            if action == self.keys.ACTION_RELEASE:
+                self.move_backward(False)
+
+        # UP
+        elif key == self.keys.Q:
+            if action == self.keys.ACTION_PRESS:
+                self.move_down(True)
+            if action == self.keys.ACTION_RELEASE:
+                self.move_down(False)
+
+        # Down
+        elif key == self.keys.E:
+            if action == self.keys.ACTION_PRESS:
+                self.move_up(True)
+            if action == self.keys.ACTION_RELEASE:
+                self.move_up(False)
 
     def move_left(self, activate):
         self.move_state(LEFT, activate)
