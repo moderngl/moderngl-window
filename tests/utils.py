@@ -6,7 +6,7 @@ from moderngl_window import conf
 
 
 @contextmanager
-def settings(values: dict):
+def settings_context(values: dict):
     """Override conf.settings
     
     Args:
