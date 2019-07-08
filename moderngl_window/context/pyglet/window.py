@@ -8,9 +8,6 @@ pyglet.options['debug_gl'] = False
 from moderngl_window.context.pyglet.keys import Keys
 from moderngl_window.context.base import BaseWindow
 
-if platform.system() == 'Darwin':
-    setattr(pyglet.window.Window, 'get_framebuffer_size', pyglet.window.Window.get_viewport_size)
-
 
 class Window(BaseWindow):
     """
@@ -164,19 +161,14 @@ class Window(BaseWindow):
 
 
 class PygletWrapper(pyglet.window.Window):
-    """
-    Block out some window methods so pyglet don't trigger GL errors
-    """
+    """Block out some window methods so pyglet don't trigger GL errors"""
 
     def on_resize(self, width, height):
-        """
-        Block out the resize method.
+        """Block out the resize method.
         For some reason pyglet calls this triggering errors.
         """
         pass
 
     def on_draw(self):
-        """
-        Block out the dfault draw method to avoid GL errors.
-        """
+        """Block out the default draw method to avoid GL errors"""
         pass
