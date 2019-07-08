@@ -47,15 +47,26 @@ class ResourcesTestCase(TestCase):
 
     def test_relative_path(self):
         """Raise error if relative path is passed"""
-        with self.assertRaises(ImproperlyConfigured):
-            resources.register_dir(self.relative_path)
+        with settings_context(self.settings):
+            with self.assertRaises(ImproperlyConfigured):
+                resources.register_dir(self.relative_path)
 
     def test_non_dir(self):
         """Register nonexistent path"""
-        with self.assertRaises(ImproperlyConfigured):
-            resources.register_dir(self.nonexist_path)
+        with settings_context(self.settings):
+            with self.assertRaises(ImproperlyConfigured):
+                resources.register_dir(self.nonexist_path)
 
     def test_register_file(self):
         """Attempt to register a file as a search path"""
-        with self.assertRaises(ImproperlyConfigured):
-            resources.register_dir(self.file_path)
+        with settings_context(self.settings):
+            with self.assertRaises(ImproperlyConfigured):
+                resources.register_dir(self.file_path)
+
+    def test_reister_path_duplicates(self):
+        """Ensure search path only occur once if registered multipel times"""
+        with settings_context(self.settings):
+            resources.register_dir(self.absolute_path)
+            resources.register_dir(self.absolute_path)
+            resources.register_dir(self.absolute_path)
+            self.assertEqual(len(settings.DATA_DIRS), 1)
