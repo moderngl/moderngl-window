@@ -64,6 +64,12 @@ def _append_unique_path(path: Union[Path, str], dest: list):
     if not path.is_absolute():
         raise ImproperlyConfigured("Search path must be absolute: {}".format(path))
 
+    if not path.is_dir():
+        raise ImproperlyConfigured("Search path is not a directory: {}".format(path))
+
+    if not path.exists():
+        raise ImproperlyConfigured("Search path do not exist: {}".format(path))
+
     for resource_path in dest:
         if Path(resource_path).samefile(path):
             break
