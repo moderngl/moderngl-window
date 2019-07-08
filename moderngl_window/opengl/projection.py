@@ -5,8 +5,8 @@ from pyrr import Matrix44
 
 
 class Projection:
-    """"""
-    def __init__(self, aspect_ratio=9 / 16, fov=75, near=1, far=100):
+    """3D Projection"""
+    def __init__(self, aspect_ratio=9 / 16, fov=75.0, near=1.0, far=100.0):
         """
         Create a projection
 
@@ -25,7 +25,7 @@ class Projection:
         self.update()
 
     @property
-    def fov(self, value) -> float:
+    def fov(self, value: float) -> float:
         """Current field of view"""
         return self._far
 
@@ -44,7 +44,8 @@ class Projection:
         """Current numpy projection matrix"""
         return self._matrix
 
-    def update(self, aspect_ratio=None, fov=None, near=None, far=None) -> None:
+    def update(self, aspect_ratio: float = None, fov: float = None,
+               near: float = None, far: float = None) -> None:
         """
         Update the projection matrix
 
