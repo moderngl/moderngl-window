@@ -1,3 +1,7 @@
+"""
+The moderngl_window module contains general helper functions
+aiding in the boostrapping of this library.
+"""
 # pylint: disable = redefined-outer-name, too-few-public-methods
 import argparse
 import logging
@@ -263,8 +267,7 @@ def valid_window_size(value):
 
 
 def valid_window_size_multiplier(value):
-    """
-    Validates window size multiplier
+    """Validates window size multiplier
 
     Must be an integer or float creater than 0
     """
