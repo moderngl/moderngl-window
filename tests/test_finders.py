@@ -7,8 +7,9 @@ from moderngl_window.finders import (
     texture,
     scene,
 )
+from moderngl_window.exceptions import ImproperlyConfigured
 
-from utils import settings, rnd_string
+from utils import settings
 
 
 class FinderTestCase(TestCase):
@@ -23,29 +24,32 @@ class FinderTestCase(TestCase):
     def test_data_finder(self):
         """Find a data file"""
         with settings(self.finder_settings):
-            finder = data.FileSystemFinder()
-            result = finder.find('data.json')
+            result = data.FileSystemFinder().find('data.json')
             self.assertIsInstance(result, Path)
             self.assertTrue(result.name, 'data.json')
 
     def test_program_finder(self):
         """Find a glsl file"""
         with settings(self.finder_settings):
-            finder = program.FileSystemFinder()
-            result = finder.find('test.glsl')
+            result = program.FileSystemFinder().find('test.glsl')
             self.assertIsInstance(result, Path)
             self.assertTrue(result.name, 'test.glsl')
 
     def test_texture_finder(self):
+        """Find a texture"""
         with settings(self.finder_settings):
-            finder = texture.FileSystemFinder()
-            result = finder.find('image.png')
+            result = texture.FileSystemFinder().find('image.png')
             self.assertIsInstance(result, Path)
             self.assertTrue(result.name, 'image.png')
 
     def test_scene_finder(self):
+        """Find a scene"""
         with settings(self.finder_settings):
-            finder = scene.FileSystemFinder()
-            result = finder.find('model.obj')
+            result = scene.FileSystemFinder().find('model.obj')
             self.assertIsInstance(result, Path)
             self.assertTrue(result.name, 'model.obj')
+
+    def test_relative_path_raises_exception(self):
+        with settings({'DATA_DIRS': ['relative_location']}):
+            with self.assertRaises(ImproperlyConfigured):
+                data.FileSystemFinder().find('something')
