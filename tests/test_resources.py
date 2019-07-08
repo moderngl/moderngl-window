@@ -10,7 +10,10 @@ from utils import settings_context
 
 class ResourcesTestCase(TestCase):
     relative_path = './resources'
-    absolute_path = (Path(__file__).parent / 'resources').resolve()
+    absolute_path = (Path(__file__).parent / Path('fixtures/resources')).resolve()
+    nonexist_path = (Path(__file__).parent / 'resources').resolve()
+    file_path = Path(__file__).resolve()
+
     settings = {
         'DATA_DIRS': [],
         'PROGRAM_DIRS': [],
@@ -18,28 +21,41 @@ class ResourcesTestCase(TestCase):
         'SCENE_DIRS': [],
     }
 
-    def test_relative_path(self):
-        """Raise error if relative path is passed"""
-        with self.assertRaises(ImproperlyConfigured):
-            print(self.relative_path)
-            resources.register_dir(self.relative_path)
-
     def test_register_program_dir(self):
+        """Register a program dir"""
         with settings_context(self.settings):
             resources.register_program_dir(self.absolute_path)
             self.assertEqual(len(settings.PROGRAM_DIRS), 1)
 
     def test_register_texture_dir(self):
+        """Register a texture dir"""
         with settings_context(self.settings):
             resources.register_texture_dir(self.absolute_path)
             self.assertEqual(len(settings.TEXTURE_DIRS), 1)
 
     def test_register_scene_dir(self):
+        """Register a scene dir"""
         with settings_context(self.settings):
             resources.register_scene_dir(self.absolute_path)
             self.assertEqual(len(settings.SCENE_DIRS), 1)
 
     def test_register_data_dir(self):
+        """Register a data dir"""
         with settings_context(self.settings):
             resources.register_data_dir(self.absolute_path)
             self.assertEqual(len(settings.DATA_DIRS), 1)
+
+    def test_relative_path(self):
+        """Raise error if relative path is passed"""
+        with self.assertRaises(ImproperlyConfigured):
+            resources.register_dir(self.relative_path)
+
+    def test_non_dir(self):
+        """Register nonexistent path"""
+        with self.assertRaises(ImproperlyConfigured):
+            resources.register_dir(self.nonexist_path)
+
+    def test_register_file(self):
+        """Attempt to register a file as a search path"""
+        with self.assertRaises(ImproperlyConfigured):
+            resources.register_dir(self.file_path)
