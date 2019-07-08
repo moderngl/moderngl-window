@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Union
 
 from moderngl_window.conf import settings
+from moderngl_window.exceptions import ImproperlyConfigured
 
 from moderngl_window.resources.programs import programs  # noqa
 from moderngl_window.resources.textures import textures  # noqa
@@ -59,6 +60,10 @@ def register_data_dir(path: Union[Path, str]):
 
 
 def _append_unique_path(path: Union[Path, str], dest: list):
+    path = Path(path)
+    if not path.is_absolute():
+        raise ImproperlyConfigured("Search path must be absolute: {}".format(path))
+
     for resource_path in dest:
         if Path(resource_path).samefile(path):
             break
