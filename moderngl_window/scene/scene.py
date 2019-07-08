@@ -1,23 +1,28 @@
 """
 Wrapper for a loaded scene with properties.
 """
+import numpy
 from pyrr import matrix44, vector3
 
+import moderngl
 import moderngl_window as mglw
 from moderngl_window.resources import programs
 from moderngl_window.resources.meta import ProgramDescription
 
-from .programs import (ColorProgram, FallbackProgram, MeshProgram,
-                       TextureProgram)
+from .programs import (
+    ColorProgram,
+    FallbackProgram,
+    MeshProgram,
+    TextureProgram,
+)
 
 
 class Scene:
     """Generic scene"""
-    def __init__(self, name, mesh_programs=None, **kwargs):
+    def __init__(self, name, **kwargs):
         """
-        :param name: Unique name or path for the scene
-        :param mesh_programs: List of MeshPrograms to apply to the scene
-        :param loader: Loader class for the scene if relevant
+        Args:
+            name (str): Unique name or path for the scene
         """
         self.name = name
         self.root_nodes = []
@@ -28,38 +33,44 @@ class Scene:
         self.meshes = []
         self.cameras = []
 
-        self.bbox_min = None
-        self.bbox_max = None
+        self.bbox_min = None  # Type: numpy.ndarray
+        self.bbox_max = None  # Type: numpy.ndarray
         self.diagonal_size = 1.0
 
         # self.bbox_vao = geometry.bbox()
         self.bbox_program = programs.load(ProgramDescription(
             label='scene_default/bbox.glsl',
-            path='scene_default/bbox.glsl'))
-
+            path='scene_default/bbox.glsl'),
+        )
         self._view_matrix = matrix44.create_identity()
 
     @property
-    def ctx(self):
+    def ctx(self) -> moderngl.Context:
+        """moderngl.Context: The current context"""
         return mglw.ctx()
 
     @property
-    def view_matrix(self):
+    def view_matrix(self) -> numpy.ndarray:
+        """numpy.ndarray: The current view matrix
+
+        This property is settable.
+        """
         return self._view_matrix
 
     @view_matrix.setter
-    def view_matrix(self, value):
-        self._view_matrix = value.astype('f4')
+    def view_matrix(self, matrix: numpy.ndarray):
+        self._view_matrix = matrix.astype('f4')
         for node in self.root_nodes:
             node.calc_view_mat(self._view_matrix)
 
-    def draw(self, projection_matrix=None, camera_matrix=None, time=0):
+    def draw(self, projection_matrix: numpy.ndarray = None, camera_matrix: numpy.ndarray = None, time=0.0):
         """
         Draw all the nodes in the scene
 
-        :param projection_matrix: projection matrix (bytes)
-        :param camera_matrix: camera_matrix (bytes)
-        :param time: The current time
+        Args:
+            projection_matrix (ndarray): projection matrix (bytes)
+            camera_matrix (ndarray): camera_matrix (bytes)
+            time (float): The current time
         """
         projection_matrix = projection_matrix.astype('f4').tobytes()
         camera_matrix = camera_matrix.astype('f4').tobytes()
@@ -73,8 +84,14 @@ class Scene:
 
         self.ctx.clear_samplers(0, 4)
 
-    def draw_bbox(self, projection_matrix=None, camera_matrix=None, all=True):
-        """Draw scene and mesh bounding boxes"""
+    def draw_bbox(self, projection_matrix=None, camera_matrix=None, children=True) -> None:
+        """Draw scene and mesh bounding boxes
+        
+        Args:
+            projection_matrix (ndarray): mat4 projection
+            camera_matrix (ndarray): mat4 camera matrix
+            children (bool): Will draw bounding boxes for meshes as well
+        """
         projection_matrix = projection_matrix.astype('f4').tobytes()
         camera_matrix = camera_matrix.astype('f4').tobytes()
 
@@ -87,15 +104,20 @@ class Scene:
         self.bbox_program["color"].value = (1.0, 0.0, 0.0)
         self.bbox_vao.render(self.bbox_program)
 
-        if not all:
+        if not children:
             return
 
         # Draw bounding box for children
         for node in self.root_nodes:
             node.draw_bbox(projection_matrix, camera_matrix, self.bbox_program, self.bbox_vao)
 
-    def apply_mesh_programs(self, mesh_programs=None):
-        """Applies mesh programs to meshes"""
+    def apply_mesh_programs(self, mesh_programs=None) -> None:
+        """Applies mesh programs to meshes
+        If not mesh programs are passed in we assign default ones.
+
+        Args:
+            mesh_programs (list): List of mesh programs to assign
+        """
         if not mesh_programs:
             mesh_programs = [ColorProgram(), TextureProgram(), FallbackProgram()]
 
@@ -112,7 +134,7 @@ class Scene:
             if not mesh.mesh_program:
                 print("WARING: No mesh program applied to '{}'".format(mesh.name))
 
-    def calc_scene_bbox(self):
+    def calc_scene_bbox(self) -> None:
         """Calculate scene bbox"""
         bbox_min, bbox_max = None, None
         for node in self.root_nodes:
@@ -127,12 +149,15 @@ class Scene:
 
         self.diagonal_size = vector3.length(self.bbox_max - self.bbox_min)
 
-    def prepare(self):
+    def prepare(self) -> None:
+        """prepare the scene for rendering.
+        This is mostly to ensure shaders are assigned.
+        """
         self.apply_mesh_programs()
         self.view_matrix = matrix44.create_identity()
 
-    def destroy(self):
-        """Destroy the scene data and deallocate buffers"""
+    def destroy(self) -> None:
+        """Destroys the scene data and vertex buffers"""
         for mesh in self.meshes:
             mesh.vao.release()
 
