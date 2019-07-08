@@ -5,7 +5,6 @@
 moderngl<6
 
 # Optional
-pyglet==1.4
 PyQt5>=5.12
 glfw>=1.7
 PySDL2>=0.9
