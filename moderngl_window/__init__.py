@@ -135,64 +135,6 @@ def create_window_from_settings() -> BaseWindow:
     return window
 
 
-# --- Resource functions ----
-
-def register_resource_dir(path: Union[Path, str]):
-    """Adds a resource directory for all resource types
-
-    Args:
-        path (Union[Path, str]): Directory path
-    """
-    register_data_dir(path)
-    register_program_dir(path)
-    register_scene_dir(path)
-    register_texture_dir(path)
-
-
-def register_program_dir(path: Union[Path, str]):
-    """Adds a resource directory for all resource types
-
-    Args:
-        path (Union[Path, str]): Directory path
-    """
-    _append_unique_path(path, settings.PROGRAM_DIRS)
-
-
-def register_texture_dir(path: Union[Path, str]):
-    """Adds a resource directory for all resource types
-
-    Args:
-        path (Union[Path, str]): Directory path
-    """
-    _append_unique_path(path, settings.TEXTURE_DIRS)
-
-
-def register_scene_dir(path: Union[Path, str]):
-    """Adds a resource directory for all resource types
-
-    Args:
-        path (Union[Path, str]): Directory path
-    """
-    _append_unique_path(path, settings.SCENE_DIRS)
-
-
-def register_data_dir(path: Union[Path, str]):
-    """Adds a resource directory for all resource types
-
-    Args:
-        path (Union[Path, str]): Directory path
-    """
-    _append_unique_path(path, settings.DATA_DIRS)
-
-
-def _append_unique_path(path: Union[Path, str], dest: list):
-    for resource_path in dest:
-        if Path(resource_path).samefile(path):
-            break
-    else:
-        dest.append(Path(path).absolute())
-
-
 # --- The simple window config system ---
 
 def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
