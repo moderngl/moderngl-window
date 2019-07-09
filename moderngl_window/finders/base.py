@@ -42,19 +42,24 @@ class BaseFilesystemFinder:
         if getattr(self, 'settings_attr', None):
             self.paths = getattr(settings, self.settings_attr)
 
-        path = Path(path)
+        if not isinstance(path, Path):
+            raise ValueError("FilesystemFinders only take Path instances, not {}".format(type(path)))
+
         logger.debug("find %s", path)
 
         # Ignore absolute paths so other finder types can pick them up.
         if path.is_absolute():
+            logger.debug("Ignoring absolute path: %s", path)
             return None
+
+        logger.debug("paths: %s", self.paths)
 
         for search_path in self.paths:
             search_path = Path(search_path)
 
             # Keep ensuring all search paths are absolute
             if not search_path.is_absolute():
-                raise ImproperlyConfigured("Resource search path '{}' is not an absolute path")
+                raise ImproperlyConfigured("Search search path '{}' is not an absolute path")
 
             abspath = search_path / path
             logger.debug("abspath %s", abspath)
