@@ -1,4 +1,5 @@
 import logging
+import os
 
 import numpy
 try:
@@ -12,7 +13,8 @@ from pywavefront.obj import ObjParser
 import moderngl
 from moderngl_window.loaders.scene.base import SceneLoader
 from moderngl_window.opengl.vao import VAO
-from moderngl_window.resources import textures
+from moderngl_window import resources
+from moderngl_window.resources.decorators import texture_dirs
 from moderngl_window.resources.meta import SceneDescription, TextureDescription
 from moderngl_window.scene import Material, MaterialTexture, Mesh, Node, Scene
 
@@ -127,13 +129,16 @@ class ObjLoader(SceneLoader):
                 # A texture can be referenced multiple times, so we need to cache loaded ones
                 texture = texture_cache.get(mat.texture.path)
                 if not texture:
-                    print("Loading:", mat.texture.path)
-                    texture = textures.load(TextureDescription(
-                        label=mat.texture.path,
-                        path=mat.texture.path,
-                        mipmap=True,
-                    ))
-                    texture_cache[mat.texture.path] = texture
+                    # HACK: pywavefront only give us an absolute path
+                    rel_path = os.path.relpath(mat.texture.path, path.parent)
+                    logger.info("Loading: %s", rel_path)
+                    with texture_dirs([path.parent]):
+                        texture = resources.textures.load(TextureDescription(
+                            label=rel_path,
+                            path=rel_path,
+                            mipmap=True,
+                        ))
+                    texture_cache[rel_path] = texture
 
                 mesh.material.mat_texture = MaterialTexture(
                     texture=texture,
