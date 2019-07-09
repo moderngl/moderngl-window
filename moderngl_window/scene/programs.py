@@ -1,31 +1,45 @@
 import os
 
+import numpy
+import moderngl
 import moderngl_window
 
 from moderngl_window.conf import settings
 from moderngl_window.resources import programs
 from moderngl_window.resources.meta import ProgramDescription
 
+
 settings.PROGRAM_DIRS.append(os.path.join(os.path.dirname(__file__), 'programs'))
 
 
 class MeshProgram:
+    """
+    Describes how a mesh is rendered using a specific shader program
+    """
 
-    def __init__(self, program=None, **kwargs):
+    def __init__(self, program: moderngl.Program = None, **kwargs):
+        """
+        Args:
+            program: The moderngl program
+        """
         self.program = program
 
     @property
     def ctx(self):
+        """moderngl.Context: The current context"""
         return moderngl_window.ctx()
 
-    def draw(self, mesh, projection_matrix=None, view_matrix=None, camera_matrix=None, time=0):
-        """
-        Draw code for the mesh. Should be overriden.
+    def draw(self, mesh: 'Mesh', projection_matrix: numpy.ndarray = None,
+             view_matrix: numpy.ndarray = None, camera_matrix: numpy.ndarray = None, time=0.0):
+        """Draw code for the mesh
 
-        :param projection_matrix: projection_matrix (bytes)
-        :param view_matrix: view_matrix (bytes)
-        :param camera_matrix: camera_matrix (bytes)
-        :param time: The current time
+        Args:
+            mesh (Mesh): The mesh to render
+        Keyword Args:
+            projection_matrix (numpy.ndarray): projection_matrix (bytes)
+            view_matrix (numpy.ndarray): view_matrix (bytes)
+            camera_matrix (numpy.ndarray): camera_matrix (bytes)
+            time (float): The current time
         """
         self.program["m_proj"].write(projection_matrix)
         self.program["m_mv"].write(view_matrix)
