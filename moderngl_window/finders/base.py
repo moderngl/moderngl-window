@@ -45,9 +45,9 @@ class BaseFilesystemFinder:
         path = Path(path)
         logger.debug("find %s", path)
 
-        # If absolute path we allow it to pass directly
+        # Ignore absolute paths so other finder types can pick them up.
         if path.is_absolute():
-            return path
+            return None
 
         for search_path in self.paths:
             search_path = Path(search_path)
