@@ -10,7 +10,7 @@ from moderngl_window.resources.meta import (
 )
 from moderngl_window.scene.camera import KeyboardCamera
 
-resources.register_dir((Path(__file__).parent / 'resources').absolute())
+resources.register_dir((Path(__file__).parent / 'resources').resolve())
 
 
 class CubeModel(mglw.WindowConfig):
