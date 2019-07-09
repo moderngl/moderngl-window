@@ -1,7 +1,8 @@
 import logging
 from pathlib import Path
-from typing import Any
+from typing import Any, List
 
+import moderngl
 import moderngl_window as mglw
 from moderngl_window.finders import data, program, scene, texture
 
@@ -10,49 +11,65 @@ logger = logging.getLogger(__name__)
 
 class BaseLoader:
     """
-    Base loader class for all resources
+    Base loader class for all resources.
     """
+    #: The kind of resource this loaded supports.
+    #: This can be used when file extensions is not enough
+    #: to decide what loader should be selected.
+    kind = None  # Type: str
 
     def __init__(self, meta):
         """
-        :param meta: ResourceDescription instance
+        Args:
+            meta (ResourceDescription): The resource to load
         """
         self.meta = meta
 
     def load(self) -> Any:
-        """
-        Load a resource
+        """Load a resource
 
-        :returns: The newly loaded resource
+        Returns:
+            The loaded resource
         """
         raise NotImplementedError()
 
     def find_data(self, path):
-        if not path:
-            return None
-
+        """Find resource using data finders.
+        Args:
+            path: Path to resource
+        """
         return self._find(Path(path), data.get_finders())
 
     def find_program(self, path):
-        if not path:
-            return None
-
+        """Find resource using program finders.
+        Args:
+            path: Path to resource
+        """
         return self._find(Path(path), program.get_finders())
 
     def find_texture(self, path):
-        if not path:
-            return None
-
+        """Find resource using texture finders.
+        Args:
+            path: Path to resource
+        """
         return self._find(Path(path), texture.get_finders())
 
     def find_scene(self, path):
+        """Find resource using scene finders.
+        Args:
+            path: Path to resource
+        """
+        return self._find(Path(path), scene.get_finders())
+
+    def _find(self, path: Path, finders: list):
+        """Find the first occurance of this path in all finders.
+ 
+        Args:
+            path (Path): The path to find
+        """
         if not path:
             return None
 
-        return self._find(Path(path), scene.get_finders())
-
-    def _find(self, path, finders):
-        """Find the first occurance of the file"""
         for finder in finders:
             result = finder.find(path)
             if result:
@@ -63,5 +80,7 @@ class BaseLoader:
 
     @property
     def ctx(self):
-        """ModernGL context"""
+        """moderngl.Context: ModernGL context.
+        Resources like textures and shader progams do need a context.
+        """
         return mglw.ctx()
