@@ -53,3 +53,10 @@ class FinderTestCase(TestCase):
         with settings_context({'DATA_DIRS': ['relative_location']}):
             with self.assertRaises(ImproperlyConfigured):
                 data.FileSystemFinder().find('something')
+
+    def test_absolute_path(self):
+        """Ensure absolute paths are ignored"""
+        with settings_context(self.finder_settings):
+            finder = data.FileSystemFinder()
+            result = finder.find(Path(self.root, Path('data/data.json')))
+            self.assertIsNone(result)
