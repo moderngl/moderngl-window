@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Any, List
+from typing import Any
 
 import moderngl
 import moderngl_window as mglw
@@ -17,6 +17,7 @@ class BaseLoader:
     #: This can be used when file extensions is not enough
     #: to decide what loader should be selected.
     kind = None  # Type: str
+    file_extensions = []
 
     def __init__(self, meta):
         """
@@ -24,6 +25,19 @@ class BaseLoader:
             meta (ResourceDescription): The resource to load
         """
         self.meta = meta
+        if self.kind is None:
+            raise ValueError("Loader {} doesn't have a kind".format(self.__class__))
+
+    @classmethod
+    def supports_file(cls, meta):
+        """Check if the loader has a supported file extension"""
+        path = Path(meta.path)
+
+        for ext in cls.file_extensions:
+            if path.suffixes[:len(ext)] == ext:
+                return True
+
+        return False
 
     def load(self) -> Any:
         """Load a resource

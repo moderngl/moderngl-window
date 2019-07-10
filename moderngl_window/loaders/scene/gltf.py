@@ -13,7 +13,7 @@ from pyrr import Matrix44, matrix44, quaternion
 import moderngl
 import moderngl_window
 
-from moderngl_window.loaders.scene.base import SceneLoader
+from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.loaders.texture import t2d
 from moderngl_window.opengl.vao import VAO
 from moderngl_window.resources.meta import SceneDescription, TextureDescription
@@ -61,7 +61,7 @@ ACCESSOR_TYPE = {
 }
 
 
-class GLTF2(SceneLoader):
+class GLTF2(BaseLoader):
     """
     Loader for GLTF 2.0 files
     """
