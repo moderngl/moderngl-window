@@ -2,11 +2,14 @@
 Base registry class
 """
 import inspect
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, Generator, List, Type, Tuple
 
+from moderngl_window.conf import settings
 from moderngl_window.exceptions import ImproperlyConfigured
 from moderngl_window.loaders.base import BaseLoader
+from moderngl_window.utils.module_loading import import_string
 
 
 class ResourceDescription:
@@ -67,13 +70,9 @@ class ResourceDescription:
 
 class BaseRegistry:
     """Base class for all resource pools"""
+    settings_attr = None
 
-    def __init__(self, loaders: List[str]):
-        """
-        Args:
-            loaders (List[str]): List of all loaders for this pool
-        """
-        self._loaders = loaders
+    def __init__(self):
         self._resources = []
 
     @property
@@ -82,6 +81,16 @@ class BaseRegistry:
         This is only relevant when using `add` and `load_pool`.
         """
         return len(self._resources)
+
+    @property
+    def loaders(self):
+        """Generator: Loader classes for this resource type"""
+        for loader in getattr(settings, self.settings_attr):
+            yield self._loader_cls(loader)
+
+    @lru_cache(maxsize=None)
+    def _loader_cls(self, python_path: str):
+        return import_string(python_path)
 
     def load(self, meta: ResourceDescription) -> Any:
         """
@@ -122,36 +131,32 @@ class BaseRegistry:
 
         self._resources = []
 
-    def resolve_loader(self, meta: ResourceDescription):
+    def resolve_loader(self, meta: ResourceDescription, raise_on_error=True):
         """
         Attempts to assign a loader class to a ResourceDecription.
 
         Args:
             meta (ResourceDescription): The resource description instance
         """
-        meta.loader_cls = self.get_loader(meta.loader, raise_on_error=True)
+        self._check_meta(meta)
 
-    def get_loader(self, kind: str, raise_on_error=False) -> BaseLoader:
-        """Attempts to get a loader of a kind.
-        The first registered loader with this kind will be returned.
+        # Get loader using kind if specified
+        if meta.kind:
+            for loader_cls in self.loaders:
+                if loader_cls.kind == meta.kind:
+                    return loader_cls
 
-        Args:
-            kind (str): Name of the loader
-        Keyword Args:
-            raise_on_error (bool): Raise ImproperlyConfigured if the loader cannot be found
-        Returns:
-            The requested loader class or None
-        """
-        for loader in self._loaders:
-            if loader.kind == kind:
-                return loader
+        # Get loader based on file extension
+        for loader_cls in self.loaders:
+            if loader_cls.supports_file(meta):
+                return loader_cls
 
         if raise_on_error:
             raise ImproperlyConfigured(
                 "Resource has invalid loader '{}': {}\nAvailiable loaders: {}".format(
-                    meta.loader, meta, [loader.name for loader in self._loaders]))
+                    meta.loader, meta, [loader.kind for loader in self.loaders]))
 
-    def _check_meta(self, instance: Any):
+    def _check_meta(self, meta: Any):
         """Check is the instance is a resource description
         Raises:
             ImproperlyConfigured if not a ResourceDescription instance
