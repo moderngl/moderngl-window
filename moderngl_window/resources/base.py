@@ -13,21 +13,11 @@ class ResourceDescription:
     """ Description of any resource.
     Resource descriptions are required to load a resource.
     """
-    require_label = True  # Decides if the resource requires a label
     default_loader = None  # The default loader if nothing is specified
     resource_type = None  # What resource type is described
 
     def __init__(self, **kwargs):
         self._kwargs = kwargs
-
-        # All resources should have a label
-        if not self.label and self.require_label:
-            raise ValueError("Resource is missing label: {}".format(self.kwargs))
-
-    @property
-    def label(self) -> str:
-        """str: The internal label this resource is associated with"""
-        return self._kwargs.get('label')
 
     @property
     def path(self):
