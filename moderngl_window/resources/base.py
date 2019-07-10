@@ -106,7 +106,7 @@ class BaseRegistry:
         self.resolve_loader(meta)
         self._resources.append(meta)
 
-    def load_pool(self) -> Generator[Tuple[ResourceDescription, Any]]:
+    def load_pool(self) -> Generator[Tuple[ResourceDescription, Any], None, None]:
         """
         Loads all the data files using the configured finders.
 
