@@ -1,5 +1,5 @@
 import logging
-from typing import Any
+from typing import Any, Tuple
 
 try:
     from PIL import Image
@@ -23,15 +23,12 @@ class PillowLoader(BaseLoader):
         raise NotImplementedError()
 
     def _open_image(self):
-        if self.meta.image:
-            self.image = self.meta.image
-        else:
-            self.meta.resolved_path = self.find_texture(self.meta.path)
-            logging.info("loading %s", self.meta.resolved_path)
-            if not self.meta.resolved_path:
-                raise ValueError("Cannot find texture: {}".format(self.meta.path))
+        self.meta.resolved_path = self.find_texture(self.meta.path)
+        logging.info("loading %s", self.meta.resolved_path)
+        if not self.meta.resolved_path:
+            raise ValueError("Cannot find texture: {}".format(self.meta.path))
 
-            self.image = Image.open(self.meta.resolved_path)
+        self.image = Image.open(self.meta.resolved_path)
 
         if self.meta.flip:
             self.image = self.image.transpose(Image.FLIP_TOP_BOTTOM)
@@ -40,8 +37,14 @@ class PillowLoader(BaseLoader):
         self.image.close()
 
 
-def image_data(image):
-    """Get components and bytes for an image"""
+def image_data(image: Image) -> Tuple[int, bytes]:
+    """Get components and bytes for an image.
+    The number of components is assumed by image
+    size and the byte length of the raw data.
+
+    Returns:
+        Tuple[int, bytes]: Number of components, byte data
+    """
     # NOTE: We might want to check the actual image.mode
     #       and convert to an acceptable format.
     #       At the moment we load the data as is.

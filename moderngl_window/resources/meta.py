@@ -81,12 +81,18 @@ class TextureDescription(ResourceDescription):
     default_kind = '2d'
     resource_type = 'textures'
 
-    def __init__(self, path=None, kind=None, flip=True, mipmap=True, image=None, **kwargs):
+    def __init__(self, path=None, flip=True, mipmap=True, kind=None, **kwargs):
+        """Describes a texture resource
+
+        Args:
+            path (str): path to resource relative to search directories
+            flip (boolean): Flip the image horisontally
+            mipmap (bool): Generate mipmaps
+        """
         kwargs.update({
             "path": path,
             "kind": kind,
             "flip": flip,
-            "image": image,
             "mipmap": mipmap,
         })
         super().__init__(**kwargs)
