@@ -8,6 +8,7 @@ import moderngl
 import moderngl_window as mglw
 from moderngl_window.resources import programs
 from moderngl_window.resources.meta import ProgramDescription
+from moderngl_window import geometry
 
 from .programs import (
     ColorProgram,
@@ -37,10 +38,9 @@ class Scene:
         self.bbox_max = None  # Type: numpy.ndarray
         self.diagonal_size = 1.0
 
-        # self.bbox_vao = geometry.bbox()
-        self.bbox_program = programs.load(ProgramDescription(
-            label='scene_default/bbox.glsl',
-            path='scene_default/bbox.glsl'),
+        self.bbox_vao = geometry.bbox()
+        self.bbox_program = programs.load(
+            ProgramDescription(path='scene_default/bbox.glsl'),
         )
         self._view_matrix = matrix44.create_identity()
 

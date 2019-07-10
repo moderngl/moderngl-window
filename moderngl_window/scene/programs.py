@@ -61,9 +61,7 @@ class ColorProgram(MeshProgram):
     """
     def __init__(self, program=None, **kwargs):
         super().__init__(program=None)
-        self.program = programs.load(ProgramDescription(
-            label="scene_default/color.glsl",
-            path="scene_default/color.glsl"))
+        self.program = programs.load(ProgramDescription(path="scene_default/color.glsl"))
 
     def draw(self, mesh, projection_matrix=None, view_matrix=None, camera_matrix=None, time=0):
 
@@ -102,9 +100,7 @@ class TextureProgram(MeshProgram):
     """
     def __init__(self, program=None, **kwargs):
         super().__init__(program=None)
-        self.program = programs.load(ProgramDescription(
-            label="scene_default/texture.glsl",
-            path="scene_default/texture.glsl"))
+        self.program = programs.load(ProgramDescription(path="scene_default/texture.glsl"))
 
     def draw(self, mesh, projection_matrix=None, view_matrix=None, camera_matrix=None, time=0):
         # if mesh.material.double_sided:
@@ -138,9 +134,7 @@ class FallbackProgram(MeshProgram):
     """
     def __init__(self, program=None, **kwargs):
         super().__init__(program=None)
-        self.program = programs.load(ProgramDescription(
-            label="scene_default/fallback.glsl",
-            path="scene_default/fallback.glsl"))
+        self.program = programs.load(ProgramDescription(path="scene_default/fallback.glsl"))
 
     def draw(self, mesh, projection_matrix=None, view_matrix=None, camera_matrix=None, time=0):
 
