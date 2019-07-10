@@ -22,22 +22,22 @@ class ResourceDescription:
         self._kwargs = kwargs
 
     @property
-    def path(self):
+    def path(self) -> str:
         """str: The path to a resource when a single file is specified"""
         return self._kwargs.get('path')
 
     @property
-    def label(self):
+    def label(self) -> str:
         """str: optional name for the resource"""
         return self._kwargs.get('label')
 
     @property
-    def kind(self):
+    def kind(self) -> str:
         """str: default resource kind"""
         return self._kwargs.get('kind') or self.default_kind
 
     @kind.setter
-    def kind(self, value):
+    def kind(self, value) -> str:
         self._kwargs['kind'] = value
 
     @property
@@ -52,14 +52,14 @@ class ResourceDescription:
     @property
     def resolved_path(self) -> Path:
         """pathlib.Path: The resolved path by a finder"""
-        return self.kwargs.get('resolved_path')
+        return self._kwargs.get('resolved_path')
 
     @resolved_path.setter
     def resolved_path(self, value: Path):
         self._kwargs['resolved_path'] = value
 
     @property
-    def kwargs(self) -> Dict[str, str]:
+    def attrs(self) -> Dict[str, str]:
         """dict: All keywords arguments passed to the resource"""
         return self._kwargs
 
