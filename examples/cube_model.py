@@ -6,7 +6,6 @@ import moderngl_window as mglw
 from moderngl_window import resources
 from moderngl_window.resources.meta import (
     SceneDescription,
-    TextureDescription,
 )
 from moderngl_window.scene.camera import KeyboardCamera
 
