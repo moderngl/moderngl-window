@@ -3,28 +3,28 @@ from moderngl_window.resources.base import ResourceDescription
 
 class DataDescription(ResourceDescription):
     """Describes data file to load"""
-    default_loader = 'binary'
+    default_kind = 'binary'
     resource_type = 'data'
 
-    def __init__(self, path=None, loader=None, **kwargs):
+    def __init__(self, path=None, kind=None, **kwargs):
         kwargs.update({
             "path": path,
-            "loader": loader,
+            "kind": kind,
         })
         super().__init__(**kwargs)
 
 
 class ProgramDescription(ResourceDescription):
     """Describes a program to load"""
-    default_loader = None
+    default_kind = None
     resource_type = 'programs'
 
-    def __init__(self, path=None, loader=None, reloadable=False,
+    def __init__(self, path=None, kind=None, reloadable=False,
                  vertex_shader=None, geometry_shader=None, fragment_shader=None,
                  tess_control_shader=None, tess_evaluation_shader=None, **kwargs):
         kwargs.update({
             "path": path,
-            "loader": loader,
+            "kind": kind,
             "reloadable": reloadable,
             "vertex_shader": vertex_shader,
             "geometry_shader": geometry_shader,
@@ -65,23 +65,26 @@ class ProgramDescription(ResourceDescription):
 
 class SceneDescription(ResourceDescription):
     """Describes a scene to load"""
-    default_loader = None
+    default_kind = None
     resource_type = 'scenes'
 
-    def __init__(self, path=None, **kwargs):
-        kwargs.update({"path": path})
+    def __init__(self, path=None, kind=None, **kwargs):
+        kwargs.update({
+            "path": path,
+            "kind": kind,
+        })
         super().__init__(**kwargs)
 
 
 class TextureDescription(ResourceDescription):
     """Describes a texture to load"""
-    default_loader = '2d'
+    default_kind = '2d'
     resource_type = 'textures'
 
-    def __init__(self, path=None, loader=None, flip=True, mipmap=True, image=None, **kwargs):
+    def __init__(self, path=None, kind=None, flip=True, mipmap=True, image=None, **kwargs):
         kwargs.update({
             "path": path,
-            "loader": loader,
+            "kind": kind,
             "flip": flip,
             "image": image,
             "mipmap": mipmap,

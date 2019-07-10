@@ -13,7 +13,7 @@ class ResourceDescription:
     """ Description of any resource.
     Resource descriptions are required to load a resource.
     """
-    default_loader = None  # The default loader if nothing is specified
+    default_kind = None  # The default kind of loader
     resource_type = None  # What resource type is described
 
     def __init__(self, **kwargs):
@@ -25,18 +25,18 @@ class ResourceDescription:
         return self._kwargs.get('path')
 
     @property
-    def loader(self):
-        """str: Name of the loader"""
-        return self._kwargs.get('loader') or self.default_loader
+    def kind(self):
+        """str: default resource kind"""
+        return self._kwargs.get('kind') or self.default_kind
 
-    @loader.setter
-    def loader(self, value):
-        self._kwargs['loader'] = value
+    @kind.setter
+    def kind(self, value):
+        self._kwargs['kind'] = value
 
     @property
     def loader_cls(self) -> Type:
         """
-        (Type) The loader class for this resource
+        Type: The loader class for this resource
         """
         return self._kwargs.get('loader_cls')
 
