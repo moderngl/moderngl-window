@@ -17,7 +17,7 @@ class CubeModel(mglw.WindowConfig):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.cube = resources.scenes.load(SceneDescription(path='scenes/crate.obj', label='crate'))
+        self.cube = resources.scenes.load(SceneDescription(path='scenes/crate.obj'))
         self.camera = KeyboardCamera(self.wnd.keys, fov=75.0, aspect=self.wnd.aspect_ratio, near=0.1, far=100)
 
     def render(self, time: float, frametime: float):
