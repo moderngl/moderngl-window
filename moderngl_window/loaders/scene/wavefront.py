@@ -11,7 +11,7 @@ from pywavefront import cache
 from pywavefront.obj import ObjParser
 
 import moderngl
-from moderngl_window.loaders.scene.base import SceneLoader
+from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.opengl.vao import VAO
 from moderngl_window import resources
 from moderngl_window.resources.decorators import texture_dirs
@@ -68,7 +68,7 @@ class VAOCacheLoader(cache.CacheLoader):
 ObjParser.cache_loader_cls = VAOCacheLoader
 
 
-class ObjLoader(SceneLoader):
+class ObjLoader(BaseLoader):
     """Loade obj files"""
     file_extensions = [
         ['.obj'],

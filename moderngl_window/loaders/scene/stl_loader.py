@@ -4,12 +4,12 @@ import moderngl
 import numpy
 import trimesh
 
-from moderngl_window.loaders.scene.base import SceneLoader
+from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.opengl.vao import VAO
 from moderngl_window.scene import Material, Mesh, Node, Scene
 
 
-class STLLoader(SceneLoader):
+class STLLoader(BaseLoader):
     file_extensions = [
         ['.stl'],
         ['.stl', '.gz'],
