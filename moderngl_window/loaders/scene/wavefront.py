@@ -70,6 +70,7 @@ ObjParser.cache_loader_cls = VAOCacheLoader
 
 class ObjLoader(BaseLoader):
     """Loade obj files"""
+    kind = 'wavefront'
     file_extensions = [
         ['.obj'],
         ['.obj', '.gz'],

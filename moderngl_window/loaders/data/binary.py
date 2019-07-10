@@ -3,7 +3,7 @@ from moderngl_window.exceptions import ImproperlyConfigured
 
 
 class Loader(BaseLoader):
-    name = 'binary'
+    kind = 'binary'
 
     def load(self):
         """Load a file in binary mode"""

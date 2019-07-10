@@ -2,7 +2,7 @@ from moderngl_window.loaders.texture.pillow import PillowLoader, image_data
 
 
 class Loader(PillowLoader):
-    name = '2d'
+    kind = '2d'
 
     def load(self):
         """Load a 2d texture"""

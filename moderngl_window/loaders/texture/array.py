@@ -2,7 +2,7 @@ from moderngl_window.loaders.texture.pillow import PillowLoader, image_data
 
 
 class Loader(PillowLoader):
-    name = 'array'
+    kind = 'array'
 
     def __init__(self, meta):
         super().__init__(meta)

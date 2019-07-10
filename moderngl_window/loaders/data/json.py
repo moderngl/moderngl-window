@@ -5,7 +5,7 @@ from moderngl_window.exceptions import ImproperlyConfigured
 
 
 class Loader(BaseLoader):
-    name = 'json'
+    kind = 'json'
 
     def load(self):
         """Load a file as json"""

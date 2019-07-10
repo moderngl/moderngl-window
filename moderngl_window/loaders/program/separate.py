@@ -3,7 +3,7 @@ from moderngl_window.opengl import program
 
 
 class Loader(BaseLoader):
-    name = 'separate'
+    kind = 'separate'
 
     def load(self):
         vs_source = self.load_shader("vertex", self.meta.vertex_shader)

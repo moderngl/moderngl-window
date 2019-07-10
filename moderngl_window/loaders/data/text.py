@@ -3,7 +3,7 @@ from moderngl_window.loaders.base import BaseLoader
 
 
 class Loader(BaseLoader):
-    name = 'text'
+    kind = 'text'
 
     def load(self):
         """Load a file in text mode"""

@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 class PillowLoader(BaseLoader):
     """Base loader using PIL/Pillow"""
-    name = '__unknown__'
+    kind = '__unknown__'
 
     def __init__(self, meta):
         super().__init__(meta)

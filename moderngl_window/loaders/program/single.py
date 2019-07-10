@@ -3,7 +3,7 @@ from moderngl_window.opengl import program
 
 
 class Loader(BaseLoader):
-    name = 'single'
+    kind = 'single'
 
     def load(self):
         self.meta.resolved_path = self.find_program(self.meta.path)

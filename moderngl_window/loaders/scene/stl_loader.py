@@ -10,6 +10,7 @@ from moderngl_window.scene import Material, Mesh, Node, Scene
 
 
 class STLLoader(BaseLoader):
+    kind = 'stl'
     file_extensions = [
         ['.stl'],
         ['.stl', '.gz'],
