@@ -8,7 +8,7 @@ class Programs(BaseRegistry):
     A registry for shaders requested by effects.
     Once all effects are initialized, we ask this class to load the shaders.
     """
-    settings_attr = 'PROGRAM_DIRS'
+    settings_attr = 'PROGRAM_LOADERS'
 
     def resolve_loader(self, meta: ProgramDescription, raise_on_error=True):
         """Resolve program loader"""

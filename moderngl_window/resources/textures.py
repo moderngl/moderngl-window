@@ -9,7 +9,7 @@ class Textures(BaseRegistry):
     A registry for textures requested by effects.
     Once all effects are initialized, we ask this class to load the textures.
     """
-    settings_attr = 'TEXTURE_DIRS'
+    settings_attr = 'TEXTURE_LOADERS'
 
 
 textures = Textures()

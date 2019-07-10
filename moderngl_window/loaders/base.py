@@ -79,7 +79,7 @@ class BaseLoader:
         return None
 
     @property
-    def ctx(self):
+    def ctx(self) -> moderngl.Context:
         """moderngl.Context: ModernGL context.
         Resources like textures and shader progams do need a context.
         """

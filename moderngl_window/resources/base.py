@@ -4,11 +4,10 @@ Base registry class
 import inspect
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Dict, Generator, List, Type, Tuple
+from typing import Any, Dict, Generator, Type, Tuple
 
 from moderngl_window.conf import settings
 from moderngl_window.exceptions import ImproperlyConfigured
-from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.utils.module_loading import import_string
 
 
@@ -38,9 +37,7 @@ class ResourceDescription:
 
     @property
     def loader_cls(self) -> Type:
-        """
-        Type: The loader class for this resource
-        """
+        """Type: The loader class for this resource"""
         return self._kwargs.get('loader_cls')
 
     @loader_cls.setter
@@ -144,12 +141,14 @@ class BaseRegistry:
         if meta.kind:
             for loader_cls in self.loaders:
                 if loader_cls.kind == meta.kind:
-                    return loader_cls
+                    meta.loader_cls = loader_cls
+                    return
 
         # Get loader based on file extension
         for loader_cls in self.loaders:
             if loader_cls.supports_file(meta):
-                return loader_cls
+                meta.loader_cls = loader_cls
+                return
 
         if raise_on_error:
             raise ImproperlyConfigured(
