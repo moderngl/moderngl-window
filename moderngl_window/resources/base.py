@@ -27,6 +27,11 @@ class ResourceDescription:
         return self._kwargs.get('path')
 
     @property
+    def label(self):
+        """str: optional name for the resource"""
+        return self._kwargs.get('label')
+
+    @property
     def kind(self):
         """str: default resource kind"""
         return self._kwargs.get('kind') or self.default_kind
@@ -128,21 +133,24 @@ class BaseRegistry:
 
         self._resources = []
 
-    def resolve_loader(self, meta: ResourceDescription, raise_on_error=True):
+    def resolve_loader(self, meta: ResourceDescription):
         """
         Attempts to assign a loader class to a ResourceDecription.
 
         Args:
             meta (ResourceDescription): The resource description instance
         """
-        self._check_meta(meta)
-
         # Get loader using kind if specified
         if meta.kind:
             for loader_cls in self.loaders:
+                print(loader_cls.kind, meta.kind)
                 if loader_cls.kind == meta.kind:
                     meta.loader_cls = loader_cls
                     return
+
+            raise ImproperlyConfigured(
+                "Resource has invalid loader kind '{}': {}\nAvailiable loaders: {}".format(
+                    meta.kind, meta, [loader.kind for loader in self.loaders]))
 
         # Get loader based on file extension
         for loader_cls in self.loaders:
@@ -150,10 +158,7 @@ class BaseRegistry:
                 meta.loader_cls = loader_cls
                 return
 
-        if raise_on_error:
-            raise ImproperlyConfigured(
-                "Resource has invalid loader '{}': {}\nAvailiable loaders: {}".format(
-                    meta.loader, meta, [loader.kind for loader in self.loaders]))
+        raise ImproperlyConfigured("Could not find a loader for: {}".format(meta))
 
     def _check_meta(self, meta: Any):
         """Check is the instance is a resource description

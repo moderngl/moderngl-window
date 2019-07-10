@@ -10,12 +10,12 @@ class Programs(BaseRegistry):
     """
     settings_attr = 'PROGRAM_LOADERS'
 
-    def resolve_loader(self, meta: ProgramDescription, raise_on_error=True):
+    def resolve_loader(self, meta: ProgramDescription):
         """Resolve program loader"""
         if not meta.kind:
-            meta.loader = 'single' if meta.path else 'separate'
+            meta.kind = 'single' if meta.path else 'separate'
 
-        return super().resolve_loader(meta, raise_on_error=raise_on_error)
+        return super().resolve_loader(meta)
 
 
 programs = Programs()
