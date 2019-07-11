@@ -10,10 +10,15 @@ class Mesh:
 
     def __init__(self, name, vao=None, material=None, attributes=None, bbox_min=None, bbox_max=None):
         """
-        :param name: Name of the mesh
-        :param vao: VAO
-        :param material: Material
-        :param attributes: Details info about each mesh attribute (dict)
+        Args:
+            name (str): name of the mesh
+        Keyword Args:
+            vao (VAO): geometry
+            material (Msterial): material for the mesh
+            attributes (dict): Details info about each mesh attribute (dict)
+
+        Attributes example::
+
             {
                 "NORMAL": {"name": "in_normal", "components": 3, "type": GL_FLOAT},
                 "POSITION": {"name": "in_position", "components": 3, "type": GL_FLOAT}

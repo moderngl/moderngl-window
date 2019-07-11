@@ -154,6 +154,8 @@ class Scene:
         This is mostly to ensure shaders are assigned.
         """
         self.apply_mesh_programs()
+        # Recursively calculate model matrices
+        self.model_matrix = matrix44.create_identity()
 
     def destroy(self) -> None:
         """Destroys the scene data and vertex buffers"""

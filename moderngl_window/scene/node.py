@@ -8,9 +8,12 @@ class Node:
     def __init__(self, camera=None, mesh=None, matrix=None):
         self.camera = camera
         self.mesh = mesh
+        # Local matrix
         self.matrix = matrix
+        # Global matrix
         self.matrix_global = None
         self.matrix_global_bytes = None
+
         self.children = []
 
     def add_child(self, child):
