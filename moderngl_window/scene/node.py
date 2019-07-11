@@ -14,20 +14,21 @@ class Node:
         self.children = []
 
     def add_child(self, child):
+        """Add a child to this node"""
         self.children.append(child)
 
     def draw(self, projection_matrix=None, camera_matrix=None, time=0):
-        """
-        Draw node and children
+        """Draw node and children
 
-        :param projection_matrix: projection matrix (bytes)
-        :param camera_matrix: camera_matrix (bytes)
-        :param time: The current time
+        Keyword Args:
+            projection_matrix (bytes): projection matrix
+            camera_matrix (bytes): camera_matrix
+            time (float): The current time
         """
         if self.mesh:
             self.mesh.draw(
                 projection_matrix=projection_matrix,
-                view_matrix=self.matrix_global_bytes,
+                model_matrix=self.matrix_global_bytes,
                 camera_matrix=camera_matrix,
                 time=time
             )
@@ -40,7 +41,7 @@ class Node:
             )
 
     def draw_bbox(self, projection_matrix, camera_matrix, shader, vao):
-
+        """Draw bounding box around the node"""
         if self.mesh:
             self.mesh.draw_bbox(
                 projection_matrix,
@@ -66,16 +67,17 @@ class Node:
 
         return bbox_min, bbox_max
 
-    def calc_view_mat(self, view_matrix):
+    def calc_model_mat(self, model_matrix):
+        """Calculate the model matrix related to all parents"""
         if self.matrix is not None:
-            self.matrix_global = matrix44.multiply(self.matrix, view_matrix).astype('f4')
+            self.matrix_global = matrix44.multiply(self.matrix, model_matrix).astype('f4')
             self.matrix_global_bytes = self.matrix_global.tobytes()
 
             for child in self.children:
-                child.calc_view_mat(self.matrix_global)
+                child.calc_model_mat(self.matrix_global)
         else:
-            self.matrix_global = view_matrix
-            self.matrix_global_bytes = view_matrix.tobytes()
+            self.matrix_global = model_matrix
+            self.matrix_global_bytes = model_matrix.tobytes()
 
             for child in self.children:
-                child.calc_view_mat(view_matrix)
+                child.calc_model_mat(model_matrix)

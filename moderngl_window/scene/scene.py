@@ -42,7 +42,7 @@ class Scene:
         self.bbox_program = programs.load(
             ProgramDescription(path='scene_default/bbox.glsl'),
         )
-        self._view_matrix = matrix44.create_identity()
+        self._model_matrix = matrix44.create_identity()
 
     @property
     def ctx(self) -> moderngl.Context:
@@ -50,18 +50,18 @@ class Scene:
         return mglw.ctx()
 
     @property
-    def view_matrix(self) -> numpy.ndarray:
-        """numpy.ndarray: The current view matrix
+    def model_matrix(self) -> numpy.ndarray:
+        """numpy.ndarray: The current model matrix
 
         This property is settable.
         """
-        return self._view_matrix
+        return self._model_matrix
 
-    @view_matrix.setter
-    def view_matrix(self, matrix: numpy.ndarray):
-        self._view_matrix = matrix.astype('f4')
+    @model_matrix.setter
+    def model_matrix(self, matrix: numpy.ndarray):
+        self._model_matrix = matrix.astype('f4')
         for node in self.root_nodes:
-            node.calc_view_mat(self._view_matrix)
+            node.calc_model_mat(self._model_matrix)
 
     def draw(self, projection_matrix: numpy.ndarray = None, camera_matrix: numpy.ndarray = None, time=0.0):
         """
@@ -97,7 +97,7 @@ class Scene:
 
         # Scene bounding box
         self.bbox_program["m_proj"].write(projection_matrix)
-        self.bbox_program["m_view"].write(self._view_matrix.astype('f4').tobytes())
+        self.bbox_program["m_model"].write(self._model_matrix.astype('f4').tobytes())
         self.bbox_program["m_cam"].write(camera_matrix)
         self.bbox_program["bb_min"].write(self.bbox_min.astype('f4').tobytes())
         self.bbox_program["bb_max"].write(self.bbox_max.astype('f4').tobytes())
@@ -154,7 +154,6 @@ class Scene:
         This is mostly to ensure shaders are assigned.
         """
         self.apply_mesh_programs()
-        self.view_matrix = matrix44.create_identity()
 
     def destroy(self) -> None:
         """Destroys the scene data and vertex buffers"""

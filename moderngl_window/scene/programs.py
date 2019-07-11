@@ -30,19 +30,19 @@ class MeshProgram:
         return moderngl_window.ctx()
 
     def draw(self, mesh: 'Mesh', projection_matrix: numpy.ndarray = None,
-             view_matrix: numpy.ndarray = None, camera_matrix: numpy.ndarray = None, time=0.0):
+             model_matrix: numpy.ndarray = None, camera_matrix: numpy.ndarray = None, time=0.0):
         """Draw code for the mesh
 
         Args:
             mesh (Mesh): The mesh to render
         Keyword Args:
             projection_matrix (numpy.ndarray): projection_matrix (bytes)
-            view_matrix (numpy.ndarray): view_matrix (bytes)
+            model_matrix (numpy.ndarray): view_matrix (bytes)
             camera_matrix (numpy.ndarray): camera_matrix (bytes)
             time (float): The current time
         """
         self.program["m_proj"].write(projection_matrix)
-        self.program["m_mv"].write(view_matrix)
+        self.program["m_mv"].write(model_matrix)
         mesh.vao.render(self.program)
 
     def apply(self, mesh):
@@ -63,7 +63,7 @@ class ColorProgram(MeshProgram):
         super().__init__(program=None)
         self.program = programs.load(ProgramDescription(path="scene_default/color.glsl"))
 
-    def draw(self, mesh, projection_matrix=None, view_matrix=None, camera_matrix=None, time=0):
+    def draw(self, mesh, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0):
 
         if mesh.material:
             # if mesh.material.double_sided:
@@ -77,7 +77,7 @@ class ColorProgram(MeshProgram):
                 self.program["color"].value = (1.0, 1.0, 1.0, 1.0)
 
         self.program["m_proj"].write(projection_matrix)
-        self.program["m_view"].write(view_matrix)
+        self.program["m_model"].write(model_matrix)
         self.program["m_cam"].write(camera_matrix)
         mesh.vao.render(self.program)
 
@@ -102,7 +102,7 @@ class TextureProgram(MeshProgram):
         super().__init__(program=None)
         self.program = programs.load(ProgramDescription(path="scene_default/texture.glsl"))
 
-    def draw(self, mesh, projection_matrix=None, view_matrix=None, camera_matrix=None, time=0):
+    def draw(self, mesh, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0):
         # if mesh.material.double_sided:
         #     self.ctx.disable(moderngl.CULL_FACE)
         # else:
@@ -111,7 +111,7 @@ class TextureProgram(MeshProgram):
         mesh.material.mat_texture.texture.use()
         self.program["texture0"].value = 0
         self.program["m_proj"].write(projection_matrix)
-        self.program["m_view"].write(view_matrix)
+        self.program["m_model"].write(model_matrix)
         self.program["m_cam"].write(camera_matrix)
         mesh.vao.render(self.program)
 

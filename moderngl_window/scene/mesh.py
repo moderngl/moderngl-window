@@ -27,19 +27,20 @@ class Mesh:
         self.bbox_max = bbox_max
         self.mesh_program = None
 
-    def draw(self, projection_matrix=None, view_matrix=None, camera_matrix=None, time=0):
+    def draw(self, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0.0):
         """
         Draw the mesh using the assigned mesh program
 
-        :param projection_matrix: projection_matrix (bytes)
-        :param view_matrix: view_matrix (bytes)
-        :param camera_matrix: camera_matrix (bytes)
+        Keyword Args:
+            projection_matrix (bytes): projection_matrix
+            view_matrix (bytes): view_matrix
+            camera_matrix (bytes): camera_matrix
         """
         if self.mesh_program:
             self.mesh_program.draw(
                 self,
                 projection_matrix=projection_matrix,
-                view_matrix=view_matrix,
+                model_matrix=model_matrix,
                 camera_matrix=camera_matrix,
                 time=time
             )
