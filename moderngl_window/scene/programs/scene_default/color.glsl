@@ -8,14 +8,14 @@ in vec3 in_normal;
 uniform mat4 m_proj;
 // Use separate model and camera matrix. This means we don't have
 // to calculate modelview matrix in python every frame
-uniform mat4 m_view;
+uniform mat4 m_model;
 uniform mat4 m_cam;
 
 out vec3 normal;
 out vec3 pos;
 
 void main() {
-    mat4 mv = m_cam * m_view;
+    mat4 mv = m_cam * m_model;
     vec4 p = mv * vec4(in_position, 1.0);
     gl_Position = m_proj * p;
     // Calculating the normal matrix in the vertex shader
