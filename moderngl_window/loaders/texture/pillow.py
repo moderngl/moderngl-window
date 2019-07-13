@@ -23,12 +23,15 @@ class PillowLoader(BaseLoader):
         raise NotImplementedError()
 
     def _open_image(self):
-        self.meta.resolved_path = self.find_texture(self.meta.path)
-        logging.info("loading %s", self.meta.resolved_path)
-        if not self.meta.resolved_path:
-            raise ValueError("Cannot find texture: {}".format(self.meta.path))
+        if self.meta.image:
+            self.image = self.meta.image
+        else:
+            self.meta.resolved_path = self.find_texture(self.meta.path)
+            logging.info("loading %s", self.meta.resolved_path)
+            if not self.meta.resolved_path:
+                raise ValueError("Cannot find texture: {}".format(self.meta.path))
 
-        self.image = Image.open(self.meta.resolved_path)
+            self.image = Image.open(self.meta.resolved_path)
 
         if self.meta.flip:
             self.image = self.image.transpose(Image.FLIP_TOP_BOTTOM)
@@ -50,4 +53,5 @@ def image_data(image: Image) -> Tuple[int, bytes]:
     #       At the moment we load the data as is.
     data = image.tobytes()
     components = len(data) // (image.size[0] * image.size[1])
+    logger.debug("image_data components=%s bytes=%s", components, len(data))
     return components, data
