@@ -2,6 +2,7 @@
 import base64
 import io
 import json
+import logging
 import os
 import struct
 from collections import namedtuple
@@ -18,6 +19,8 @@ from moderngl_window.loaders.texture import t2d
 from moderngl_window.opengl.vao import VAO
 from moderngl_window.resources.meta import SceneDescription, TextureDescription
 from moderngl_window.scene import Material, MaterialTexture, Mesh, Node, Scene
+
+logger = logging.getLogger(__name__)
 
 GLTF_MAGIC_HEADER = b'glTF'
 
@@ -106,6 +109,7 @@ class GLTF2(BaseLoader):
             raise ValueError("Scene '{}' not found".format(self.meta.path))
 
         self.scene = Scene(self.path)
+        self.gltf = None
 
         # Load gltf json file
         if self.path.suffix == '.gltf':
@@ -115,8 +119,8 @@ class GLTF2(BaseLoader):
         if self.path.suffix == '.glb':
             self.load_glb()
 
-        self.meta.check_version()
-        self.meta.check_extensions(self.supported_extensions)
+        self.gltf.check_version()
+        self.gltf.check_extensions(self.supported_extensions)
         self.load_images()
         self.load_samplers()
         self.load_textures()
@@ -132,7 +136,7 @@ class GLTF2(BaseLoader):
     def load_gltf(self):
         """Loads a gltf json file"""
         with open(self.path) as fd:
-            self.meta = GLTFMeta(self.path, json.load(fd))
+            self.gltf = GLTFMeta(self.path, json.load(fd))
 
     def load_glb(self):
         """Loads a binary gltf file"""
@@ -163,14 +167,14 @@ class GLTF2(BaseLoader):
             if chunk_1_type != b'BIN\x00':
                 raise ValueError("Expected BIN chunk, not {} in file {}".format(chunk_1_type, self.path))
 
-            self.meta = GLTFMeta(self.path, json.loads(json_meta), binary_buffer=fd.read(chunk_1_length))
+            self.gltf = GLTFMeta(self.path, json.loads(json_meta), binary_buffer=fd.read(chunk_1_length))
 
     def load_images(self):
-        for image in self.meta.images:
+        for image in self.gltf.images:
             self.images.append(image.load(self.path.parent))
 
     def load_samplers(self):
-        for sampler in self.meta.samplers:
+        for sampler in self.gltf.samplers:
             # NOTE: Texture wrap will be changed in moderngl 6.x
             #       We currently only have repeat values
             self.samplers.append(
@@ -183,7 +187,7 @@ class GLTF2(BaseLoader):
             )
 
     def load_textures(self):
-        for texture_meta in self.meta.textures:
+        for texture_meta in self.gltf.textures:
             texture = MaterialTexture()
 
             if texture_meta.source is not None:
@@ -195,7 +199,7 @@ class GLTF2(BaseLoader):
             self.textures.append(texture)
 
     def load_meshes(self):
-        for meta_mesh in self.meta.meshes:
+        for meta_mesh in self.gltf.meshes:
             # Returns a list of meshes
             meshes = meta_mesh.load(self.materials)
             self.meshes.append(meshes)
@@ -205,7 +209,7 @@ class GLTF2(BaseLoader):
 
     def load_materials(self):
         # Create material objects
-        for meta_mat in self.meta.materials:
+        for meta_mat in self.gltf.materials:
             mat = Material(meta_mat.name)
             mat.color = meta_mat.baseColorFactor
             mat.double_sided = meta_mat.doubleSided
@@ -218,8 +222,8 @@ class GLTF2(BaseLoader):
 
     def load_nodes(self):
         # Start with root nodes in the scene
-        for node_id in self.meta.scenes[0].nodes:
-            node = self.load_node(self.meta.nodes[node_id])
+        for node_id in self.gltf.scenes[0].nodes:
+            node = self.load_node(self.gltf.nodes[node_id])
             self.scene.root_nodes.append(node)
 
     def load_node(self, meta, parent=None):
@@ -242,7 +246,7 @@ class GLTF2(BaseLoader):
 
         if meta.camera is not None:
             # FIXME: Use a proper camera class
-            node.camera = self.meta.cameras[meta.camera]
+            node.camera = self.gltf.cameras[meta.camera]
 
         if parent:
             parent.add_child(node)
@@ -250,7 +254,7 @@ class GLTF2(BaseLoader):
         # Follow children
         if meta.has_children:
             for node_id in meta.children:
-                self.load_node(self.meta.nodes[node_id], parent=node)
+                self.load_node(self.gltf.nodes[node_id], parent=node)
 
         return node
 
@@ -684,9 +688,10 @@ class GLTFImage:
         elif self.uri and self.uri.startswith('data:'):
             data = self.uri[self.uri.find(',') + 1:]
             image = Image.open(io.BytesIO(base64.b64decode(data)))
+            logger.info("Loading embedded image")
         else:
             path = path / self.uri
-            print("Loading:", self.uri)
+            logger.info("Loading: %s", self.uri)
             image = Image.open(path)
 
         texture = t2d.Loader(TextureDescription(
