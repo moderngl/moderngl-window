@@ -1,9 +1,12 @@
 from functools import wraps
+import logging
 import sys
 from typing import Any, Tuple, Type
 
 import moderngl
 from moderngl_window.context.base import KeyModifiers
+
+logger = logging.getLogger(__name__)
 
 
 def require_callable(func):
@@ -349,14 +352,14 @@ class BaseWindow:
         """
         Prints moderngl context info.
         """
-        print("Context Version:")
-        print('ModernGL:', moderngl.__version__)
-        print('vendor:', self._ctx.info['GL_VENDOR'])
-        print('renderer:', self._ctx.info['GL_RENDERER'])
-        print('version:', self._ctx.info['GL_VERSION'])
-        print('python:', sys.version)
-        print('platform:', sys.platform)
-        print('code:', self._ctx.version_code)
+        logger.info("Context Version:")
+        logger.info('ModernGL: %s', moderngl.__version__)
+        logger.info('vendor: %s', self._ctx.info['GL_VENDOR'])
+        logger.info('renderer: %s', self._ctx.info['GL_RENDERER'])
+        logger.info('version: %s', self._ctx.info['GL_VERSION'])
+        logger.info('python: %s', sys.version)
+        logger.info('platform: %s', sys.platform)
+        logger.info('code: %s', self._ctx.version_code)
 
 
 class WindowConfig:

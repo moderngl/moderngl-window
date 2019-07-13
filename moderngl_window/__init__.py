@@ -90,7 +90,7 @@ def get_window_cls(window: str = None) -> Type[BaseWindow]:
     Returns:
         A reference to the requested window class. Raises exception if not found.
     """
-    print("Attempting to load window class:", window)
+    logger.info("Attempting to load window class: %s", window)
     return import_string(window)
 
 
@@ -184,7 +184,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
 
     _, duration = timer.stop()
     window.destroy()
-    print("Duration: {0:.2f}s @ {1:.2f} FPS".format(duration, window.frames / duration))
+    logger.info("Duration: {0:.2f}s @ {1:.2f} FPS".format(duration, window.frames / duration))
 
 
 def parse_args(args=None):

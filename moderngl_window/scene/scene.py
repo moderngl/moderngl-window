@@ -1,6 +1,7 @@
 """
 Wrapper for a loaded scene with properties.
 """
+import logging
 import numpy
 from pyrr import matrix44, vector3
 
@@ -16,6 +17,8 @@ from .programs import (
     MeshProgram,
     TextureProgram,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class Scene:
@@ -132,7 +135,7 @@ class Scene:
                         raise ValueError("apply() must return a MeshProgram instance, not {}".format(type(instance)))
 
             if not mesh.mesh_program:
-                print("WARING: No mesh program applied to '{}'".format(mesh.name))
+                logger.warning("WARING: No mesh program applied to '%s'",mesh.name)
 
     def calc_scene_bbox(self) -> None:
         """Calculate scene bbox"""

@@ -1,5 +1,9 @@
+import logging
+
 from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.opengl import program
+
+logger = logging.getLogger(__name__)
 
 
 class Loader(BaseLoader):
@@ -10,7 +14,7 @@ class Loader(BaseLoader):
         if not self.meta.resolved_path:
             raise ValueError("Cannot find program '{}'".format(self.meta.path))
 
-        print("Loading:", self.meta.path)
+        logger.info("Loading: %s", self.meta.path)
 
         with open(self.meta.resolved_path, 'r') as fd:
             shaders = program.ProgramShaders.from_single(self.meta, fd.read())

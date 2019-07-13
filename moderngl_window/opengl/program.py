@@ -175,7 +175,7 @@ class ShaderSource:
         return names
 
     def print(self):
-        """Print the shader lines"""
+        """Print the shader lines (for debugging)"""
         print("---[ START {} ]---".format(self.name))
 
         for i, line in enumerate(self.lines):

@@ -143,7 +143,6 @@ class BaseRegistry:
         # Get loader using kind if specified
         if meta.kind:
             for loader_cls in self.loaders:
-                print(loader_cls.kind, meta.kind)
                 if loader_cls.kind == meta.kind:
                     meta.loader_cls = loader_cls
                     return

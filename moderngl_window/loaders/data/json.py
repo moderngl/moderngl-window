@@ -1,7 +1,10 @@
 import json
+import logging
 
 from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.exceptions import ImproperlyConfigured
+
+logger = logging.getLogger(__name__)
 
 
 class Loader(BaseLoader):
@@ -14,7 +17,7 @@ class Loader(BaseLoader):
         if not self.meta.resolved_path:
             raise ImproperlyConfigured("Data file '{}' not found".format(self.meta.path))
 
-        print("Loading:", self.meta.path)
+        logger.info("Loading: %s", self.meta.path)
 
         with open(self.meta.resolved_path, 'r') as fd:
             return json.loads(fd.read())
