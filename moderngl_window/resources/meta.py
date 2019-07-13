@@ -104,7 +104,7 @@ class TextureDescription(ResourceDescription):
     default_kind = '2d'
     resource_type = 'textures'
 
-    def __init__(self, path: str = None, kind: str = None, flip=True, mipmap=True, **kwargs):
+    def __init__(self, path: str = None, kind: str = None, flip=True, mipmap=True, image=None, **kwargs):
         """Describes a texture resource
 
         Args:
@@ -112,12 +112,14 @@ class TextureDescription(ResourceDescription):
             flip (boolean): Flip the image horisontally
             mipmap (bool): Generate mipmaps
             kind (str): The kind of loader to use
+            image: PIL image when loading embedded resources
         """
         kwargs.update({
             "path": path,
             "kind": kind,
             "flip": flip,
             "mipmap": mipmap,
+            "image": image,
         })
         super().__init__(**kwargs)
 
@@ -130,3 +132,8 @@ class TextureDescription(ResourceDescription):
     def mipmap(self) -> bool:
         """bool: If mipmaps should be generated"""
         return self._kwargs.get('mipmap')
+
+    @property
+    def image(self):
+        """PIL image"""
+        return self._kwargs.get('image')
