@@ -36,8 +36,7 @@ class Window(BaseWindow):
             depth_size=24,
             double_buffer=True,
             sample_buffers=1 if self.samples > 1 else 0,
-#            samples=self.samples,
-            samples=16,
+            samples=self.samples,
         )
 
         if self.fullscreen:
