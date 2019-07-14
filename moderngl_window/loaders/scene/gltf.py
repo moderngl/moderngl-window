@@ -175,16 +175,26 @@ class GLTF2(BaseLoader):
 
     def load_samplers(self):
         for sampler in self.gltf.samplers:
-            # NOTE: Texture wrap will be changed in moderngl 6.x
-            #       We currently only have repeat values
-            self.samplers.append(
-                self.ctx.sampler(
-                    filter=(sampler.minFilter, sampler.magFilter),
-                    repeat_x=sampler.wrapS in [REPEAT, MIRRORED_REPEAT],
-                    repeat_y=sampler.wrapT in [REPEAT, MIRRORED_REPEAT],
-                    anisotropy=16.0,
+            # Use a sane default sampler if the sampelr data is empty
+            # Samplers can simply just be json data: "{}"
+            if sampler.minFilter == sampler.magFilter == None:
+                self.samplers.append(
+                    self.ctx.sampler(
+                        filter=(moderngl.LINEAR_MIPMAP_LINEAR, moderngl.LINEAR),
+                        repeat_x=False,
+                        repeat_y=False,
+                        anisotropy=16.0,
+                    )
                 )
-            )
+            else:
+                self.samplers.append(
+                    self.ctx.sampler(
+                        filter=(sampler.minFilter, sampler.magFilter),
+                        repeat_x=sampler.wrapS in [REPEAT, MIRRORED_REPEAT],
+                        repeat_y=sampler.wrapT in [REPEAT, MIRRORED_REPEAT],
+                        anisotropy=16.0,
+                    )
+                )
 
     def load_textures(self):
         for texture_meta in self.gltf.textures:
