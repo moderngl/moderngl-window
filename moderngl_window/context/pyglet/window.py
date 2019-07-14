@@ -2,7 +2,12 @@ import platform
 
 import moderngl
 import pyglet
-# pyglet.options['shadow_window'] = False
+
+# On OS X we need to disable the shadow context
+# because the 2.1 shadow contect cannot be upgrade to a 3.3+ core
+if platform.system() == 'Darwin':
+    pyglet.options['shadow_window'] = False
+
 pyglet.options['debug_gl'] = False
 
 from moderngl_window.context.pyglet.keys import Keys
