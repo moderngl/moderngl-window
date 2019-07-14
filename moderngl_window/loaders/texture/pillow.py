@@ -53,5 +53,5 @@ def image_data(image: Image) -> Tuple[int, bytes]:
     #       At the moment we load the data as is.
     data = image.tobytes()
     components = len(data) // (image.size[0] * image.size[1])
-    logger.debug("image_data components=%s bytes=%s", components, len(data))
+    logger.debug("image_data size=[%s, %s] components=%s bytes=%s", image.size[0], image.size[1], components, len(data))
     return components, data
