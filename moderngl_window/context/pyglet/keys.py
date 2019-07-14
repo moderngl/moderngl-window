@@ -1,5 +1,5 @@
 import pyglet
-pyglet.options['shadow_window'] = False
+# pyglet.options['shadow_window'] = False
 pyglet.options['debug_gl'] = False
 
 from pyglet.window import key

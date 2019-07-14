@@ -2,7 +2,7 @@ import platform
 
 import moderngl
 import pyglet
-pyglet.options['shadow_window'] = False
+# pyglet.options['shadow_window'] = False
 pyglet.options['debug_gl'] = False
 
 from moderngl_window.context.pyglet.keys import Keys
@@ -31,7 +31,8 @@ class Window(BaseWindow):
             depth_size=24,
             double_buffer=True,
             sample_buffers=1 if self.samples > 1 else 0,
-            samples=self.samples,
+#            samples=self.samples,
+            samples=16,
         )
 
         if self.fullscreen:
