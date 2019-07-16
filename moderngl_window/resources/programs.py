@@ -1,6 +1,6 @@
 """Shader Registry"""
 from moderngl_window.resources.base import BaseRegistry
-from moderngl_window.resources.meta import ProgramDescription
+from moderngl_window.meta import ProgramDescription
 
 
 class Programs(BaseRegistry):

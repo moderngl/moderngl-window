@@ -8,7 +8,7 @@ from pyrr import matrix44, vector3
 import moderngl
 import moderngl_window as mglw
 from moderngl_window.resources import programs
-from moderngl_window.resources.meta import ProgramDescription
+from moderngl_window.meta import ProgramDescription
 from moderngl_window import geometry
 
 from .programs import (

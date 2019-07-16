@@ -15,7 +15,7 @@ from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.opengl.vao import VAO
 from moderngl_window import resources
 from moderngl_window.resources.decorators import texture_dirs
-from moderngl_window.resources.meta import SceneDescription, TextureDescription
+from moderngl_window.meta import SceneDescription, TextureDescription
 from moderngl_window.scene import Material, MaterialTexture, Mesh, Node, Scene
 
 logger = logging.getLogger(__name__)

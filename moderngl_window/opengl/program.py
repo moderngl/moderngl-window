@@ -2,7 +2,7 @@ from typing import Tuple, Union
 
 import moderngl
 import moderngl_window
-from moderngl_window.resources.meta import ProgramDescription
+from moderngl_window.meta import ProgramDescription
 
 VERTEX_SHADER = 'VERTEX_SHADER'
 GEOMETRY_SHADER = 'GEOMETRY_SHADER'

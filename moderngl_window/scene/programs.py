@@ -6,7 +6,7 @@ import moderngl_window
 
 from moderngl_window.conf import settings
 from moderngl_window.resources import programs
-from moderngl_window.resources.meta import ProgramDescription
+from moderngl_window.meta import ProgramDescription
 
 
 settings.PROGRAM_DIRS.append(os.path.join(os.path.dirname(__file__), 'programs'))
