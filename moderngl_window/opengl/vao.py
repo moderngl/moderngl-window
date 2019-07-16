@@ -76,14 +76,18 @@ class BufferInfo:
 class VAO:
     """
     Represents a vertex array object.
+
     This is a wrapper class over ``moderngl.VertexArray`` to provide helper method.
     The main purpose is to provide render methods taking a program as parameter.
     The class will auto detect the programs attributes and add padding when needed
     to match the vertex object.
+
     A new vertexbuffer object is created and stored internally for each unique
     shader program used.
+
     A secondary purpose is to provide an alternate way to build vertexbuffers
     This can be practical when loading or creating various geometry.
+
     There is no requirements to use this class, but most methods in the
     system creating vertexbuffers will return this type. You can obtain
     a single vertexbuffer instance by calling :py:meth:`VAO.instance`
@@ -176,6 +180,7 @@ class VAO:
         """
         Register a buffer/vbo for the VAO. This can be called multiple times.
         adding multiple buffers (interleaved or not)
+
         Args:
             buffer: The buffer data. Can be ``numpy.array``, ``moderngl.Buffer`` or ``bytes``.
             buffer_format (str): The format of the buffer. (eg. ``3f 3f`` for interleaved positions and normals).
