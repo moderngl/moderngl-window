@@ -1,17 +1,4 @@
-from moderngl_window.resources.base import ResourceDescription
-
-
-class DataDescription(ResourceDescription):
-    """Describes data file to load"""
-    default_kind = 'binary'
-    resource_type = 'data'
-
-    def __init__(self, path=None, kind=None, **kwargs):
-        kwargs.update({
-            "path": path,
-            "kind": kind,
-        })
-        super().__init__(**kwargs)
+from moderngl_window.meta.base import ResourceDescription
 
 
 class ProgramDescription(ResourceDescription):
@@ -79,61 +66,3 @@ class ProgramDescription(ResourceDescription):
     def tess_evaluation_shader(self):
         """str: path to tese eval shader"""
         return self._kwargs.get('tess_evaluation_shader')
-
-
-class SceneDescription(ResourceDescription):
-    """Describes a scene to load"""
-    default_kind = None
-    resource_type = 'scenes'
-
-    def __init__(self, path=None, kind=None, **kwargs):
-        """Create a scene description
-        Keyword Args:
-            path (str): Path to resource
-            kind (str): Loader kind
-        """
-        kwargs.update({
-            "path": path,
-            "kind": kind,
-        })
-        super().__init__(**kwargs)
-
-
-class TextureDescription(ResourceDescription):
-    """Describes a texture to load"""
-    default_kind = '2d'
-    resource_type = 'textures'
-
-    def __init__(self, path: str = None, kind: str = None, flip=True, mipmap=True, image=None, **kwargs):
-        """Describes a texture resource
-
-        Args:
-            path (str): path to resource relative to search directories
-            flip (boolean): Flip the image horisontally
-            mipmap (bool): Generate mipmaps
-            kind (str): The kind of loader to use
-            image: PIL image when loading embedded resources
-        """
-        kwargs.update({
-            "path": path,
-            "kind": kind,
-            "flip": flip,
-            "mipmap": mipmap,
-            "image": image,
-        })
-        super().__init__(**kwargs)
-
-    @property
-    def flip(self) -> bool:
-        """bool: If the image should be flipped horisontally"""
-        return self._kwargs.get('flip')
-
-    @property
-    def mipmap(self) -> bool:
-        """bool: If mipmaps should be generated"""
-        return self._kwargs.get('mipmap')
-
-    @property
-    def image(self):
-        """PIL image"""
-        return self._kwargs.get('image')
