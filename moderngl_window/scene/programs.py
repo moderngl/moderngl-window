@@ -136,10 +136,10 @@ class FallbackProgram(MeshProgram):
         super().__init__(program=None)
         self.program = programs.load(ProgramDescription(path="scene_default/fallback.glsl"))
 
-    def draw(self, mesh, projection_matrix=None, view_matrix=None, camera_matrix=None, time=0):
+    def draw(self, mesh, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0):
 
         self.program["m_proj"].write(projection_matrix)
-        self.program["m_view"].write(view_matrix)
+        self.program["m_model"].write(model_matrix)
         self.program["m_cam"].write(camera_matrix)
 
         if mesh.material:
