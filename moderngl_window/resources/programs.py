@@ -1,4 +1,4 @@
-"""Shader Registry"""
+import moderngl
 from moderngl_window.resources.base import BaseRegistry
 from moderngl_window.meta import ProgramDescription
 
@@ -16,6 +16,10 @@ class Programs(BaseRegistry):
             meta.kind = 'single' if meta.path else 'separate'
 
         return super().resolve_loader(meta)
+
+    def load(self, meta: ProgramDescription) -> moderngl.Program:
+        """Loads a shader program with the configured loaders"""
+        return super().load(meta)
 
 
 programs = Programs()
