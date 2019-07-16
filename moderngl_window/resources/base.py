@@ -35,7 +35,7 @@ class BaseRegistry:
     def _loader_cls(self, python_path: str):
         return import_string(python_path)
 
-    def load(self, meta: ResourceDescription) -> 'moderngl_window.scene.Scene':
+    def load(self, meta: ResourceDescription) -> Any:
         """
         Loads a resource using the configured finders and loaders
 

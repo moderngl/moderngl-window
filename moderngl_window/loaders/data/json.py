@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class Loader(BaseLoader):
     kind = 'json'
 
-    def load(self):
+    def load(self) -> dict:
         """Load a file as json"""
         self.meta.resolved_path = self.find_data(self.meta.path)
 

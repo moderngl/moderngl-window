@@ -1,3 +1,4 @@
+import moderngl
 from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.opengl import program
 
@@ -5,7 +6,7 @@ from moderngl_window.opengl import program
 class Loader(BaseLoader):
     kind = 'separate'
 
-    def load(self):
+    def load(self) -> moderngl.Program:
         vs_source = self.load_shader("vertex", self.meta.vertex_shader)
         geo_source = self.load_shader("geometry", self.meta.geometry_shader)
         fs_source = self.load_shader("fragment", self.meta.fragment_shader)

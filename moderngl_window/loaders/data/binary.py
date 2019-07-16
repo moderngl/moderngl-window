@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 class Loader(BaseLoader):
     kind = 'binary'
 
-    def load(self):
+    def load(self) -> bytes:
         """Load a file in binary mode"""
         self.meta.resolved_path = self.find_data(self.meta.path)
 

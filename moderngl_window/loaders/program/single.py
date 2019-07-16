@@ -1,5 +1,6 @@
 import logging
 
+import moderngl
 from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.opengl import program
 
@@ -9,7 +10,7 @@ logger = logging.getLogger(__name__)
 class Loader(BaseLoader):
     kind = 'single'
 
-    def load(self):
+    def load(self) -> moderngl.Program:
         self.meta.resolved_path = self.find_program(self.meta.path)
         if not self.meta.resolved_path:
             raise ValueError("Cannot find program '{}'".format(self.meta.path))
