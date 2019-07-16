@@ -52,7 +52,7 @@ class Mesh:
 
     def draw_bbox(self, proj_matrix, view_matrix, cam_matrix, program, vao):
         program["m_proj"].write(proj_matrix)
-        program["m_view"].write(view_matrix)
+        program["m_model"].write(view_matrix)
         program["m_cam"].write(cam_matrix)
         program["bb_min"].write(self.bbox_min.astype('f4').tobytes())
         program["bb_max"].write(self.bbox_max.astype('f4').tobytes())
