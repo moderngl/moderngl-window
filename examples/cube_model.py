@@ -10,18 +10,19 @@ from moderngl_window.resources.meta import (
 from moderngl_window.scene.camera import KeyboardCamera
 
 resources.register_dir((Path(__file__).parent / 'resources').resolve())
-# resources.register_dir(r'C:\Users\efors\Documents\ModernGL\glTF-Sample-Models\2.0')
+# Test models from: https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0
+resources.register_dir(Path(__file__, '../../../glTF-Sample-Models/2.0').resolve())
 
 
 class CubeModel(mglw.WindowConfig):
     # window_size = (1920, 1080)
-    aspect_ratio = 3440 / 1440
+    aspect_ratio = 16 / 9
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.scene = resources.scenes.load(SceneDescription(path='scenes/crate.obj'))
 
-        # Test models from: https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0
+        # --- glTF-Sample-Models ---
         # self.scene = resources.scenes.load(SceneDescription(path='2CylinderEngine/glTF-Binary/2CylinderEngine.glb'))
         # self.scene = resources.scenes.load(SceneDescription(path='CesiumMilkTruck/glTF-Embedded/CesiumMilkTruck.gltf'))
         # self.scene = resources.scenes.load(SceneDescription(path='CesiumMilkTruck/glTF-Binary/CesiumMilkTruck.glb'))
@@ -42,8 +43,8 @@ class CubeModel(mglw.WindowConfig):
 
         # Create camera matrix with rotation and translation
         translation = matrix44.create_from_translation((0, 0, -1.5))
-        rotation = matrix44.create_from_eulers((time, time, time))
-        # rotation = matrix44.create_from_eulers((0, 0, 0))
+        # rotation = matrix44.create_from_eulers((time, time, time))
+        rotation = matrix44.create_from_eulers((0, 0, 0))
         model_matrix = matrix44.multiply(rotation, translation)
 
         camera_matrix = matrix44.multiply(model_matrix, self.camera.matrix)
