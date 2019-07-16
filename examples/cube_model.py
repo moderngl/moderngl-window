@@ -35,8 +35,8 @@ class CubeModel(mglw.WindowConfig):
 
         self.camera = KeyboardCamera(self.wnd.keys, fov=75.0, aspect=self.wnd.aspect_ratio, near=0.1, far=1000.0)
         # Use this for gltf scenes for better camera controls
-        if self.scene.diagonal_size > 0:
-            self.camera.velocity = self.scene.diagonal_size / 5.0
+        # if self.scene.diagonal_size > 0:
+        # self.camera.velocity = self.scene.diagonal_size / 5.0
 
     def render(self, time: float, frametime: float):
         """Render the scene"""
