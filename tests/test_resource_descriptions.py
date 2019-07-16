@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from moderngl_window.resources.meta import (
+from moderngl_window.meta import (
     DataDescription,
     ProgramDescription,
     SceneDescription,
