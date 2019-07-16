@@ -4,9 +4,11 @@ import numpy
 
 import moderngl as mlg
 from moderngl_window.opengl.vao import VAO
+from moderngl_window.geometry import AttributeNames
 
 
-def sphere(radius=0.5, sectors=32, rings=16, normals=True, uvs=True, name: str = None) -> VAO:
+def sphere(radius=0.5, sectors=32, rings=16, normals=True, uvs=True,
+           name: str = None, attr_names=AttributeNames) -> VAO:
     """Creates a sphere.
 
     Keyword Args:
@@ -16,6 +18,7 @@ def sphere(radius=0.5, sectors=32, rings=16, normals=True, uvs=True, name: str =
         normals (bool): Include normals in the VAO
         uvs (bool): Include texture coordinates in the VAO
         name (str): An optional name for the VAO
+        attr_names (AttributeNames): Attribute names
     Returns:
         A :py:class:`VAO` instance
     """
@@ -64,15 +67,15 @@ def sphere(radius=0.5, sectors=32, rings=16, normals=True, uvs=True, name: str =
     vao = VAO(name or "sphere", mode=mlg.TRIANGLES)
 
     vbo_vertices = numpy.array(vertices, dtype=numpy.float32)
-    vao.buffer(vbo_vertices, '3f', ['in_position'])
+    vao.buffer(vbo_vertices, '3f', [attr_names.POSITION])
 
     if normals:
         vbo_normals = numpy.array(normals, dtype=numpy.float32)
-        vao.buffer(vbo_normals, '3f', ['in_normal'])
+        vao.buffer(vbo_normals, '3f', [attr_names.NORMAL])
 
     if uvs:
         vbo_uvs = numpy.array(uvs, dtype=numpy.float32)
-        vao.buffer(vbo_uvs, '2f', ['in_uv'])
+        vao.buffer(vbo_uvs, '2f', [attr_names.TEXCOORD_0])
 
     vbo_elements = numpy.array(indices, dtype=numpy.uint32)
     vao.index_buffer(vbo_elements, index_element_size=4)
