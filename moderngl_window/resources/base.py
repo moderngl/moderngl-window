@@ -3,11 +3,12 @@ Base registry class
 """
 import inspect
 from functools import lru_cache
+from typing import Any, Generator, Tuple
 
 from moderngl_window.conf import settings
 from moderngl_window.exceptions import ImproperlyConfigured
 from moderngl_window.utils.module_loading import import_string
-from typing import Any, Dict, Generator, Type, Tuple
+from moderngl_window.meta.base import ResourceDescription
 
 
 class BaseRegistry:
