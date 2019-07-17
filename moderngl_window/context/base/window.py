@@ -378,6 +378,10 @@ class WindowConfig:
     #: Fixed viewport aspec ratio.
     #: Can be set to `None` to always get viewport based on window size.
     aspect_ratio = 16 / 9
+    #: Mouse cursor should be visible
+    cursor = True
+    #: Number of samples used in multisampling
+    samples = 4
 
     def __init__(self, ctx: moderngl.Context = None, wnd: BaseWindow = None, **kwargs):
         self.ctx = ctx

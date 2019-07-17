@@ -164,8 +164,8 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         gl_version=config_cls.gl_version,
         aspect_ratio=config_cls.aspect_ratio,
         vsync=values.vsync,
-        samples=values.samples,
-        cursor=values.cursor,
+        samples=values.samples or config_cls.samples,
+        cursor=values.cursor or config_cls.cursor,
     )
     window.print_context_info()
     activate_context(window=window)
@@ -210,13 +210,11 @@ def parse_args(args=None):
     parser.add_argument(
         '-s', '--samples',
         type=int,
-        default=4,
         help="Specify the desired number of samples to use for multisampling",
     )
     parser.add_argument(
         '-c', '--cursor',
         type=valid_bool,
-        default="true",
         help="Enable or disable displaying the mouse cursor",
     )
     parser.add_argument(
