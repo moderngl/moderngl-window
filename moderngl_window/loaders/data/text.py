@@ -8,6 +8,9 @@ logger = logging.getLogger(__name__)
 
 class Loader(BaseLoader):
     kind = 'text'
+    file_extensions = [
+        ['.txt'],
+    ]
 
     def load(self) -> str:
         """Load a file in text mode"""

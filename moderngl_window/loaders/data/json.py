@@ -9,6 +9,9 @@ logger = logging.getLogger(__name__)
 
 class Loader(BaseLoader):
     kind = 'json'
+    file_extensions = [
+        ['.json'],
+    ]
 
     def load(self) -> dict:
         """Load a file as json"""
