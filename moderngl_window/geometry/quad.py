@@ -5,12 +5,12 @@ from moderngl_window.opengl.vao import VAO
 from moderngl_window.geometry.attributes import AttributeNames
 
 
-def quad_fs(attrib_names=AttributeNames, normals=True, uvs=True, name=None) -> VAO:
+def quad_fs(attr_names=AttributeNames, normals=True, uvs=True, name=None) -> VAO:
     """
     Creates a screen aligned quad using two triangles with normals and texture coordiantes.
 
     Keyword Args:
-        attrib_names (AttributeNames): Attrib name config
+        attr_names (AttributeNames): Attrib name config
         normals (bool): Include normals in VAO
         uvs (bool): Include normals in VAO
         name (str): Optional name for the VAO
@@ -24,13 +24,13 @@ def quad_fs(attrib_names=AttributeNames, normals=True, uvs=True, name=None) -> V
         ypos=0.0,
         normals=normals,
         uvs=uvs,
-        attrib_names=attrib_names,
+        attr_names=attr_names,
         name=name,
     )
 
 
 def quad_2d(width=1.0, height=1.0, xpos=0.0, ypos=0.0,
-            normals=True, uvs=True, attrib_names=AttributeNames, name=None) -> VAO:
+            normals=True, uvs=True, attr_names=AttributeNames, name=None) -> VAO:
     """
     Creates a 2D quad VAO using 2 triangles with normals and texture coordinates.
 
@@ -41,7 +41,7 @@ def quad_2d(width=1.0, height=1.0, xpos=0.0, ypos=0.0,
         ypos (float): Center position y
         normals (bool): Include normals in VAO
         uvs (bool): Include normals in VAO
-        attrib_names (AttributeNames): Attrib name config
+        attr_names (AttributeNames): Attrib name config
         name (str): Optional name for the VAO
     Returns:
         A :py:class:`VAO` instance.
@@ -74,10 +74,10 @@ def quad_2d(width=1.0, height=1.0, xpos=0.0, ypos=0.0,
     ], dtype=numpy.float32)
 
     vao = VAO(name or "geometry:quad", mode=moderngl.TRIANGLES)
-    vao.buffer(pos_data, '3f', [attrib_names.POSITION])
+    vao.buffer(pos_data, '3f', [attr_names.POSITION])
     if normals:
-        vao.buffer(normal_data, '3f', [attrib_names.NORMAL])
+        vao.buffer(normal_data, '3f', [attr_names.NORMAL])
     if uvs:
-        vao.buffer(uv_data, '2f', [attrib_names.TEXCOORD_0])
+        vao.buffer(uv_data, '2f', [attr_names.TEXCOORD_0])
 
     return vao
