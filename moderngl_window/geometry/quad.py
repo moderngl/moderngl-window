@@ -46,7 +46,7 @@ def quad_2d(width=1.0, height=1.0, xpos=0.0, ypos=0.0,
     Returns:
         A :py:class:`VAO` instance.
     """
-    pos = numpy.array([
+    pos_data = numpy.array([
         xpos - width / 2.0, ypos + height / 2.0, 0.0,
         xpos - width / 2.0, ypos - height / 2.0, 0.0,
         xpos + width / 2.0, ypos - height / 2.0, 0.0,
@@ -55,7 +55,7 @@ def quad_2d(width=1.0, height=1.0, xpos=0.0, ypos=0.0,
         xpos + width / 2.0, ypos + height / 2.0, 0.0,
     ], dtype=numpy.float32)
 
-    normals = numpy.array([
+    normal_data = numpy.array([
         0.0, 0.0, 1.0,
         0.0, 0.0, 1.0,
         0.0, 0.0, 1.0,
@@ -64,7 +64,7 @@ def quad_2d(width=1.0, height=1.0, xpos=0.0, ypos=0.0,
         0.0, 0.0, 1.0,
     ], dtype=numpy.float32)
 
-    uvs = numpy.array([
+    uv_data = numpy.array([
         0.0, 1.0,
         0.0, 0.0,
         1.0, 0.0,
@@ -74,10 +74,10 @@ def quad_2d(width=1.0, height=1.0, xpos=0.0, ypos=0.0,
     ], dtype=numpy.float32)
 
     vao = VAO(name or "geometry:quad", mode=moderngl.TRIANGLES)
-    vao.buffer(pos, '3f', [attrib_names.POSITION])
+    vao.buffer(pos_data, '3f', [attrib_names.POSITION])
     if normals:
-        vao.buffer(normals, '3f', [attrib_names.NORMAL])
+        vao.buffer(normal_data, '3f', [attrib_names.NORMAL])
     if uvs:
-        vao.buffer(uvs, '2f', [attrib_names.TEXCOORD_0])
+        vao.buffer(uv_data, '2f', [attrib_names.TEXCOORD_0])
 
     return vao
