@@ -108,7 +108,7 @@ class VAO:
         except KeyError:
             raise VAOError("Invalid draw mode. Options are {}".format(DRAW_MODES.values()))
 
-        self.buffers = []
+        self._buffers = []
         self._index_buffer = None
         self._index_element_size = None
 
@@ -211,14 +211,15 @@ class VAO:
         if len(formats) != len(attribute_names):
             raise VAOError("Format '{}' does not describe attributes {}".format(buffer_format, attribute_names))
 
-        self.buffers.append(BufferInfo(buffer, buffer_format, attribute_names, per_instance=per_instance))
-        self.vertex_count = self.buffers[-1].vertices
+        self._buffers.append(BufferInfo(buffer, buffer_format, attribute_names, per_instance=per_instance))
+        self.vertex_count = self._buffers[-1].vertices
 
         return buffer
 
     def index_buffer(self, buffer, index_element_size=4):
         """
         Set the index buffer for this VAO
+
         Args:
             buffer: ``moderngl.Buffer``, ``numpy.array`` or ``bytes``
         Keyword Args:
@@ -237,10 +238,15 @@ class VAO:
         self._index_element_size = index_element_size
 
     def instance(self, program: moderngl.Program) -> moderngl.VertexArray:
-        """
-        Obtain the ``moderngl.VertexArray`` instance for the program.
+        """Obtain the ``moderngl.VertexArray`` instance for the program.
+
         The instance is only created once and cached internally.
-        Returns: ``moderngl.VertexArray`` instance
+
+        Args:
+            program (moderngl.Program): The program
+
+        Returns:
+            ``moderngl.VertexArray``: instance
         """
         vao = self.vaos.get(program.glo)
         if vao:
@@ -255,14 +261,14 @@ class VAO:
                 continue
 
             # Do we have a buffer mapping to this attribute?
-            if not sum(buffer.has_attribute(attrib_name) for buffer in self.buffers):
+            if not sum(buffer.has_attribute(attrib_name) for buffer in self._buffers):
                 raise VAOError("VAO {} doesn't have attribute {} for program {}".format(
                     self.name, attrib_name, program.name))
 
         vao_content = []
 
         # Pick out the attributes we can actually map
-        for buffer in self.buffers:
+        for buffer in self._buffers:
             content = buffer.content(program_attributes)
             if content:
                 vao_content.append(content)
@@ -291,15 +297,31 @@ class VAO:
         Keyword Args:
             buffers (bool): also release buffers
         """
-        for key, vao in self.vaos:
+        for _, vao in self.vaos.items():
             vao.release()
 
         if buffer:
-            for buff in self.buffers:
+            for buff in self._buffers:
                 buff.buffer.release()
 
             if self._index_buffer:
                 self._index_buffer.release()
+
+    def get_buffer_by_name(self, name: str) -> BufferInfo:
+        """Get the BufferInfo associated with a specific attribute name
+
+        If no buffer is associated with the name `None` will be returned.
+
+        Args:
+            name (str): Name of the mapped attribute
+        Returns:
+            BufferInfo: BufferInfo instance
+        """
+        for buffer in self._buffers:
+            if name in buffer.attributes:
+                return buffer
+
+        return None
 
 
 class VAOError(Exception):
