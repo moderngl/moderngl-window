@@ -1,9 +1,11 @@
 import time
 from math import cos, radians, sin
 
+import numpy
+from pyrr import Vector3, matrix44, vector, vector3
+
 from moderngl_window.opengl.projection import Projection
 from moderngl_window.context.base import BaseKeys
-from pyrr import Vector3, matrix44, vector, vector3
 
 # Direction Definitions
 RIGHT = 1
@@ -54,14 +56,14 @@ class Camera:
         self.position = Vector3([x, y, z])
 
     @property
-    def matrix(self):
+    def matrix(self) -> numpy.ndarray:
         """
         Returns: The current view matrix for the camera
         """
         self._update_yaw_and_pitch()
         return self._gl_look_at(self.position, self.position + self.dir, self._up)
 
-    def _update_yaw_and_pitch(self):
+    def _update_yaw_and_pitch(self) -> None:
         """
         Updates the camera vectors based on the current yaw and pitch
         """
@@ -74,7 +76,7 @@ class Camera:
         self.right = vector.normalise(vector3.cross(self.dir, self._up))
         self.up = vector.normalise(vector3.cross(self.right, self.dir))
 
-    def look_at(self, vec=None, pos=None):
+    def look_at(self, vec=None, pos=None) -> numpy.ndarray:
         """
         Look at a specific point
         :param vec: Vector3 position
@@ -89,7 +91,7 @@ class Camera:
 
         return self._gl_look_at(self.position, vec, self._up)
 
-    def _gl_look_at(self, pos, target, up):
+    def _gl_look_at(self, pos, target, up) -> numpy.ndarray:
         """
         The standard lookAt method
         :param pos: current position
@@ -137,7 +139,7 @@ class KeyboardCamera(Camera):
 
         super().__init__(fov=fov, aspect=aspect, near=near, far=far)
 
-    def key_input(self, key, action, modifiers):
+    def key_input(self, key, action, modifiers) -> None:
         """Process key inputs and move camera"""
         # Right
         if key == self.keys.D:
@@ -178,25 +180,25 @@ class KeyboardCamera(Camera):
             if action == self.keys.ACTION_RELEASE:
                 self.move_up(False)
 
-    def move_left(self, activate):
+    def move_left(self, activate) -> None:
         self.move_state(LEFT, activate)
 
-    def move_right(self, activate):
+    def move_right(self, activate) -> None:
         self.move_state(RIGHT, activate)
 
-    def move_forward(self, activate):
+    def move_forward(self, activate) -> None:
         self.move_state(FORWARD, activate)
 
-    def move_backward(self, activate):
+    def move_backward(self, activate) -> None:
         self.move_state(BACKWARD, activate)
 
-    def move_up(self, activate):
+    def move_up(self, activate) -> None:
         self.move_state(UP, activate)
 
     def move_down(self, activate):
         self.move_state(DOWN, activate)
 
-    def move_state(self, direction, activate):
+    def move_state(self, direction, activate) -> None:
         """
         Set the camera position move state
         :param direction: What direction to update
@@ -215,7 +217,7 @@ class KeyboardCamera(Camera):
         elif direction == DOWN:
             self._ydir = NEGATIVE if activate else STILL
 
-    def rot_state(self, x, y):
+    def rot_state(self, x, y) -> None:
         """
         Set the rotation state of the camera
         :param x: viewport x pos
@@ -246,7 +248,7 @@ class KeyboardCamera(Camera):
         self._update_yaw_and_pitch()
 
     @property
-    def matrix(self):
+    def matrix(self) -> numpy.ndarray:
         """
         Returns: The current view matrix for the camera
         """
