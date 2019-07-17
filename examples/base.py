@@ -18,6 +18,9 @@ class CameraWindow(mglw.WindowConfig):
     def key_event(self, key, action, modifiers):
         self.camera.key_input(key, action, modifiers)
 
+        if key == self.wnd.keys.SPACE and action == self.wnd.keys.ACTION_PRESS:
+            self.timer.toggle_pause()
+
     def mouse_position_event(self, x: int, y: int):
         self.camera.rot_state(x, y)
 
