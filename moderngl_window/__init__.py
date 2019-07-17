@@ -169,9 +169,9 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     )
     window.print_context_info()
     activate_context(window=window)
-    window.config = config_cls(ctx=window.ctx, wnd=window)
-
     timer = Timer()
+    window.config = config_cls(ctx=window.ctx, wnd=window, timer=timer)
+
     timer.start()
 
     while not window.is_closing:

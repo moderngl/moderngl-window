@@ -4,7 +4,8 @@ import sys
 from typing import Any, Tuple, Type
 
 import moderngl
-from moderngl_window.context.base import KeyModifiers
+from moderngl_window.context.base import KeyModifiers, BaseKeys
+from moderngl_window.timers.base import BaseTimer
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +24,7 @@ class BaseWindow:
     """
     Helper base class for a generic window implementation
     """
-    keys = None  # type: BaseKeys
+    keys = BaseKeys
 
     def __init__(self, title="Example", gl_version=(3, 3), size=(1280, 720), resizable=True,
                  fullscreen=False, vsync=True, aspect_ratio=16/9, samples=4, cursor=True,
@@ -383,9 +384,17 @@ class WindowConfig:
     #: Number of samples used in multisampling
     samples = 4
 
-    def __init__(self, ctx: moderngl.Context = None, wnd: BaseWindow = None, **kwargs):
+    def __init__(self, ctx: moderngl.Context = None, wnd: BaseWindow = None, timer: BaseTimer = None, **kwargs):
+        """Initialize the window config
+
+        Keyword Args:
+            ctx: The moderngl context
+            wnd: The window instance
+            timer: The timer
+        """
         self.ctx = ctx
         self.wnd = wnd
+        self.timer = timer
 
     def render(self, time: float, frame_time: float):
         """Renders the assigned effect
