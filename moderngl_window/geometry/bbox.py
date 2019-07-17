@@ -5,21 +5,19 @@ from moderngl_window.opengl.vao import VAO
 from moderngl_window.geometry import AttributeNames
 
 
-def bbox(width=1.0, height=1.0, depth=1.0, name=None, attr_names=AttributeNames):
+def bbox(size=(1.0, 1.0, 1.0), name=None, attr_names=AttributeNames):
     """
     Generates a bounding box with (0.0, 0.0, 0.0) as the center.
     This is simply a box with ``LINE_STRIP`` as draw mode.
 
     Keyword Args:
-        width (float): Width of the box
-        height (float): Height of the box
-        depth (float): Depth of the box
+        size (tuple): x, y, z size of the box
         name (str): Optional name for the VAO
         attr_names (AttributeNames): Attribute names
     Returns:
         A :py:class:`moderngl_window.opengl.vao.VAO` instance
     """
-    width, height, depth = width / 2.0, height / 2.0, depth / 2.0
+    width, height, depth = size[0] / 2.0, size[1] / 2.0, size[2] / 2.0
     pos = numpy.array([
         width, -height, depth,
         width, height, depth,
