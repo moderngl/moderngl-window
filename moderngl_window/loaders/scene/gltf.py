@@ -73,6 +73,8 @@ class GLTF2(BaseLoader):
         ['.gltf'],
         ['.glb'],
     ]
+    # Supported GLTF extensions
+    # https://github.com/KhronosGroup/glTF/tree/master/extensions
     supported_extensions = []
 
     def __init__(self, meta: SceneDescription):
