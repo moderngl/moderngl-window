@@ -9,8 +9,8 @@ class AttributeNames:
 
     This works as a lookup for buffer names when creating VAO instances.
 
-    The class instance can be used directly or an instance
-    with overrides can be created. Optionally it can be extended.
+    This class can be used directly or an instance of the class can be used with overrides.
+    Optionally it can be extended into a new class.
     """
     POSITION = 'in_position'
     NORMAL = 'in_normal'
@@ -32,7 +32,19 @@ class AttributeNames:
             joints_0: str = None,
             weights: str = None,
             **kwargs):
-        """Override default values"""
+        """Override default values.
+        All attributes will be set on the instance as upper case strings
+
+        Keyword Args:
+                position (str): Name for position buffers/attribute
+                normal (str): Name for normal buffer/attribute
+                tangent (str): name for tangent buffer/attribute
+                texcoord_0 (str): Name for texcoord 0 buffer/attribute
+                texcoord_1 (str): Name for texcoord 1 buffer/attribute
+                color_0 (str): name for vertex color buffer/attribute
+                joints_0 (str): Name for joints buffer/attribute
+                weights (str): Name for weights buffer/attribute
+        """
         self.apply_values({
             'position': position,
             'normal': normal,
@@ -45,8 +57,8 @@ class AttributeNames:
             **kwargs,
         })
 
-    def apply_values(self, **kwargs):
+    def apply_values(self, kwargs):
         """Only applies attribute values not None"""
         for key, value in kwargs.items():
             if value:
-                setattr(self, key, value)
+                setattr(self, key.upper(), value)
