@@ -30,3 +30,7 @@ class GeometryBbox(CameraWindow):
         self.prog['m_proj'].write(self.camera.projection.tobytes())
         self.prog['m_cam'].write(self.camera.matrix.astype('f4').tobytes())
         self.bbox.render(self.prog)
+
+
+if __name__ == '__main__':
+    mglw.run_window_config(GeometryBbox)
