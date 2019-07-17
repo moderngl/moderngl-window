@@ -1,12 +1,5 @@
-import moderngl
-
 import moderngl_window as mglw
-from moderngl_window import geometry
-from moderngl_window import resources
-from moderngl_window.meta import ProgramDescription
 from moderngl_window.scene.camera import KeyboardCamera
-
-from pyrr import matrix44
 
 
 class CameraWindow(mglw.WindowConfig):
