@@ -18,8 +18,10 @@ class GeometryBbox(mglw.WindowConfig):
         self.camera = KeyboardCamera(self.wnd.keys, aspect=self.wnd.aspect_ratio)
 
         self.prog['color'].value = (1, 1, 1)
+
         self.prog['bb_min'].value = (-2, -2, -2)
         self.prog['bb_max'].value = (2, 2, 2)
+
         self.prog['m_model'].write(matrix44.create_from_translation([0.0, 0.0, -8.0], dtype='f4'))
 
     def render(self, time: float, frame_time: float):
