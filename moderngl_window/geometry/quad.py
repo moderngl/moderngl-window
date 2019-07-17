@@ -39,6 +39,9 @@ def quad_2d(width=1.0, height=1.0, xpos=0.0, ypos=0.0,
         height (float): Height of the quad
         xpos (float): Center position x
         ypos (float): Center position y
+        normals (bool): Include normals in VAO
+        uvs (bool): Include normals in VAO
+        attrib_names (AttributeNames): Attrib name config
         name (str): Optional name for the VAO
     Returns:
         A :py:class:`VAO` instance.
