@@ -5,10 +5,9 @@ from moderngl_window.context.headless.keys import Keys
 
 
 class Window(BaseWindow):
-    """
-    Headless window.
+    """Headless window.
 
-    Do not currently support any form window events or key input
+    Do not currently support any form window events or key input.
     """
     keys = Keys
 
@@ -54,8 +53,6 @@ class Window(BaseWindow):
         This may change in the future.
         """
         # TODO: No double buffering currently
-        pass
 
     def destroy(self) -> None:
         # TODO: A context can currently not be invaldiated in ModernGL
-        pass
