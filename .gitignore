@@ -55,3 +55,4 @@ venv.bak/
 # Misc local
 /test.py
 .mypy_cache
+/random_fun/
