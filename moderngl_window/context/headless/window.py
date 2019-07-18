@@ -53,6 +53,8 @@ class Window(BaseWindow):
         This may change in the future.
         """
         # TODO: No double buffering currently
+        pass
 
     def destroy(self) -> None:
         # TODO: A context can currently not be invaldiated in ModernGL
+        pass
