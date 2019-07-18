@@ -18,10 +18,7 @@ def quad_fs(attr_names=AttributeNames, normals=True, uvs=True, name=None) -> VAO
         A :py:class:`demosys.opengl.vao.VAO` instance.
     """
     return quad_2d(
-        width=2.0,
-        height=2.0,
-        xpos=0.0,
-        ypos=0.0,
+        size=(2.0, 2.0),
         normals=normals,
         uvs=uvs,
         attr_names=attr_names,
@@ -29,16 +26,14 @@ def quad_fs(attr_names=AttributeNames, normals=True, uvs=True, name=None) -> VAO
     )
 
 
-def quad_2d(width=1.0, height=1.0, xpos=0.0, ypos=0.0,
+def quad_2d(size=(1.0, 1.0), pos=(0.0, 0.0),
             normals=True, uvs=True, attr_names=AttributeNames, name=None) -> VAO:
     """
     Creates a 2D quad VAO using 2 triangles with normals and texture coordinates.
 
     Keyword Args:
-        width (float): Width of the quad
-        height (float): Height of the quad
-        xpos (float): Center position x
-        ypos (float): Center position y
+        size (tuple): width and height
+        pos (float): Center position x and y
         normals (bool): Include normals in VAO
         uvs (bool): Include normals in VAO
         attr_names (AttributeNames): Attrib name config
@@ -46,6 +41,9 @@ def quad_2d(width=1.0, height=1.0, xpos=0.0, ypos=0.0,
     Returns:
         A :py:class:`VAO` instance.
     """
+    width, height = size
+    xpos, ypos = pos
+
     pos_data = numpy.array([
         xpos - width / 2.0, ypos + height / 2.0, 0.0,
         xpos - width / 2.0, ypos - height / 2.0, 0.0,
