@@ -14,12 +14,16 @@ class Window(BaseWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._fbo = None
+        self._vsync = False  # We don't care about vsync in headless mode
+        self._resizable = False  # headless window is not resizable
+        self._cursor = False  # Headless don't have a cursor
         self.init_mgl_context()
+        self.set_default_viewport()
 
     @property
     def fbo(self) -> moderngl.Framebuffer:
         """moderngl.Framebuffer: The default framebuffer"""
-        return self._ctx.screen
+        return self._fbo
 
     def init_mgl_context(self) -> None:
         """Create an standalone context and framebuffer"""
@@ -28,6 +32,7 @@ class Window(BaseWindow):
             color_attachments=self.ctx.texture(self.size, 4),
             depth_attachment=self.ctx.depth_texture(self.size),
         )
+        self.use()
 
     def use(self):
         """Bind the window's framebuffer"""
@@ -53,7 +58,7 @@ class Window(BaseWindow):
         This may change in the future.
         """
         # TODO: No double buffering currently
-        pass
+        self._frames += 1
 
     def destroy(self) -> None:
         # TODO: A context can currently not be invaldiated in ModernGL
