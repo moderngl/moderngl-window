@@ -280,11 +280,11 @@ class BaseWindow:
         """
         self._ctx.screen.clear(red=red, green=green, blue=blue, alpha=alpha, depth=depth, viewport=viewport)
 
-    def render(self, time: float, frame_time: float) -> None:
+    def render(self, time=0.0, frame_time=0.0) -> None:
         """
         Renders a frame by calling the configured render callback
 
-        Args:
+        Keyword Args:
             time (float): Current time in seconds
             frame_time (float): Delta time from last frame in seconds
         """
