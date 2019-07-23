@@ -6,7 +6,8 @@ class TextureDescription(ResourceDescription):
     default_kind = '2d'
     resource_type = 'textures'
 
-    def __init__(self, path: str = None, kind: str = None, flip=True, mipmap=True, image=None, **kwargs):
+    def __init__(self, path: str = None, kind: str = None, flip=True, mipmap=True,
+                 image=None, layers=None, **kwargs):
         """Describes a texture resource
 
         Args:
@@ -15,12 +16,14 @@ class TextureDescription(ResourceDescription):
             mipmap (bool): Generate mipmaps
             kind (str): The kind of loader to use
             image: PIL image when loading embedded resources
+            layers: (int): Number of layers for texture arrays
         """
         kwargs.update({
             "path": path,
             "kind": kind,
             "flip": flip,
             "mipmap": mipmap,
+            "layers": layers,
             "image": image,
         })
         super().__init__(**kwargs)
@@ -34,6 +37,11 @@ class TextureDescription(ResourceDescription):
     def mipmap(self) -> bool:
         """bool: If mipmaps should be generated"""
         return self._kwargs.get('mipmap')
+
+    @property
+    def layers(self) -> int:
+        """Number of layers in texture array"""
+        return self._kwargs.get('layers')
 
     @property
     def image(self):

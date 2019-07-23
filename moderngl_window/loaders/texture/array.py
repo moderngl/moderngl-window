@@ -6,7 +6,7 @@ class Loader(PillowLoader):
 
     def __init__(self, meta):
         super().__init__(meta)
-        self.layers = self.meta.kwargs.get('layers')
+        self.layers = self.meta.layers
 
         if self.layers is None:
             raise ValueError("TextureArray requires layers parameter")
