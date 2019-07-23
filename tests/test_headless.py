@@ -1,6 +1,13 @@
+from pathlib import Path
+
 import moderngl
 from headless import HeadlessTestCase
-from moderngl_window.context.headless import Keys, Window
+from moderngl_window.context.headless import Keys
+from moderngl_window import resources
+from moderngl_window.meta import ProgramDescription
+from moderngl_window import geometry
+
+resources.register_dir((Path(__file__).parent / 'fixtures' / 'resources').resolve())
 
 
 class HeadlessWindowTestCase(HeadlessTestCase):
@@ -34,6 +41,18 @@ class HeadlessWindowTestCase(HeadlessTestCase):
         self.assertEqual(self.window.frames, frame + 1)
 
     def test_functions(self):
+        """Ensure the basic functions do not cause crashes"""
         self.window.swap_buffers()
         self.window.clear()
         self.window.render(0, 0)
+
+    def test_render(self):
+        """Render something simple to the framebuffer"""
+        self.window.use()
+        prog = resources.programs.load(ProgramDescription(path="programs/white.glsl"))
+        quad = geometry.quad_fs()
+        quad.render(prog)
+
+        # Ensure all fragments (rgba) values are white
+        data = self.window.fbo.read(components=4)
+        self.assertEqual(data, b'\xff' * (self.window_size[0] * self.window_size[1] * 4))
