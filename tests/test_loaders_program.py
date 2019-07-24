@@ -44,6 +44,12 @@ class TextureLoadersTestCase(HeadlessTestCase):
         # Ensure attribute is present
         program['in_position']
         self.assertIsInstance(program.extra.get('meta'), ProgramDescription)
+        self.assertEqual(program.name, 'programs/white.glsl')
+        self.assertIsInstance(program.ctx, moderngl.Context)
+        self.assertIsNotNone(program.get('in_position', None))
+        self.assertIsNotNone(program.mglo)
+        self.assertGreater(program.glo, 0)
+        repr(program)
 
     def test_separate_geometry(self):
         program = resources.programs.load(ProgramDescription(
