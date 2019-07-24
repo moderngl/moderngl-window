@@ -270,4 +270,4 @@ class ReloadableProgram:
         return self.program.geometry_vertices
 
     def __repr__(self):
-        return '<ReloadableProgram: {} id={}>'.format(self.name, self.mglo.glo)
+        return '<ReloadableProgram: {} id={}>'.format(self.name, self.glo)
