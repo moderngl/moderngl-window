@@ -1,5 +1,4 @@
 from pathlib import Path
-from unittest import TestCase
 
 from headless import HeadlessTestCase
 from moderngl_window import resources
