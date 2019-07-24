@@ -22,6 +22,21 @@ class TextureLoadersTestCase(HeadlessTestCase):
         program['in_position']
         self.assertIsInstance(program.extra.get('meta'), ProgramDescription)
 
+    def test_single_feedback(self):
+        """Load transform feedback shader"""
+        program = resources.programs.load(ProgramDescription(path='programs/feedback.glsl'))
+        self.assertIsInstance(program, moderngl.Program)
+
+    def test_single_geometry(self):
+        """Load single glsl file with gemotry shader"""
+        program = resources.programs.load(ProgramDescription(path='programs/billboards/billboards.glsl'))
+        self.assertIsInstance(program, moderngl.Program)
+
+    def test_single_tesselation(self):
+        """Load single glsl file with tessellation"""
+        program = resources.programs.load(ProgramDescription(path='programs/terrain/terrain.glsl'))
+        self.assertIsInstance(program, moderngl.Program)
+
     def test_single_reloadable(self):
         """Load a single file glsl program as reloadable"""
         program = resources.programs.load(ProgramDescription(path='programs/white.glsl', reloadable=True))
@@ -29,6 +44,14 @@ class TextureLoadersTestCase(HeadlessTestCase):
         # Ensure attribute is present
         program['in_position']
         self.assertIsInstance(program.extra.get('meta'), ProgramDescription)
+
+    def test_separate_geometry(self):
+        program = resources.programs.load(ProgramDescription(
+            vertex_shader="programs/billboards/billboards_vs.glsl",
+            geometry_shader="programs/billboards/billboards_gs.glsl",
+            fragment_shader="programs/billboards/billboards_fs.glsl",
+        ))
+        self.assertIsInstance(program, moderngl.Program)
 
     def test_separate_tesselation(self):
         """Load a more complex tesselation program from separate files"""
