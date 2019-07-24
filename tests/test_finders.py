@@ -1,6 +1,7 @@
 from pathlib import Path
 from unittest import TestCase
 
+from moderngl_window.finders.base import BaseFilesystemFinder
 from moderngl_window.finders import (
     data,
     program,
@@ -60,3 +61,24 @@ class FinderTestCase(TestCase):
             finder = data.FileSystemFinder()
             result = finder.find(Path(self.root, Path('data/data.json')))
             self.assertIsNone(result)
+
+    def test_no_search_dirs(self):
+        """When no search dirs the finder should return None"""
+        with settings_context({'DATA_DIRS': []}):
+            finder = data.FileSystemFinder()
+            result = finder.find(Path('data/data.json'))
+            self.assertIsNone(result)
+
+    def test_non_path(self):
+        """Raise ValueError if finder gets non-Path instance"""
+        finder = data.FileSystemFinder()
+        with self.assertRaises(ValueError):
+            finder.find('test')
+
+    def test_custom_finder_missing_setting(self):
+        """Ensure broken finder with nonexisting settings attr is detected"""
+        class BrokenFinder(BaseFilesystemFinder):
+            settings_attr = "NOPE"
+
+        with self.assertRaises(ImproperlyConfigured):
+            BrokenFinder()
