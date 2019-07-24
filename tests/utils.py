@@ -8,7 +8,7 @@ from moderngl_window import conf
 @contextmanager
 def settings_context(values: dict):
     """Override conf.settings
-    
+
     Args:
         values (dict): Dictionary containing settings values
     """
