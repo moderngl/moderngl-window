@@ -1,6 +1,7 @@
 import moderngl
 from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.opengl import program
+from moderngl_window.exceptions import ImproperlyConfigured
 
 
 class Loader(BaseLoader):
@@ -37,7 +38,7 @@ class Loader(BaseLoader):
         if path:
             resolved_path = self.find_program(path)
             if not resolved_path:
-                raise ValueError("Cannot find {} shader '{}'".format(shader_type, path))
+                raise ImproperlyConfigured("Cannot find {} shader '{}'".format(shader_type, path))
 
             print("Loading:", path)
 

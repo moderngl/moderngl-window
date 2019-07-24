@@ -3,6 +3,7 @@ import logging
 import moderngl
 from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.opengl import program
+from moderngl_window.exceptions import ImproperlyConfigured
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +14,7 @@ class Loader(BaseLoader):
     def load(self) -> moderngl.Program:
         self.meta.resolved_path = self.find_program(self.meta.path)
         if not self.meta.resolved_path:
-            raise ValueError("Cannot find program '{}'".format(self.meta.path))
+            raise ImproperlyConfigured("Cannot find program '{}'".format(self.meta.path))
 
         logger.info("Loading: %s", self.meta.path)
 
