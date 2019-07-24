@@ -1,8 +1,10 @@
 from pathlib import Path
 
+import moderngl
 from headless import HeadlessTestCase
 from moderngl_window import resources
 from moderngl_window.meta import TextureDescription
+from moderngl_window.exceptions import ImproperlyConfigured
 
 resources.register_dir((Path(__file__).parent / 'fixtures' / 'resources').resolve())
 
@@ -17,6 +19,16 @@ class TextureLoadersTestCase(HeadlessTestCase):
         self.assertEqual(texture.size, (192, 192))
         self.assertIsInstance(texture.extra.get('meta'), TextureDescription)
 
+    def test_texture_2d_8bit(self):
+        """Test loading 8 bit texture with palette"""
+        texture = resources.textures.load(TextureDescription(path='textures/8bit.png'))
+        self.assertIsInstance(texture, moderngl.Texture)
+
+    def test_texture_not_found(self):
+        """Ensure ImproperlyConfigured is raised if texture is not found"""
+        with self.assertRaises(ImproperlyConfigured):
+            resources.textures.load(TextureDescription(path='textures/doesnotexist.png'))
+
     def test_texture_array(self):
         """Load texture array"""
         texture = resources.textures.load(
@@ -24,3 +36,10 @@ class TextureLoadersTestCase(HeadlessTestCase):
         )
         self.assertEqual(texture.size, (256, 256, 10))
         self.assertIsInstance(texture.extra.get('meta'), TextureDescription)
+
+    def test_texture_array_no_layers(self):
+        """Ensure error is raised when no layer is defined"""
+        with self.assertRaises(ImproperlyConfigured):
+            resources.textures.load(
+                TextureDescription(path='textures/array.png', kind="array")
+            )
