@@ -14,9 +14,11 @@ class TextureLoadersTestCase(HeadlessTestCase):
     def test_texture_2d(self):
         texture = resources.textures.load(TextureDescription(path='textures/crate.png'))
         self.assertEqual(texture.size, (192, 192))
+        self.assertIsInstance(texture.extra.get('meta'), TextureDescription)
 
     def test_texture_array(self):
         texture = resources.textures.load(
             TextureDescription(path='textures/array.png', layers=10, kind="array")
         )
         self.assertEqual(texture.size, (256, 256, 10))
+        self.assertIsInstance(texture.extra.get('meta'), TextureDescription)
