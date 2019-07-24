@@ -9,6 +9,7 @@ from moderngl_window.opengl.vao import VAO
 from moderngl_window.scene import Material, Mesh, Node, Scene
 from moderngl_window.exceptions import ImproperlyConfigured
 
+
 class STLLoader(BaseLoader):
     kind = 'stl'
     file_extensions = [
