@@ -9,7 +9,7 @@ class BaseTimer:
 
     A core feature of a timer is being able to:
 
-    * Pause the current 
+    * Pause the current
 
     All methods must be implemented.
     """

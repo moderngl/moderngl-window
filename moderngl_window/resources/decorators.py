@@ -14,4 +14,4 @@ def texture_dirs(paths: List[Union[Path, str]]):
     original_dirs = settings.DATA_DIRS
     settings.TEXTURE_DIRS = paths
     yield None
-    settings.TEXTURE_DIRS =  original_dirs
+    settings.TEXTURE_DIRS = original_dirs

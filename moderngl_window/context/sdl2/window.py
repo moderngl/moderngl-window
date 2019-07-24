@@ -1,7 +1,6 @@
 import sdl2
 import sdl2.ext
 import sdl2.video
-import moderngl
 
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.sdl2.keys import Keys

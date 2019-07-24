@@ -1,3 +1,4 @@
+# flake8: noqa E741
 
 class KeyModifiers:
     """Namespace for storing key modifiers"""

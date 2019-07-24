@@ -10,7 +10,7 @@ setup(
     author="Einar Forselv",
     author_email="eforselv@gmail.com",
     packages=find_namespace_packages(include=['moderngl_window', 'moderngl_window.*']),
-    keywords = ['moderngl', 'window', 'context'],
+    keywords=['moderngl', 'window', 'context'],
     license='MIT',
     platforms=['any'],
     python_requires='>=3.5',

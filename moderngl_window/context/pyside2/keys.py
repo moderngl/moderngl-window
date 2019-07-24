@@ -1,3 +1,4 @@
+# flake8: noqa E741
 from PySide2.QtCore import Qt
 
 from moderngl_window.context.base import BaseKeys

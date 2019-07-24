@@ -89,7 +89,7 @@ class Scene:
 
     def draw_bbox(self, projection_matrix=None, camera_matrix=None, children=True) -> None:
         """Draw scene and mesh bounding boxes
-        
+
         Args:
             projection_matrix (ndarray): mat4 projection
             camera_matrix (ndarray): mat4 camera matrix
@@ -135,7 +135,7 @@ class Scene:
                         raise ValueError("apply() must return a MeshProgram instance, not {}".format(type(instance)))
 
             if not mesh.mesh_program:
-                logger.warning("WARING: No mesh program applied to '%s'",mesh.name)
+                logger.warning("WARING: No mesh program applied to '%s'", mesh.name)
 
     def calc_scene_bbox(self) -> None:
         """Calculate scene bbox"""

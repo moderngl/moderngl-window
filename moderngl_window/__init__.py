@@ -7,10 +7,9 @@ import argparse
 import logging
 import os
 import sys
-import time
 
 from pathlib import Path
-from typing import List, Type, Union
+from typing import List, Type
 
 import moderngl
 from moderngl_window.context.base import WindowConfig, BaseWindow
@@ -94,7 +93,7 @@ def get_window_cls(window: str = None) -> Type[BaseWindow]:
     return import_string(window)
 
 
-def get_local_window_cls(window: str = None) ->  Type[BaseWindow]:
+def get_local_window_cls(window: str = None) -> Type[BaseWindow]:
     """
     Attept to obtain a window class in the moderngl_window package
     using short window names such as `pyqt5` or `glfw`.

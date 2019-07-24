@@ -1,5 +1,4 @@
 import glfw
-import moderngl
 
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.glfw.keys import Keys

@@ -1,3 +1,4 @@
+# flake8: noqa E741
 import platform
 import pyglet
 

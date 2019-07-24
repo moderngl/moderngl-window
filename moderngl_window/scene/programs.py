@@ -29,7 +29,7 @@ class MeshProgram:
         """moderngl.Context: The current context"""
         return moderngl_window.ctx()
 
-    def draw(self, mesh: 'Mesh', projection_matrix: numpy.ndarray = None,
+    def draw(self, mesh: 'moderngl.scene.mesh.MESH', projection_matrix: numpy.ndarray = None,
              model_matrix: numpy.ndarray = None, camera_matrix: numpy.ndarray = None, time=0.0):
         """Draw code for the mesh
 

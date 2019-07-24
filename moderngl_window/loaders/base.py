@@ -77,7 +77,7 @@ class BaseLoader:
 
     def _find(self, path: Path, finders: list):
         """Find the first occurance of this path in all finders.
- 
+
         Args:
             path (Path): The path to find
         """

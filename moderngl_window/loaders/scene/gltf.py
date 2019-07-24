@@ -179,7 +179,7 @@ class GLTF2(BaseLoader):
         for sampler in self.gltf.samplers:
             # Use a sane default sampler if the sampelr data is empty
             # Samplers can simply just be json data: "{}"
-            if sampler.minFilter == sampler.magFilter == None:
+            if sampler.minFilter is sampler.magFilter is None:
                 self.samplers.append(
                     self.ctx.sampler(
                         filter=(moderngl.LINEAR_MIPMAP_LINEAR, moderngl.LINEAR),

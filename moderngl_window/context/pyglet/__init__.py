@@ -1,2 +1,2 @@
-from .keys import Keys
-from .window import Window
+from .keys import Keys  # noqa
+from .window import Window  # noqa

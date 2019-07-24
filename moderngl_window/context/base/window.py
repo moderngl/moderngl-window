@@ -27,7 +27,7 @@ class BaseWindow:
     keys = BaseKeys
 
     def __init__(self, title="Example", gl_version=(3, 3), size=(1280, 720), resizable=True,
-                 fullscreen=False, vsync=True, aspect_ratio=16/9, samples=4, cursor=True,
+                 fullscreen=False, vsync=True, aspect_ratio=16 / 9, samples=4, cursor=True,
                  **kwargs):
         """
         Args:
@@ -111,7 +111,7 @@ class BaseWindow:
     def width(self) -> int:
         """int: The current window width"""
         return self._width
-    
+
     @property
     def height(self) -> int:
         """int: The current window height"""
@@ -251,7 +251,7 @@ class BaseWindow:
 
     def is_key_pressed(self, key) -> bool:
         """Returns: The press state of a key"""
-        return self._key_pressed_map.get(key) == True
+        return self._key_pressed_map.get(key) is True
 
     @property
     def is_closing(self) -> bool:
@@ -325,7 +325,7 @@ class BaseWindow:
 
             if expected_width > self._buffer_width:
                 expected_width = self._buffer_width
-                expected_height =  int(expected_width / self._aspect_ratio)
+                expected_height = int(expected_width / self._aspect_ratio)
 
             blank_space_x = self._buffer_width - expected_width
             blank_space_y = self._buffer_height - expected_height
@@ -347,7 +347,7 @@ class BaseWindow:
         Generates the version code integer for the selected OpenGL version.
         Example: gl_version (4, 1) returns 410
         """
-        return self.gl_version[0] * 100 +  self.gl_version[1] * 10
+        return self.gl_version[0] * 100 + self.gl_version[1] * 10
 
     def print_context_info(self):
         """

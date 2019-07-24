@@ -1,4 +1,3 @@
-import moderngl
 from PyQt5 import QtCore, QtOpenGL, QtWidgets
 
 from moderngl_window.context.base import BaseWindow
@@ -112,7 +111,7 @@ class Window(BaseWindow):
         self.app.processEvents()
         self._frames += 1
 
-    def resize(self, width: int,  height: int):
+    def resize(self, width: int, height: int):
         """
         Replacement for Qt's resizeGL method.
         """

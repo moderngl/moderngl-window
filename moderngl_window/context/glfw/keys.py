@@ -1,3 +1,4 @@
+# flake8: noqa E741
 import glfw
 
 from moderngl_window.context.base import BaseKeys

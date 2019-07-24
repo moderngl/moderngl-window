@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any, Dict, Generator, Type, Tuple
+from typing import Dict, Type
 
 
 class ResourceDescription:
