@@ -1,4 +1,5 @@
 from moderngl_window.loaders.texture.pillow import PillowLoader, image_data
+from moderngl_window.exceptions import ImproperlyConfigured
 
 
 class Loader(PillowLoader):
@@ -9,7 +10,7 @@ class Loader(PillowLoader):
         self.layers = self.meta.layers
 
         if self.layers is None:
-            raise ValueError("TextureArray requires layers parameter")
+            raise ImproperlyConfigured("TextureArray requires layers parameter")
 
     def load(self):
         """Load a texture array"""
