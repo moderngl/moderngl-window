@@ -12,11 +12,13 @@ class TextureLoadersTestCase(HeadlessTestCase):
     aspect_ratio = 1.0
 
     def test_texture_2d(self):
+        """Load standard 2d texture"""
         texture = resources.textures.load(TextureDescription(path='textures/crate.png'))
         self.assertEqual(texture.size, (192, 192))
         self.assertIsInstance(texture.extra.get('meta'), TextureDescription)
 
     def test_texture_array(self):
+        """Load texture array"""
         texture = resources.textures.load(
             TextureDescription(path='textures/array.png', layers=10, kind="array")
         )
