@@ -7,7 +7,7 @@ import trimesh
 from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.opengl.vao import VAO
 from moderngl_window.scene import Material, Mesh, Node, Scene
-
+from moderngl_window.exceptions import ImproperlyConfigured
 
 class STLLoader(BaseLoader):
     kind = 'stl'
@@ -19,7 +19,7 @@ class STLLoader(BaseLoader):
     def load(self):
         path = self.find_scene(self.meta.path)
         if not path:
-            raise ValueError("Scene '{}' not found".format(self.meta.path))
+            raise ImproperlyConfigured("Scene '{}' not found".format(self.meta.path))
 
         file_obj = str(path)
         if file_obj.endswith('.gz'):

@@ -17,6 +17,7 @@ from moderngl_window import resources
 from moderngl_window.resources.decorators import texture_dirs
 from moderngl_window.meta import SceneDescription, TextureDescription
 from moderngl_window.scene import Material, MaterialTexture, Mesh, Node, Scene
+from moderngl_window.exceptions import ImproperlyConfigured
 
 logger = logging.getLogger(__name__)
 
@@ -86,7 +87,7 @@ class ObjLoader(BaseLoader):
         logger.info("loading %s", path)
 
         if not path:
-            raise ValueError("Scene '{}' not found".format(self.meta.path))
+            raise ImproperlyConfigured("Scene '{}' not found".format(self.meta.path))
 
         if path.suffix == '.bin':
             path = path.parent / path.stem

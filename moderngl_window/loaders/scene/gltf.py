@@ -19,6 +19,7 @@ from moderngl_window.loaders.texture import t2d
 from moderngl_window.opengl.vao import VAO
 from moderngl_window.meta import SceneDescription, TextureDescription
 from moderngl_window.scene import Material, MaterialTexture, Mesh, Node, Scene
+from moderngl_window.exceptions import ImproperlyConfigured
 
 logger = logging.getLogger(__name__)
 
@@ -108,7 +109,7 @@ class GLTF2(BaseLoader):
         """
         self.path = self.find_scene(self.meta.path)
         if not self.path:
-            raise ValueError("Scene '{}' not found".format(self.meta.path))
+            raise ImproperlyConfigured("Scene '{}' not found".format(self.meta.path))
 
         self.scene = Scene(self.path)
         self.gltf = None
