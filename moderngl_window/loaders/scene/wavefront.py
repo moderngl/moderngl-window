@@ -91,7 +91,7 @@ class ObjLoader(BaseLoader):
         if path.suffix == '.bin':
             path = path.parent / path.stem
 
-        data = pywavefront.Wavefront(str(path), create_materials=True, cache=True)
+        data = pywavefront.Wavefront(str(path), create_materials=True, cache=self.meta.cache)
         scene = Scene(self.meta.resolved_path)
         texture_cache = {}
 
