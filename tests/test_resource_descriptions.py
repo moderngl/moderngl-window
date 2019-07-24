@@ -22,6 +22,8 @@ class ResourceDescriptionTestCase(TestCase):
             kind=self.kind,
         )
         self.inspect_base_properties(instance)
+        str(instance)
+        repr(instance)
 
     def inspect_base_properties(self, instance):
         self.assertEqual(instance.path, self.path)
