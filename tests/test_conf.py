@@ -72,6 +72,12 @@ class SettingsTests(TestCase):
         self.assertEqual(settings.WINDOW, self.window_setting)
         self.assertEqual(settings.SOMETHING, 1)
 
+    def test_apply_from_iterator_error(self):
+        """Ensure ValueError is rasied if not iterable"""
+        with self.assertRaises(ValueError):
+            settings = Settings()
+            settings.apply_from_iterable(1337)
+
     def test_repr(self):
         """Ensure string represenation is somewhat reasonable"""
         value = str(Settings())
