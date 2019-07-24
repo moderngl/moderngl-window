@@ -19,7 +19,7 @@ class ResourceDescriptionTestCase(TestCase):
         instance = ResourceDescription(
             path=self.path,
             label=self.label,
-            kind=self.kind,            
+            kind=self.kind,
         )
         self.inspect_base_properties(instance)
 
@@ -72,6 +72,7 @@ class ResourceDescriptionTestCase(TestCase):
             kind=self.kind,
             label=self.label,
         )
+        self.assertFalse(instance.cache)
         self.inspect_base_properties(instance)
 
     def test_texture(self):
