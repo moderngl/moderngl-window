@@ -6,6 +6,7 @@ from moderngl_window.context.headless import Keys
 from moderngl_window import resources
 from moderngl_window.meta import ProgramDescription
 from moderngl_window import geometry
+from moderngl_window import WindowConfig
 
 resources.register_dir((Path(__file__).parent / 'fixtures' / 'resources').resolve())
 
@@ -31,10 +32,24 @@ class HeadlessWindowTestCase(HeadlessTestCase):
         self.assertEqual(self.window.fullscreen, False)
         self.assertEqual(self.window.config, None)
         self.assertEqual(self.window.vsync, False)
+        self.assertEqual(self.window.aspect_ratio, 1.0)
         self.assertEqual(self.window.samples, 0)
         self.assertEqual(self.window.cursor, False)
+        self.assertIsNotNone(self.window.modifiers)
+        self.assertFalse(self.window.is_closing)
 
-    def test_frames(self):
+    def test_windowconfig(self):
+        class TestConfig(WindowConfig):
+            def render(self, time: float, frame_time: float):
+                pass
+        self.window.config = TestConfig()
+        self.window.resize_func
+        self.window.key_event_func
+        self.window.mouse_position_event_func
+        self.window.mouse_press_event_func
+        self.window.mouse_release_event_func
+
+    def test_swap_buffers(self):
         """Ensure frame counter increases"""
         frame = self.window.frames
         self.window.swap_buffers()
@@ -45,10 +60,16 @@ class HeadlessWindowTestCase(HeadlessTestCase):
         self.window.swap_buffers()
         self.window.clear()
         self.window.render(0, 0)
+        self.window.print_context_info()
+        self.assertFalse(self.window.is_key_pressed(self.window.keys.ESCAPE))
+
+    def test_resize(self):
+        self.window.resize(16, 16)
 
     def test_render(self):
         """Render something simple to the framebuffer"""
         self.window.use()
+        self.window.clear()
         prog = resources.programs.load(ProgramDescription(path="programs/white.glsl"))
         quad = geometry.quad_fs()
         quad.render(prog)
