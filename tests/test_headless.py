@@ -64,7 +64,13 @@ class HeadlessWindowTestCase(HeadlessTestCase):
         self.assertFalse(self.window.is_key_pressed(self.window.keys.ESCAPE))
 
     def test_resize(self):
+        """Resize should do nothing"""
         self.window.resize(16, 16)
+
+    def test_viewport(self):
+        """Set default viewport"""
+        self.window.set_default_viewport()
+        self.assertEqual(self.window.viewport, (0, 0, self.window_size[0], self.window_size[1]))
 
     def test_render(self):
         """Render something simple to the framebuffer"""
