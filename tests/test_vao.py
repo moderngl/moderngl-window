@@ -2,7 +2,7 @@ import moderngl
 import numpy
 
 from headless import HeadlessTestCase
-from moderngl_window.opengl.vao import VAO, BufferInfo
+from moderngl_window.opengl.vao import VAO, BufferInfo, VAOError
 
 
 class VaoTestCase(HeadlessTestCase):
@@ -56,3 +56,14 @@ class VaoTestCase(HeadlessTestCase):
         # Render directly with VAO and VertexArray instance
         mesh.render(prog)
         vao.render()
+
+    def test_illegal_draw_mode(self):
+        """Create vao with illegal draw mode"""
+        with self.assertRaises(VAOError):
+            VAO(mode=1337)
+
+    def test_add_illegal_buffer(self):
+        """Attempt to add illegal buffer"""
+        vao = VAO()
+        with self.assertRaises(VAOError):
+            vao.buffer("stuff", '1f', 'in_position')
