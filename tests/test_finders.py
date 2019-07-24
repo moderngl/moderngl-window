@@ -62,6 +62,12 @@ class FinderTestCase(TestCase):
             result = finder.find(Path(self.root, Path('data/data.json')))
             self.assertIsNone(result)
 
+    def test_not_found(self):
+        """Ensure finder returns non when nothing was found"""
+        finder = data.FileSystemFinder()
+        result = finder.find(Path(self.root, Path('data/idontexist.json')))
+        self.assertIsNone(result)
+
     def test_no_search_dirs(self):
         """When no search dirs the finder should return None"""
         with settings_context({'DATA_DIRS': []}):
