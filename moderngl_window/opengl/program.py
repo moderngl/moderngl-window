@@ -221,6 +221,10 @@ class ReloadableProgram:
         return self.program.get(key, default)
 
     @property
+    def extra(self):
+        return self.program.extra
+
+    @property
     def mglo(self):
         """The ModernGL Program object"""
         return self.program.mglo
