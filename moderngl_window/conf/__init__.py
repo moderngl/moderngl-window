@@ -45,6 +45,7 @@ class Settings:
         """Initialize settings with default values"""
         # Set default entires. Mainly for code completion
         self.WINDOW = dict()
+        self.SCREENSHOT_PATH = None
         # Finders
         self.PROGRAM_FINDERS = []
         self.TEXTURE_FINDERS = []

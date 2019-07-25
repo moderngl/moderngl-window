@@ -12,6 +12,8 @@ WINDOW = {
     "samples": 0,
 }
 
+SCREENSHOT_PATH = None
+
 # Finders
 PROGRAM_FINDERS = [
     "moderngl_window.finders.program.FileSystemFinder",
