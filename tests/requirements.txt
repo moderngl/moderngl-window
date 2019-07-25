@@ -1,4 +1,3 @@
-pylint
 pytest
 tox
 flake8
