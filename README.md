@@ -1,9 +1,7 @@
 # moderngl_window
 
-**WORK IN PROGRESS**: This package is currently under development. It will
-be released with PyPI packages soon. Testing and feedback is appreciated.
-
-Easily create a window for ModernGL using the most popular window libraries
+A support library for [ModernGL](https://github.com/moderngl/moderngl)
+making programmers more efficent and ensuring cross platform support.
 
 * moderngl_window documentation
 * moderngl_window on PyPI
@@ -13,12 +11,17 @@ Easily create a window for ModernGL using the most popular window libraries
 ## Features
 
 * Easily create a window for ModernGL using Pyglet, PySide2, GLFW, SDL2 or PyQt5 supporing basic keyboard and mouse controls. These events are unified into a single system so we can switch to any window at any point in time.
-* Easily load resources like textures, shaders, objects/scenes
-* A highly pluggable library. Create your own window types and loaders
+* Load 2D textures and texture arrays
+* Load shaders as single or multiple `glsl` files
+* Load objects/scenes from wavefront/obj, GLFT 2.0 or STL
+* Resource finder system supporting multiple resource directories
+* A highly pluggable library supporting custom loaders,
+  resource finders and windows.
 
-Also keep in mind this is a library. You are not required to use
-the windows or resource loaders we provide. It's all up to you.
-Just provide your `moderngl.Context` and you are good to go.
+We are not trying to force the user into using every aspect of this
+library. If you have an exiting project and just need texture loading
+you will be able to do this without unnecessary hurdles as long as
+you provide us your `moderngl.Context`.
 
 ## Supported Platforms
 
@@ -28,11 +31,10 @@ Just provide your `moderngl.Context` and you are good to go.
 
 ## Sample Usage
 
-Simple example opening a window clearing it with a red color every frame.
+Simple example opening a window clearing every frame using red (color).
 
 ```py
 import moderngl_window as mglw
-
 
 class Test(mglw.WindowConfig):
     gl_version = (3, 3)
@@ -43,50 +45,86 @@ class Test(mglw.WindowConfig):
     def render(self, time, frametime):
         self.ctx.clear(1.0, 0.0, 0.0, 0.0)
 
-
 mglw.run_window_config(Test)
 ```
 
+`WindowConfig` classes are the simplest way to get started without knowing
+a lot about this library. For more advanced usage see documenation
+or examples.
+
 ## Setup from source
 
-We highly recommend using virtualenvs so dependencies for
-this project do not interfere with other projects.
-
-### Linux / OS X
+We assume the user knows how to handle vitrualenvs.
 
 ```bash
-# Create and activate virtualenv
-$ python3.7 -m virtualenv .venv
-$ . .venv/bin/activate
-
-# Optional: Ensure local tools are up to date
-$ pip install -U pip setuptools wheel
-
 # Install the package in editable mode
-# (source code changes will be refleced in the installed package)
 $ pip install -e .
+
+# Set up and dev requirements
+pip install -r requirements.txt
+pip install -r tests/requirements.txt
 ```
 
-If you don't use a virtualenv, install with:
+## Running Tests
+
+Tests are set up with `tox` running pytest with coverate and flake8.
 
 ```bash
-python3.7 -m pip install -e . --user
+pip install -r tests/requirements.txt
+tox
 ```
 
-## Building wheel
+## Contributing
 
-Installing this package from PyPI is the preferred way.
-If you for some reason need to build your own package:
+Contributions are welcome regardless of experience level.
+Don't hesitate submitting issues, opening partial or completed
+pull requests.
 
-```bash
-# Esure local tools are up to date
-pip install -U pip setuptools wheel
-# Build the wheel
-python3.7 setup.py bdist_wheel
-```
+### Plugins
 
-The `.whl` file will be located in the `dist/` directory
-and can be installed with `pip`.
+We are interested in contributions providing new loaders, windows etc.
+For these to be included in this library we require them
+to work cross platforms (win10/linux/osx) and be fairly easy to set up.
+
+If it requires more than manually downloading a precompiled dll
+(like SDL2, GLEW etc.) it would most likely not be included,
+but you are welcome to present your case if you still think it should
+be included.
+
+If you create your own repo/package containing plugins for
+this library, please make an issue and we'll link back to it.
+Be sure to include what platforms are suppored, install
+instructions, how you configure it in `moderngl_window` and
+of course a clear and concise description of what exactly
+your package provides. 
+
+## Attributions
+
+We can't build everything from scratch. We rely on certain packages
+and resources to make this project possible.
+
+### Windows
+
+* Pyglet (https://github.com/pyglet/pyglet)
+* pyGLFW (https://github.com/FlorianRhiem/pyGLFW)
+* PySDL2 (https://github.com/marcusva/py-sdl2)
+* PySide2 (https://wiki.qt.io/Qt_for_Python)
+* PyQt5 (https://www.riverbankcomputing.com/software/pyqt/intro)
+
+### Loaders
+
+* Pillow (https://python-pillow.org/)
+* pywavefront (https://github.com/pywavefront/PyWavefront)
+* trimesh (https://github.com/mikedh/trimesh)
+
+### Testing & Utility
+
+* Pyrr (https://github.com/adamlwgriffiths/Pyrr)
+* numpy (https://github.com/numpy/numpy)
+* pytest (https://docs.pytest.org/en/latest/)
+* flake8 (https://gitlab.com/pycqa/flake8)
+* coverage (https://github.com/nedbat/coveragepy)
+* tox (https://tox.readthedocs.io/en/latest/)
 
 ## Some History
 
