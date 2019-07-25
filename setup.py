@@ -28,6 +28,7 @@ setup(
         'pyglet>=1.4.1',
         'numpy>=1.16',
         'pyrr>=0.10.3',
+        'Pillow>=5',
     ],
     extras_require={
         "PySide2": ['PySide2>=5.13'],

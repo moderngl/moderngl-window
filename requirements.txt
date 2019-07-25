@@ -10,5 +10,4 @@ glfw>=1.7
 PySDL2>=0.9
 pyrr>=0.10
 pywavefront<2.0
-Pillow>=5
 numpy>=1.16
