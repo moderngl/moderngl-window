@@ -44,7 +44,7 @@ def create(source: Union[moderngl.Framebuffer, moderngl.Texture],
     if isinstance(source, moderngl.Framebuffer):
         image = Image.frombytes(
             mode,
-            (source.viewport[2] - source.viewport[0], source.viewport[3], source.viewport[1]),
+            (source.viewport[2] - source.viewport[0], source.viewport[3] - source.viewport[1]),
             source.read(viewport=source.viewport, alignment=alignment),
         )
     elif isinstance(source, moderngl.Texture):
