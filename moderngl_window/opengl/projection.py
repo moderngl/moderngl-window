@@ -29,9 +29,9 @@ class Projection3D:
         return self._aspect_ratio
 
     @property
-    def fov(self, value: float) -> float:
+    def fov(self) -> float:
         """float: Current field of view"""
-        return self._far
+        return self._fov
 
     @property
     def near(self) -> float:
