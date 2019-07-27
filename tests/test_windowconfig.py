@@ -3,6 +3,7 @@ from pathlib import Path
 import moderngl
 from headless import WindowConfigTestCase
 from moderngl_window import WindowConfig
+from moderngl_window.scene import Scene
 
 
 class WindowConfigTestCase(WindowConfigTestCase):
@@ -75,4 +76,37 @@ class WindowConfigTestCase(WindowConfigTestCase):
         self.assertIsInstance(texture, moderngl.TextureArray)
         self.assertEqual(texture.layers, 10)
 
+    def test_load_program_single(self):
+        """Load a single glsl program"""
+        prog = self.config.load_program(path='programs/white.glsl')
+        self.assertIsInstance(prog, moderngl.Program)
 
+    def test_load_program_multiple(self):
+        """Load program from multiple shader files"""
+        prog = self.config.load_program(
+            vertex_shader='programs/terrain/terrain_Vs.glsl',
+            fragment_shader='programs/terrain/terrain_fs.glsl',
+            tess_control_shader='programs/terrain/terrain_tc.glsl',
+            tess_evaluation_shader='programs/terrain/terrain_te.glsl',
+        )
+        self.assertIsInstance(prog, moderngl.Program)
+
+    def test_load_text(self):
+        """Load text file"""
+        text = self.config.load_text('data/data.txt')
+        self.assertEqual(text, "Hello")
+
+    def test_load_json(self):
+        """Load a json file"""
+        json = self.config.load_json('data/data.json')
+        self.assertEqual(json, {"test": "Hello"})
+
+    def test_load_binary(self):
+        """Load binary file"""
+        data = self.config.load_binary('data/data.bin')
+        self.assertEqual(data, b'Hello')
+
+    def test_load_scene(self):
+        """Load a scene"""
+        scene = self.config.load_scene('scenes/BoxTextured/glTF/BoxTextured.gltf')
+        self.assertIsInstance(scene, Scene)
