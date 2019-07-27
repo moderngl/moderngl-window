@@ -526,6 +526,12 @@ class WindowConfig:
         Returns:
             moderngl.TextureArray: The texture instance
         """
+        if not kwargs:
+            kwargs = {}
+
+        if 'kind' not in kwargs:
+            kwargs['kind'] = "array"
+
         return resources.textures.load(
             TextureDescription(path=path, layers=layers, **kwargs)
         )
