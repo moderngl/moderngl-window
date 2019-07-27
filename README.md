@@ -13,7 +13,7 @@ making programmers more efficent and ensuring cross platform support.
 * Easily create a window for ModernGL using Pyglet, PySide2, GLFW, SDL2 or PyQt5 supporing basic keyboard and mouse controls. These events are unified into a single system so we can switch to any window at any point in time.
 * Load 2D textures and texture arrays
 * Load shaders as single or multiple `glsl` files
-* Load objects/scenes from wavefront/obj, GLFT 2.0 or STL
+* Load objects/scenes from wavefront/obj, GLTF 2.0 or STL
 * Resource finder system supporting multiple resource directories
 * A highly pluggable library supporting custom loaders,
   resource finders and windows.
