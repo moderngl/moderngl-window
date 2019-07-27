@@ -49,6 +49,11 @@ class TextureLoadersTestCase(HeadlessTestCase):
         self.assertIsNotNone(program.get('in_position', None))
         self.assertIsNotNone(program.mglo)
         self.assertGreater(program.glo, 0)
+        program.subroutines
+        program.geometry_input
+        program.geometry_output
+        program.geometry_vertices
+        program._members
         repr(program)
 
     def test_separate_geometry(self):
