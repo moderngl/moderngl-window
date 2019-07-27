@@ -1,4 +1,5 @@
 from functools import wraps
+from pathlib import Path
 import logging
 import sys
 from typing import Any, Tuple, Type
@@ -6,6 +7,14 @@ from typing import Any, Tuple, Type
 import moderngl
 from moderngl_window.context.base import KeyModifiers, BaseKeys
 from moderngl_window.timers.base import BaseTimer
+from moderngl_window import resources
+from moderngl_window.meta import (
+    TextureDescription,
+    ProgramDescription,
+    SceneDescription,
+    DataDescription,
+)
+from moderngl_window.scene import Scene
 
 logger = logging.getLogger(__name__)
 
@@ -383,6 +392,8 @@ class WindowConfig:
     cursor = True
     #: Number of samples used in multisampling
     samples = 4
+    #: Absolute path to the resource directory (string or pathlib.Path)
+    resource_dir = None
 
     def __init__(self, ctx: moderngl.Context = None, wnd: BaseWindow = None, timer: BaseTimer = None, **kwargs):
         """Initialize the window config
@@ -390,11 +401,14 @@ class WindowConfig:
         Keyword Args:
             ctx: The moderngl context
             wnd: The window instance
-            timer: The timer
+            timer: The timer instance
         """
         self.ctx = ctx
         self.wnd = wnd
         self.timer = timer
+
+        if self.resource_dir:
+            resources.register_dir(Path(self.resource_dir).resolve())
 
     def render(self, time: float, frame_time: float):
         """Renders the assigned effect
@@ -455,6 +469,123 @@ class WindowConfig:
             y (int): Y position the release occured
             button (int): 1 = Left button, 2 = right button
         """
+
+    def load_texture_2d(self, path: str, **kwargs) -> moderngl.Texture:
+        """Loads a 2D texture
+
+        Args:
+            path (str): Path to the texture relative to search directories
+            **kwargs: Additonal parameters to TextureDescription
+        Returns:
+            moderngl.Texture: Texture instance
+        """
+        return resources.textures.load(
+            TextureDescription(path=path, **kwargs)
+        )
+
+    def load_texture_array(self, path: str, layers: int, **kwargs) -> moderngl.TextureArray:
+        """Loads a texture array.
+
+        Args:
+            path (str): Path to the texture relative to search directories
+            layers (int): How many layers to split the texture into vertically
+            **kwargs: Additonal parameters to TextureDescription
+        Returns:
+            moderngl.TextureArray: The texture instance
+        """
+        return resources.textures.load(
+            TextureDescription(path=path, layers=layers, **kwargs)
+        )
+
+    def load_program(self, path=None, vertex_shader=None, geometry_shader=None, fragment_shader=None,
+                     tess_control_shader=None, tess_evaluation_shader=None) -> moderngl.Program:
+        """Loads a shader program.
+
+        Note that `path` should only be used if all shaders are defined
+        in the same glsl file separated by defines.
+
+        Keyword Args:
+            path (str): Path to a single glsl file
+            vertex_shader (str): Path to vertex shader
+            geometry_shader (str): Path to geometry shader
+            fragment_shader (str): Path to fragment shader
+            tess_control_shader (str): Path to tessellation control shader
+            tess_evaluation_shader (str): Path to tessellation eval shader
+        Returns:
+            moderngl.Program: The program instance
+        """
+        return resources.programs.load(
+            ProgramDescription(
+                path=path,
+                vertex_shader=vertex_shader,
+                geometry_shader=geometry_shader,
+                fragment_shader=fragment_shader,
+                tess_control_shader=tess_control_shader,
+                tess_evaluation_shader=tess_evaluation_shader,
+            )
+        )
+
+    def load_text(self, path: str, **kwargs) -> str:
+        """Load a text file.
+
+        Args:
+            path (str): Path to the file relative to search directories
+            **kwargs: Additional parameters to DataDescription
+        Returns:
+            str: Contents of the text file
+        """
+        if not kwargs:
+            kwargs = {}
+
+        if 'kind' not in kwargs:
+            kwargs['kind'] = 'text'
+
+        return resources.data.load(DataDescription(path=path, **kwargs))
+
+    def load_json(self, path: str, **kwargs) -> dict:
+        """Load a json file
+
+        Args:
+            path (str): Path to the file relative to search directories
+            **kwargs: Additional parameters to DataDescription
+        Returns:
+            dict: Contents of the json file
+        """
+        if not kwargs:
+            kwargs = {}
+
+        if 'kind' not in kwargs:
+            kwargs['kind'] = 'json'
+
+        return resources.data.load(DataDescription(path=path, **kwargs))
+
+    def load_binary(self, path: str, **kwargs) -> bytes:
+        """Load a file in binary mode.
+
+        Args:
+            path (str): Path to the file relative to search directories
+            **kwargs: Additional parameters to DataDescription
+        Returns:
+            bytes: The byte data of the file
+        """
+        if not kwargs:
+            kwargs = {}
+
+        if 'kind' not in kwargs:
+            kwargs['kind'] = 'binary'
+
+        return resources.data.load(DataDescription(path=path, kind="binary"))
+
+    def load_scene(self, path=str, **kwargs) -> Scene:
+        """Loads a scene.
+
+        Args:
+            path (str): Path to the file relative to search directories
+            **kwargs: Additional parameters to SceneDescription
+        Returns:
+            Scene: The scene instance
+        """
+        return resources.scenes.load(SceneDescription(path=path, **kwargs))
 
 
 def dummy_func(*args, **kwargs) -> None:
