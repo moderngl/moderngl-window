@@ -437,6 +437,12 @@ class WindowConfig:
         if self.resource_dir:
             resources.register_dir(Path(self.resource_dir).resolve())
 
+        if not self.ctx or not isinstance(self.ctx, moderngl.Context):
+            raise ValueError("WindowConfig requires a moderngl context. ctx={}".format(self.ctx))
+
+        if not self.wnd or not isinstance(self.wnd, BaseWindow):
+            raise ValueError("WindowConfig requires a window. wnd={}".format(self.wnd))
+
     def render(self, time: float, frame_time: float):
         """Renders the assigned effect
 
