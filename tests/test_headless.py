@@ -6,7 +6,6 @@ from moderngl_window.context.headless import Keys
 from moderngl_window import resources
 from moderngl_window.meta import ProgramDescription
 from moderngl_window import geometry
-from moderngl_window import WindowConfig
 
 resources.register_dir((Path(__file__).parent / 'fixtures' / 'resources').resolve())
 
@@ -21,7 +20,7 @@ class HeadlessWindowTestCase(HeadlessTestCase):
         self.assertEqual(self.window.title, 'ModernGL Window')
         self.assertIsInstance(self.window.ctx, moderngl.Context)
         self.assertIsInstance(self.window.fbo, moderngl.Framebuffer)
-        self.assertEqual(self.window.gl_version, (3, 3))
+        self.assertEqual(self.window.gl_version, (4, 1))
         self.assertEqual(self.window.width, self.window_size[0])
         self.assertEqual(self.window.height, self.window_size[1])
         self.assertEqual(self.window.size, self.window_size)
@@ -37,17 +36,6 @@ class HeadlessWindowTestCase(HeadlessTestCase):
         self.assertEqual(self.window.cursor, False)
         self.assertIsNotNone(self.window.modifiers)
         self.assertFalse(self.window.is_closing)
-
-    def test_windowconfig(self):
-        class TestConfig(WindowConfig):
-            def render(self, time: float, frame_time: float):
-                pass
-        self.window.config = TestConfig()
-        self.window.resize_func
-        self.window.key_event_func
-        self.window.mouse_position_event_func
-        self.window.mouse_press_event_func
-        self.window.mouse_release_event_func
 
     def test_swap_buffers(self):
         """Ensure frame counter increases"""
