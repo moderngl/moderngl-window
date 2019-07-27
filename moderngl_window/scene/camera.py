@@ -4,7 +4,7 @@ from math import cos, radians, sin
 import numpy
 from pyrr import Vector3, matrix44, vector, vector3
 
-from moderngl_window.opengl.projection import Projection
+from moderngl_window.opengl.projection import Projection3D
 from moderngl_window.context.base import BaseKeys
 
 # Direction Definitions
@@ -44,7 +44,7 @@ class Camera:
         self._up = Vector3([0.0, 1.0, 0.0])
 
         # Projection
-        self.projection = Projection(aspect, fov, near, far)
+        self.projection = Projection3D(aspect, fov, near, far)
 
     def set_position(self, x, y, z):
         """

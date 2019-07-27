@@ -4,11 +4,10 @@ import numpy as np
 from pyrr import Matrix44
 
 
-class Projection:
+class Projection3D:
     """3D Projection"""
-    def __init__(self, aspect_ratio=9 / 16, fov=75.0, near=1.0, far=100.0):
-        """
-        Create a projection
+    def __init__(self, aspect_ratio=16 / 9, fov=75.0, near=1.0, far=100.0):
+        """Create a 3D projection
 
         Keyword Args:
             aspect_ratio (float): Sspect ratio
@@ -25,29 +24,33 @@ class Projection:
         self.update()
 
     @property
+    def aspect_ratio(self) -> float:
+        """float: The projection's aspect ratio"""
+        return self._aspect_ratio
+
+    @property
     def fov(self, value: float) -> float:
-        """Current field of view"""
+        """float: Current field of view"""
         return self._far
 
     @property
     def near(self) -> float:
-        """Current near plane value"""
+        """float: Current near plane value"""
         return self._near
 
     @property
     def far(self) -> float:
-        """Current far plane value"""
+        """float : Current far plane value"""
         return self._far
 
     @property
     def matrix(self) -> np.ndarray:
-        """Current numpy projection matrix"""
+        """np.ndarray: Current numpy projection matrix"""
         return self._matrix
 
     def update(self, aspect_ratio: float = None, fov: float = None,
                near: float = None, far: float = None) -> None:
-        """
-        Update the projection matrix
+        """Update the projection matrix
 
         Keyword Args:
             aspect_ratio (float): Sspect ratio
@@ -64,8 +67,10 @@ class Projection:
         self._matrix_bytes = self._matrix.astype('f4').tobytes()
 
     def tobytes(self) -> bytes:
-        """
-        Get the byte representation of the projection matrix
+        """Get the byte representation of the projection matrix
+
+        Returns:
+            bytes: byte representation of the projection matrix
         """
         return self._matrix_bytes
 
