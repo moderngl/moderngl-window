@@ -450,7 +450,7 @@ class WindowConfig:
             time (float): Current time in seconds
             frame_time (float): Delta time from last frame in seconds
         """
-        raise NotImplementedError("Example:render not implemented")
+        raise NotImplementedError("WindoeConfig.render not implemented")
 
     def resize(self, width: int, height: int):
         """
