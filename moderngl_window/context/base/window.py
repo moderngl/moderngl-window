@@ -185,10 +185,13 @@ class BaseWindow:
         return self._cursor
 
     @config.setter
-    def config(self, config) -> None:
-        """
-        Set up the WindowConfig instance.
+    def config(self, config):
+        """Set up the WindowConfig instance.
+
         A WindowConfig class is not required, but callback methods must be mapped.
+
+        Args:
+            config (WindowConfig): The WindowConfig instance
         """
         self.render_func = getattr(config, 'render', dummy_func)
         self.resize_func = getattr(config, 'resize', dummy_func)
@@ -201,6 +204,10 @@ class BaseWindow:
 
     @property
     def render_func(self):
+        """callable: The render callable
+
+        This property can also be used to assign a callable.
+        """
         return self._render_func
 
     @render_func.setter
@@ -210,6 +217,10 @@ class BaseWindow:
 
     @property
     def resize_func(self):
+        """callable: The resize callable
+
+        This property can also be used to assign a callable.
+        """
         return self._resize_func
 
     @resize_func.setter
@@ -219,6 +230,10 @@ class BaseWindow:
 
     @property
     def key_event_func(self):
+        """callable: The key_event callable
+
+        This property can also be used to assign a callable.
+        """
         return self._key_event_func
 
     @key_event_func.setter
@@ -228,6 +243,10 @@ class BaseWindow:
 
     @property
     def mouse_position_event_func(self):
+        """callable: The mouse_position callable
+
+        This property can also be used to assign a callable.
+        """
         return self._mouse_position_event_func
 
     @mouse_position_event_func.setter
@@ -237,6 +256,10 @@ class BaseWindow:
 
     @property
     def mouse_press_event_func(self):
+        """callable: The mouse_press callable
+
+        This property can also be used to assign a callable.
+        """
         return self._mouse_press_event_func
 
     @mouse_press_event_func.setter
@@ -246,6 +269,10 @@ class BaseWindow:
 
     @property
     def mouse_release_event_func(self):
+        """callable: The mouse_release callable
+
+        This property can also be used to assign a callable.
+        """
         return self._mouse_release_event_func
 
     @mouse_release_event_func.setter
