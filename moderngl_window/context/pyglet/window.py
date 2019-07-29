@@ -70,13 +70,14 @@ class Window(BaseWindow):
         """
         Check pyglet's internal exit state
         """
-        return self._window.has_exit
+        return self._window.has_exit or super().is_closing
 
     def close(self):
         """
         Close the pyglet window directly
         """
         self._window.close()
+        super().close()
 
     def swap_buffers(self):
         """
