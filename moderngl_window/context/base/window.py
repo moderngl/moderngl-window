@@ -128,17 +128,18 @@ class BaseWindow:
 
     @property
     def size(self) -> Tuple[int, int]:
-        """
-        (width, height): current window size
-        """
+        """(int, int): current window size"""
         return self._width, self._height
 
     @property
     def buffer_size(self) -> Tuple[int, int]:
-        """
-        Returns: (with, heigh) tuple with the current window buffer size
-        """
+        """(int, int): tuple with the current window buffer size"""
         return self._buffer_width, self._buffer_height
+
+    @property
+    def pixel_ratio(self):
+        """float: The frambuffer/window size ratio"""
+        return self.buffer_size[0] / self.size[0]
 
     @property
     def viewport(self) -> Tuple[int, int, int, int]:
