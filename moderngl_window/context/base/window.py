@@ -35,7 +35,7 @@ class BaseWindow:
     """
     keys = BaseKeys
 
-    def __init__(self, title="Example", gl_version=(3, 3), size=(1280, 720), resizable=True,
+    def __init__(self, title="ModernGL", gl_version=(3, 3), size=(1280, 720), resizable=True,
                  fullscreen=False, vsync=True, aspect_ratio=16 / 9, samples=4, cursor=True,
                  **kwargs):
         """
