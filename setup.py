@@ -23,9 +23,9 @@ setup(
         'Topic :: Multimedia :: Graphics :: 3D Rendering',
         'Topic :: Scientific/Engineering :: Visualization',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.5 :: Only',
-        'Programming Language :: Python :: 3.6 :: Only',
-        'Programming Language :: Python :: 3.7 :: Only',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
     ],
     install_requires=[
         'moderngl<6',
