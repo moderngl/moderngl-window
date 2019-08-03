@@ -32,21 +32,21 @@ def translate_buffer_format(vertex_format: str, attr_names: AttributeNames):
 
     if "T2F" in vertex_format:
         buffer_format.append("2f")
-        attributes.append("in_uv")
-        mesh_attributes.append(("TEXCOORD_0", attr_names.POSITION, 2))
+        attributes.append(attr_names.TEXCOORD_0)
+        mesh_attributes.append(("TEXCOORD_0", attr_names.TEXCOORD_0, 2))
 
     if "C3F" in vertex_format:
         buffer_format.append("3f")
-        attributes.append("in_color")
+        attributes.append(attr_names.COLOR_0)
         mesh_attributes.append(("COLOR_0", attr_names.COLOR_0, 3))
 
     if "N3F" in vertex_format:
         buffer_format.append("3f")
-        attributes.append("in_normal")
+        attributes.append(attr_names.NORMAL)
         mesh_attributes.append(("NORMAL", attr_names.NORMAL, 3))
 
     buffer_format.append("3f")
-    attributes.append("in_position")
+    attributes.append(attr_names.POSITION)
     mesh_attributes.append(("POSITION", attr_names.POSITION, 3))
 
     return " ".join(buffer_format), attributes, mesh_attributes
