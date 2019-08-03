@@ -1,4 +1,4 @@
-[![pypi](https://badge.fury.io/py/moderngl_window.svg)](https://pypi.python.org/pypi/moderngl_window)
+[![pypi](https://badge.fury.io/py/moderngl-window.svg)](https://pypi.python.org/pypi/moderngl-window)
 
 # moderngl_window
 
@@ -6,7 +6,7 @@ A support library for [ModernGL](https://github.com/moderngl/moderngl)
 making programmers more efficent and ensuring cross platform support.
 
 * moderngl_window documentation (WIP)
-* [moderngl_window on PyPI](https://pypi.org/project/moderngl_window)
+* [moderngl_window on PyPI](https://pypi.org/project/moderngl-window)
 * [moderngl_window on Github](https://github.com/moderngl/moderngl_window)
 * [ModernGL](https://github.com/moderngl/moderngl)
 
@@ -24,6 +24,12 @@ We are not trying to force the user into using every aspect of this
 library. If you have an exiting project and just need texture loading
 you will be able to do this without unnecessary hurdles as long as
 you provide us your `moderngl.Context`.
+
+## Install
+
+```bash
+pip install moderngl-window
+```
 
 ## Supported Platforms
 
