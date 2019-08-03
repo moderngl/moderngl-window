@@ -99,6 +99,7 @@ class GLTF2(BaseLoader):
 
         self.path = None
         self.scene = None
+        self.gltf = None
 
     def load(self):
         """
@@ -112,7 +113,6 @@ class GLTF2(BaseLoader):
             raise ImproperlyConfigured("Scene '{}' not found".format(self.meta.path))
 
         self.scene = Scene(self.path)
-        self.gltf = None
 
         # Load gltf json file
         if self.path.suffix == '.gltf':
@@ -139,7 +139,7 @@ class GLTF2(BaseLoader):
     def load_gltf(self):
         """Loads a gltf json file"""
         with open(self.path) as fd:
-            self.gltf = GLTFMeta(self.path, json.load(fd))
+            self.gltf = GLTFMeta(self.path, json.load(fd), self.meta)
 
     def load_glb(self):
         """Loads a binary gltf file"""
@@ -170,7 +170,7 @@ class GLTF2(BaseLoader):
             if chunk_1_type != b'BIN\x00':
                 raise ValueError("Expected BIN chunk, not {} in file {}".format(chunk_1_type, self.path))
 
-            self.gltf = GLTFMeta(self.path, json.loads(json_meta), binary_buffer=fd.read(chunk_1_length))
+            self.gltf = GLTFMeta(self.path, json.loads(json_meta), self.meta, binary_buffer=fd.read(chunk_1_length))
 
     def load_images(self):
         for image in self.gltf.images:
@@ -274,14 +274,16 @@ class GLTF2(BaseLoader):
 
 class GLTFMeta:
     """Container for gltf metadata"""
-    def __init__(self, path, data, binary_buffer=None):
+    def __init__(self, path, data, meta, binary_buffer=None):
         """
         :param file: GLTF file name loaded
         :param data: Metadata (json loaded)
         :param binary_buffer: Binary buffer when loading glb files
         """
-        self.data = data
         self.path = path
+        self.data = data
+        self.meta = meta
+
         self.asset = GLTFAsset(data['asset'])
         self.materials = [GLTFMaterial(m) for m in data['materials']] if data.get('materials') else []
         self.images = [GLTFImage(i) for i in data['images']] if data.get('images') else []
@@ -289,7 +291,7 @@ class GLTFMeta:
         self.textures = [GLTFTexture(t) for t in data['textures']] if data.get('textures') else []
         self.scenes = [GLTFScene(s) for s in data['scenes']] if data.get('scenes') else []
         self.nodes = [GLTFNode(n) for n in data['nodes']] if data.get('nodes') else []
-        self.meshes = [GLTFMesh(m) for m in data['meshes']] if data.get('meshes') else []
+        self.meshes = [GLTFMesh(m, self.meta) for m in data['meshes']] if data.get('meshes') else []
         self.cameras = [GLTFCamera(c) for c in data['cameras']] if data.get('cameras') else []
         self.buffer_views = [GLTFBufferView(i, v) for i, v in enumerate(data['bufferViews'])] \
             if data.get('bufferViews') else []
@@ -381,7 +383,7 @@ class GLTFAsset:
 
 class GLTFMesh:
 
-    def __init__(self, data):
+    def __init__(self, data: dict, meta: SceneDescription):
         class Primitives:
             def __init__(self, data):
                 self.attributes = data.get('attributes')
@@ -389,18 +391,19 @@ class GLTFMesh:
                 self.mode = data.get('mode')
                 self.material = data.get('material')
 
+        self.meta = meta
         self.name = data.get('name')
         self.primitives = [Primitives(p) for p in data.get('primitives')]
 
     def load(self, materials):
         name_map = {
-            'POSITION': 'in_position',
-            'NORMAL': 'in_normal',
-            'TEXCOORD_0': 'in_uv',
-            'TANGENT': 'in_tangent',
-            'JOINTS_0': 'in_joints',
-            'WEIGHTS_0': 'in_heights',
-            'COLOR_0': 'in_color0',
+            'POSITION': self.meta.attr_names.POSITION,
+            'NORMAL': self.meta.attr_names.NORMAL,
+            'TEXCOORD_0': self.meta.attr_names.TEXCOORD_0,
+            'TANGENT': self.meta.attr_names.TANGENT,
+            'JOINTS_0': self.meta.attr_names.JOINTS_0,
+            'WEIGHTS_0': self.meta.attr_names.WEIGHTS_0,
+            'COLOR_0': self.meta.attr_names.COLOR_0,
         }
 
         meshes = []
