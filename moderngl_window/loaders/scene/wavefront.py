@@ -18,11 +18,13 @@ from moderngl_window.resources.decorators import texture_dirs
 from moderngl_window.meta import SceneDescription, TextureDescription
 from moderngl_window.scene import Material, MaterialTexture, Mesh, Node, Scene
 from moderngl_window.exceptions import ImproperlyConfigured
+from moderngl_window.geometry.attributes import AttributeNames
+
 
 logger = logging.getLogger(__name__)
 
 
-def translate_buffer_format(vertex_format):
+def translate_buffer_format(vertex_format: str, attr_names: AttributeNames):
     """Translate the buffer format"""
     buffer_format = []
     attributes = []
@@ -31,30 +33,32 @@ def translate_buffer_format(vertex_format):
     if "T2F" in vertex_format:
         buffer_format.append("2f")
         attributes.append("in_uv")
-        mesh_attributes.append(("TEXCOORD_0", "in_uv", 2))
+        mesh_attributes.append(("TEXCOORD_0", attr_names.POSITION, 2))
 
     if "C3F" in vertex_format:
         buffer_format.append("3f")
         attributes.append("in_color")
-        mesh_attributes.append(("NORMAL", "in_color", 3))
+        mesh_attributes.append(("COLOR_0", attr_names.COLOR_0, 3))
 
     if "N3F" in vertex_format:
         buffer_format.append("3f")
         attributes.append("in_normal")
-        mesh_attributes.append(("NORMAL", "in_normal", 3))
+        mesh_attributes.append(("NORMAL", attr_names.NORMAL, 3))
 
     buffer_format.append("3f")
     attributes.append("in_position")
-    mesh_attributes.append(("POSITION", "in_position", 3))
+    mesh_attributes.append(("POSITION", attr_names.POSITION, 3))
 
     return " ".join(buffer_format), attributes, mesh_attributes
 
 
 class VAOCacheLoader(cache.CacheLoader):
     """Load geometry data directly into vaos"""
+    attr_names = None
 
     def load_vertex_buffer(self, fd, material, length):
-        buffer_format, attributes, mesh_attributes = translate_buffer_format(material.vertex_format)
+        buffer_format, attributes, mesh_attributes = translate_buffer_format(material.vertex_format,
+                                                                             self.attr_names)
 
         vao = VAO(material.name, mode=moderngl.TRIANGLES)
         # buffer = context.ctx().buffer(fd.read(length))
@@ -92,6 +96,8 @@ class ObjLoader(BaseLoader):
         if path.suffix == '.bin':
             path = path.parent / path.stem
 
+        VAOCacheLoader.attr_names = self.meta.attr_names
+
         data = pywavefront.Wavefront(str(path), create_materials=True, cache=self.meta.cache)
         scene = Scene(self.meta.resolved_path)
         texture_cache = {}
@@ -101,7 +107,8 @@ class ObjLoader(BaseLoader):
 
             # Traditional loader
             if mat.vertices:
-                buffer_format, attributes, mesh_attributes = translate_buffer_format(mat.vertex_format)
+                buffer_format, attributes, mesh_attributes = translate_buffer_format(mat.vertex_format,
+                                                                                     self.meta.attr_names)
                 vbo = numpy.array(mat.vertices, dtype='f4')
 
                 vao = VAO(mat.name, mode=moderngl.TRIANGLES)
