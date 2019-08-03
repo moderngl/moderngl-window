@@ -1,3 +1,5 @@
+[![pypi](https://badge.fury.io/py/moderngl_window.svg)](https://pypi.python.org/pypi/moderngl_window)
+
 # moderngl_window
 
 A support library for [ModernGL](https://github.com/moderngl/moderngl)
