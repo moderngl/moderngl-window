@@ -3,8 +3,8 @@
 A support library for [ModernGL](https://github.com/moderngl/moderngl)
 making programmers more efficent and ensuring cross platform support.
 
-* moderngl_window documentation
-* moderngl_window on PyPI
+* moderngl_window documentation (WIP)
+* [moderngl_window on PyPI](https://pypi.org/project/moderngl_window)
 * [moderngl_window on Github](https://github.com/moderngl/moderngl_window)
 * [ModernGL](https://github.com/moderngl/moderngl)
 
