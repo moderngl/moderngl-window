@@ -30,14 +30,25 @@ OPTIONS_ALL = OPTIONS_TRUE + OPTIONS_FALSE
 # Quick and dirty debug logging setup by default
 # See: https://docs.python.org/3/howto/logging.html#logging-advanced-tutorial
 logger = logging.getLogger(__name__)
-# Do not add a new handler if we already have one
-if not logger.handlers:
-    logger.propagate = False
-    logger.setLevel(logging.DEBUG)
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
-    ch.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
-    logger.addHandler(ch)
+
+
+def setup_basic_logging(level: int):
+    """Set up basic logging
+
+    Args:
+        level (int): The log level
+    """
+    if level is None:
+        return
+
+    # Do not add a new handler if we already have one
+    if not logger.handlers:
+        logger.propagate = False
+        logger.setLevel(level)
+        ch = logging.StreamHandler()
+        ch.setLevel(logging.DEBUG)
+        ch.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+        logger.addHandler(ch)
 
 
 class ContextRefs:
@@ -148,6 +159,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         config_cls: The WindowConfig class to render
         args: Override sys.args
     """
+    setup_basic_logging(config_cls.log_level)
     values = parse_args(args)
     window_cls = get_local_window_cls(values.window)
 

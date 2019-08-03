@@ -422,6 +422,8 @@ class WindowConfig:
     samples = 4
     #: Absolute path to the resource directory (string or pathlib.Path)
     resource_dir = None
+    #: Log level for the library
+    log_level = logging.INFO
 
     def __init__(self, ctx: moderngl.Context = None, wnd: BaseWindow = None, timer: BaseTimer = None, **kwargs):
         """Initialize the window config
