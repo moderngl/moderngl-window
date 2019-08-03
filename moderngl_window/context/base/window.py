@@ -315,7 +315,7 @@ class BaseWindow:
             depth (float): depth value
             viewport (tuple): The viewport
         """
-        self._ctx.screen.clear(red=red, green=green, blue=blue, alpha=alpha, depth=depth, viewport=viewport)
+        self._ctx.clear(red=red, green=green, blue=blue, alpha=alpha, depth=depth, viewport=viewport)
 
     def render(self, time=0.0, frame_time=0.0) -> None:
         """
