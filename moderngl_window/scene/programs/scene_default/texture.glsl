@@ -4,7 +4,7 @@
 
 in vec3 in_position;
 in vec3 in_normal;
-in vec2 in_uv;
+in vec2 in_texcoord_0;
 
 uniform mat4 m_proj;
 uniform mat4 m_model;
@@ -20,7 +20,7 @@ void main() {
 	gl_Position = m_proj * p;
     mat3 m_normal = transpose(inverse(mat3(mv)));
     normal = m_normal * in_normal;
-    uv = in_uv;
+    uv = in_texcoord_0;
     pos = p.xyz;
 }
 
