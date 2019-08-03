@@ -195,7 +195,8 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
 
     _, duration = timer.stop()
     window.destroy()
-    logger.info("Duration: {0:.2f}s @ {1:.2f} FPS".format(duration, window.frames / duration))
+    if duration > 0:
+        logger.info("Duration: {0:.2f}s @ {1:.2f} FPS".format(duration, window.frames / duration))
 
 
 def parse_args(args=None):
