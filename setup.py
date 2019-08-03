@@ -10,6 +10,7 @@ setup(
     author="Einar Forselv",
     author_email="eforselv@gmail.com",
     packages=find_namespace_packages(include=['moderngl_window', 'moderngl_window.*']),
+    include_package_data=True,
     keywords=['moderngl', 'window', 'context'],
     license='MIT',
     platforms=['any'],
@@ -22,6 +23,9 @@ setup(
         'Topic :: Multimedia :: Graphics :: 3D Rendering',
         'Topic :: Scientific/Engineering :: Visualization',
         'Programming Language :: Python :: 3 :: Only',
+        'Programming Language :: Python :: 3.5 :: Only',
+        'Programming Language :: Python :: 3.6 :: Only',
+        'Programming Language :: Python :: 3.7 :: Only',
     ],
     install_requires=[
         'moderngl<6',
