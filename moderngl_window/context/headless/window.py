@@ -40,7 +40,7 @@ class Window(BaseWindow):
 
     def clear(self, red=0.0, green=0.0, blue=0.0, alpha=0.0, depth=1.0, viewport=None):
         """
-        Clear the default framebuffer
+        Binds and clears the default framebuffer
 
         Args:
             red (float): color component
@@ -50,7 +50,8 @@ class Window(BaseWindow):
             depth (float): depth value
             viewport (tuple): The viewport
         """
-        self._fbo.clear(red=red, green=green, blue=blue, alpha=alpha, depth=depth, viewport=viewport)
+        self.use()
+        self._ctx.clear(red=red, green=green, blue=blue, alpha=alpha, depth=depth, viewport=viewport)
 
     def swap_buffers(self) -> None:
         """
