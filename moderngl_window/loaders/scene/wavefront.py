@@ -61,7 +61,6 @@ class VAOCacheLoader(cache.CacheLoader):
                                                                              self.attr_names)
 
         vao = VAO(material.name, mode=moderngl.TRIANGLES)
-        # buffer = context.ctx().buffer(fd.read(length))
         vao.buffer(fd.read(length), buffer_format, attributes)
 
         setattr(material, 'vao', vao)
