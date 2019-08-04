@@ -1,7 +1,10 @@
+import logging
 import moderngl
 from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.opengl import program
 from moderngl_window.exceptions import ImproperlyConfigured
+
+logger = logging.getLogger(__name__)
 
 
 class Loader(BaseLoader):
@@ -40,7 +43,7 @@ class Loader(BaseLoader):
             if not resolved_path:
                 raise ImproperlyConfigured("Cannot find {} shader '{}'".format(shader_type, path))
 
-            print("Loading:", path)
+            logger.info("Loading: %s", resolved_path)
 
             with open(resolved_path, 'r') as fd:
                 return fd.read()
