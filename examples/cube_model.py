@@ -32,6 +32,7 @@ class CubeModel(mglw.WindowConfig):
         # self.scene = resources.scenes.load(SceneDescription(path='Buggy/glTF-Binary/Buggy.glb'))
         # self.scene = resources.scenes.load(SceneDescription(path='VC/glTF-Binary/VC.glb'))
         # self.scene = resources.scenes.load(SceneDescription(path='DamagedHelmet/glTF-Binary/DamagedHelmet.glb'))
+        # self.scene = resources.scenes.load(SceneDescription(path='BoxInterleaved/glTF/BoxInterleaved.gltf'))
 
         self.camera = KeyboardCamera(self.wnd.keys, fov=75.0, aspect=self.wnd.aspect_ratio, near=0.1, far=1000.0)
         # Use this for gltf scenes for better camera controls
