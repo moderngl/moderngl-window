@@ -28,7 +28,7 @@ class PillowLoader(BaseLoader):
             self.image = self.meta.image
         else:
             self.meta.resolved_path = self.find_texture(self.meta.path)
-            logging.info("loading %s", self.meta.resolved_path)
+            logger.info("loading %s", self.meta.resolved_path)
             if not self.meta.resolved_path:
                 raise ImproperlyConfigured("Cannot find texture: {}".format(self.meta.path))
 
