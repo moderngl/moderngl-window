@@ -176,7 +176,7 @@ class VAO:
 
         vao.transform(buffer, mode=mode, vertices=vertices, first=first, instances=instances)
 
-    def buffer(self, buffer, buffer_format: str, attribute_names, per_instance=False):
+    def buffer(self, buffer, buffer_format: str, attribute_names: List[str]):
         """
         Register a buffer/vbo for the VAO. This can be called multiple times.
         adding multiple buffers (interleaved or not)
@@ -185,8 +185,6 @@ class VAO:
             buffer: The buffer data. Can be ``numpy.array``, ``moderngl.Buffer`` or ``bytes``.
             buffer_format (str): The format of the buffer. (eg. ``3f 3f`` for interleaved positions and normals).
             attribute_names: A list of attribute names this buffer should map to.
-        Keyword Args:
-            per_instance (bool): Is this buffer per instance data for instanced rendering?
         Returns:
             The ``moderngl.Buffer`` instance object. This is handy when providing ``bytes`` and ``numpy.array``.
         """
@@ -211,7 +209,7 @@ class VAO:
         if len(formats) != len(attribute_names):
             raise VAOError("Format '{}' does not describe attributes {}".format(buffer_format, attribute_names))
 
-        self._buffers.append(BufferInfo(buffer, buffer_format, attribute_names, per_instance=per_instance))
+        self._buffers.append(BufferInfo(buffer, buffer_format, attribute_names))
         self.vertex_count = self._buffers[-1].vertices
 
         return buffer

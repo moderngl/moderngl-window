@@ -17,19 +17,23 @@ import re
 from functools import lru_cache
 from typing import List
 
+VALID_DIVISORS = ['v', 'i']
+
 
 class BufferFormat:
 
-    def __init__(self, format_string: str, components: int, bytes_per_component: int):
+    def __init__(self, format_string: str, components: int, bytes_per_component: int, per_instance=False):
         """
         Args:
             format_string (str): moderngl format string
             components (int): components
             byte_size (int): bytes per component
+            per_instance (bool): Instanced attribute
         """
         self.format = format_string
         self.components = components
         self.bytes_per_component = bytes_per_component
+        self.per_instance = per_instance
 
     @property
     def bytes_total(self) -> int:
@@ -41,26 +45,38 @@ class BufferFormat:
         return "{}x{}".format(self.components, self.bytes_per_component)
 
     def __str__(self) -> str:
-        return "<BufferFormat {} {} {}>".format(self.format, self.components, self.bytes_per_component)
+        return "<BufferFormat {} components={} bytes_per_component={}>".format(
+            self.format, self.components, self.bytes_per_component)
 
     def __repr__(self) -> str:
         return str(self)
 
 
-@lru_cache(maxsize=200)
-def attribute_format(fmt: str) -> BufferFormat:
+@lru_cache(maxsize=500)
+def attribute_format(attr_format: str) -> BufferFormat:
     """Look up info about an attribute format.
 
     Translate the format into a BufferFormat instance
     containing things like byte size and components
 
     Args:
-        frmt (str): Format of an attribute
+        buffer_format (str): Format of an attribute
     Returns:
         BufferFormat instance
     """
-    if not fmt:
-        raise ValueError("Cannot resolve buffer format: '{}'".format(fmt))
+    if not attr_format:
+        raise ValueError("Cannot resolve buffer format: '{}'".format(attr_format))
+
+    parts = attr_format.split('/')
+
+    # Parse out divisor if present
+    # Examples: 3f/i, 3f/v
+    fmt = parts[0]
+    divisor = ''
+    if len(parts) > 1:
+        divisor = parts[1]
+        if divisor not in VALID_DIVISORS:
+            raise ValueError("Invalid attribute divisor '{}' in '{}'".format(divisor, buffer_format))
 
     # Parse out out component count and actual format
     parts = re.split(r'([fiud])', fmt)
@@ -71,11 +87,14 @@ def attribute_format(fmt: str) -> BufferFormat:
     else:
         bformat = fmt
 
+    # Construct specific buffer format
     fmt_info = buffer_format(bformat)
+    per_instance = divisor == 'i'
     return BufferFormat(
-        '{}{}'.format(components, bformat),
+        '{}{}{}'.format(components, bformat, "/i" if per_instance else ''),
         components,
         fmt_info.bytes_per_component,
+        per_instance=per_instance,
     )
 
 
