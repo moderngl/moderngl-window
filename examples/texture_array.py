@@ -14,13 +14,13 @@ from base import CameraWindow
 resources.register_dir((Path(__file__).parent / 'resources').resolve())
 
 
-class CubeSimple(CameraWindow):
+class TextureArrayExample(CameraWindow):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.cube = geometry.cube(size=(2, 2, 2))
-        self.texture = resources.textures.load(TextureDescription(path='textures/array.png', layers=10, kind='array'))
-        self.prog = resources.programs.load(ProgramDescription(path='programs/cube_texture_array.glsl'))
+        self.texture = self.load_texture_array('textures/array.png', layers=10, mipmap=True, anisotrpy=8.0)
+        self.prog = self.load_program('programs/cube_texture_array.glsl')
 
     def render(self, time: float, frametime: float):
         self.ctx.enable_only(moderngl.CULL_FACE | moderngl.DEPTH_TEST)
@@ -40,4 +40,4 @@ class CubeSimple(CameraWindow):
 
 
 if __name__ == '__main__':
-    mglw.run_window_config(CubeSimple)
+    mglw.run_window_config(TextureArrayExample)
