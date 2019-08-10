@@ -5,7 +5,7 @@ The vao_content is a list of 3-tuples (buffer, format, attribs)
 the format can have an empty or '/v', '/i', '/r' ending.
 '/v' attributes are the default
 '/i` attributes are per instance attributes
-'/r' attributes are default values for the attributes (per render attributes)
+'/r' attributes are per render (like a uniform)
 Example:
     vao_content = [
         (self.position_vertex_buffer, '2f', 'in_vert'),
@@ -17,7 +17,7 @@ import re
 from functools import lru_cache
 from typing import List
 
-VALID_DIVISORS = ['v', 'i']
+VALID_DIVISORS = ['v', 'i', 'r']
 
 
 class BufferFormat:
@@ -89,12 +89,11 @@ def attribute_format(attr_format: str) -> BufferFormat:
 
     # Construct specific buffer format
     fmt_info = buffer_format(bformat)
-    per_instance = divisor == 'i'
     return BufferFormat(
-        '{}{}{}'.format(components, bformat, "/i" if per_instance else ''),
+        '{}{}{}'.format(components, bformat, '/{}'.format(divisor) if divisor else ''),
         components,
         fmt_info.bytes_per_component,
-        per_instance=per_instance,
+        per_instance=divisor == 'i',
     )
 
 
