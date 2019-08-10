@@ -2,8 +2,8 @@ from setuptools import setup, find_namespace_packages
 
 setup(
     name="moderngl_window",
-    version="1.1.0",
-    description="Easily create a window for ModernGL using the most popular window libraries",
+    version="1.2.0",
+    description="A cross platform helper library for ModernGL making window creation and resource loading simple",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     url="https://github.com/moderngl/moderngl_window",
