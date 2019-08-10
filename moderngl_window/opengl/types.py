@@ -79,7 +79,7 @@ def attribute_format(attr_format: str) -> BufferFormat:
             raise ValueError("Invalid attribute divisor '{}' in '{}'".format(divisor, buffer_format))
 
     # Parse out out component count and actual format
-    parts = re.split(r'([fiud])', fmt)
+    parts = re.split(r'([fiudn])', fmt)
     components = 1
     if parts[0].isalnum():
         components = int(parts[0])
