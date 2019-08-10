@@ -26,9 +26,17 @@ class Loader(PillowLoader):
         )
         texture.extra = {'meta': self.meta}
 
+        if self.meta.mipmap_levels is not None:
+            self.meta.mipmap = True
+
         if self.meta.mipmap:
-            texture.build_mipmaps()
-            texture.anisotropy = 16.0
+            if isinstance(self.meta.mipmap_levels, tuple):
+                texture.build_mipmaps(*self.meta.mipmap_levels)
+            else:
+                texture.build_mipmaps()
+
+            if self.meta.anisotropy > 1.0:
+                texture.anisotropy = self.meta.anisotropy
 
         self._close_image()
 

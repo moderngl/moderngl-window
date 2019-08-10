@@ -46,6 +46,10 @@ class TextureDescription(ResourceDescription):
         """bool: If mipmaps should be generated"""
         return self._kwargs.get('mipmap')
 
+    @mipmap.setter
+    def mipmap(self, value: float):
+        self._kwargs['mipmap'] = value
+
     @property
     def mipmap_levels(self) -> Tuple[int, int]:
         """Tuple[int, int]: base, max_level for mipmap generation"""
