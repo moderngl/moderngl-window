@@ -54,3 +54,15 @@ class TextureLoadersTestCase(HeadlessTestCase):
         texture = resources.textures.load(desc)
         self.assertEqual(texture.anisotropy, 4.0)
         self.assertEqual(desc.mipmap, True)
+
+        # Texture Array
+        desc = TextureDescription(
+            path='textures/array.png',
+            kind="array",
+            layers=10,
+            mipmap_levels=(0, 5),
+            anisotropy=8.0,
+        )
+        texture = resources.textures.load(desc)
+        self.assertEqual(texture.anisotropy, 8.0)
+        self.assertEqual(desc.mipmap, True)
