@@ -507,18 +507,29 @@ class WindowConfig:
             button (int): 1 = Left button, 2 = right button
         """
 
-    def load_texture_2d(self, path: str, **kwargs) -> moderngl.Texture:
+    def load_texture_2d(self, path: str, flip=True, mipmap=False, mipmap_levels: Tuple[int, int] = None,
+                        anisotropy=1.0, **kwargs) -> moderngl.Texture:
         """Loads a 2D texture
 
         Args:
             path (str): Path to the texture relative to search directories
+            flip (boolean): Flip the image horisontally
+            mipmap (bool): Generate mipmaps
+            mipmap_levels (tuple): (base, max_level) controlling mipmap generation.
+                                   When defined the `mipmap` parameter is automatically `True`
+            anisotropy (float): Number of samples for anisotropic filtering
             **kwargs: Additonal parameters to TextureDescription
         Returns:
             moderngl.Texture: Texture instance
         """
-        return resources.textures.load(
-            TextureDescription(path=path, **kwargs)
-        )
+        return resources.textures.load(TextureDescription(
+            path=path,
+            flip=flip,
+            mipmap=mipmap,
+            mipmap_levels=mipmap_levels,
+            anisotropy=anisotropy,
+            **kwargs,
+        ))
 
     def load_texture_array(self, path: str, layers: int, **kwargs) -> moderngl.TextureArray:
         """Loads a texture array.
