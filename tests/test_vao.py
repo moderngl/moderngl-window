@@ -78,4 +78,22 @@ class VaoTestCase(HeadlessTestCase):
         mesh.buffer(numpy.array([0.0, 0.0, 0.0, 1.0, 1.0, 1.0], dtype='i4'), '3ni', 'position')
         mesh.buffer(numpy.array([0.0, 0.0, 1.0, 1.0, 0.0, 1.0], dtype='f4'), '3nf', 'normal')
         mesh.buffer(numpy.array([0.0, 0.0, 1.0, 1.0], dtype='f4'), '2f', 'uv')
+
+        # Uncomment in moderngl 5.6+
         # mesh.instance(prog)
+
+    def test_divisors(self):
+        """Test defining buffers with different divisor types"""
+        mesh = VAO("test", mode=moderngl.LINES)
+        mesh.buffer(numpy.array([0.0, 0.0, 0.0, 1.0, 1.0, 1.0], dtype='f4'), '3f/v', 'position')
+        mesh.buffer(numpy.array([0.0, 0.0, 1.0, 1.0, 0.0, 1.0], dtype='f4'), '3f/r', 'normal')
+        mesh.buffer(numpy.array([0.0, 0.0, 1.0, 1.0], dtype='f4'), '2f/i', 'uv')
+
+        buffer1 = mesh.get_buffer_by_name('position')
+        buffer2 = mesh.get_buffer_by_name('normal')
+        buffer3 = mesh.get_buffer_by_name('uv')
+
+        attributes = ['position', 'normal', 'uv']
+        self.assertEqual(buffer1.content(attributes), (buffer1.buffer, '3f/v', 'position'))
+        self.assertEqual(buffer2.content(attributes), (buffer2.buffer, '3f/r', 'normal'))
+        self.assertEqual(buffer3.content(attributes), (buffer3.buffer, '2f/i', 'uv'))
