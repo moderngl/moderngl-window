@@ -122,5 +122,10 @@ class WindowConfigTestCase(WindowConfigTestCase):
 
     def test_load_scene(self):
         """Load a scene"""
-        scene = self.config.load_scene('scenes/BoxTextured/glTF/BoxTextured.gltf')
+        scene = self.config.load_scene(
+            path='scenes/BoxTextured/glTF/BoxTextured.gltf',
+            cache=False,
+            attr_names=None,
+            kind=None,
+        )
         self.assertIsInstance(scene, Scene)

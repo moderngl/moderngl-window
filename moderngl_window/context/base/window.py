@@ -8,6 +8,7 @@ import moderngl
 from moderngl_window.context.base import KeyModifiers, BaseKeys
 from moderngl_window.timers.base import BaseTimer
 from moderngl_window import resources
+from moderngl_window.geometry.attributes import AttributeNames
 from moderngl_window.meta import (
     TextureDescription,
     ProgramDescription,
@@ -648,16 +649,26 @@ class WindowConfig:
 
         return resources.data.load(DataDescription(path=path, kind="binary"))
 
-    def load_scene(self, path=str, **kwargs) -> Scene:
+    def load_scene(self, path=str, cache=False, attr_names=AttributeNames,
+                   kind=None, **kwargs) -> Scene:
         """Loads a scene.
 
-        Args:
+        Keyword Args:
             path (str): Path to the file relative to search directories
+            cache (str): Use the loader caching system if present
+            attr_names (AttributeNames): Attrib name config
+            kind (str): Override loader kind
             **kwargs: Additional parameters to SceneDescription
         Returns:
             Scene: The scene instance
         """
-        return resources.scenes.load(SceneDescription(path=path, **kwargs))
+        return resources.scenes.load(SceneDescription(
+            path=path,
+            cache=cache,
+            attr_names=attr_names,
+            kind=kind,
+            **kwargs,
+        ))
 
 
 def dummy_func(*args, **kwargs) -> None:
