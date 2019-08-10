@@ -15,6 +15,9 @@ class SceneDescription(ResourceDescription):
             cache (str): Use the loader caching system if present
             attr_names (AttributeNames): Attrib name config
         """
+        if attr_names is None:
+            attr_names = AttributeNames
+
         kwargs.update({
             "path": path,
             "kind": kind,
