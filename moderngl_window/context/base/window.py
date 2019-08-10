@@ -513,8 +513,10 @@ class WindowConfig:
 
         Args:
             path (str): Path to the texture relative to search directories
+        Keyword Args:
             flip (boolean): Flip the image horisontally
-            mipmap (bool): Generate mipmaps
+            mipmap (bool): Generate mipmaps. Will generate max possible levels unless
+                           `mipmap_levels` is defined.
             mipmap_levels (tuple): (base, max_level) controlling mipmap generation.
                                    When defined the `mipmap` parameter is automatically `True`
             anisotropy (float): Number of samples for anisotropic filtering
@@ -531,12 +533,22 @@ class WindowConfig:
             **kwargs,
         ))
 
-    def load_texture_array(self, path: str, layers: int, **kwargs) -> moderngl.TextureArray:
+    def load_texture_array(self, path: str, layers: int = 0, flip=True,
+                           mipmap=False, mipmap_levels: Tuple[int, int] = None,
+                           anisotropy=1.0, **kwargs) -> moderngl.TextureArray:
         """Loads a texture array.
 
         Args:
             path (str): Path to the texture relative to search directories
+        Keyword Args:
             layers (int): How many layers to split the texture into vertically
+            flip (boolean): Flip the image horisontally
+            mipmap (bool): Generate mipmaps. Will generate max possible levels unless
+                           `mipmap_levels` is defined.
+            mipmap_levels (tuple): (base, max_level) controlling mipmap generation.
+                                   When defined the `mipmap` parameter is automatically `True`
+            anisotropy (float): Number of samples for anisotropic filtering
+
             **kwargs: Additonal parameters to TextureDescription
         Returns:
             moderngl.TextureArray: The texture instance
@@ -547,9 +559,15 @@ class WindowConfig:
         if 'kind' not in kwargs:
             kwargs['kind'] = "array"
 
-        return resources.textures.load(
-            TextureDescription(path=path, layers=layers, **kwargs)
-        )
+        return resources.textures.load(TextureDescription(
+            path=path,
+            layers=layers,
+            flip=flip,
+            mipmap=mipmap,
+            mipmap_levels=mipmap_levels,
+            anisotropy=anisotropy,
+            **kwargs
+        ))
 
     def load_program(self, path=None, vertex_shader=None, geometry_shader=None, fragment_shader=None,
                      tess_control_shader=None, tess_evaluation_shader=None) -> moderngl.Program:

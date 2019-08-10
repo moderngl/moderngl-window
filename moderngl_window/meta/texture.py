@@ -16,7 +16,8 @@ class TextureDescription(ResourceDescription):
         Args:
             path (str): path to resource relative to search directories
             flip (boolean): Flip the image horisontally
-            mipmap (bool): Generate mipmaps
+            mipmap (bool): Generate mipmaps. Will generate max possible levels unless
+                           `mipmap_levels` is defined.
             mipmap_levels (tuple): (base, max_level) controlling mipmap generation.
                                    When defined the `mipmap` parameter is automatically `True`.
             anisotropy (float): Number of samples for anisotropic filtering

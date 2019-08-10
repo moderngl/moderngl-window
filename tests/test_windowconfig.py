@@ -78,9 +78,16 @@ class WindowConfigTestCase(WindowConfigTestCase):
 
     def test_load_texture_array(self):
         """Load texture array with shortcut method"""
-        texture = self.config.load_texture_array('textures/array.png', 10)
+        texture = self.config.load_texture_array(
+            'textures/array.png',
+            layers=10,
+            flip=True,
+            mipmap=False,
+            mipmap_levels=(0, 2),
+            anisotropy=4.0,
+        )
         self.assertIsInstance(texture, moderngl.TextureArray)
-        self.assertEqual(texture.anisotropy, 1.0)
+        self.assertEqual(texture.anisotropy, 4.0)
         self.assertEqual(texture.layers, 10)
 
     def test_load_program_single(self):
