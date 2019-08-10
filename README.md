@@ -19,6 +19,7 @@ making programmers more efficent and ensuring cross platform support.
 * Resource finder system supporting multiple resource directories
 * A highly pluggable library supporting custom loaders,
   resource finders and windows.
+* Type hints everywhere making code completion and linting a breeze
 
 We are not trying to force the user into using every aspect of this
 library. If you have an exiting project and just need texture loading
