@@ -145,6 +145,7 @@ class ObjLoader(BaseLoader):
                             label=rel_path,
                             path=rel_path,
                             mipmap=True,
+                            anisotropy=16.0,
                         ))
                     texture_cache[rel_path] = texture
 

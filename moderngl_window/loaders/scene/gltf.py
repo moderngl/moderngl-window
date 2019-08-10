@@ -715,6 +715,7 @@ class GLTFImage:
             image=image,
             flip=False,
             mipmap=True,
+            anisotropy=16.0,
         )).load()
 
         return texture
