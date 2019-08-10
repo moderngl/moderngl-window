@@ -88,4 +88,4 @@ class ResourceDescriptionTestCase(TestCase):
         self.assertEqual(instance.flip, True)
         self.assertEqual(instance.mipmap, False)
         self.assertEqual(instance.mipmap_levels, None)
-        self.assertEqual(instance.anisotropy, 16.0)
+        self.assertEqual(instance.anisotropy, 1.0)

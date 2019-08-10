@@ -9,7 +9,7 @@ class TextureDescription(ResourceDescription):
     resource_type = 'textures'
 
     def __init__(self, path: str = None, kind: str = None, flip=True, mipmap=False,
-                 mipmap_levels: Tuple[int, int] = None, anisotropy=16.0,
+                 mipmap_levels: Tuple[int, int] = None, anisotropy=1.0,
                  image=None, layers=None, **kwargs):
         """Describes a texture resource
 
