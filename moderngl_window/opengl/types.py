@@ -135,4 +135,19 @@ BUFFER_FORMATS = {
     'i1': BufferFormat('i1', 1, 1),
     'i2': BufferFormat('i2', 1, 2),
     'i4': BufferFormat('i4', 1, 4),
+    # Normalized float
+    'nf': BufferFormat('nf', 1, 4),
+    'nf1': BufferFormat('nf1', 1, 1),
+    'nf2': BufferFormat('nf2', 1, 2),
+    'nf4': BufferFormat('nf4', 1, 4),
+    # Normalized uint
+    'nu': BufferFormat('nu', 1, 4),
+    'nu1': BufferFormat('nu1', 1, 1),
+    'nu2': BufferFormat('nu2', 1, 2),
+    'nu4': BufferFormat('nu4', 1, 4),
+    # Normalized int
+    'ni': BufferFormat('ni', 1, 4),
+    'ni1': BufferFormat('ni1', 1, 1),
+    'ni2': BufferFormat('ni2', 1, 2),
+    'ni4': BufferFormat('ni4', 1, 4),
 }
