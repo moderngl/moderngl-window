@@ -86,4 +86,5 @@ class ResourceDescriptionTestCase(TestCase):
         )
         self.inspect_base_properties(instance)
         self.assertEqual(instance.flip, True)
-        self.assertEqual(instance.mipmap, True)
+        self.assertEqual(instance.mipmap, False)
+        self.assertEqual(instance.mipmap_levels, None)
