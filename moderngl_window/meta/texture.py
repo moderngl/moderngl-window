@@ -8,7 +8,7 @@ class TextureDescription(ResourceDescription):
     default_kind = '2d'
     resource_type = 'textures'
 
-    def __init__(self, path: str = None, kind: str = None, flip=True, mipmap=True,
+    def __init__(self, path: str = None, kind: str = None, flip=True, mipmap=False,
                  mipmap_levels: Tuple[int, int] = None, image=None, layers=None, **kwargs):
         """Describes a texture resource
 
