@@ -394,9 +394,9 @@ class BaseWindow:
         """
         logger.info("Context Version:")
         logger.info('ModernGL: %s', moderngl.__version__)
-        logger.info('vendor: %s', self._ctx.info['GL_VENDOR'])
-        logger.info('renderer: %s', self._ctx.info['GL_RENDERER'])
-        logger.info('version: %s', self._ctx.info['GL_VERSION'])
+        logger.info('vendor: %s', self._ctx.limits.VENDOR)
+        logger.info('renderer: %s', self._ctx.limits.RENDERER)
+        logger.info('version: %s', self._ctx.limits.VERSION)
         logger.info('python: %s', sys.version)
         logger.info('platform: %s', sys.platform)
         logger.info('code: %s', self._ctx.version_code)
