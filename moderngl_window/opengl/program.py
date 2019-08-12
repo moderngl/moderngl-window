@@ -210,11 +210,10 @@ class ReloadableProgram:
         return self.program._members
 
     @property
-    def ctx(self) -> moderngl.Context:
+    def ctx(self) -> '_moderngl.Context':
         return self.program.ctx
 
-    def __getitem__(self, key) -> Union[moderngl.Uniform, moderngl.UniformBlock, moderngl.Subroutine,
-                                        moderngl.Attribute, moderngl.Varying]:
+    def __getitem__(self, key) -> '_moderngl.Uniform':
         return self.program[key]
 
     def get(self, key, default):
