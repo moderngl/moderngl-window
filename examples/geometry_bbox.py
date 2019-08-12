@@ -25,7 +25,7 @@ class GeometryBbox(CameraWindow):
         self.prog['m_model'].write(matrix44.create_from_translation([0.0, 0.0, -8.0], dtype='f4'))
 
     def render(self, time: float, frame_time: float):
-        self.ctx.clear()
+        self.ctx.screen.clear()
 
         self.prog['m_proj'].write(self.camera.projection.tobytes())
         self.prog['m_cam'].write(self.camera.matrix.astype('f4').tobytes())

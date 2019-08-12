@@ -55,11 +55,11 @@ class ModernglLogo(mglw.WindowConfig):
         ])
 
         self.vbo = self.ctx.buffer(vertices.astype('f4').tobytes())
-        self.vao = self.ctx.simple_vertex_array(self.prog, self.vbo, 'vert', 'vert_color')
+        self.vao = self.ctx.vertex_array(self.prog, self.vbo, 'vert', 'vert_color')
+        self.vao.scope = self.ctx.scope(self.ctx.BLEND)
 
     def render(self, time, frametime):
-        self.ctx.clear(1.0, 1.0, 1.0)
-        self.ctx.enable(moderngl.BLEND)
+        self.ctx.screen.clear((1.0, 1.0, 1.0))
         self.rotation.value = time
         self.vao.render(instances=10)
 

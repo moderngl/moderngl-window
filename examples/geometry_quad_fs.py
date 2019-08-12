@@ -18,9 +18,9 @@ class QuadFullscreen(moderngl_window.WindowConfig):
         self.prog = resources.programs.load(ProgramDescription(path='programs/texture.glsl'))
 
     def render(self, time: float, frame_time: float):
-        self.ctx.clear()
+        self.ctx.screen.clear()
 
-        self.texture.use(location=0)
+        # self.texture.use(location=0)
         self.prog['texture0'].value = 0
         self.quad.render(self.prog)
 

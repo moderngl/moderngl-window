@@ -21,17 +21,16 @@ class CubeSimple(CameraWindow):
         self.prog = resources.programs.load(ProgramDescription(path='programs/cube_simple.glsl'))
         self.prog['m_proj'].write(self.camera.projection.tobytes())
         self.prog['color'].value = (1.0, 1.0, 1.0, 1.0)
+        self.scope = self.ctx.scope(self.ctx.CULL_FACE | self.ctx.DEPTH_TEST)
 
     def render(self, time: float, frametime: float):
-        self.ctx.enable_only(moderngl.CULL_FACE | moderngl.DEPTH_TEST)
-
         m_rot = Matrix44.from_eulers(Vector3((time, time, time)))
         m_trans = matrix44.create_from_translation(Vector3((0.0, 0.0, -3.0)))
         m_mv = matrix44.multiply(m_rot, m_trans)
 
         self.prog['m_model'].write(m_mv.astype('f4').tobytes())
         self.prog['m_camera'].write(self.camera.matrix.astype('f4').tobytes())
-        self.cube.render(self.prog)
+        self.cube.render(self.prog, self.scope)
 
 
 if __name__ == '__main__':

@@ -69,45 +69,40 @@ class CubeSimple(mglw.WindowConfig):
         )
         self.error("create vao and projection")
 
-        proj_uniform1 = self.prog1['Projection']
-        view_uniform1 = self.prog1['View']
-        proj_uniform2 = self.prog2['Projection']
-        view_uniform2 = self.prog2['View']
+        self.prog1['Projection'] = 1
+        self.prog1['View'] = 2
+        self.prog2['Projection'] = 1
+        self.prog2['View'] = 2
 
-        self.proj_buffer = self.ctx.buffer(reserve=proj_uniform1.size)
-        self.view_buffer = self.ctx.buffer(reserve=view_uniform1.size)
+        self.proj_buffer = self.ctx.buffer(reserve='64KB')
+        self.view_buffer = self.ctx.buffer(reserve='64KB')
 
-        proj_uniform1.binding = 1
-        view_uniform1.binding = 2
-        proj_uniform2.binding = 1
-        view_uniform2.binding = 2
-
-        self.proj_buffer.bind_to_uniform_block(1)
-        self.view_buffer.bind_to_uniform_block(2)
+        # self.proj_buffer.bind_to_uniform_block(1)
+        # self.view_buffer.bind_to_uniform_block(2)
 
         self.proj_buffer.write(self.m_proj.tobytes())
 
-        self.scope1 = self.ctx.scope(
-            self.ctx.fbo,
-            enable_only=moderngl.CULL_FACE | moderngl.DEPTH_TEST,
+        self.vao1.scope = self.ctx.scope(
+            moderngl.CULL_FACE | moderngl.DEPTH_TEST,
+            self.ctx.screen,
             uniform_buffers=[
                 (self.proj_buffer, 1),
                 (self.view_buffer, 2),
             ],
         )
 
-        self.scope2 = self.ctx.scope(
-            self.ctx.fbo,
-            enable_only=moderngl.CULL_FACE | moderngl.DEPTH_TEST,
+        self.vao2.scope = self.ctx.scope(
+            moderngl.CULL_FACE | moderngl.DEPTH_TEST,
+            self.ctx.screen,
             uniform_buffers=[
                 (self.proj_buffer, 1),
                 (self.view_buffer, 2),
             ],
         )
 
-        print(f"binding={proj_uniform1.binding} name={proj_uniform1.name} index={proj_uniform1.index} size={proj_uniform1.size}")
-        print(f"binding={view_uniform1.binding} name={view_uniform1.name} index={view_uniform1.index} size={view_uniform2.size}")
-        print("min_offset", self.ctx.info['GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT'])
+        # print(f"binding={proj_uniform1.binding} name={proj_uniform1.name} index={proj_uniform1.index} size={proj_uniform1.size}")
+        # print(f"binding={view_uniform1.binding} name={view_uniform1.name} index={view_uniform1.index} size={view_uniform2.size}")
+        # print("min_offset", self.ctx.info['GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT'])
 
         self.error("initialize end")
 
@@ -120,18 +115,16 @@ class CubeSimple(mglw.WindowConfig):
 
         self.view_buffer.write(m_modelview.astype('f4').tobytes())
 
-        with self.scope1:
-            self.vao1.render(mode=moderngl.TRIANGLES)
+        # with self.scope1:
+        self.vao1.render()
 
-        with self.scope2:
-            self.vao2.render(mode=moderngl.TRIANGLES)
+        # with self.scope2:
+        self.vao2.render()
 
         self.error("loop")
 
     def error(self, msg):
-        err = self.ctx.error
-        if err != "GL_NO_ERROR":
-            print(msg, err)
+        pass
 
 
 if __name__ == '__main__':
