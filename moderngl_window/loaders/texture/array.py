@@ -35,8 +35,8 @@ class Loader(PillowLoader):
             else:
                 texture.build_mipmaps()
 
-            if self.meta.anisotropy:
-                texture.anisotropy = self.meta.anisotropy
+            # if self.meta.anisotropy:
+            #     texture.anisotropy = self.meta.anisotropy
 
         self._close_image()
 
