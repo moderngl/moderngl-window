@@ -4,7 +4,11 @@ import logging
 import sys
 from typing import Any, Tuple, Type
 
-import moderngl
+import _moderngl # for linted types
+
+from moderngl import context as create_context
+from moderngl import Context as ContextType
+
 from moderngl_window.context.base import KeyModifiers, BaseKeys
 from moderngl_window.timers.base import BaseTimer
 from moderngl_window import resources
@@ -72,7 +76,7 @@ class BaseWindow:
         self._mouse_release_event_func = dummy_func
 
         # Internal states
-        self._ctx = None  # type: moderngl.Context
+        self._ctx = None  # type: _moderngl.Context
         self._viewport = None
         self._frames = 0  # Frame counter
         self._close = False
@@ -95,16 +99,16 @@ class BaseWindow:
         Keyword Args:
             ctx: An optional custom ModernGL context
         """
-        self._ctx = moderngl.context(glversion=self.gl_version_code)
+        self._ctx = create_context(glversion=self.gl_version_code)
 
     @property
-    def ctx(self) -> moderngl.Context:
-        """moderngl.Context: The ModernGL context for the window"""
+    def ctx(self) -> '_moderngl.Context':
+        """_moderngl.Context: The ModernGL context for the window"""
         return self._ctx
 
     @property
-    def fbo(self) -> moderngl.Framebuffer:
-        """moderngl.Framebuffer: The default framebuffer"""
+    def fbo(self) -> '_moderngl.Framebuffer':
+        """_moderngl.Framebuffer: The default framebuffer"""
         return self._ctx.screen
 
     @property
@@ -317,7 +321,7 @@ class BaseWindow:
             viewport (tuple): The viewport
         """
         self.use()
-        self._ctx.clear(red=red, green=green, blue=blue, alpha=alpha, depth=depth, viewport=viewport)
+        self._ctx.screen.clear(color=(red, green, blue, alpha), depth=depth, viewport=viewport)
 
     def render(self, time=0.0, frame_time=0.0) -> None:
         """
@@ -378,8 +382,6 @@ class BaseWindow:
         else:
             self._viewport = (0, 0, self._buffer_width, self._buffer_height)
 
-        self._ctx.viewport = self._viewport
-
     @property
     def gl_version_code(self) -> int:
         """
@@ -393,7 +395,7 @@ class BaseWindow:
         Prints moderngl context info.
         """
         logger.info("Context Version:")
-        logger.info('ModernGL: %s', moderngl.__version__)
+        logger.info('ModernGL: %s', _moderngl.__version__)
         logger.info('vendor: %s', self._ctx.limits.VENDOR)
         logger.info('renderer: %s', self._ctx.limits.RENDERER)
         logger.info('version: %s', self._ctx.limits.VERSION)
@@ -427,7 +429,7 @@ class WindowConfig:
     #: Log level for the library
     log_level = logging.INFO
 
-    def __init__(self, ctx: moderngl.Context = None, wnd: BaseWindow = None, timer: BaseTimer = None, **kwargs):
+    def __init__(self, ctx: _moderngl.Context = None, wnd: BaseWindow = None, timer: BaseTimer = None, **kwargs):
         """Initialize the window config
 
         Keyword Args:
@@ -442,7 +444,7 @@ class WindowConfig:
         if self.resource_dir:
             resources.register_dir(Path(self.resource_dir).resolve())
 
-        if not self.ctx or not isinstance(self.ctx, moderngl.Context):
+        if not self.ctx or not isinstance(self.ctx, ContextType):
             raise ValueError("WindowConfig requires a moderngl context. ctx={}".format(self.ctx))
 
         if not self.wnd or not isinstance(self.wnd, BaseWindow):
@@ -509,7 +511,7 @@ class WindowConfig:
         """
 
     def load_texture_2d(self, path: str, flip=True, mipmap=False, mipmap_levels: Tuple[int, int] = None,
-                        anisotropy=1.0, **kwargs) -> moderngl.Texture:
+                        anisotropy=1.0, **kwargs) -> '_moderngl.Texture':
         """Loads a 2D texture
 
         Args:
@@ -523,7 +525,7 @@ class WindowConfig:
             anisotropy (float): Number of samples for anisotropic filtering
             **kwargs: Additonal parameters to TextureDescription
         Returns:
-            moderngl.Texture: Texture instance
+            _moderngl.Texture: Texture instance
         """
         return resources.textures.load(TextureDescription(
             path=path,
@@ -536,7 +538,7 @@ class WindowConfig:
 
     def load_texture_array(self, path: str, layers: int = 0, flip=True,
                            mipmap=False, mipmap_levels: Tuple[int, int] = None,
-                           anisotropy=1.0, **kwargs) -> moderngl.TextureArray:
+                           anisotropy=1.0, **kwargs) -> '_moderngl.Texture':
         """Loads a texture array.
 
         Args:
@@ -552,7 +554,7 @@ class WindowConfig:
 
             **kwargs: Additonal parameters to TextureDescription
         Returns:
-            moderngl.TextureArray: The texture instance
+            _moderngl.Texture: The texture instance
         """
         if not kwargs:
             kwargs = {}
@@ -571,7 +573,7 @@ class WindowConfig:
         ))
 
     def load_program(self, path=None, vertex_shader=None, geometry_shader=None, fragment_shader=None,
-                     tess_control_shader=None, tess_evaluation_shader=None) -> moderngl.Program:
+                     tess_control_shader=None, tess_evaluation_shader=None) -> '_moderngl.Program':
         """Loads a shader program.
 
         Note that `path` should only be used if all shaders are defined
@@ -585,7 +587,7 @@ class WindowConfig:
             tess_control_shader (str): Path to tessellation control shader
             tess_evaluation_shader (str): Path to tessellation eval shader
         Returns:
-            moderngl.Program: The program instance
+            _moderngl.Program: The program instance
         """
         return resources.programs.load(
             ProgramDescription(
