@@ -63,11 +63,7 @@ class BufferInfo:
         if not attrs:
             return None
 
-        return (
-            self.buffer,
-            "{}{}".format(" ".join(formats), '/i' if self.per_instance else ''),
-            *attrs
-        )
+        return self.buffer.bind(*attrs, layout="{}{}".format(" ".join(formats), '/i' if self.per_instance else ''))
 
     def has_attribute(self, name):
         return name in self.attributes
@@ -119,7 +115,7 @@ class VAO:
     def ctx(self):
         return mglw.ctx()
 
-    def render(self, program: moderngl.Program, mode=None, vertices=-1, first=0, instances=1):
+    def render(self, program: '_moderngl.Program', scope: '_moderngl.Scope' = None, mode=None, vertices=-1, first=0, instances=1):
         """
         Render the VAO.
         Args:
@@ -135,9 +131,13 @@ class VAO:
         if mode is None:
             mode = self.mode
 
-        vao.render(mode, vertices=vertices, first=first, instances=instances)
+        if scope:
+            vao.scope = scope
 
-    def render_indirect(self, program: moderngl.Program, buffer, mode=None, count=-1, *, first=0):
+        vao.mode = mode
+        vao.render()
+
+    def render_indirect(self, program: '_moderngl.Program', buffer, mode=None, count=-1, *, first=0):
         """
         The render primitive (mode) must be the same as the input primitive of the GeometryShader.
         The draw commands are 5 integers: (count, instanceCount, firstIndex, baseVertex, baseInstance).
@@ -250,7 +250,7 @@ class VAO:
         if vao:
             return vao
 
-        program_attributes = [name for name, attr in program._members.items() if isinstance(attr, moderngl.Attribute)]
+        program_attributes = [a for l, a in sorted((l, a) for a, (l, _, _) in program.attributes.items())]
 
         # Make sure all attributes are covered
         for attrib_name in program_attributes:
