@@ -95,10 +95,7 @@ class BaseWindow:
         Keyword Args:
             ctx: An optional custom ModernGL context
         """
-        self._ctx = moderngl.create_context(require=self.gl_version_code)
-        err = self._ctx.error
-        if err != "GL_NO_ERROR":
-            logger.info("Consumed the following error during context creation: %s", err)
+        self._ctx = moderngl.context(glversion=self.gl_version_code)
 
     @property
     def ctx(self) -> moderngl.Context:
