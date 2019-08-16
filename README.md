@@ -82,6 +82,12 @@ pip install -r tests/requirements.txt
 tox
 ```
 
+## Building Docs
+
+```bash
+python setup.py build_sphinx
+```
+
 ## Contributing
 
 Contributions are welcome regardless of experience level.
