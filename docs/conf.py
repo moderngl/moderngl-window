@@ -24,7 +24,7 @@ copyright = '2019, Einar Forselv'
 author = 'Einar Forselv'
 
 # The short X.Y version
-version = ''
+version = '1.2.0'
 # The full version, including alpha/beta/rc tags
 release = '1.2.0'
 
@@ -79,7 +79,7 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -155,7 +155,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'moderngl_window', 'moderngl_window Documentation',
-     author, 'moderngl_window', 'One line description of project.',
+     author, 'moderngl_window', 'A cross platform helper library for ModernGL making window creation and resource loading simple',
      'Miscellaneous'),
 ]
 
