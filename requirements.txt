@@ -5,6 +5,7 @@
 moderngl<6
 
 # Optional
+PySide2<6
 PyQt5>=5.12
 glfw>=1.7
 PySDL2>=0.9
