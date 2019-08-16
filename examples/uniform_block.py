@@ -9,9 +9,7 @@ class CubeSimple(mglw.WindowConfig):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.error("initialize start")
         self.cube = geometry.cube(size=(2, 2, 2))
-
         shader_source = {
             'vertex_shader': '''
                 #version 330
@@ -67,7 +65,6 @@ class CubeSimple(mglw.WindowConfig):
             0.1, 100.0,  # near, far
             dtype='f4',
         )
-        self.error("create vao and projection")
 
         proj_uniform1 = self.prog1['Projection']
         view_uniform1 = self.prog1['View']
@@ -81,9 +78,6 @@ class CubeSimple(mglw.WindowConfig):
         view_uniform1.binding = 2
         proj_uniform2.binding = 1
         view_uniform2.binding = 2
-
-        self.proj_buffer.bind_to_uniform_block(1)
-        self.view_buffer.bind_to_uniform_block(2)
 
         self.proj_buffer.write(self.m_proj.tobytes())
 
@@ -105,17 +99,11 @@ class CubeSimple(mglw.WindowConfig):
             ],
         )
 
-        print(f"binding={proj_uniform1.binding} name={proj_uniform1.name} index={proj_uniform1.index} size={proj_uniform1.size}")
-        print(f"binding={view_uniform1.binding} name={view_uniform1.name} index={view_uniform1.index} size={view_uniform2.size}")
-        print("min_offset", self.ctx.info['GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT'])
-
-        self.error("initialize end")
-
     def render(self, time=0.0, frametime=0.0, target: moderngl.Framebuffer = None):
         self.ctx.enable_only(moderngl.CULL_FACE | moderngl.DEPTH_TEST)
 
         m_rot = Matrix44.from_eulers(Vector3((time, time, time)))
-        m_trans = matrix44.create_from_translation(Vector3((0.0, 0.0, -3.0)))
+        m_trans = matrix44.create_from_translation(Vector3((0.0, 0.0, -5.0)))
         m_modelview = matrix44.multiply(m_rot, m_trans)
 
         self.view_buffer.write(m_modelview.astype('f4').tobytes())
@@ -125,13 +113,6 @@ class CubeSimple(mglw.WindowConfig):
 
         with self.scope2:
             self.vao2.render(mode=moderngl.TRIANGLES)
-
-        self.error("loop")
-
-    def error(self, msg):
-        err = self.ctx.error
-        if err != "GL_NO_ERROR":
-            print(msg, err)
 
 
 if __name__ == '__main__':
