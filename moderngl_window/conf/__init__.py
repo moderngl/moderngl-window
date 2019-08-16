@@ -22,6 +22,7 @@ class Settings:
     Bag of settings values. New attributes can be freely added runtime.
     Various apply* methods are supplied so the user have full control over how
     settings values are initialized. This is especially useful for more custom usage.
+    And instance of the `Settings` class is created when the `conf` module is imported.
 
     Attribute names must currently be in upper case to be recognized.
 
@@ -41,27 +42,27 @@ class Settings:
         # Pretty printed string represenation for easy inspection
         print(settings)
     """
+    # Set default entires. Mainly for code completion
+    WINDOW = dict()
+    SCREENSHOT_PATH = None
+    # Finders
+    PROGRAM_FINDERS = []
+    TEXTURE_FINDERS = []
+    SCENE_FINDERS = []
+    DATA_FINDERS = []
+    # Finder dirs
+    PROGRAM_DIRS = []
+    TEXTURE_DIRS = []
+    SCENE_DIRS = []
+    DATA_DIRS = []
+    # Loaders
+    PROGRAM_LOADERS = []
+    TEXTURE_LOADERS = []
+    SCENE_LOADERS = []
+    DATA_LOADERS = []
+
     def __init__(self):
         """Initialize settings with default values"""
-        # Set default entires. Mainly for code completion
-        self.WINDOW = dict()
-        self.SCREENSHOT_PATH = None
-        # Finders
-        self.PROGRAM_FINDERS = []
-        self.TEXTURE_FINDERS = []
-        self.SCENE_FINDERS = []
-        self.DATA_FINDERS = []
-        # Finder dirs
-        self.PROGRAM_DIRS = []
-        self.TEXTURE_DIRS = []
-        self.SCENE_DIRS = []
-        self.DATA_DIRS = []
-        # Loaders
-        self.PROGRAM_LOADERS = []
-        self.TEXTURE_LOADERS = []
-        self.SCENE_LOADERS = []
-        self.DATA_LOADERS = []
-
         self.apply_default_settings()
 
     def apply_default_settings(self) -> None:
