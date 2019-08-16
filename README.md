@@ -75,7 +75,7 @@ pip install -r tests/requirements.txt
 
 ## Running Tests
 
-Tests are set up with `tox` running pytest with coverate and flake8.
+Tests are set up with `tox` running pytest with coverage and flake8.
 
 ```bash
 pip install -r tests/requirements.txt
