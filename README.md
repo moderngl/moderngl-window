@@ -1,11 +1,11 @@
-[![pypi](https://badge.fury.io/py/moderngl-window.svg)](https://pypi.python.org/pypi/moderngl-window)
+[![pypi](https://badge.fury.io/py/moderngl-window.svg)](https://pypi.python.org/pypi/moderngl-window) [![rtd](https://readthedocs.org/projects/moderngl-window/badge/?version=latest)](https://moderngl-window.readthedocs.io)
 
 # moderngl_window
 
 A support library for [ModernGL](https://github.com/moderngl/moderngl)
 making programmers more efficent and ensuring cross platform support.
 
-* moderngl_window documentation (WIP)
+* [moderngl_window documentation](https://moderngl-window.readthedocs.io)
 * [moderngl_window on PyPI](https://pypi.org/project/moderngl-window)
 * [moderngl_window on Github](https://github.com/moderngl/moderngl_window)
 * [ModernGL](https://github.com/moderngl/moderngl)
