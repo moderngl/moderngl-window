@@ -50,9 +50,6 @@ import moderngl_window as mglw
 class Test(mglw.WindowConfig):
     gl_version = (3, 3)
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
     def render(self, time, frametime):
         self.ctx.clear(1.0, 0.0, 0.0, 0.0)
 
