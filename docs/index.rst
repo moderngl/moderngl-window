@@ -7,7 +7,7 @@ Welcome to moderngl_window's documentation!
 ===========================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    reference/index
