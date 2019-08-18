@@ -1,5 +1,7 @@
 
 .. py:module:: moderngl_window.conf
+.. py:currentmodule:: moderngl_window.conf
+
 
 Settings
 ========
