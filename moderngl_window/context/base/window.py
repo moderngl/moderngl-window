@@ -410,31 +410,99 @@ class WindowConfig:
     Base class for making an example.
     Examples can be rendered by any supported window library and platform.
     """
-    #: Size of window to open
     window_size = (1280, 720)
-    #: Should the window be resizable
-    resizable = True
-    #: Minimum required gl version
-    gl_version = (3, 3)
-    #: Window title
-    title = "Example"
-    #: Fixed viewport aspec ratio.
-    #: Can be set to `None` to always get viewport based on window size.
-    aspect_ratio = 16 / 9
-    #: Mouse cursor should be visible
-    cursor = True
-    #: Number of samples used in multisampling
-    samples = 4
-    #: Absolute path to the resource directory (string or pathlib.Path)
-    resource_dir = None
-    #: Log level for the library
-    log_level = logging.INFO
+    """
+    Size of the window.
 
+    .. code:: python
+
+        # Default value
+        window_size = (1280, 720)
+    """
+    resizable = True
+    """
+    Determines of the window should be resizable
+
+    .. code:: python
+
+        # Default value
+        resizable = True
+    """
+    gl_version = (3, 3)
+    """
+    The minimum required OpenGL version required
+
+    .. code:: python
+
+        # Default value
+        gl_version = (3, 3)
+    """
+    title = "Example"
+    """
+    Title of the window
+
+    .. code:: python
+
+        # Default value
+        title = "Example"
+    """
+    aspect_ratio = 16 / 9
+    """
+    The endorced aspect ratio of the viewport. When specified back borders
+    will be calulcated both vertically and horizontally if needed.
+
+    This property can be set to ``None`` to disable the fixed viewport system.
+
+    .. code:: python
+
+        # Default value
+        aspect_ratio = 16 / 9
+    """
+    cursor = True
+    """
+    Determines if the mouse cursor should be visible inside the window.
+    If enabled on some platforms
+
+    .. code:: python
+
+        # Default value
+        cursor = True
+    """
+    samples = 4
+    """
+    Number of samples to use in multisampling.
+
+    .. code:: python
+
+        # Default value
+        samples = 4
+    """
+    resource_dir = None
+    """
+    Absolute path to your resource directory containing textures, scenes,
+    shaders/programs or data files. The ``load_`` methods in this class will
+    look for resources in this path. This attribute can be a ``str`` or
+    a ``pathlib.Path``.
+
+    .. code:: python
+
+        # Default value
+        resource_dir = None
+    """
+    log_level = logging.INFO
+    """
+    Sets the log level for this library using the standard `logging` module.
+
+    .. code:: python
+
+        # Default value
+        log_level = logging.INFO
+    """
     def __init__(self, ctx: moderngl.Context = None, wnd: BaseWindow = None, timer: BaseTimer = None, **kwargs):
         """Initialize the window config
 
         Keyword Args:
-            ctx: The moderngl context
+            ctx (moderngl.Context): The moderngl context
             wnd: The window instance
             timer: The timer instance
         """
@@ -465,7 +533,9 @@ class WindowConfig:
         Called every time the window is resized
         in case the we need to do internal adjustments.
 
-        Width and height are reported in buffer size (not window size)
+        Args:
+            width (int): width in buffer size (not window size)
+            height (int): height in buffer size (not window size)
         """
 
     def key_event(self, key: Any, action: Any, modifiers: KeyModifiers):
