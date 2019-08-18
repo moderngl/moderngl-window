@@ -25,16 +25,30 @@ Attributes
 ----------
 
 .. autoattribute:: Settings.WINDOW
+   :annotation:
 .. autoattribute:: Settings.SCREENSHOT_PATH
+   :annotation:
 .. autoattribute:: Settings.PROGRAM_FINDERS
+   :annotation:
 .. autoattribute:: Settings.TEXTURE_FINDERS
+   :annotation:
 .. autoattribute:: Settings.SCENE_FINDERS
+   :annotation:
 .. autoattribute:: Settings.DATA_FINDERS
+   :annotation:
 .. autoattribute:: Settings.PROGRAM_DIRS
+   :annotation:
 .. autoattribute:: Settings.TEXTURE_DIRS
+   :annotation:
 .. autoattribute:: Settings.SCENE_DIRS
+   :annotation:
 .. autoattribute:: Settings.DATA_DIRS
+   :annotation:
 .. autoattribute:: Settings.PROGRAM_LOADERS
+   :annotation:
 .. autoattribute:: Settings.TEXTURE_LOADERS
+   :annotation:
 .. autoattribute:: Settings.SCENE_LOADERS
+   :annotation:
 .. autoattribute:: Settings.DATA_LOADERS
+   :annotation:
