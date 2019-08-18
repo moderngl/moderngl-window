@@ -232,7 +232,7 @@ class Settings:
 
     def apply_settings_from_env(self) -> None:
         """
-        Apply settings from MODERNGL_WINDOW_SETTINGS_MODULE environment variable.
+        Apply settings from ``MODERNGL_WINDOW_SETTINGS_MODULE`` environment variable.
         If the enviroment variable is undefined no action will be taken.
         Normally this would be used to easily be able to switch between
         different configuration by setting env vars before executing the program.
