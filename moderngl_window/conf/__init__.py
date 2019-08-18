@@ -42,24 +42,177 @@ class Settings:
         # Pretty printed string represenation for easy inspection
         print(settings)
     """
-    # Set default entires. Mainly for code completion
     WINDOW = dict()
+    """
+    Window/screen properties. Most importantly the ``class`` attribute
+    decides what class should be used to handle the window.
+
+    .. code:: python
+
+        # Default values
+        WINDOW = {
+            "gl_version": (3, 3),
+            "class": "moderngl_window.context.pyglet.Window",
+            "size": (1280, 720),
+            "aspect_ratio": 16 / 9,
+            "fullscreen": False,
+            "resizable": True,
+            "title": "ModernGL Window",
+            "vsync": True,
+            "cursor": True,
+            "samples": 0,
+        }
+
+    Other Properties:
+
+    - ``gl_version``: The minimum required major/minor OpenGL version
+    - ``size``: The window size to open.
+    - ``aspect_ratio`` is the enforced aspect ratio of the viewport.
+    - ``fullscreen``: True if you want to create a context in fullscreen mode
+    - ``resizable``: If the window should be resizable. This only applies in
+      windowed mode.
+    - ``vsync``: Only render one frame per screen refresh
+    - ``title``: The visible title on the window in windowed mode
+    - ``cursor``: Should the mouse cursor be visible on the screen? Disabling
+      this is also useful in windowed mode when controlling the camera on some
+      platforms as moving the mouse outside the window can cause issues.
+    - ``Samples``: Number if samples used in multusampling. Values above 1
+      enables multisampling.
+
+    The created window frame buffer will by default use:
+
+    - RGBA8 (32 bit per pixel)
+    - 24 bit depth buffer
+    - Double buffering
+    - color and depth buffer is cleared for every frame
+
+    """
     SCREENSHOT_PATH = None
+    """
+    Absolute path to the directory screenshots will be saved by the screenshot module.
+    Screenshots will end up in the project root of not defined.
+    If a path is configured, the directory will be auto-created.
+    """
     # Finders
     PROGRAM_FINDERS = []
+    """
+    Finder classes for locating programs/shaders.
+
+    .. code:: python
+
+        # Default values
+        PROGRAM_FINDERS = [
+            "moderngl_window.finders.program.FileSystemFinder",
+        ]
+    """
     TEXTURE_FINDERS = []
+    """
+    Finder classes for locating textures.
+
+    .. code:: python
+
+        # Default values
+        TEXTURE_FINDERS = [
+            "moderngl_window.finders.texture.FileSystemFinder",
+        ]
+    """
     SCENE_FINDERS = []
+    """
+    Finder classes for locating scenes.
+
+    .. code:: python
+
+        # Default values
+        SCENE_FINDERS = [
+            "moderngl_window.finders.scene.FileSystemFinder",
+        ]
+
+    """
     DATA_FINDERS = []
+    """
+    Finder classes for locating data files.
+
+    .. code:: python
+
+        # Default values
+        DATA_FINDERS = [
+            "moderngl_window.finders.data.FileSystemFinder",
+        ]
+    """
     # Finder dirs
     PROGRAM_DIRS = []
+    """
+    Lists of `str` or `pathlib.Path` used by ``FileSystemFinder``
+    to looks for programs/shaders.
+    """
     TEXTURE_DIRS = []
+    """
+    Lists of `str` or `pathlib.Path` used by ``FileSystemFinder``
+    to looks for textures.
+    """
     SCENE_DIRS = []
+    """
+    Lists of `str` or `pathlib.Path` used by ``FileSystemFinder``
+    to looks for scenes (obj, gltf, stl etc).
+    """
     DATA_DIRS = []
+    """
+    Lists of `str` or `pathlib.Path` used by ``FileSystemFinder``
+    to looks for data files.
+    """
+
     # Loaders
     PROGRAM_LOADERS = []
+    """
+    Classes responsible for loading programs/shaders.
+
+    .. code:: python
+
+        # Default values
+        PROGRAM_LOADERS = [
+            'moderngl_window.loaders.program.single.Loader',
+            'moderngl_window.loaders.program.separate.Loader',
+        ]
+    """
     TEXTURE_LOADERS = []
+    """
+    Classes responsible for loading textures.
+
+    .. code:: python
+
+        # Default values
+        TEXTURE_LOADERS = [
+            'moderngl_window.loaders.texture.t2d.Loader',
+            'moderngl_window.loaders.texture.array.Loader',
+        ]
+    """
     SCENE_LOADERS = []
+    """
+    Classes responsible for loading scenes.
+
+    .. code:: python
+
+        # Default values
+        SCENE_LOADERS = [
+            "moderngl_window.loaders.scene.gltf.GLTF2",
+            "moderngl_window.loaders.scene.wavefront.ObjLoader",
+            "moderngl_window.loaders.scene.stl_loader.STLLoader",
+        ]
+
+    """
     DATA_LOADERS = []
+    """
+    Classes responsible for loading data files.
+
+    .. code:: python
+
+        # Default values
+        DATA_LOADERS = [
+            'moderngl_window.loaders.data.binary.Loader',
+            'moderngl_window.loaders.data.text.Loader',
+            'moderngl_window.loaders.data.json.Loader',
+        ]
+    """
 
     def __init__(self):
         """Initialize settings with default values"""
