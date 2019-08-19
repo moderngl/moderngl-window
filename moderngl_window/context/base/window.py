@@ -407,8 +407,45 @@ class BaseWindow:
 
 class WindowConfig:
     """
-    Base class for making an example.
-    Examples can be rendered by any supported window library and platform.
+    Creating a ``WindowConfig`` instance is the simplest interface
+    this library provides to open and window, handle inputs and provide simple
+    shortcut method for loading basic resources. It's appropriate
+    for projects with basic needs.
+
+    Example:
+
+    .. code:: python
+
+        class MyConfig(mglw.WindowConfig):
+            gl_version = (3, 3)
+            window_size = (1920, 1080)
+            aspect_ratio = 16 / 9
+            title = "My Config"
+            resizable = False
+            samples = 8
+
+            def __init__(self, **kwargs):
+                super().__init__(**kwargs)
+                # Do other initialization here
+
+            def render(self, time: float, frametime: float):
+                # Render stuff here with ModernGL
+
+            def resize(self, width: int, height: int):
+                print("Window was resized. buffer size is {} x {}".format(width, height))
+
+            def mouse_position_event(self, x, y):
+                print("Mouse position:", x, y)
+
+            def mouse_press_event(self, x, y, button):
+                print("Mouse button {} pressed at {}, {}".format(button, x, y))
+
+            def mouse_release_event(self, x: int, y: int, button: int):
+                print("Mouse button {} released at {}, {}".format(button, x, y))
+
+            def key_event(self, key, action, modifiers):
+                print(key, action, modifiers)
+
     """
     window_size = (1280, 720)
     """
