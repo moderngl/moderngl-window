@@ -1,6 +1,5 @@
 """
-The moderngl_window module contains general helper functions
-aiding in the boostrapping of this library.
+General helper functions aiding in the boostrapping of this library.
 """
 # pylint: disable = redefined-outer-name, too-few-public-methods
 import argparse
@@ -107,7 +106,7 @@ def get_window_cls(window: str = None) -> Type[BaseWindow]:
 def get_local_window_cls(window: str = None) -> Type[BaseWindow]:
     """
     Attept to obtain a window class in the moderngl_window package
-    using short window names such as `pyqt5` or `glfw`.
+    using short window names such as ``pyglet`` or ``glfw``.
 
     Args:
         window (str): Name of the window
@@ -137,7 +136,7 @@ def find_window_classes() -> List[str]:
 
 def create_window_from_settings() -> BaseWindow:
     """
-    Creates a window using configured values in settings.WINDOW.
+    Creates a window using configured values in :py:attr:`moderngl_window.conf.Settings.WINDOW`.
     This will also activate the window/context.
 
     Returns:
