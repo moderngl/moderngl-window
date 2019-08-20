@@ -117,7 +117,7 @@ class BaseWindow:
 
     @property
     def gl_version(self) -> Tuple[int, int]:
-        """(major, minor): Required OpenGL version"""
+        """Tuple[int, int]: (major, minor) required OpenGL version"""
         return self._gl_version
 
     @property
@@ -132,12 +132,12 @@ class BaseWindow:
 
     @property
     def size(self) -> Tuple[int, int]:
-        """(int, int): current window size"""
+        """Tuple[int, int]: current window size"""
         return self._width, self._height
 
     @property
     def buffer_size(self) -> Tuple[int, int]:
-        """(int, int): tuple with the current window buffer size"""
+        """Tuple[int, int]: tuple with the current window buffer size"""
         return self._buffer_width, self._buffer_height
 
     @property
@@ -147,7 +147,7 @@ class BaseWindow:
 
     @property
     def viewport(self) -> Tuple[int, int, int, int]:
-        """(int, int, int, int): current window viewport"""
+        """Tuple[int, int, int, int]: current window viewport"""
         return self._viewport
 
     @property
@@ -187,6 +187,7 @@ class BaseWindow:
 
     @property
     def cursor(self) -> bool:
+        """bool: Should the mouse cursor be visible inside the window?"""
         return self._cursor
 
     @config.setter
@@ -385,9 +386,9 @@ class BaseWindow:
 
     @property
     def gl_version_code(self) -> int:
-        """
-        Generates the version code integer for the selected OpenGL version.
-        Example: gl_version (4, 1) returns 410
+        """int: Generates the version code integer for the selected OpenGL version.
+
+        gl_version (4, 1) returns 410
         """
         return self.gl_version[0] * 100 + self.gl_version[1] * 10
 
