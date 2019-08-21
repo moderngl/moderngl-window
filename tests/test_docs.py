@@ -71,3 +71,6 @@ class TestCase(unittest.TestCase):
 
     def test_context_headless_window(self):
         self.validate('context/headless.window.rst', 'moderngl_window.context.headless.window', 'Window')
+
+    def test_context_pyglet_window(self):
+        self.validate('context/pyglet.window.rst', 'moderngl_window.context.pyglet.window', 'Window')
