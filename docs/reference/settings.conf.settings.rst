@@ -12,6 +12,7 @@ Settings
 Methods
 -------
 
+.. automethod:: Settings.__init__
 .. automethod:: Settings.apply_default_settings
 .. automethod:: Settings.apply_settings_from_env
 .. automethod:: Settings.apply_from_module_name
