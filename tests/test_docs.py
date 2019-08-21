@@ -83,3 +83,6 @@ class TestCase(unittest.TestCase):
 
     def test_context_sdl2_window(self):
         self.validate('context/sdl2.window.rst', 'moderngl_window.context.sdl2.window', 'Window')
+
+    def test_geometry(self):
+        self.validate('geometry.rst', 'moderngl_window.geometry')
