@@ -14,8 +14,9 @@ from moderngl_window.context.base import BaseWindow  # noqa: E402
 
 class Window(BaseWindow):
     """
-    Window based on Pyglet 1.x.
+    Window based on Pyglet 1.4.x
     """
+    #: Pyglet specific key constants
     keys = Keys
 
     _mouse_button_map = {
@@ -66,53 +67,62 @@ class Window(BaseWindow):
         self.set_default_viewport()
 
     @property
-    def is_closing(self):
-        """
-        Check pyglet's internal exit state
-        """
+    def is_closing(self) -> bool:
+        """Check pyglet's internal exit state"""
         return self._window.has_exit or super().is_closing
 
-    def close(self):
-        """
-        Close the pyglet window directly
-        """
+    def close(self) -> None:
+        """Close the pyglet window directly"""
         self._window.close()
         super().close()
 
-    def swap_buffers(self):
-        """
-        Swap buffers, increment frame counter and pull events
-        """
+    def swap_buffers(self) -> None:
+        """Swap buffers, increment frame counter and pull events"""
         self._window.flip()
         self._frames += 1
         self._window.dispatch_events()
 
     def _handle_modifiers(self, mods):
+        """Update key modifier states"""
         self._modifiers.shift = mods & 1 == 1
         self._modifiers.ctrl = mods & 2 == 2
 
     def on_key_press(self, symbol, modifiers):
-        """
-        Pyglet specific key press callback.
-        Forwards and translates the events to the example
+        """Pyglet specific key press callback.
+
+        Forwards and translates the events to the standard methods.
+
+        Args:
+            symbol: The symbol of the pressed key
+            modifiers: Modifier state (shift, ctrl etc.)
         """
         self._key_pressed_map[symbol] = True
         self._handle_modifiers(modifiers)
         self._key_event_func(symbol, self.keys.ACTION_PRESS, self._modifiers)
 
     def on_key_release(self, symbol, modifiers):
-        """
-        Pyglet specific key release callback.
-        Forwards and translates the events to the example
+        """Pyglet specific key release callback.
+
+        Forwards and translates the events to standard methods.
+
+        Args:
+            symbol: The symbol of the pressed key
+            modifiers: Modifier state (shift, ctrl etc.)
         """
         self._key_pressed_map[symbol] = False
         self._handle_modifiers(modifiers)
         self._key_event_func(symbol, self.keys.ACTION_RELEASE, self._modifiers)
 
     def on_mouse_motion(self, x, y, dx, dy):
-        """
-        Pyglet specific mouse motion callback.
-        Forwards and traslates the event to the example
+        """Pyglet specific mouse motion callback.
+
+        Forwards and traslates the event to the standard methods.
+
+        Args:
+            x: x position of the mouse
+            y: y position of the mouse
+            dx: delta x position
+            dy: delta y position of the mouse
         """
         # NOTE: Screen coordinates relative to the lower-left corner
         # so we have to flip the y axis to make this consistent with
@@ -120,16 +130,21 @@ class Window(BaseWindow):
         self._mouse_position_event_func(x, self._buffer_height - y)
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
-        """
-        Pyglet specific mouse drag event.
+        """Pyglet specific mouse drag event.
+
         When a mouse button is pressed this is the only way
         to capture mouse posision events
         """
         self._mouse_position_event_func(x, self._buffer_height - y)
 
     def on_mouse_press(self, x: int, y: int, button, mods):
-        """
-        Handle mouse press events and forward to example window
+        """Handle mouse press events and forward to standard methods
+
+        Args:
+            x: x position of the mouse when pressed
+            y: y position of the mouse when pressed
+            button: The pressed button
+            mods: Modifiers
         """
         button = self._mouse_button_map.get(button, None)
         if button is not None:
@@ -139,8 +154,13 @@ class Window(BaseWindow):
             )
 
     def on_mouse_release(self, x: int, y: int, button, mods):
-        """
-        Handle mouse release events and forward to example window
+        """Handle mouse release events and forward to standard methods
+
+        Args:
+            x: x position when moutse button was released
+            y: y position when moutse button was released
+            button: The button pressed
+            mods: Modifiers
         """
         button = self._mouse_button_map.get(button, None)
         if button is not None:
@@ -150,8 +170,11 @@ class Window(BaseWindow):
             )
 
     def on_resize(self, width: int, height: int):
-        """
-        Pyglet specific callback for window resize events.
+        """Pyglet specific callback for window resize events forwarding to standard methods
+
+        Args:
+            width: New window width
+            height: New window height
         """
         self._width, self._height = width, height
         self._buffer_width, self._buffer_height = self._window.get_framebuffer_size()
