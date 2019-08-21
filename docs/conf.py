@@ -13,9 +13,35 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 # import os
-# import sys
+import sys
 # sys.path.insert(0, os.path.abspath('.'))
+from unittest.mock import MagicMock
 
+
+# Mock modules
+class Mock(MagicMock):
+    @classmethod
+    def __getattr__(cls, name):
+        return MagicMock()
+
+
+MOCK_MODULES = [
+    'glfw',
+    'sdl2',
+    'sdl2.ext',
+    'sdl2.video',
+    'pyglet',
+    'pyglet.window',
+    'PyQt5',
+    'PyQt5.QtCore',
+    'QtCore',
+    'QtOpenGL',
+    'QtWidgets',
+    'PySide2',
+    'PySide2.QtCore',
+]
+
+sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 # -- Project information -----------------------------------------------------
 
