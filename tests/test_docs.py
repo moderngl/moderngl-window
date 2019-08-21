@@ -24,6 +24,9 @@ class TestCase(unittest.TestCase):
         Finds all automethod and autoattribute statements in an rst file
         comparing them to the attributes found in the actual class
         """
+        if ignore is None:
+            ignore = []
+
         with open(os.path.normpath(os.path.join('docs', 'reference', filename))) as f:
             docs = f.read()
 
@@ -59,3 +62,9 @@ class TestCase(unittest.TestCase):
 
     def test_settings(self):
         self.validate('settings.conf.settings.rst', 'moderngl_window.conf', 'Settings', [])
+
+    def test_context_base_window(self):
+        self.validate('context/basewindow.rst', 'moderngl_window.context.base.window', 'BaseWindow')
+
+    def test_context_glfw_window(self):
+        self.validate('context/glfw.window.rst', 'moderngl_window.context.glfw.window', 'Window')
