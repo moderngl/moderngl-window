@@ -8,3 +8,4 @@ Context
    windowconfig
    basewindow
    glfw.window
+   headless.window
