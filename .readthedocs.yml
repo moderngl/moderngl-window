@@ -6,3 +6,4 @@ python:
   setup_py_install: true
   install:
     - requirements: requirements.txt
+    - requirements: docs/requirements.txt
