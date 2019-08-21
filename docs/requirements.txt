@@ -1,3 +1,12 @@
 Sphinx==1.8.4
 sphinx-rtd-theme==0.4.3
 sphinxcontrib-napoleon==0.7
+
+# Optional. Temp fix until we figure out how to configure .readthedocs.yml to include the base requiremnts
+PySide2<6
+PyQt5>=5.12
+glfw>=1.7
+PySDL2>=0.9
+pyrr>=0.10
+pywavefront<2.0
+numpy>=1.16
