@@ -10,6 +10,7 @@ class Window(BaseWindow):
     """
     Basic window implementation using SDL2.
     """
+    #: SDL2 specific key constants
     keys = Keys
 
     _mouse_button_map = {
@@ -64,17 +65,20 @@ class Window(BaseWindow):
 
         self.set_default_viewport()
 
-    def swap_buffers(self):
-        """
-        Swap buffers, set viewport, trigger events and increment frame counter
-        """
+    def swap_buffers(self) -> None:
+        """Swap buffers, set viewport, trigger events and increment frame counter"""
         sdl2.SDL_GL_SwapWindow(self._window)
         self.set_default_viewport()
         self.process_events()
         self._frames += 1
 
-    def resize(self, width, height):
-        """Update internal size values"""
+    def resize(self, width, height) -> None:
+        """Resize callback
+
+        Args:
+            width: New window width
+            height: New window height
+        """
         self._width = width
         self._height = height
         self._buffer_width, self._buffer_height = self._width, self._height
@@ -82,13 +86,14 @@ class Window(BaseWindow):
 
         super().resize(self._buffer_width, self._buffer_height)
 
-    def _handle_mods(self):
+    def _handle_mods(self) -> None:
+        """Update key mods"""
         mods = sdl2.SDL_GetModState()
         self._modifiers.shift = mods & sdl2.KMOD_SHIFT
         self._modifiers.ctrl = mods & sdl2.KMOD_CTRL
 
-    def process_events(self):
-        """Handle all queued events in sdl2"""
+    def process_events(self) -> None:
+        """Handle all queued events in sdl2 dispatching events to standard methods"""
         for event in sdl2.ext.get_events():
             if event.type == sdl2.SDL_MOUSEMOTION:
                 self._mouse_position_event_func(event.motion.x, event.motion.y)
@@ -129,7 +134,7 @@ class Window(BaseWindow):
                 if event.window.event == sdl2.SDL_WINDOWEVENT_RESIZED:
                     self.resize(event.window.data1, event.window.data2)
 
-    def destroy(self):
+    def destroy(self) -> None:
         """Gracefully close the window"""
         sdl2.SDL_GL_DeleteContext(self._context)
         sdl2.SDL_DestroyWindow(self._window)
