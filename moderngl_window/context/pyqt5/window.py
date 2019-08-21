@@ -15,6 +15,7 @@ class Window(BaseWindow):
     in Qt as well, this example can still be useful as a reference
     when creating your own window.
     """
+    #: PyQt5 specific key constants
     keys = Keys
 
     # PyQt supports mode buttons, but we are limited by other libraries
@@ -102,18 +103,19 @@ class Window(BaseWindow):
 
         self.set_default_viewport()
 
-    def swap_buffers(self):
-        """
-        Swap buffers, set viewport, trigger events and increment frame counter
-        """
+    def swap_buffers(self) -> None:
+        """Swap buffers, set viewport, trigger events and increment frame counter"""
         self.widget.swapBuffers()
         self.set_default_viewport()
         self.app.processEvents()
         self._frames += 1
 
-    def resize(self, width: int, height: int):
-        """
-        Replacement for Qt's resizeGL method.
+    def resize(self, width: int, height: int) -> None:
+        """Replacement for Qt's ``resizeGL`` method.
+
+        Args:
+            width: New window width
+            height: New window height
         """
         self._width = width // self.widget.devicePixelRatio()
         self._height = height // self.widget.devicePixelRatio()
@@ -126,13 +128,16 @@ class Window(BaseWindow):
         # Make sure we notify the example about the resize
         super().resize(self._buffer_width, self._buffer_height)
 
-    def _handle_modifiers(self, mods):
+    def _handle_modifiers(self, mods) -> None:
+        """Update modifiers"""
         self._modifiers.shift = mods & QtCore.Qt.ShiftModifier
         self._modifiers.ctrl = mods & QtCore.Qt.ControlModifier
 
-    def key_pressed_event(self, event):
-        """
-        Process Qt key press events forwarding them to the example
+    def key_pressed_event(self, event) -> None:
+        """Process Qt key press events forwarding them to standard methods
+
+        Args:
+            event: The qtevent instance
         """
         if event.key() == self.keys.ESCAPE:
             self.close()
@@ -141,23 +146,29 @@ class Window(BaseWindow):
         self._key_pressed_map[event.key()] = True
         self.key_event_func(event.key(), self.keys.ACTION_PRESS, self._modifiers)
 
-    def key_release_event(self, event):
-        """
-        Process Qt key release events forwarding them to the example
+    def key_release_event(self, event) -> None:
+        """Process Qt key release events forwarding them to standard methods
+
+        Args:
+            event: The qtevent instance
         """
         self._handle_modifiers(event.modifiers())
         self._key_pressed_map[event.key()] = False
         self.key_event_func(event.key(), self.keys.ACTION_RELEASE, self._modifiers)
 
-    def mouse_move_event(self, event):
-        """
-        Forward mouse cursor position events to the example
+    def mouse_move_event(self, event) -> None:
+        """Forward mouse cursor position events to standard methods
+
+        Args:
+            event: The qtevent instance
         """
         self.mouse_position_event_func(event.x(), event.y())
 
-    def mouse_press_event(self, event):
-        """
-        Forward mouse press events to the example
+    def mouse_press_event(self, event) -> None:
+        """Forward mouse press events to standard methods
+
+        Args:
+            event: The qtevent instance
         """
         button = self._mouse_button_map.get(event.button())
         if button is None:
@@ -165,9 +176,11 @@ class Window(BaseWindow):
 
         self.mouse_press_event_func(event.x(), event.y(), button)
 
-    def mouse_release_event(self, event):
-        """
-        Forward mouse release events to the example
+    def mouse_release_event(self, event) -> None:
+        """Forward mouse release events to standard methods
+
+        Args:
+            event: The qtevent instance
         """
         button = self._mouse_button_map.get(event.button())
         if button is None:
@@ -175,14 +188,14 @@ class Window(BaseWindow):
 
         self.mouse_release_event_func(event.x(), event.y(), button)
 
-    def close_event(self, event):
-        """
-        Detect the standard PyQt close events to make users happy
+    def close_event(self, event) -> None:
+        """The standard PyQt close events
+
+        Args:
+            event: The qtevent instance
         """
         self.close()
 
-    def destroy(self):
-        """
-        Quit the Qt application to exit the window gracefully
-        """
+    def destroy(self) -> None:
+        """Quit the Qt application to exit the window gracefully"""
         QtCore.QCoreApplication.instance().quit()
