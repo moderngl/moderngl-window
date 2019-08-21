@@ -12,3 +12,4 @@ Context
    pyglet.window
    pyqt5.window
    pyside2.window
+   sdl2.window
