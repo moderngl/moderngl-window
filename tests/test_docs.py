@@ -74,3 +74,12 @@ class TestCase(unittest.TestCase):
 
     def test_context_pyglet_window(self):
         self.validate('context/pyglet.window.rst', 'moderngl_window.context.pyglet.window', 'Window')
+
+    def test_context_pyqt5_window(self):
+        self.validate('context/pyqt5.window.rst', 'moderngl_window.context.pyqt5.window', 'Window')
+
+    def test_context_pyside2_window(self):
+        self.validate('context/pyside2.window.rst', 'moderngl_window.context.pyside2.window', 'Window')
+
+    def test_context_sdl2_window(self):
+        self.validate('context/sdl2.window.rst', 'moderngl_window.context.sdl2.window', 'Window')
