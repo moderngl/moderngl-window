@@ -8,6 +8,7 @@ class Window(BaseWindow):
     """
     Window based on GLFW
     """
+    #: GLFW specific key constants
     keys = Keys
 
     # GLFW do support other buttons, but we are limited by other libraries
@@ -69,41 +70,35 @@ class Window(BaseWindow):
         self.init_mgl_context()
         self.set_default_viewport()
 
-    def close(self):
-        """
-        Suggest to glfw the window should be closed soon
-        """
+    def close(self) -> None:
+        """Suggest to glfw the window should be closed soon"""
         glfw.set_window_should_close(self._window, True)
 
     @property
     def is_closing(self):
-        """
-        Checks if the window is scheduled for closing
-        """
+        """bool: Checks if the window is scheduled for closing"""
         return glfw.window_should_close(self._window)
 
     def swap_buffers(self):
-        """
-        Swap buffers, increment frame counter and pull events
-        """
+        """Swap buffers, increment frame counter and pull events"""
         glfw.swap_buffers(self._window)
         self._frames += 1
         glfw.poll_events()
 
     def _handle_modifiers(self, mods):
+        """Checks key modifiers"""
         self._modifiers.shift = mods & 1 == 1
         self._modifiers.ctrl = mods & 2 == 2
 
     def glfw_key_event_callback(self, window, key, scancode, action, mods):
-        """
-        Key event callback for glfw.
+        """Key event callback for glfw.
         Translates and forwards keyboard event to :py:func:`keyboard_event`
 
         Args:
             window: Window event origin
             key: The key that was pressed or released.
             scancode: The system-specific scancode of the key.
-            action: GLFW_PRESS, GLFW_RELEASE or GLFW_REPEAT
+            action: ``GLFW_PRESS``, ``GLFW_RELEASE`` or ``GLFW_REPEAT``
             mods: Bit field describing which modifier keys were held down.
         """
         if key == self.keys.ESCAPE:
@@ -119,8 +114,7 @@ class Window(BaseWindow):
         self._key_event_func(key, action, self._modifiers)
 
     def glfw_mouse_event_callback(self, window, xpos, ypos):
-        """
-        Mouse event callback from glfw.
+        """Mouse event callback from glfw.
         Translates the events forwarding them to :py:func:`cursor_event`.
 
         Args:
@@ -132,8 +126,13 @@ class Window(BaseWindow):
         self._mouse_position_event_func(xpos, ypos)
 
     def glfw_mouse_button_callback(self, window, button, action, mods):
-        """
-        Handle mouse button events and forward them to the example
+        """Handle mouse button events and forward them to the example
+
+        Args:
+            window: The window
+            button: The button creating the event
+            action: Button action (press or release)
+            mods: They modifiers such as ctrl or shift
         """
         button = self._mouse_button_map.get(button, None)
         if button is None:
@@ -162,8 +161,5 @@ class Window(BaseWindow):
         super().resize(self._buffer_width, self._buffer_height)
 
     def destroy(self):
-        """
-        Gracefully terminate GLFW.
-        This will also properly terminate the window and context
-        """
+        """Gracefully terminate GLFW"""
         glfw.terminate()

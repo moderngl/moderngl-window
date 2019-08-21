@@ -40,7 +40,8 @@ class BaseWindow:
     def __init__(self, title="ModernGL", gl_version=(3, 3), size=(1280, 720), resizable=True,
                  fullscreen=False, vsync=True, aspect_ratio=16 / 9, samples=4, cursor=True,
                  **kwargs):
-        """
+        """Initialize a window instance.
+
         Args:
             title (str): The window title
             gl_version (tuple): Major and minor version of the opengl context to create
@@ -91,7 +92,7 @@ class BaseWindow:
     def init_mgl_context(self) -> None:
         """
         Create or assign a ModernGL context. If no context is supplied a context will be
-        created using the window's gl_version.
+        created using the window's ``gl_version``.
 
         Keyword Args:
             ctx: An optional custom ModernGL context
