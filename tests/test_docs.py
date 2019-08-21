@@ -68,3 +68,6 @@ class TestCase(unittest.TestCase):
 
     def test_context_glfw_window(self):
         self.validate('context/glfw.window.rst', 'moderngl_window.context.glfw.window', 'Window')
+
+    def test_context_headless_window(self):
+        self.validate('context/headless.window.rst', 'moderngl_window.context.headless.window', 'Window')
