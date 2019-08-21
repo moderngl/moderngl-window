@@ -7,3 +7,4 @@ Context
 
    windowconfig
    basewindow
+   glfw.window
