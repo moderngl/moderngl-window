@@ -10,3 +10,4 @@ Context
    glfw.window
    headless.window
    pyglet.window
+   pyqt5.window
