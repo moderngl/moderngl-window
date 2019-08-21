@@ -24,6 +24,8 @@ Methods
 Attributes
 ----------
 
+.. autoattribute:: BaseWindow.keys
+   :annotation:
 .. autoattribute:: BaseWindow.ctx
 .. autoattribute:: BaseWindow.fbo
 .. autoattribute:: BaseWindow.title

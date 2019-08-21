@@ -34,6 +34,7 @@ class BaseWindow:
     """
     Helper base class for a generic window implementation
     """
+    #: Window specific key constants
     keys = BaseKeys
 
     def __init__(self, title="ModernGL", gl_version=(3, 3), size=(1280, 720), resizable=True,
