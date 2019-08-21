@@ -11,3 +11,4 @@ Context
    headless.window
    pyglet.window
    pyqt5.window
+   pyside2.window
