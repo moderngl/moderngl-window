@@ -29,7 +29,7 @@ setup(
     ],
     install_requires=[
         'moderngl<6',
-        'pyglet>=1.4.1',
+        'pyglet>=1.4.2<2',
         'numpy>=1.16',
         'pyrr>=0.10.3',
         'Pillow>=5',
