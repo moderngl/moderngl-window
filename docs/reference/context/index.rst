@@ -9,3 +9,4 @@ Context
    basewindow
    glfw.window
    headless.window
+   pyglet.window
