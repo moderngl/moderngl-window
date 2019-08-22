@@ -6,8 +6,8 @@ moderngl<6
 
 # Optional
 PyQt5>=5.12
-glfw>=1.7
-PySDL2>=0.9
+glfw>=1.8.3
+PySDL2>=0.9.6
 pyrr>=0.10
 pywavefront<2.0
 numpy>=1.16
