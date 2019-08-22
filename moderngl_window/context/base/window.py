@@ -34,12 +34,14 @@ class BaseWindow:
     """
     Helper base class for a generic window implementation
     """
+    #: Window specific key constants
     keys = BaseKeys
 
     def __init__(self, title="ModernGL", gl_version=(3, 3), size=(1280, 720), resizable=True,
                  fullscreen=False, vsync=True, aspect_ratio=16 / 9, samples=4, cursor=True,
                  **kwargs):
-        """
+        """Initialize a window instance.
+
         Args:
             title (str): The window title
             gl_version (tuple): Major and minor version of the opengl context to create
@@ -90,7 +92,7 @@ class BaseWindow:
     def init_mgl_context(self) -> None:
         """
         Create or assign a ModernGL context. If no context is supplied a context will be
-        created using the window's gl_version.
+        created using the window's ``gl_version``.
 
         Keyword Args:
             ctx: An optional custom ModernGL context
@@ -117,7 +119,7 @@ class BaseWindow:
 
     @property
     def gl_version(self) -> Tuple[int, int]:
-        """(major, minor): Required OpenGL version"""
+        """Tuple[int, int]: (major, minor) required OpenGL version"""
         return self._gl_version
 
     @property
@@ -132,12 +134,12 @@ class BaseWindow:
 
     @property
     def size(self) -> Tuple[int, int]:
-        """(int, int): current window size"""
+        """Tuple[int, int]: current window size"""
         return self._width, self._height
 
     @property
     def buffer_size(self) -> Tuple[int, int]:
-        """(int, int): tuple with the current window buffer size"""
+        """Tuple[int, int]: tuple with the current window buffer size"""
         return self._buffer_width, self._buffer_height
 
     @property
@@ -147,7 +149,7 @@ class BaseWindow:
 
     @property
     def viewport(self) -> Tuple[int, int, int, int]:
-        """(int, int, int, int): current window viewport"""
+        """Tuple[int, int, int, int]: current window viewport"""
         return self._viewport
 
     @property
@@ -187,6 +189,7 @@ class BaseWindow:
 
     @property
     def cursor(self) -> bool:
+        """bool: Should the mouse cursor be visible inside the window?"""
         return self._cursor
 
     @config.setter
@@ -385,9 +388,9 @@ class BaseWindow:
 
     @property
     def gl_version_code(self) -> int:
-        """
-        Generates the version code integer for the selected OpenGL version.
-        Example: gl_version (4, 1) returns 410
+        """int: Generates the version code integer for the selected OpenGL version.
+
+        gl_version (4, 1) returns 410
         """
         return self.gl_version[0] * 100 + self.gl_version[1] * 10
 
@@ -407,34 +410,139 @@ class BaseWindow:
 
 class WindowConfig:
     """
-    Base class for making an example.
-    Examples can be rendered by any supported window library and platform.
-    """
-    #: Size of window to open
-    window_size = (1280, 720)
-    #: Should the window be resizable
-    resizable = True
-    #: Minimum required gl version
-    gl_version = (3, 3)
-    #: Window title
-    title = "Example"
-    #: Fixed viewport aspec ratio.
-    #: Can be set to `None` to always get viewport based on window size.
-    aspect_ratio = 16 / 9
-    #: Mouse cursor should be visible
-    cursor = True
-    #: Number of samples used in multisampling
-    samples = 4
-    #: Absolute path to the resource directory (string or pathlib.Path)
-    resource_dir = None
-    #: Log level for the library
-    log_level = logging.INFO
+    Creating a ``WindowConfig`` instance is the simplest interface
+    this library provides to open and window, handle inputs and provide simple
+    shortcut method for loading basic resources. It's appropriate
+    for projects with basic needs.
 
+    Example:
+
+    .. code:: python
+
+        class MyConfig(mglw.WindowConfig):
+            gl_version = (3, 3)
+            window_size = (1920, 1080)
+            aspect_ratio = 16 / 9
+            title = "My Config"
+            resizable = False
+            samples = 8
+
+            def __init__(self, **kwargs):
+                super().__init__(**kwargs)
+                # Do other initialization here
+
+            def render(self, time: float, frametime: float):
+                # Render stuff here with ModernGL
+
+            def resize(self, width: int, height: int):
+                print("Window was resized. buffer size is {} x {}".format(width, height))
+
+            def mouse_position_event(self, x, y):
+                print("Mouse position:", x, y)
+
+            def mouse_press_event(self, x, y, button):
+                print("Mouse button {} pressed at {}, {}".format(button, x, y))
+
+            def mouse_release_event(self, x: int, y: int, button: int):
+                print("Mouse button {} released at {}, {}".format(button, x, y))
+
+            def key_event(self, key, action, modifiers):
+                print(key, action, modifiers)
+
+    """
+    window_size = (1280, 720)
+    """
+    Size of the window.
+
+    .. code:: python
+
+        # Default value
+        window_size = (1280, 720)
+    """
+    resizable = True
+    """
+    Determines of the window should be resizable
+
+    .. code:: python
+
+        # Default value
+        resizable = True
+    """
+    gl_version = (3, 3)
+    """
+    The minimum required OpenGL version required
+
+    .. code:: python
+
+        # Default value
+        gl_version = (3, 3)
+    """
+    title = "Example"
+    """
+    Title of the window
+
+    .. code:: python
+
+        # Default value
+        title = "Example"
+    """
+    aspect_ratio = 16 / 9
+    """
+    The endorced aspect ratio of the viewport. When specified back borders
+    will be calulcated both vertically and horizontally if needed.
+
+    This property can be set to ``None`` to disable the fixed viewport system.
+
+    .. code:: python
+
+        # Default value
+        aspect_ratio = 16 / 9
+    """
+    cursor = True
+    """
+    Determines if the mouse cursor should be visible inside the window.
+    If enabled on some platforms
+
+    .. code:: python
+
+        # Default value
+        cursor = True
+    """
+    samples = 4
+    """
+    Number of samples to use in multisampling.
+
+    .. code:: python
+
+        # Default value
+        samples = 4
+    """
+    resource_dir = None
+    """
+    Absolute path to your resource directory containing textures, scenes,
+    shaders/programs or data files. The ``load_`` methods in this class will
+    look for resources in this path. This attribute can be a ``str`` or
+    a ``pathlib.Path``.
+
+    .. code:: python
+
+        # Default value
+        resource_dir = None
+    """
+    log_level = logging.INFO
+    """
+    Sets the log level for this library using the standard `logging` module.
+
+    .. code:: python
+
+        # Default value
+        log_level = logging.INFO
+    """
     def __init__(self, ctx: moderngl.Context = None, wnd: BaseWindow = None, timer: BaseTimer = None, **kwargs):
         """Initialize the window config
 
         Keyword Args:
-            ctx: The moderngl context
+            ctx (moderngl.Context): The moderngl context
             wnd: The window instance
             timer: The timer instance
         """
@@ -465,7 +573,9 @@ class WindowConfig:
         Called every time the window is resized
         in case the we need to do internal adjustments.
 
-        Width and height are reported in buffer size (not window size)
+        Args:
+            width (int): width in buffer size (not window size)
+            height (int): height in buffer size (not window size)
         """
 
     def key_event(self, key: Any, action: Any, modifiers: KeyModifiers):

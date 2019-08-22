@@ -22,6 +22,7 @@ class Settings:
     Bag of settings values. New attributes can be freely added runtime.
     Various apply* methods are supplied so the user have full control over how
     settings values are initialized. This is especially useful for more custom usage.
+    And instance of the `Settings` class is created when the `conf` module is imported.
 
     Attribute names must currently be in upper case to be recognized.
 
@@ -41,27 +42,180 @@ class Settings:
         # Pretty printed string represenation for easy inspection
         print(settings)
     """
+    WINDOW = dict()
+    """
+    Window/screen properties. Most importantly the ``class`` attribute
+    decides what class should be used to handle the window.
+
+    .. code:: python
+
+        # Default values
+        WINDOW = {
+            "gl_version": (3, 3),
+            "class": "moderngl_window.context.pyglet.Window",
+            "size": (1280, 720),
+            "aspect_ratio": 16 / 9,
+            "fullscreen": False,
+            "resizable": True,
+            "title": "ModernGL Window",
+            "vsync": True,
+            "cursor": True,
+            "samples": 0,
+        }
+
+    Other Properties:
+
+    - ``gl_version``: The minimum required major/minor OpenGL version
+    - ``size``: The window size to open.
+    - ``aspect_ratio`` is the enforced aspect ratio of the viewport.
+    - ``fullscreen``: True if you want to create a context in fullscreen mode
+    - ``resizable``: If the window should be resizable. This only applies in
+      windowed mode.
+    - ``vsync``: Only render one frame per screen refresh
+    - ``title``: The visible title on the window in windowed mode
+    - ``cursor``: Should the mouse cursor be visible on the screen? Disabling
+      this is also useful in windowed mode when controlling the camera on some
+      platforms as moving the mouse outside the window can cause issues.
+    - ``Samples``: Number if samples used in multusampling. Values above 1
+      enables multisampling.
+
+    The created window frame buffer will by default use:
+
+    - RGBA8 (32 bit per pixel)
+    - 24 bit depth buffer
+    - Double buffering
+    - color and depth buffer is cleared for every frame
+
+    """
+    SCREENSHOT_PATH = None
+    """
+    Absolute path to the directory screenshots will be saved by the screenshot module.
+    Screenshots will end up in the project root of not defined.
+    If a path is configured, the directory will be auto-created.
+    """
+    # Finders
+    PROGRAM_FINDERS = []
+    """
+    Finder classes for locating programs/shaders.
+
+    .. code:: python
+
+        # Default values
+        PROGRAM_FINDERS = [
+            "moderngl_window.finders.program.FileSystemFinder",
+        ]
+    """
+    TEXTURE_FINDERS = []
+    """
+    Finder classes for locating textures.
+
+    .. code:: python
+
+        # Default values
+        TEXTURE_FINDERS = [
+            "moderngl_window.finders.texture.FileSystemFinder",
+        ]
+    """
+    SCENE_FINDERS = []
+    """
+    Finder classes for locating scenes.
+
+    .. code:: python
+
+        # Default values
+        SCENE_FINDERS = [
+            "moderngl_window.finders.scene.FileSystemFinder",
+        ]
+
+    """
+    DATA_FINDERS = []
+    """
+    Finder classes for locating data files.
+
+    .. code:: python
+
+        # Default values
+        DATA_FINDERS = [
+            "moderngl_window.finders.data.FileSystemFinder",
+        ]
+    """
+    # Finder dirs
+    PROGRAM_DIRS = []
+    """
+    Lists of `str` or `pathlib.Path` used by ``FileSystemFinder``
+    to looks for programs/shaders.
+    """
+    TEXTURE_DIRS = []
+    """
+    Lists of `str` or `pathlib.Path` used by ``FileSystemFinder``
+    to looks for textures.
+    """
+    SCENE_DIRS = []
+    """
+    Lists of `str` or `pathlib.Path` used by ``FileSystemFinder``
+    to looks for scenes (obj, gltf, stl etc).
+    """
+    DATA_DIRS = []
+    """
+    Lists of `str` or `pathlib.Path` used by ``FileSystemFinder``
+    to looks for data files.
+    """
+
+    # Loaders
+    PROGRAM_LOADERS = []
+    """
+    Classes responsible for loading programs/shaders.
+
+    .. code:: python
+
+        # Default values
+        PROGRAM_LOADERS = [
+            'moderngl_window.loaders.program.single.Loader',
+            'moderngl_window.loaders.program.separate.Loader',
+        ]
+    """
+    TEXTURE_LOADERS = []
+    """
+    Classes responsible for loading textures.
+
+    .. code:: python
+
+        # Default values
+        TEXTURE_LOADERS = [
+            'moderngl_window.loaders.texture.t2d.Loader',
+            'moderngl_window.loaders.texture.array.Loader',
+        ]
+    """
+    SCENE_LOADERS = []
+    """
+    Classes responsible for loading scenes.
+
+    .. code:: python
+
+        # Default values
+        SCENE_LOADERS = [
+            "moderngl_window.loaders.scene.gltf.GLTF2",
+            "moderngl_window.loaders.scene.wavefront.ObjLoader",
+            "moderngl_window.loaders.scene.stl_loader.STLLoader",
+        ]
+
+    """
+    DATA_LOADERS = []
+    """
+    Classes responsible for loading data files.
+
+    .. code:: python
+
+        # Default values
+        DATA_LOADERS = [
+            'moderngl_window.loaders.data.binary.Loader',
+            'moderngl_window.loaders.data.text.Loader',
+            'moderngl_window.loaders.data.json.Loader',
+        ]
+    """
+
     def __init__(self):
         """Initialize settings with default values"""
-        # Set default entires. Mainly for code completion
-        self.WINDOW = dict()
-        self.SCREENSHOT_PATH = None
-        # Finders
-        self.PROGRAM_FINDERS = []
-        self.TEXTURE_FINDERS = []
-        self.SCENE_FINDERS = []
-        self.DATA_FINDERS = []
-        # Finder dirs
-        self.PROGRAM_DIRS = []
-        self.TEXTURE_DIRS = []
-        self.SCENE_DIRS = []
-        self.DATA_DIRS = []
-        # Loaders
-        self.PROGRAM_LOADERS = []
-        self.TEXTURE_LOADERS = []
-        self.SCENE_LOADERS = []
-        self.DATA_LOADERS = []
-
         self.apply_default_settings()
 
     def apply_default_settings(self) -> None:
@@ -78,7 +232,7 @@ class Settings:
 
     def apply_settings_from_env(self) -> None:
         """
-        Apply settings from MODERNGL_WINDOW_SETTINGS_MODULE environment variable.
+        Apply settings from ``MODERNGL_WINDOW_SETTINGS_MODULE`` environment variable.
         If the enviroment variable is undefined no action will be taken.
         Normally this would be used to easily be able to switch between
         different configuration by setting env vars before executing the program.

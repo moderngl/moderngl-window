@@ -1,11 +1,11 @@
-[![pypi](https://badge.fury.io/py/moderngl-window.svg)](https://pypi.python.org/pypi/moderngl-window)
+[![pypi](https://badge.fury.io/py/moderngl-window.svg)](https://pypi.python.org/pypi/moderngl-window) [![rtd](https://readthedocs.org/projects/moderngl-window/badge/?version=latest)](https://moderngl-window.readthedocs.io)
 
 # moderngl_window
 
 A support library for [ModernGL](https://github.com/moderngl/moderngl)
 making programmers more efficent and ensuring cross platform support.
 
-* moderngl_window documentation (WIP)
+* [moderngl_window documentation](https://moderngl-window.readthedocs.io)
 * [moderngl_window on PyPI](https://pypi.org/project/moderngl-window)
 * [moderngl_window on Github](https://github.com/moderngl/moderngl_window)
 * [ModernGL](https://github.com/moderngl/moderngl)
@@ -50,9 +50,6 @@ import moderngl_window as mglw
 class Test(mglw.WindowConfig):
     gl_version = (3, 3)
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
     def render(self, time, frametime):
         self.ctx.clear(1.0, 0.0, 0.0, 0.0)
 
@@ -78,11 +75,17 @@ pip install -r tests/requirements.txt
 
 ## Running Tests
 
-Tests are set up with `tox` running pytest with coverate and flake8.
+Tests are set up with `tox` running pytest with coverage and flake8.
 
 ```bash
 pip install -r tests/requirements.txt
 tox
+```
+
+## Building Docs
+
+```bash
+python setup.py build_sphinx
 ```
 
 ## Contributing
