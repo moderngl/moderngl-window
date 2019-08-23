@@ -17,6 +17,11 @@ Method
 .. automethod:: Loader.find_texture
 .. automethod:: Loader.find_scene
 
+Loader Specific Methods
+-----------------------
+
+.. automethod:: Loader.load_shader
+
 Attributes
 ----------
 
