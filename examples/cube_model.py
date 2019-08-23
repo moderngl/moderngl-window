@@ -4,9 +4,6 @@ from pyrr import Matrix44, matrix44, Vector3
 import moderngl
 import moderngl_window as mglw
 from moderngl_window import resources
-from moderngl_window.meta import (
-    SceneDescription,
-)
 from moderngl_window.scene.camera import KeyboardCamera
 
 resources.register_dir((Path(__file__).parent / 'resources').resolve())
@@ -20,19 +17,20 @@ class CubeModel(mglw.WindowConfig):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.scene = resources.scenes.load(SceneDescription(path='scenes/crate.obj'))
+        self.scene = self.load_scene('scenes/crate.obj')
+        # self.scene = self.load_scene('scenes/Apollo_17.stl')
 
         # --- glTF-Sample-Models ---
-        # self.scene = resources.scenes.load(SceneDescription(path='2CylinderEngine/glTF-Binary/2CylinderEngine.glb'))
-        # self.scene = resources.scenes.load(SceneDescription(path='CesiumMilkTruck/glTF-Embedded/CesiumMilkTruck.gltf'))
-        # self.scene = resources.scenes.load(SceneDescription(path='CesiumMilkTruck/glTF-Binary/CesiumMilkTruck.glb'))
-        # self.scene = resources.scenes.load(SceneDescription(path='CesiumMilkTruck/glTF/CesiumMilkTruck.gltf'))
-        # self.scene = resources.scenes.load(SceneDescription(path='Sponza/glTF/Sponza.gltf'))
-        # self.scene = resources.scenes.load(SceneDescription(path='Lantern/glTF-Binary/Lantern.glb'))
-        # self.scene = resources.scenes.load(SceneDescription(path='Buggy/glTF-Binary/Buggy.glb'))
-        # self.scene = resources.scenes.load(SceneDescription(path='VC/glTF-Binary/VC.glb'))
-        # self.scene = resources.scenes.load(SceneDescription(path='DamagedHelmet/glTF-Binary/DamagedHelmet.glb'))
-        # self.scene = resources.scenes.load(SceneDescription(path='BoxInterleaved/glTF/BoxInterleaved.gltf'))
+        # self.scene = self.load_scene('2CylinderEngine/glTF-Binary/2CylinderEngine.glb')
+        # self.scene = self.load_scene('CesiumMilkTruck/glTF-Embedded/CesiumMilkTruck.gltf')
+        # self.scene = self.load_scene('CesiumMilkTruck/glTF-Binary/CesiumMilkTruck.glb')
+        # self.scene = self.load_scene('CesiumMilkTruck/glTF/CesiumMilkTruck.gltf')
+        # self.scene = self.load_scene('Sponza/glTF/Sponza.gltf')
+        # self.scene = self.load_scene('Lantern/glTF-Binary/Lantern.glb')
+        # self.scene = self.load_scene('Buggy/glTF-Binary/Buggy.glb')
+        # self.scene = self.load_scene('VC/glTF-Binary/VC.glb')
+        # self.scene = self.load_scene('DamagedHelmet/glTF-Binary/DamagedHelmet.glb')
+        # self.scene = self.load_scene('BoxInterleaved/glTF/BoxInterleaved.gltf')
 
         self.camera = KeyboardCamera(self.wnd.keys, fov=75.0, aspect=self.wnd.aspect_ratio, near=0.1, far=1000.0)
         # Use this for gltf scenes for better camera controls
@@ -41,7 +39,7 @@ class CubeModel(mglw.WindowConfig):
 
     def render(self, time: float, frametime: float):
         """Render the scene"""
-        self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
+        self.ctx.enable_only(moderngl.DEPTH_TEST)  # | moderngl.CULL_FACE)
 
         # Create camera matrix with rotation and translation
         translation = matrix44.create_from_translation((0, 0, -1.5))
@@ -56,7 +54,7 @@ class CubeModel(mglw.WindowConfig):
             camera_matrix=camera_matrix,
             time=time,
         )
-        # # Currently only works with GLFT
+        # # Currently only works with GLTF2
         # self.scene.draw_bbox(
         #     projection_matrix=self.camera.projection.matrix,
         #     camera_matrix=camera_matrix,
