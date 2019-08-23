@@ -14,7 +14,11 @@ class Loader(BaseLoader):
     ]
 
     def load(self) -> dict:
-        """Load a file as json"""
+        """Load a file as json
+
+        Returns:
+            dict: The json contents
+        """
         self.meta.resolved_path = self.find_data(self.meta.path)
 
         if not self.meta.resolved_path:
