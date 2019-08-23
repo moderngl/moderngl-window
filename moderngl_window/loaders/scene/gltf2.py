@@ -72,16 +72,15 @@ class Loader(BaseLoader):
         ['.gltf'],
         ['.glb'],
     ]
-    # Supported GLTF extensions
-    # https://github.com/KhronosGroup/glTF/tree/master/extensions
+    #: Supported GLTF extensions
+    #: https://github.com/KhronosGroup/glTF/tree/master/extensions
     supported_extensions = []
 
     def __init__(self, meta: SceneDescription):
-        """
-        Parse the json file and validate its contents.
-        No actual data loading will happen.
+        """Initialize loading GLTF 2 scene.
 
         Supported formats:
+
         - gltf json format with external resources
         - gltf embedded buffers
         - glb Binary format
@@ -99,12 +98,11 @@ class Loader(BaseLoader):
         self.scene = None
         self.gltf = None
 
-    def load(self):
-        """
-        Deferred loading of the scene
+    def load(self) -> Scene:
+        """Load a GLTF 2 scene including referenced textures.
 
-        :param scene: The scene object
-        :param file: Resolved path if changed by finder
+        Returns:
+            Scene: The scene instance
         """
         self.path = self.find_scene(self.meta.path)
         if not self.path:
@@ -135,12 +133,12 @@ class Loader(BaseLoader):
         return self.scene
 
     def load_gltf(self):
-        """Loads a gltf json file"""
+        """Loads a gltf json file parsing its contents"""
         with open(self.path) as fd:
             self.gltf = GLTFMeta(self.path, json.load(fd), self.meta)
 
     def load_glb(self):
-        """Loads a binary gltf file"""
+        """Loads a binary gltf file parsing its contents"""
         with open(self.path, 'rb') as fd:
             # Check header
             magic = fd.read(4)
@@ -171,10 +169,12 @@ class Loader(BaseLoader):
             self.gltf = GLTFMeta(self.path, json.loads(json_meta), self.meta, binary_buffer=fd.read(chunk_1_length))
 
     def load_images(self):
+        """Load images referenced in gltf metadata"""
         for image in self.gltf.images:
             self.images.append(image.load(self.path.parent))
 
     def load_samplers(self):
+        """Load samplers referenced in gltf metadata"""
         for sampler in self.gltf.samplers:
             # Use a sane default sampler if the sampelr data is empty
             # Samplers can simply just be json data: "{}"
@@ -198,6 +198,7 @@ class Loader(BaseLoader):
                 )
 
     def load_textures(self):
+        """Load textures referenced in gltf metadata"""
         for texture_meta in self.gltf.textures:
             texture = MaterialTexture()
 
@@ -210,6 +211,7 @@ class Loader(BaseLoader):
             self.textures.append(texture)
 
     def load_meshes(self):
+        """Load meshes referenced in gltf metadata"""
         for meta_mesh in self.gltf.meshes:
             # Returns a list of meshes
             meshes = meta_mesh.load(self.materials)
@@ -219,6 +221,7 @@ class Loader(BaseLoader):
                 self.scene.meshes.append(mesh)
 
     def load_materials(self):
+        """Load materials referenced in gltf metadata"""
         # Create material objects
         for meta_mat in self.gltf.materials:
             mat = Material(meta_mat.name)
@@ -232,12 +235,14 @@ class Loader(BaseLoader):
             self.scene.materials.append(mat)
 
     def load_nodes(self):
+        """Load nodes referenced in gltf metadata"""
         # Start with root nodes in the scene
         for node_id in self.gltf.scenes[0].nodes:
             node = self.load_node(self.gltf.nodes[node_id])
             self.scene.root_nodes.append(node)
 
     def load_node(self, meta, parent=None):
+        """Load a single node"""
         # Create the node
         node = Node()
         self.scene.nodes.append(node)
