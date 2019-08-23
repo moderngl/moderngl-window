@@ -50,6 +50,8 @@ class Loader(BaseLoader):
             }
             #endif
 
+        Returns:
+            moderngl.Program: The Program instance
         """
         self.meta.resolved_path = self.find_program(self.meta.path)
         if not self.meta.resolved_path:

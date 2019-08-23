@@ -11,6 +11,13 @@ class Loader(BaseLoader):
     kind = 'separate'
 
     def load(self) -> moderngl.Program:
+        """Loads a shader program were each shader is a separate file.
+
+        This detected and dictated by the ``kind`` in the ``ProgramDescription``.
+
+        Returns:
+            moderngl.Program: The Program instance
+        """
         vs_source = self.load_shader("vertex", self.meta.vertex_shader)
         geo_source = self.load_shader("geometry", self.meta.geometry_shader)
         fs_source = self.load_shader("fragment", self.meta.fragment_shader)
