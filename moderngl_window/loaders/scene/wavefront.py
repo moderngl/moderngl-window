@@ -73,7 +73,7 @@ ObjParser.cache_loader_cls = VAOCacheLoader
 
 
 class Loader(BaseLoader):
-    """Loade obj files"""
+    """Loade wavefront/obj files"""
     kind = 'wavefront'
     file_extensions = [
         ['.obj'],
@@ -85,7 +85,11 @@ class Loader(BaseLoader):
         super().__init__(meta)
 
     def load(self):
-        """Deferred loading"""
+        """Loads a wavefront/obj file including materials and textures
+
+        Returns:
+            Scene: The Scene instance
+        """
         path = self.find_scene(self.meta.path)
         logger.info("loading %s", path)
 
