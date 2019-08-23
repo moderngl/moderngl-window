@@ -13,7 +13,11 @@ class Loader(BaseLoader):
     ]
 
     def load(self) -> str:
-        """Load a file in text mode"""
+        """Load a file in text mode.
+
+        Returns:
+            str: The string contents of the file
+        """
         self.meta.resolved_path = self.find_data(self.meta.path)
 
         if not self.meta.resolved_path:
