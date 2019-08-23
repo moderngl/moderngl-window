@@ -63,6 +63,8 @@ class TestCase(unittest.TestCase):
     def test_settings(self):
         self.validate('settings.conf.settings.rst', 'moderngl_window.conf', 'Settings', [])
 
+    # --- context ---
+
     def test_context_base_window(self):
         self.validate('context/basewindow.rst', 'moderngl_window.context.base.window', 'BaseWindow')
 
@@ -84,5 +86,50 @@ class TestCase(unittest.TestCase):
     def test_context_sdl2_window(self):
         self.validate('context/sdl2.window.rst', 'moderngl_window.context.sdl2.window', 'Window')
 
+    # --- geometry ---
+
     def test_geometry(self):
         self.validate('geometry.rst', 'moderngl_window.geometry')
+
+    # --- Loaders ---
+
+    def test_loaders_base(self):
+        self.validate('loaders/base.rst', 'moderngl_window.loaders.base', 'BaseLoader')
+
+    # --- Loaders : Texture ---
+
+    def test_loaders_t2d(self):
+        self.validate('loaders/t2d.rst', 'moderngl_window.loaders.texture.t2d', 'Loader')
+
+    def test_loaders_array(self):
+        self.validate('loaders/array.rst', 'moderngl_window.loaders.texture.array', 'Loader')
+
+    # --- Loaders : Scene ---
+
+    def test_loaders_wavefront(self):
+        self.validate('loaders/wavefront.rst', 'moderngl_window.loaders.scene.wavefront', 'Loader')
+
+    def test_loaders_gltf(self):
+        self.validate('loaders/gltf2.rst', 'moderngl_window.loaders.scene.gltf2', 'Loader')
+
+    def test_loaders_stl(self):
+        self.validate('loaders/wavefront.rst', 'moderngl_window.loaders.scene.stl', 'Loader')
+
+    # --- Loaders : Program ---
+
+    def test_loader_single(self):
+        self.validate('loaders/single.rst', 'moderngl_window.loaders.program.single', 'Loader')
+
+    def test_loader_separate(self):
+        self.validate('loaders/separate.rst', 'moderngl_window.loaders.program.separate', 'Loader')
+
+    # --- Loaders : Data ---
+
+    def test_loader_text(self):
+        self.validate('loaders/text.rst', 'moderngl_window.loaders.data.text', 'Loader')
+
+    def test_loader_json(self):
+        self.validate('loaders/json.rst', 'moderngl_window.loaders.data.json', 'Loader')
+
+    def test_loader_binary(self):
+        self.validate('loaders/binary.rst', 'moderngl_window.loaders.data.binary', 'Loader')
