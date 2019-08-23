@@ -140,6 +140,11 @@ and resources to make this project possible.
 * coverage (https://github.com/nedbat/coveragepy)
 * tox (https://tox.readthedocs.io/en/latest/)
 
+## Resources
+
+* NASA 3D Resources (https://github.com/nasa/NASA-3D-Resources)
+* glTF Sample Models (https://github.com/KhronosGroup/glTF-Sample-Models)
+
 ## Some History
 
 The majority of the code in this library comes from [demosys-py](https://github.com/Contraz/demosys-py) (somewhat modified).
