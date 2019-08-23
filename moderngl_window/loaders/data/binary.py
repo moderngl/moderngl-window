@@ -10,7 +10,11 @@ class Loader(BaseLoader):
     kind = 'binary'
 
     def load(self) -> bytes:
-        """Load a file in binary mode"""
+        """Load a file in binary mode
+
+        Returns:
+            bytes: The bytes contents of the file
+        """
         self.meta.resolved_path = self.find_data(self.meta.path)
 
         if not self.meta.resolved_path:
