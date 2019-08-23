@@ -12,3 +12,4 @@ PySDL2>=0.9.6
 pyrr>=0.10
 pywavefront<2.0
 numpy>=1.16
+trimesh==3.2.6
