@@ -72,7 +72,7 @@ class VAOCacheLoader(cache.CacheLoader):
 ObjParser.cache_loader_cls = VAOCacheLoader
 
 
-class ObjLoader(BaseLoader):
+class Loader(BaseLoader):
     """Loade obj files"""
     kind = 'wavefront'
     file_extensions = [

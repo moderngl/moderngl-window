@@ -65,10 +65,8 @@ ACCESSOR_TYPE = {
 }
 
 
-class GLTF2(BaseLoader):
-    """
-    Loader for GLTF 2.0 files
-    """
+class Loader(BaseLoader):
+    """Loader for GLTF 2.0 files"""
     kind = 'gltf'
     file_extensions = [
         ['.gltf'],
