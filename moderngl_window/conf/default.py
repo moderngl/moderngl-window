@@ -50,7 +50,7 @@ TEXTURE_LOADERS = [
 ]
 
 SCENE_LOADERS = [
-    "moderngl_window.loaders.scene.gltf.Loader",
+    "moderngl_window.loaders.scene.gltf2.Loader",
     "moderngl_window.loaders.scene.wavefront.Loader",
     "moderngl_window.loaders.scene.stl_loader.Loader",
 ]
