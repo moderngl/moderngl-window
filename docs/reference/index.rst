@@ -9,3 +9,4 @@ Reference
    settings.conf.settings
    context/index
    geometry
+   loaders/index
