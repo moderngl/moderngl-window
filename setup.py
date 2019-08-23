@@ -37,7 +37,7 @@ setup(
     extras_require={
         "PySide2": ['PySide2>=5.13'],
         "pyqt5": ['PyQt5>=5.12'],
-        "glfw": ['glfw>=1.7'],
+        "glfw": ['glfw>=1.8.3'],
         "PySDL2": ['PySDL2>=0.9.6'],
     },
     project_urls={
