@@ -9,7 +9,11 @@ class Loader(PillowLoader):
     kind = '2d'
 
     def load(self):
-        """Load a 2d texture"""
+        """Load a 2d texture as configured in the supplied ``TextureDescription``
+
+        Returns:
+            moderngl.Texture: The Texture instance
+        """
         self._open_image()
 
         # Handle images with palettes
