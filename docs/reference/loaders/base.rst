@@ -17,8 +17,6 @@ Method
 .. automethod:: BaseLoader.find_texture
 .. automethod:: BaseLoader.find_scene
 
-.. automethod:: BaseLoader.load
-
 Attributes
 ----------
 
