@@ -39,6 +39,9 @@ MOCK_MODULES = [
     'QtWidgets',
     'PySide2',
     'PySide2.QtCore',
+    'pywavefront',
+    'pywavefront.obj',
+    'trimesh',
 ]
 
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
