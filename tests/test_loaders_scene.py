@@ -45,3 +45,7 @@ class SceneLoadersTestCase(HeadlessTestCase):
         """Attempt to load nonexisting gltf"""
         with self.assertRaises(ImproperlyConfigured):
             resources.scenes.load(SceneDescription(path='scenes/doesnotexist.gltf'))
+
+    def test_stl(self):
+        scene = resources.scenes.load(SceneDescription(path='scenes/uplink.stl'))
+        self.assertIsInstance(scene, Scene)
