@@ -2,7 +2,7 @@
 .. py:module:: moderngl_window.geometry
 .. py:currentmodule:: moderngl_window.geometry
 
-geometry
+Geometry
 ========
 
 .. autofunction:: bbox
