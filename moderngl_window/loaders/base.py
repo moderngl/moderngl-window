@@ -10,17 +10,33 @@ logger = logging.getLogger(__name__)
 
 
 class BaseLoader:
+    """Base loader class for all resources"""
+    kind = None
     """
-    Base loader class for all resources.
+    The kind of resource this loaded supports.
+    This can be used when file extensions is not enough
+    to decide what loader should be selected.
     """
-    #: The kind of resource this loaded supports.
-    #: This can be used when file extensions is not enough
-    #: to decide what loader should be selected.
-    kind = None  # Type: str
     file_extensions = []
+    """
+    A list defining the file extensions accepted by this loader.
+
+    Example::
+
+        # Loader will match .xyz and .xyz.gz files.
+        file_extensions = [
+            ['.xyz'],
+            ['.xyz', '.gz'],
+        ]
+    """
 
     def __init__(self, meta):
-        """
+        """Initialize loader.
+
+        Loaders take a ResourceDescription instance
+        containing all the parameters needed to load and initialize
+        this data.
+
         Args:
             meta (ResourceDescription): The resource to load
         """
@@ -30,7 +46,11 @@ class BaseLoader:
 
     @classmethod
     def supports_file(cls, meta):
-        """Check if the loader has a supported file extension"""
+        """Check if the loader has a supported file extension.
+
+        What extensions are supported can be defiened in the
+        :py:attr:`file_extensions` class attribute.
+        """
         path = Path(meta.path)
 
         for ext in cls.file_extensions:
@@ -40,7 +60,10 @@ class BaseLoader:
         return False
 
     def load(self) -> Any:
-        """Load a resource
+        """Loads a resource.
+
+        When creating a loader this is the only
+        method that needs to be implemented.
 
         Returns:
             The loaded resource
@@ -49,6 +72,9 @@ class BaseLoader:
 
     def find_data(self, path):
         """Find resource using data finders.
+
+        This is mainly a shortcut method to simplify the task.
+
         Args:
             path: Path to resource
         """
@@ -56,6 +82,9 @@ class BaseLoader:
 
     def find_program(self, path):
         """Find resource using program finders.
+
+        This is mainly a shortcut method to simplify the task.
+
         Args:
             path: Path to resource
         """
@@ -63,6 +92,9 @@ class BaseLoader:
 
     def find_texture(self, path):
         """Find resource using texture finders.
+
+        This is mainly a shortcut method to simplify the task.
+
         Args:
             path: Path to resource
         """
@@ -70,6 +102,9 @@ class BaseLoader:
 
     def find_scene(self, path):
         """Find resource using scene finders.
+
+        This is mainly a shortcut method to simplify the task.
+
         Args:
             path: Path to resource
         """
@@ -94,7 +129,5 @@ class BaseLoader:
 
     @property
     def ctx(self) -> moderngl.Context:
-        """moderngl.Context: ModernGL context.
-        Resources like textures and shader progams do need a context.
-        """
+        """moderngl.Context: ModernGL context"""
         return mglw.ctx()
