@@ -10,14 +10,19 @@ from moderngl_window.scene import Material, Mesh, Node, Scene
 from moderngl_window.exceptions import ImproperlyConfigured
 
 
-class STLLoader(BaseLoader):
+class Loader(BaseLoader):
     kind = 'stl'
     file_extensions = [
         ['.stl'],
         ['.stl', '.gz'],
     ]
 
-    def load(self):
+    def load(self) -> Scene:
+        """Loads and stl scene/file
+
+        Returns:
+            Scene: The Scene instance
+        """
         path = self.find_scene(self.meta.path)
         if not path:
             raise ImproperlyConfigured("Scene '{}' not found".format(self.meta.path))
