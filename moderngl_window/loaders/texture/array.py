@@ -13,7 +13,11 @@ class Loader(PillowLoader):
             raise ImproperlyConfigured("TextureArray requires layers parameter")
 
     def load(self):
-        """Load a texture array"""
+        """Load a texture array as described by the supplied ``TextureDescription```
+
+        Returns:
+            moderngl.TextureArray: The TextureArray instance
+        """
         self._open_image()
 
         width, height, depth = self.image.size[0], self.image.size[1] // self.layers, self.layers
