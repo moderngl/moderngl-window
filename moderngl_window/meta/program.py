@@ -3,7 +3,7 @@ from moderngl_window.meta.base import ResourceDescription
 
 class ProgramDescription(ResourceDescription):
     """Describes a program to load
-    
+
     By default a program can be loaded in the following ways:
 
     - By supplying a `path` to s single glsl file containing all shaders
