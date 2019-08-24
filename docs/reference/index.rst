@@ -10,3 +10,4 @@ Reference
    context/index
    geometry
    loaders/index
+   meta/index
