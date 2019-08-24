@@ -166,3 +166,11 @@ class TestCase(unittest.TestCase):
 
     def test_finders_data(self):
         self.validate('finders/data.rst', 'moderngl_window.finders.data', 'FilesystemFinder')
+
+    # --- opengl ---
+
+    def test_opengl_projection3d(self):
+        self.validate('opengl/projection.rst', 'moderngl_window.opengl.projection', 'Projection3D')
+
+    def test_opengl_vao(self):
+        self.validate('opengl/vao.rst', 'moderngl_window.opengl.vao', 'VAO')
