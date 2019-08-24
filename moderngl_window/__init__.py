@@ -166,6 +166,11 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     size = values.size or config_cls.window_size
     size = int(size[0] * values.size_mult), int(size[1] * values.size_mult)
 
+    # Resolve cursor
+    show_cursor = values.cursor
+    if show_cursor is None:
+        show_cursor = config_cls.cursor
+
     window = window_cls(
         title=config_cls.title,
         size=size,
@@ -175,7 +180,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         aspect_ratio=config_cls.aspect_ratio,
         vsync=values.vsync,
         samples=values.samples or config_cls.samples,
-        cursor=values.cursor or config_cls.cursor,
+        cursor=show_cursor if show_cursor is not None else True,
     )
     window.print_context_info()
     activate_context(window=window)
@@ -214,7 +219,7 @@ def parse_args(args=None):
     parser.add_argument(
         '-vs', '--vsync',
         type=valid_bool,
-        default="1",
+        default='1',
         help="Enable or disable vsync",
     )
     parser.add_argument(
@@ -247,6 +252,8 @@ def parse_args(args=None):
 def valid_bool(value):
     """Validator for bool values"""
     value = value.lower()
+    if value is None:
+        return None
 
     if value in OPTIONS_TRUE:
         return True
