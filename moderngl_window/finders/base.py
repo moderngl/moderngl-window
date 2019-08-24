@@ -17,10 +17,15 @@ logger = logging.getLogger(__name__)
 
 
 class BaseFilesystemFinder:
-    """Base class for searching directories"""
+    """Base class for searching filesystem directories"""
     settings_attr = None
+    """str: Name of the attribute in :py:class:`~moderngl_window.conf.Settings`
+    containing a list of paths the finder should seach in.
+    """
 
     def __init__(self):
+        """Initialize finder class by looking up the paths referenced in ``settings_attr``.
+        """
         if not hasattr(settings, self.settings_attr):
             raise ImproperlyConfigured(
                 "Settings doesn't define {}. "
@@ -29,12 +34,10 @@ class BaseFilesystemFinder:
         self.paths = getattr(settings, self.settings_attr)
 
     def find(self, path: Path) -> Path:
-        """
-        Find a file in the path. The file may exist in multiple
-        paths. The last found file will be returned.
+        """Finds a file in the configured paths returning its absolute path.
 
         Args:
-            path (Path): The path to find
+            path (pathlib.Path): The path to find
         Returns:
             The absolute path to the file or None if not found
         """

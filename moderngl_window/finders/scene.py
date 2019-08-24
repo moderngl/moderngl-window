@@ -3,7 +3,7 @@ from moderngl_window.conf import settings
 
 
 class FileSystemFinder(base.BaseFilesystemFinder):
-    """Find textures in ``SCENE_DIRS``"""
+    """Find scenes in ``settings.SCENE_DIRS``"""
     settings_attr = 'SCENE_DIRS'
 
 
