@@ -11,3 +11,4 @@ API Reference
    geometry
    loaders/index
    meta/index
+   finders/index
