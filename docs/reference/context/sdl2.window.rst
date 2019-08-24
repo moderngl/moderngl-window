@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.context.sdl2.window
 .. py:currentmodule:: moderngl_window.context.sdl2.window
 
-SDL2 Window
-===========
+context.sdl2.Window
+===================
 
 Methods
 -------

@@ -1,5 +1,5 @@
 
-Meta
+meta
 ====
 
 .. toctree::

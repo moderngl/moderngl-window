@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.context.headless.window
 .. py:currentmodule:: moderngl_window.context.headless.window
 
-Headless Window
-===============
+context.headless.Headless
+=========================
 
 Methods
 -------

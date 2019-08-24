@@ -1,8 +1,8 @@
 
 .. py:module:: moderngl_window.context.base.window
 
-WindowConfig
-============
+context.base.window.WindowConfig
+================================
 
 .. autodata:: WindowConfig
    :annotation:

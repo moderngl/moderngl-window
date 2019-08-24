@@ -3,8 +3,8 @@
 .. py:currentmodule:: moderngl_window.conf
 
 
-Settings
-========
+conf.settings
+=============
 
 .. autodata:: Settings
    :annotation:

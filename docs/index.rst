@@ -10,6 +10,7 @@ Welcome to moderngl_window's documentation!
    :maxdepth: 3
    :caption: Contents:
 
+   guide/index
    reference/index
 
 

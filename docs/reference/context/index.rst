@@ -1,5 +1,5 @@
 
-Context
+context
 =======
 
 .. toctree::
