@@ -4,7 +4,21 @@ from moderngl_window.meta.base import ResourceDescription
 
 
 class TextureDescription(ResourceDescription):
-    """Describes a texture to load"""
+    """Describes a texture to load.
+
+    Example:
+
+    .. code:: python
+
+        # Loading a 2d texture
+        TextureDescription(path='textures/wood.png')
+
+        # Loading a 2d texture with mimpmaps with anisotropy
+        TextureDescription(path='textures/wood.png', mipmap=True, anisotropy=16.0)
+
+        # Loading texture array containing 10 layers
+        TextureDescription(path='textures/tiles.png', layers=10, kind='array')
+    """
     default_kind = '2d'
     resource_type = 'textures'
 
