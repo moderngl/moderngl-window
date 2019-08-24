@@ -40,7 +40,6 @@ class TestCase(unittest.TestCase):
             documented = set(filter(lambda x: x.startswith(classname), [a for a in methods] + attributes))
             implemented = set(classname + '.' + x for x in dir(getattr(module, classname))
                               if not x.startswith('_') or x == '__init__')
-            print(implemented)
             ignored = set(classname + '.' + x for x in ignore)
         # Inspect module
         else:
@@ -133,3 +132,20 @@ class TestCase(unittest.TestCase):
 
     def test_loader_binary(self):
         self.validate('loaders/binary.rst', 'moderngl_window.loaders.data.binary', 'Loader')
+
+    # --- Meta ---
+
+    def test_meta_base(self):
+        self.validate('meta/base.rst', 'moderngl_window.meta.base', 'ResourceDescription')
+
+    def test_meta_texture(self):
+        self.validate('meta/texture.rst', 'moderngl_window.meta.texture', 'TextureDescription')
+
+    def test_meta_program(self):
+        self.validate('meta/program.rst', 'moderngl_window.meta.program', 'ProgramDescription')
+
+    def test_meta_scene(self):
+        self.validate('meta/scene.rst', 'moderngl_window.meta.scene', 'SceneDescription')
+
+    def test_meta_data(self):
+        self.validate('meta/data.rst', 'moderngl_window.meta.data', 'DataDescription')
