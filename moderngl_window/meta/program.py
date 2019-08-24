@@ -2,7 +2,26 @@ from moderngl_window.meta.base import ResourceDescription
 
 
 class ProgramDescription(ResourceDescription):
-    """Describes a program to load"""
+    """Describes a program to load
+    
+    By default a program can be loaded in the following ways:
+
+    - By supplying a `path` to s single glsl file containing all shaders
+    - By supplying several paths to separate files containing each shader trype.
+      For example ``vertex_shader``, ``fragment_shader`` .. etc.
+
+    .. code:: python
+
+        # Single glsl file containing all shaders
+        ProgramDescription(path='programs/myprogram.glsl')
+
+        # Multiple shader files
+        ProgramDescription(
+            vertex_shader='programs/myprogram_vs.glsl'.
+            fragment_shader='programs/myprogram_fs.glsl'.
+            geometry_shader='programs/myprogram_gs.glsl'.
+        )
+    """
     default_kind = None
     resource_type = 'programs'
 
@@ -20,6 +39,7 @@ class ProgramDescription(ResourceDescription):
             fragment_shader (str): Path to fragmet shader
             tess_control_shader (str) Path to tess control shader
             tess_evaluation_shader (str): Path to tess eval shader
+            **kwargs: Optional custom attributes
         """
         kwargs.update({
             "path": path,
@@ -44,25 +64,25 @@ class ProgramDescription(ResourceDescription):
 
     @property
     def vertex_shader(self):
-        """str: path to vertex shader"""
+        """str: Relative path to vertex shader"""
         return self._kwargs.get('vertex_shader')
 
     @property
     def geometry_shader(self):
-        """str: path to geometry shader"""
+        """str: Relative path to geometry shader"""
         return self._kwargs.get('geometry_shader')
 
     @property
     def fragment_shader(self):
-        """str: path to fragment shader"""
+        """str: Relative path to fragment shader"""
         return self._kwargs.get('fragment_shader')
 
     @property
     def tess_control_shader(self):
-        """str: path to tess control shader"""
+        """str: Relative path to tess control shader"""
         return self._kwargs.get('tess_control_shader')
 
     @property
     def tess_evaluation_shader(self):
-        """str: path to tese eval shader"""
+        """str: Relative path to tessellation evaluation shader"""
         return self._kwargs.get('tess_evaluation_shader')
