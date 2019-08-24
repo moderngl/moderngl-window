@@ -24,6 +24,7 @@ class TextureDescription(ResourceDescription):
             kind (str): The kind of loader to use
             image: PIL image for when loading embedded resources
             layers: (int): Number of layers for texture arrays
+            **kwargs: Any optional/custom attributes
         """
         kwargs.update({
             "path": path,
@@ -68,5 +69,5 @@ class TextureDescription(ResourceDescription):
 
     @property
     def image(self) -> Image:
-        """Image: PIL image"""
+        """Image: PIL image when loading embedded resources"""
         return self._kwargs.get('image')
