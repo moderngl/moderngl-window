@@ -12,3 +12,4 @@ API Reference
    loaders/index
    meta/index
    finders/index
+   opengl/index
