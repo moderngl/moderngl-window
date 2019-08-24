@@ -77,27 +77,49 @@ class VAO:
     """
     Represents a vertex array object.
 
-    This is a wrapper class over ``moderngl.VertexArray`` to provide helper method.
-    The main purpose is to provide render methods taking a program as parameter.
-    The class will auto detect the programs attributes and add padding when needed
-    to match the vertex object.
+    This is a wrapper class over ``moderngl.VertexArray`` to make interactions
+    with programs/shaders simpler. Named buffers are added correspoding with
+    attribute names in a vertex shader. When rendering the VAO an internal
+    ```moderngl.VertextArray`` is created by automatically creating a buffer
+    mapping compatible with the supplied program. This program is cached
+    internally.
 
-    A new vertexbuffer object is created and stored internally for each unique
-    shader program used.
-
-    A secondary purpose is to provide an alternate way to build vertexbuffers
-    This can be practical when loading or creating various geometry.
+    The shader program doesn't need to use all the buffers registered in
+    this wrapper. When a subset is used only the used buffers are mapped
+    and the approproate padding is calculated when iterleaved data is used.
 
     There is no requirements to use this class, but most methods in the
     system creating vertexbuffers will return this type. You can obtain
-    a single vertexbuffer instance by calling :py:meth:`VAO.instance`
+    a single ```moderngl.VertexBuffer`` instance by calling :py:meth:`VAO.instance`
     method if you prefer to work directly on moderngl instances.
+
+    Example::
+
+        # Separate buffers
+        vao = VAO(name="test", mode=moderngl.POINTS)
+        vao.buffer(positions, '3f', ['in_position'])
+        vao.buffer(velocities, '3f', ['in_velocities'])
+
+        # Interleaved
+        vao = VAO(name="test", mode=moderngl.POINTS)
+        vao.buffer(interleaved_data, '3f 3f', ['in_position', 'in_velocities'])
+
+    .. code:: glsl
+
+        # GLSL vertex shader in attributes
+        in vec3 in_position;
+        in vec3 in_velocities;
+
     """
     def __init__(self, name="", mode=moderngl.TRIANGLES):
-        """
-        Create and empty VAO
+        """Create and empty VAO with a name and default render mode.
+
+        Example::
+
+            VAO(name="cube", mode=moderngl.TRIANGLES)
+
         Keyword Args:
-            name (str): The name for debug purposes
+            name (str): Optional name for debug purposes
             mode (int): Default draw mode
         """
         self.name = name
@@ -117,11 +139,15 @@ class VAO:
 
     @property
     def ctx(self):
+        """moderngl.Context: The actite moderngl context"""
         return mglw.ctx()
 
     def render(self, program: moderngl.Program, mode=None, vertices=-1, first=0, instances=1):
-        """
-        Render the VAO.
+        """Render the VAO.
+
+        An internal ``moderngl.VertexBuffer`` with compatible buffer bindings
+        is automatically created on the fly and cached internally.
+
         Args:
             program: The ``moderngl.Program``
         Keyword Args:
@@ -138,9 +164,9 @@ class VAO:
         vao.render(mode, vertices=vertices, first=first, instances=instances)
 
     def render_indirect(self, program: moderngl.Program, buffer, mode=None, count=-1, *, first=0):
-        """
-        The render primitive (mode) must be the same as the input primitive of the GeometryShader.
+        """The render primitive (mode) must be the same as the input primitive of the GeometryShader.
         The draw commands are 5 integers: (count, instanceCount, firstIndex, baseVertex, baseInstance).
+
         Args:
             program: The ``moderngl.Program``
             buffer: The ``moderngl.Buffer`` containing indirect draw commands
@@ -158,8 +184,8 @@ class VAO:
 
     def transform(self, program: moderngl.Program, buffer: moderngl.Buffer,
                   mode=None, vertices=-1, first=0, instances=1):
-        """
-        Transform vertices. Stores the output in a single buffer.
+        """Transform vertices. Stores the output in a single buffer.
+
         Args:
             program: The ``moderngl.Program``
             buffer: The ``moderngl.buffer`` to store the output
@@ -177,9 +203,8 @@ class VAO:
         vao.transform(buffer, mode=mode, vertices=vertices, first=first, instances=instances)
 
     def buffer(self, buffer, buffer_format: str, attribute_names: List[str]):
-        """
-        Register a buffer/vbo for the VAO. This can be called multiple times.
-        adding multiple buffers (interleaved or not)
+        """Register a buffer/vbo for the VAO. This can be called multiple times.
+        adding multiple buffers (interleaved or not).
 
         Args:
             buffer: The buffer data. Can be ``numpy.array``, ``moderngl.Buffer`` or ``bytes``.
@@ -215,8 +240,7 @@ class VAO:
         return buffer
 
     def index_buffer(self, buffer, index_element_size=4):
-        """
-        Set the index buffer for this VAO
+        """Set the index buffer for this VAO.
 
         Args:
             buffer: ``moderngl.Buffer``, ``numpy.array`` or ``bytes``
@@ -292,8 +316,8 @@ class VAO:
         return vao
 
     def release(self, buffer=True):
-        """
-        Destroy the vao object
+        """Destroy all iternally cached vaos and release all buffers.
+
         Keyword Args:
             buffers (bool): also release buffers
         """
