@@ -2,19 +2,19 @@
 .. py:module:: moderngl_window.finders.program
 .. py:currentmodule:: moderngl_window.finders.program
 
-finders.program.FileSystemFinder
+finders.program.FilesystemFinder
 ================================
 
-.. autodata:: FileSystemFinder
+.. autodata:: FilesystemFinder
    :annotation:
 
 Methods
 -------
 
-.. automethod:: FileSystemFinder.__init__
-.. automethod:: FileSystemFinder.find
+.. automethod:: FilesystemFinder.__init__
+.. automethod:: FilesystemFinder.find
 
 Attributes
 ----------
 
-.. autoattribute:: FileSystemFinder.settings_attr
+.. autoattribute:: FilesystemFinder.settings_attr

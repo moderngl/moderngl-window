@@ -25,59 +25,59 @@ class FinderTestCase(TestCase):
     def test_data_finder(self):
         """Find a data file"""
         with settings_context(self.finder_settings):
-            result = data.FileSystemFinder().find(Path('data.json'))
+            result = data.FilesystemFinder().find(Path('data.json'))
             self.assertIsInstance(result, Path)
             self.assertTrue(result.name, 'data.json')
 
     def test_program_finder(self):
         """Find a glsl file"""
         with settings_context(self.finder_settings):
-            result = program.FileSystemFinder().find(Path('test.glsl'))
+            result = program.FilesystemFinder().find(Path('test.glsl'))
             self.assertIsInstance(result, Path)
             self.assertTrue(result.name, 'test.glsl')
 
     def test_texture_finder(self):
         """Find a texture"""
         with settings_context(self.finder_settings):
-            result = texture.FileSystemFinder().find(Path('image.png'))
+            result = texture.FilesystemFinder().find(Path('image.png'))
             self.assertIsInstance(result, Path)
             self.assertTrue(result.name, 'image.png')
 
     def test_scene_finder(self):
         """Find a scene"""
         with settings_context(self.finder_settings):
-            result = scene.FileSystemFinder().find(Path('model.obj'))
+            result = scene.FilesystemFinder().find(Path('model.obj'))
             self.assertIsInstance(result, Path)
             self.assertTrue(result.name, 'model.obj')
 
     def test_relative_path_raises_exception(self):
         with settings_context({'DATA_DIRS': ['relative_location']}):
             with self.assertRaises(ImproperlyConfigured):
-                data.FileSystemFinder().find(Path('something'))
+                data.FilesystemFinder().find(Path('something'))
 
     def test_absolute_path(self):
         """Ensure absolute paths are ignored"""
         with settings_context(self.finder_settings):
-            finder = data.FileSystemFinder()
+            finder = data.FilesystemFinder()
             result = finder.find(Path(self.root, Path('data/data.json')))
             self.assertIsNone(result)
 
     def test_not_found(self):
         """Ensure finder returns non when nothing was found"""
-        finder = data.FileSystemFinder()
+        finder = data.FilesystemFinder()
         result = finder.find(Path(self.root, Path('data/idontexist.json')))
         self.assertIsNone(result)
 
     def test_no_search_dirs(self):
         """When no search dirs the finder should return None"""
         with settings_context({'DATA_DIRS': []}):
-            finder = data.FileSystemFinder()
+            finder = data.FilesystemFinder()
             result = finder.find(Path('data/data.json'))
             self.assertIsNone(result)
 
     def test_non_path(self):
         """Raise ValueError if finder gets non-Path instance"""
-        finder = data.FileSystemFinder()
+        finder = data.FilesystemFinder()
         with self.assertRaises(ValueError):
             finder.find('test')
 

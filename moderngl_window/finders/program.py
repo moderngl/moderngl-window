@@ -2,7 +2,7 @@ from moderngl_window.finders import base
 from moderngl_window.conf import settings
 
 
-class FileSystemFinder(base.BaseFilesystemFinder):
+class FilesystemFinder(base.BaseFilesystemFinder):
     """Find shaders in ``settings.PROGRAM_DIRS``"""
     settings_attr = 'PROGRAM_DIRS'
 

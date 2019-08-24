@@ -16,19 +16,19 @@ SCREENSHOT_PATH = None
 
 # Finders
 PROGRAM_FINDERS = [
-    "moderngl_window.finders.program.FileSystemFinder",
+    "moderngl_window.finders.program.FilesystemFinder",
 ]
 
 TEXTURE_FINDERS = [
-    "moderngl_window.finders.texture.FileSystemFinder",
+    "moderngl_window.finders.texture.FilesystemFinder",
 ]
 
 SCENE_FINDERS = [
-    "moderngl_window.finders.scene.FileSystemFinder",
+    "moderngl_window.finders.scene.FilesystemFinder",
 ]
 
 DATA_FINDERS = [
-    "moderngl_window.finders.data.FileSystemFinder",
+    "moderngl_window.finders.data.FilesystemFinder",
 ]
 
 # Finder directories: Where finders look for their resources
