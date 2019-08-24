@@ -149,3 +149,20 @@ class TestCase(unittest.TestCase):
 
     def test_meta_data(self):
         self.validate('meta/data.rst', 'moderngl_window.meta.data', 'DataDescription')
+
+    # --- Finders ---
+
+    def test_finders_base(self):
+        self.validate('finders/base.rst', 'moderngl_window.finders.base', 'BaseFilesystemFinder')
+
+    def test_finders_texture(self):
+        self.validate('finders/texture.rst', 'moderngl_window.finders.texture', 'FilesystemFinder')
+
+    def test_finders_program(self):
+        self.validate('finders/program.rst', 'moderngl_window.finders.program', 'FilesystemFinder')
+
+    def test_finders_scene(self):
+        self.validate('finders/scene.rst', 'moderngl_window.finders.scene', 'FilesystemFinder')
+
+    def test_finders_data(self):
+        self.validate('finders/data.rst', 'moderngl_window.finders.data', 'FilesystemFinder')
