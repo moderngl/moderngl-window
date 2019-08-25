@@ -7,55 +7,43 @@ class BaseTimer:
     This can be used in creative ways to control the current time
     such as basing it on current location in an audio file.
 
-    A core feature of a timer is being able to:
-
-    * Pause the current
-
     All methods must be implemented.
     """
-
     @property
     def is_paused(self) -> bool:
-        """The pause state of the timer"""
+        """bool: The pause state of the timer"""
         raise NotImplementedError()
 
     @property
     def is_running(self) -> bool:
-        """Is the timer currently running?"""
+        """bool: Is the timer currently running?"""
         raise NotImplementedError()
 
     @property
     def time(self) -> float:
-        """
-        Get the current time in seconds
+        """Get the current time in seconds
+
+        The current time can also be assigned to this attribute.
 
         Returns:
-            The current time in seconds
+            float: The current time in seconds
         """
         raise NotImplementedError()
 
     @time.setter
     def time(self, value: float):
-        """
-        Set the current time in seconds.
-
-        Args:
-            value (float): The new time
-        """
         raise NotImplementedError()
 
     def next_frame(self) -> Tuple[float, float]:
-        """
-        Get the time and frametime for the next frame
+        """Get timer information for the next frame.
+
+        Returns:
+            Tuple[float, float]: The frametime and current time
         """
         raise NotImplementedError()
 
     def start(self):
-        """
-        Start the timer initially or resume after pause
-        Raises:
-            NotImplementedError
-        """
+        """Start the timer initially or resume after pause"""
         raise NotImplementedError()
 
     def pause(self):
@@ -71,6 +59,6 @@ class BaseTimer:
         Stop the timer. Should only be called once when stopping the timer.
 
         Returns:
-            (float, float) Current position in the timer, actual running duration
+            Tuple[float, float]> Current position in the timer, actual running duration
         """
         raise NotImplementedError()
