@@ -1,14 +1,11 @@
 import time
 from typing import Tuple
 
-
 from moderngl_window.timers.base import BaseTimer
 
 
 class Timer(BaseTimer):
-    """
-    Timer based on python ``time``.
-    """
+    """Timer based on python ``time``."""
     def __init__(self, **kwargs):
         self._start_time = None
         self._stop_time = None
@@ -18,18 +15,17 @@ class Timer(BaseTimer):
 
     @property
     def is_paused(self) -> bool:
-        """The pause state of the timer"""
+        """bool: The pause state of the timer"""
         return self._pause_time is not None
 
     @property
     def is_running(self) -> bool:
-        """Is the timer currently running?"""
+        """bool: Is the timer currently running?"""
         return self._pause_time is None
 
     @property
     def time(self) -> float:
-        """
-        Get the current time in seconds
+        """Get the current time in seconds
 
         Returns:
             The current time in seconds
@@ -61,15 +57,14 @@ class Timer(BaseTimer):
         This should only be called once per frame.
 
         Returns:
-            (float, float) current time and frametime
+            Tuple[float, float]: current time and frametime
         """
         current = self.time
         delta, self._last_frame = current - self._last_frame, current
         return current, delta
 
     def start(self):
-        """
-        Start the timer by recoding the current ``time.time()``
+        """Start the timer by recoding the current ``time.time()``
         preparing to report the number of seconds since this timestamp.
         """
         if self._start_time is None:
@@ -80,9 +75,7 @@ class Timer(BaseTimer):
             self._pause_time = None
 
     def pause(self):
-        """
-        Pause the timer by setting the internal pause time using ``time.time()``
-        """
+        """Pause the timer by setting the internal pause time using ``time.time()``"""
         self._pause_time = time.time()
 
     def toggle_pause(self):
@@ -97,7 +90,7 @@ class Timer(BaseTimer):
         Stop the timer. Should only be called once when stopping the timer.
 
         Returns:
-            (float, float) Current position in the timer, actual running duration
+            Tuple[float, float]: Current position in the timer, actual running duration
         """
         self._stop_time = time.time()
         return self._stop_time - self._start_time - self._offset, self._stop_time - self._start_time
