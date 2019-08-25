@@ -128,7 +128,17 @@ class Camera:
 
 class KeyboardCamera(Camera):
     """Camera controlled by mouse and keyboard"""
-    def __init__(self, keys: BaseKeys, fov=60, aspect=1.0, near=1, far=100):
+    def __init__(self, keys: BaseKeys, fov=6.0, aspect_ratio=1.0, near=1.0, far=100.0):
+        """Initialize the camera
+
+        Args:
+            keys (BaseKeys): The key constants for the current window type
+        Keyword Args:
+            fov (float): Field of view
+            aspect_ratio (float): Aspect ratio
+            near (float): near plane
+            far (float): far plane
+        """
         # Position movement states
         self.keys = keys
         self._xdir = STILL
@@ -142,10 +152,16 @@ class KeyboardCamera(Camera):
         self.last_x = None
         self.last_y = None
 
-        super().__init__(fov=fov, aspect=aspect, near=near, far=far)
+        super().__init__(fov=fov, aspect_ratio=aspect_ratio, near=near, far=far)
 
     def key_input(self, key, action, modifiers) -> None:
-        """Process key inputs and move camera"""
+        """Process key inputs and move camera
+
+        Args:
+            key: The key
+            action: key action release/press
+            modifiers: key modifier states such as ctrl or shit
+        """
         # Right
         if key == self.keys.D:
             if action == self.keys.ACTION_PRESS:
@@ -186,28 +202,59 @@ class KeyboardCamera(Camera):
                 self.move_up(False)
 
     def move_left(self, activate) -> None:
+        """The camera should be continiously moving to the left.
+
+        Args:
+            activate (bool): Activate or deactivate this state
+        """
         self.move_state(LEFT, activate)
 
     def move_right(self, activate) -> None:
+        """The camera should be continiously moving to the right.
+
+        Args:
+            activate (bool): Activate or deactivate this state
+        """
         self.move_state(RIGHT, activate)
 
     def move_forward(self, activate) -> None:
+        """The camera should be continiously moving forward.
+
+        Args:
+            activate (bool): Activate or deactivate this state
+        """
         self.move_state(FORWARD, activate)
 
     def move_backward(self, activate) -> None:
+        """The camera should be continiously moving backwards.
+
+        Args:
+            activate (bool): Activate or deactivate this state
+        """
         self.move_state(BACKWARD, activate)
 
     def move_up(self, activate) -> None:
+        """The camera should be continiously moving up.
+
+        Args:
+            activate (bool): Activate or deactivate this state
+        """
         self.move_state(UP, activate)
 
     def move_down(self, activate):
+        """The camera should be continiously moving down.
+
+        Args:
+            activate (bool): Activate or deactivate this state
+        """
         self.move_state(DOWN, activate)
 
     def move_state(self, direction, activate) -> None:
-        """
-        Set the camera position move state
-        :param direction: What direction to update
-        :param activate: Start or stop moving in the direction
+        """Set the camera position move state.
+
+        Args:
+            direction: What direction to update
+            activate: Start or stop moving in the direction
         """
         if direction == RIGHT:
             self._xdir = POSITIVE if activate else STILL
@@ -223,10 +270,12 @@ class KeyboardCamera(Camera):
             self._ydir = NEGATIVE if activate else STILL
 
     def rot_state(self, x, y) -> None:
-        """
-        Set the rotation state of the camera
-        :param x: viewport x pos
-        :param y: viewport y pos
+        """Set the rotation state of the camera.
+        This value is normally the current mouse position.
+
+        Args:
+            x: viewport x pos
+            y: viewport y pos
         """
         if self.last_x is None:
             self.last_x = x
@@ -254,9 +303,7 @@ class KeyboardCamera(Camera):
 
     @property
     def matrix(self) -> numpy.ndarray:
-        """
-        Returns: The current view matrix for the camera
-        """
+        """numpy.ndarray: The current view matrix for the camera"""
         # Use separate time in camera so we can move it when the demo is paused
         now = time.time()
         # If the camera has been inactive for a while, a large time delta
