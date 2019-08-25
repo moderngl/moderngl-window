@@ -6,6 +6,7 @@ timers.base.BaseTimer
 =====================
 
 .. autodata:: BaseTimer
+   :annotation:
 
 Methods
 -------
