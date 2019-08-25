@@ -13,3 +13,4 @@ API Reference
    meta/index
    finders/index
    opengl/index
+   resources/index
