@@ -2,9 +2,6 @@ import moderngl
 
 import moderngl_window as mglw
 from moderngl_window import geometry
-from moderngl_window import resources
-from moderngl_window.meta import ProgramDescription
-from moderngl_window.scene.camera import KeyboardCamera
 
 from pyrr import matrix44
 
@@ -16,7 +13,7 @@ class GeometryBbox(CameraWindow):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.prog = resources.programs.load(ProgramDescription(path='scene_default/bbox.glsl'))
+        self.prog = self.load_program('scene_default/bbox.glsl')
         self.bbox = geometry.bbox()
 
         self.prog['color'].value = (1, 1, 1)
