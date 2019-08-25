@@ -7,14 +7,17 @@ from moderngl_window.meta import SceneDescription
 
 
 class Scenes(BaseRegistry):
-    """
-    A registry for scense requested by effects.
-    Once all effects are initialized, we ask this class to load the scenes.
-    """
+    """Handles scene loading"""
     settings_attr = 'SCENE_LOADERS'
 
     def load(self, meta: SceneDescription) -> Scene:
-        """Load a scene with the configurred loaders"""
+        """Load a scene with the configured loaders.
+
+        Args:
+            meta (:py:class:`~moderngl_window.meta.scene.SceneDescription`): The resource description
+        Returns:
+            :py:class:`~moderngl_window.scene.Scene`: The loaded scene
+        """
         return super().load(meta)
 
 
