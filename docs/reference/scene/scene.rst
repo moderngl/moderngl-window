@@ -1,0 +1,22 @@
+
+.. py:module:: moderngl_window.scene
+
+scene.Scene
+===========
+
+Methods
+-------
+
+.. automethod:: Scene.__init__
+.. automethod:: Scene.draw
+.. automethod:: Scene.draw_bbox
+.. automethod:: Scene.apply_mesh_programs
+.. automethod:: Scene.calc_scene_bbox
+.. automethod:: Scene.prepare
+.. automethod:: Scene.destroy
+
+Attributes
+----------
+
+.. autoattribute:: Scene.ctx
+.. autoattribute:: Scene.model_matrix
