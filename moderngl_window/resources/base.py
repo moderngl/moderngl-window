@@ -14,13 +14,16 @@ from moderngl_window.meta.base import ResourceDescription
 class BaseRegistry:
     """Base class for all resource pools"""
     settings_attr = None
-
+    """str: The name of the attribute in :py:class:`~moderngl_window.conf.Settings`
+    containting a list of loader classes.
+    """
     def __init__(self):
+        """Initialize internal attributes"""
         self._resources = []
 
     @property
     def count(self) -> int:
-        """int: The number of ResourceDescroptions added.
+        """int: The number of resource descriptions added.
         This is only relevant when using `add` and `load_pool`.
         """
         return len(self._resources)
@@ -37,7 +40,7 @@ class BaseRegistry:
 
     def load(self, meta: ResourceDescription) -> Any:
         """
-        Loads a resource using the configured finders and loaders
+        Loads a resource using the configured finders and loaders.
 
         Args:
             meta (ResourceDescription): The resource description
@@ -63,7 +66,7 @@ class BaseRegistry:
         Loads all the data files using the configured finders.
 
         This is only relevant when resource have been added to this
-        pool using `add()`.
+        pool using ``add()``.
 
         Returns:
             Generator of (meta, resoure) tuples
@@ -79,7 +82,7 @@ class BaseRegistry:
         Attempts to assign a loader class to a ResourceDecription.
 
         Args:
-            meta (ResourceDescription): The resource description instance
+            meta (:py:class:`~moderngl_window.meta.base.ResourceDescription`): The resource description instance
         """
         # Get loader using kind if specified
         if meta.kind:
