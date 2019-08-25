@@ -32,7 +32,7 @@ class CubeModel(mglw.WindowConfig):
         # self.scene = self.load_scene('DamagedHelmet/glTF-Binary/DamagedHelmet.glb')
         # self.scene = self.load_scene('BoxInterleaved/glTF/BoxInterleaved.gltf')
 
-        self.camera = KeyboardCamera(self.wnd.keys, fov=75.0, aspect=self.wnd.aspect_ratio, near=0.1, far=1000.0)
+        self.camera = KeyboardCamera(self.wnd.keys, fov=75.0, aspect_ratio=self.wnd.aspect_ratio, near=0.1, far=1000.0)
         # Use this for gltf scenes for better camera controls
         # if self.scene.diagonal_size > 0:
         # self.camera.velocity = self.scene.diagonal_size / 5.0

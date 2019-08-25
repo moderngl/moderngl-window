@@ -6,7 +6,7 @@ class CameraWindow(mglw.WindowConfig):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.camera = KeyboardCamera(self.wnd.keys, aspect=self.wnd.aspect_ratio)
+        self.camera = KeyboardCamera(self.wnd.keys, aspect_ratio=self.wnd.aspect_ratio)
 
     def key_event(self, key, action, modifiers):
         self.camera.key_input(key, action, modifiers)

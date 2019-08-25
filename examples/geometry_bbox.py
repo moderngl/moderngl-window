@@ -1,10 +1,7 @@
-import moderngl
+from pyrr import matrix44
 
 import moderngl_window as mglw
 from moderngl_window import geometry
-
-from pyrr import matrix44
-
 
 from base import CameraWindow
 

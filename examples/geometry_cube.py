@@ -6,7 +6,6 @@ import moderngl
 import moderngl_window as mglw
 from moderngl_window import geometry
 from moderngl_window import resources
-from moderngl_window.meta import ProgramDescription
 
 from base import CameraWindow
 
@@ -18,7 +17,7 @@ class CubeSimple(CameraWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.cube = geometry.cube(size=(2, 2, 2))
-        self.prog = resources.programs.load(ProgramDescription(path='programs/cube_simple.glsl'))
+        self.prog = self.load_program('programs/cube_simple.glsl')
         self.prog['m_proj'].write(self.camera.projection.tobytes())
         self.prog['color'].value = (1.0, 1.0, 1.0, 1.0)
 
