@@ -4,21 +4,31 @@ from moderngl_window.meta import ProgramDescription
 
 
 class Programs(BaseRegistry):
-    """
-    A registry for shaders requested by effects.
-    Once all effects are initialized, we ask this class to load the shaders.
-    """
+    """Handle program loading"""
     settings_attr = 'PROGRAM_LOADERS'
 
-    def resolve_loader(self, meta: ProgramDescription):
-        """Resolve program loader"""
+    def resolve_loader(self, meta: ProgramDescription) -> None:
+        """Resolve program loader.
+
+        Determines if the references resource is a single
+        or multiple glsl files unless ``kind`` is specified.
+
+        Args:
+            meta (ProgramDescription): The resource description
+        """
         if not meta.kind:
             meta.kind = 'single' if meta.path else 'separate'
 
-        return super().resolve_loader(meta)
+        super().resolve_loader(meta)
 
     def load(self, meta: ProgramDescription) -> moderngl.Program:
-        """Loads a shader program with the configured loaders"""
+        """Loads a shader program with the configured loaders
+
+        Args:
+            meta (:py:class:`~moderngl_window.meta.program.ProgramDescription`): The resource description
+        Returns:
+            moderngl.Program: The shader program
+        """
         return super().load(meta)
 
 
