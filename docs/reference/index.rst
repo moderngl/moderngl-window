@@ -14,3 +14,4 @@ API Reference
    finders/index
    opengl/index
    resources/index
+   timers/index
