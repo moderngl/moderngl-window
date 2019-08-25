@@ -191,3 +191,11 @@ class TestCase(unittest.TestCase):
 
     def test_resources_scenes(self):
         self.validate('resources/scenes.rst', 'moderngl_window.resources.scenes', 'Scenes')
+
+    # --- timers ---
+
+    def test_timers_base(self):
+        self.validate('timers/base.rst', 'moderngl_window.timers.base', 'BaseTimer')
+
+    def test_timers_clock(self):
+        self.validate('timers/clock.rst', 'moderngl_window.timers.clock', 'Timer')
