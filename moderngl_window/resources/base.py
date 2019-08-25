@@ -77,7 +77,7 @@ class BaseRegistry:
 
         self._resources = []
 
-    def resolve_loader(self, meta: ResourceDescription):
+    def resolve_loader(self, meta: ResourceDescription) -> None:
         """
         Attempts to assign a loader class to a ResourceDecription.
 
