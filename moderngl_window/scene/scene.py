@@ -24,7 +24,8 @@ logger = logging.getLogger(__name__)
 class Scene:
     """Generic scene"""
     def __init__(self, name, **kwargs):
-        """
+        """Create a scene with a name.
+
         Args:
             name (str): Unique name or path for the scene
         """
@@ -66,9 +67,8 @@ class Scene:
         for node in self.root_nodes:
             node.calc_model_mat(self._model_matrix)
 
-    def draw(self, projection_matrix: numpy.ndarray = None, camera_matrix: numpy.ndarray = None, time=0.0):
-        """
-        Draw all the nodes in the scene
+    def draw(self, projection_matrix: numpy.ndarray = None, camera_matrix: numpy.ndarray = None, time=0.0) -> None:
+        """Draw all the nodes in the scene.
 
         Args:
             projection_matrix (ndarray): projection matrix (bytes)
@@ -88,7 +88,7 @@ class Scene:
         self.ctx.clear_samplers(0, 4)
 
     def draw_bbox(self, projection_matrix=None, camera_matrix=None, children=True) -> None:
-        """Draw scene and mesh bounding boxes
+        """Draw scene and mesh bounding boxes.
 
         Args:
             projection_matrix (ndarray): mat4 projection
@@ -115,7 +115,7 @@ class Scene:
             node.draw_bbox(projection_matrix, camera_matrix, self.bbox_program, self.bbox_vao)
 
     def apply_mesh_programs(self, mesh_programs=None) -> None:
-        """Applies mesh programs to meshes
+        """Applies mesh programs to meshes.
         If not mesh programs are passed in we assign default ones.
 
         Args:
@@ -154,7 +154,9 @@ class Scene:
 
     def prepare(self) -> None:
         """prepare the scene for rendering.
-        This is mostly to ensure shaders are assigned.
+
+        Calls ``apply_mesh_programs()`` assining default meshprograms if needed
+        and sets the model matrix.
         """
         self.apply_mesh_programs()
         # Recursively calculate model matrices
@@ -165,8 +167,8 @@ class Scene:
         for mesh in self.meshes:
             mesh.vao.release()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "<Scene: {}>".format(self.name)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self)
