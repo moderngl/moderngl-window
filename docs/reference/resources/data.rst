@@ -2,7 +2,7 @@
 .. py:module:: moderngl_window.resources.data
 
 resources.base.DataFiles
-===========================
+========================
 
 .. autodata:: DataFiles
    :annotation:
