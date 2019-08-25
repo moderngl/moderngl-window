@@ -23,13 +23,14 @@ NEGATIVE = 2
 
 class Camera:
     """Simple camera class containing projection"""
-    def __init__(self, fov=60, aspect=1.0, near=1, far=100):
-        """
-        Initialize camera using a specific projection
-        :param fov: Field of view
-        :param aspect: Aspect ratio
-        :param near: Near plane
-        :param far: Far plane
+    def __init__(self, fov=60.0, aspect_ratio=1.0, near=1.0, far=100.0):
+        """Initialize camera using a specific projection
+
+        Keyword Args:
+            fov (float): Field of view
+            aspect_ratio (float): Aspect ratio
+            near (float): Near plane
+            far (float): Far plane
         """
         self.position = Vector3([0.0, 0.0, 0.0])
         # Default camera placement
@@ -44,29 +45,26 @@ class Camera:
         self._up = Vector3([0.0, 1.0, 0.0])
 
         # Projection
-        self.projection = Projection3D(aspect, fov, near, far)
+        self.projection = Projection3D(aspect_ratio, fov, near, far)
 
-    def set_position(self, x, y, z):
-        """
-        Set the 3D position of the camera
-        :param x: float
-        :param y: float
-        :param z: float
+    def set_position(self, x, y, z) -> None:
+        """Set the 3D position of the camera.
+
+        Args:
+            x (float): x position
+            y (float): y position
+            z (float): z position
         """
         self.position = Vector3([x, y, z])
 
     @property
     def matrix(self) -> numpy.ndarray:
-        """
-        Returns: The current view matrix for the camera
-        """
+        """numpy.ndarray: The current view matrix for the camera"""
         self._update_yaw_and_pitch()
         return self._gl_look_at(self.position, self.position + self.dir, self._up)
 
     def _update_yaw_and_pitch(self) -> None:
-        """
-        Updates the camera vectors based on the current yaw and pitch
-        """
+        """Updates the camera vectors based on the current yaw and pitch"""
         front = Vector3([0.0, 0.0, 0.0])
         front.x = cos(radians(self.yaw)) * cos(radians(self.pitch))
         front.y = sin(radians(self.pitch))
@@ -77,11 +75,15 @@ class Camera:
         self.up = vector.normalise(vector3.cross(self.right, self.dir))
 
     def look_at(self, vec=None, pos=None) -> numpy.ndarray:
-        """
-        Look at a specific point
-        :param vec: Vector3 position
-        :param pos: python list [x, y, x]
-        :return: Camera matrix
+        """Look at a specific point
+
+        Either ``vec`` or ``pos`` needs to be supplied.
+
+        Keyword Args:
+            vec (pyrr.Vector3): position
+            pos (tuple/list): list of tuple ``[x, y, x]`` / ``(x, y, x)``
+        Returns:
+            numpy.ndarray: Camera matrix
         """
         if pos is None:
             vec = Vector3(pos)
@@ -92,11 +94,14 @@ class Camera:
         return self._gl_look_at(self.position, vec, self._up)
 
     def _gl_look_at(self, pos, target, up) -> numpy.ndarray:
-        """
-        The standard lookAt method
-        :param pos: current position
-        :param target: target position to look at
-        :param up: direction up
+        """The standard lookAt method.
+
+        Args:
+            pos: current position
+            target: target position to look at
+            up: direction up
+        Returns:
+            numpy.ndarray: The matrix
         """
         z = vector.normalise(pos - target)
         x = vector.normalise(vector3.cross(vector.normalise(up), z))

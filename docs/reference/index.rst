@@ -15,3 +15,4 @@ API Reference
    opengl/index
    resources/index
    timers/index
+   scene/index
