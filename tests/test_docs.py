@@ -174,3 +174,20 @@ class TestCase(unittest.TestCase):
 
     def test_opengl_vao(self):
         self.validate('opengl/vao.rst', 'moderngl_window.opengl.vao', 'VAO')
+
+    # --- resources ---
+
+    def test_resources_base(self):
+        self.validate('resources/base.rst', 'moderngl_window.resources.base', 'BaseRegistry')
+
+    def test_resources_data(self):
+        self.validate('resources/data.rst', 'moderngl_window.resources.data', 'DataFiles')
+
+    def test_resources_textures(self):
+        self.validate('resources/textures.rst', 'moderngl_window.resources.textures', 'Textures')
+
+    def test_resources_programs(self):
+        self.validate('resources/programs.rst', 'moderngl_window.resources.programs', 'Programs')
+
+    def test_resources_scenes(self):
+        self.validate('resources/scenes.rst', 'moderngl_window.resources.scenes', 'Scenes')
