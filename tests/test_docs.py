@@ -199,3 +199,17 @@ class TestCase(unittest.TestCase):
 
     def test_timers_clock(self):
         self.validate('timers/clock.rst', 'moderngl_window.timers.clock', 'Timer')
+
+    # -- Scene ---
+
+    def test_scene_camera(self):
+        self.validate('scene/camera.rst', 'moderngl_window.scene', 'Camera')
+
+    def test_scene_keyboardcamera(self):
+        self.validate('scene/keyboardcamera.rst', 'moderngl_window.scene', 'KeyboardCamera')
+
+    def test_scene_scene(self):
+        self.validate('scene/scene.rst', 'moderngl_window.scene', 'Scene')
+
+    def test_scene_node(self):
+        self.validate('scene/node.rst', 'moderngl_window.scene', 'Node')
