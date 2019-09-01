@@ -134,12 +134,12 @@ class Loader(BaseLoader):
 
     def load_gltf(self):
         """Loads a gltf json file parsing its contents"""
-        with open(self.path) as fd:
+        with open(str(self.path)) as fd:
             self.gltf = GLTFMeta(self.path, json.load(fd), self.meta)
 
     def load_glb(self):
         """Loads a binary gltf file parsing its contents"""
-        with open(self.path, 'rb') as fd:
+        with open(str(self.path), 'rb') as fd:
             # Check header
             magic = fd.read(4)
             if magic != GLTF_MAGIC_HEADER:
@@ -368,7 +368,7 @@ class GLTFMeta:
                 continue
 
             path = self.path.parent / buff.uri
-            if not os.path.exists(path):
+            if not path.exists():
                 raise FileNotFoundError("Buffer {} referenced in {} not found".format(path, self.path))
 
     def images_exist(self):
@@ -625,7 +625,7 @@ class GLTFBuffer:
             self.data = base64.b64decode(self.uri[self.uri.find(',') + 1:])
             return
 
-        with open(self.path / self.uri, 'rb') as fd:
+        with open(str(self.path / self.uri), 'rb') as fd:
             self.data = fd.read()
 
     def read(self, byte_offset=0, byte_length=0):

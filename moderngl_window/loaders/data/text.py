@@ -25,5 +25,5 @@ class Loader(BaseLoader):
 
         logger.info("Loading: %s", self.meta.path)
 
-        with open(self.meta.resolved_path, 'r') as fd:
+        with open(str(self.meta.resolved_path), 'r') as fd:
             return fd.read()

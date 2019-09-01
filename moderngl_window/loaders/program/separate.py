@@ -52,5 +52,5 @@ class Loader(BaseLoader):
 
             logger.info("Loading: %s", resolved_path)
 
-            with open(resolved_path, 'r') as fd:
+            with open(str(resolved_path), 'r') as fd:
                 return fd.read()

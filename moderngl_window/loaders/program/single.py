@@ -59,7 +59,7 @@ class Loader(BaseLoader):
 
         logger.info("Loading: %s", self.meta.path)
 
-        with open(self.meta.resolved_path, 'r') as fd:
+        with open(str(self.meta.resolved_path), 'r') as fd:
             shaders = program.ProgramShaders.from_single(self.meta, fd.read())
 
         prog = shaders.create()
