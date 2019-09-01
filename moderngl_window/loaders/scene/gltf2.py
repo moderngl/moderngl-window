@@ -3,7 +3,6 @@ import base64
 import io
 import json
 import logging
-import os
 import struct
 from collections import namedtuple
 
