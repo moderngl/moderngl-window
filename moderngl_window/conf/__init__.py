@@ -265,7 +265,7 @@ class Settings:
         """
         try:
             module = importlib.import_module(settings_module_name)
-        except ModuleNotFoundError as ex:
+        except ImportError as ex:
             raise ImproperlyConfigured(
                 "Settings module '{}' not found. From importlib: {}".format(
                     settings_module_name,
