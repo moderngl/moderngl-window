@@ -10,8 +10,8 @@ from utils import settings_context
 
 class ResourcesTestCase(TestCase):
     relative_path = './resources'
-    absolute_path = (Path(__file__).parent / Path('fixtures/resources')).resolve()
-    nonexist_path = (Path(__file__).parent / 'resources').resolve()
+    absolute_path = (Path(__file__).parent.resolve() / Path('fixtures/resources'))
+    nonexist_path = (Path(__file__).parent.resolve() / 'resources')
     file_path = Path(__file__).resolve()
 
     settings = {
