@@ -139,7 +139,7 @@ class Loader(BaseLoader):
                 texture = texture_cache.get(mat.texture.path)
                 if not texture:
                     # HACK: pywavefront only give us an absolute path
-                    rel_path = os.path.relpath(mat.texture.path, path.parent)
+                    rel_path = mat.texture.find()
                     logger.info("Loading: %s", rel_path)
                     with texture_dirs([path.parent]):
                         texture = resources.textures.load(TextureDescription(
