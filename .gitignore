@@ -46,6 +46,9 @@ docs/_build/
 # Environments
 .env
 .venv
+.venv35
+.venv36
+.venv37
 env/
 venv/
 ENV/
