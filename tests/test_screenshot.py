@@ -21,7 +21,7 @@ class ScreenshotTestCase(HeadlessTestCase):
     @mock.patch('os.makedirs', new=mock.MagicMock())
     def test_with_screenshot_path(self):
         """Create screenshot with SCREENSHOT_PATH defined in settings"""
-        with settings_context({'SCREENSHOT_PATH': (Path.cwd() / 'screenshots').resolve()}):
+        with settings_context({'SCREENSHOT_PATH': (Path.cwd() / 'screenshots')}):
             self.test_fbo()
 
     def test_incorrect_source(self):

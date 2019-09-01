@@ -26,9 +26,9 @@ def create(source: Union[moderngl.Framebuffer, moderngl.Texture],
     """
     dest = ""
     if settings.SCREENSHOT_PATH:
-        if not os.path.exists(settings.SCREENSHOT_PATH):
+        if not os.path.exists(str(settings.SCREENSHOT_PATH)):
             logger.debug("SCREENSHOT_PATH does not exist. creating: %s", settings.SCREENSHOT_PATH)
-            os.makedirs(settings.SCREENSHOT_PATH)
+            os.makedirs(str(settings.SCREENSHOT_PATH))
         dest = settings.SCREENSHOT_PATH
     else:
         logger.info("SCREENSHOT_PATH not defined in settings. Using cwd as fallback.")
@@ -57,6 +57,6 @@ def create(source: Union[moderngl.Framebuffer, moderngl.Texture],
         raise ValueError("Source needs to be a FrameBuffer or Texture, not a %s", type(source))
 
     image = image.transpose(Image.FLIP_TOP_BOTTOM)
-    dest = os.path.join(dest, name)
+    dest = os.path.join(str(dest), name)
     logger.info("Creating screenshot: %s", dest)
     image.save(dest, format=file_format)
