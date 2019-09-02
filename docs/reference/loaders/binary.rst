@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.loaders.data.binary
 .. py:currentmodule:: moderngl_window.loaders.data.binary
 
-loaders.data.binary.Loader
-==========================
+data.binary.Loader
+==================
 
 Method
 ------

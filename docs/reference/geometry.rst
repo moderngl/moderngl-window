@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.geometry
 .. py:currentmodule:: moderngl_window.geometry
 
-geometry
-========
+moderngl_window.geometry
+========================
 
 .. autofunction:: bbox
 .. autofunction:: quad_fs

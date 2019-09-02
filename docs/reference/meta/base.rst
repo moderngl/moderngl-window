@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.meta.base
 .. py:currentmodule:: moderngl_window.meta.base
 
-meta.base.ResourceDescription
-=============================
+base.ResourceDescription
+========================
 
 .. autodata:: ResourceDescription
    :annotation:

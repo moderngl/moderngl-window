@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.meta.program
 .. py:currentmodule:: moderngl_window.meta.program
 
-meta.program.ProgramDescription
-===============================
+program.ProgramDescription
+==========================
 
 .. autodata:: ProgramDescription
    :annotation:

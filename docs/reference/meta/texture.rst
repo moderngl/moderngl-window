@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.meta.texture
 .. py:currentmodule:: moderngl_window.meta.texture
 
-meta.texture.TextureDescription
-===============================
+texture.TextureDescription
+==========================
 
 .. autodata:: TextureDescription
    :annotation:

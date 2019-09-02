@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.loaders.data.text
 .. py:currentmodule:: moderngl_window.loaders.data.text
 
-loaders.data.text.Loader
-========================
+data.text.Loader
+================
 
 Method
 ------

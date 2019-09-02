@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.timers.base
 .. py:currentmodule:: moderngl_window.timers.base
 
-timers.base.BaseTimer
-=====================
+base.BaseTimer
+==============
 
 .. autodata:: BaseTimer
    :annotation:

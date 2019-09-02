@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.context.glfw.window
 .. py:currentmodule:: moderngl_window.context.glfw.window
 
-context.glfw.GLFW
-=================
+glfw.GLFW
+=========
 
 Methods
 -------

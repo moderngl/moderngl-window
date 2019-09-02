@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.meta.data
 .. py:currentmodule:: moderngl_window.meta.data
 
-meta.data.DataDescription
-=========================
+data.DataDescription
+====================
 
 .. autodata:: DataDescription
    :annotation:

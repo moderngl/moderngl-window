@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.finders.base
 .. py:currentmodule:: moderngl_window.finders.base
 
-finders.base.BaseFilesystemFinder
-=================================
+base.BaseFilesystemFinder
+=========================
 
 .. autodata:: BaseFilesystemFinder
    :annotation:

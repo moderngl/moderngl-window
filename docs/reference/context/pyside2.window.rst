@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.context.pyside2.window
 .. py:currentmodule:: moderngl_window.context.pyside2.window
 
-context.pyside2Window
-=====================
+pyside2Window
+=============
 
 Methods
 -------

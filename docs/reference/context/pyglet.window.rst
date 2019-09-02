@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.context.pyglet.window
 .. py:currentmodule:: moderngl_window.context.pyglet.window
 
-context.pyglet.Window
-=====================
+pyglet.Window
+=============
 
 Methods
 -------

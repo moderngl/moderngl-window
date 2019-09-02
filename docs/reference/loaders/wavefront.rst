@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.loaders.scene.wavefront
 .. py:currentmodule:: moderngl_window.loaders.scene.wavefront
 
-loaders.scene.wavefront.Loader
-==============================
+scene.wavefront.Loader
+======================
 
 Method
 ------

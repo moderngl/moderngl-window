@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.loaders.scene.gltf2
 .. py:currentmodule:: moderngl_window.loaders.scene.gltf2
 
-loaders.scene.gltf2.Loader
-==========================
+scene.gltf2.Loader
+==================
 
 Method
 ------

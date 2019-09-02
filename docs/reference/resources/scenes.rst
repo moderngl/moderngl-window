@@ -1,8 +1,8 @@
 
 .. py:module:: moderngl_window.resources.scenes
 
-resources.Scenes.Scenes
-=======================
+scenes.Scenes
+=============
 
 .. autodata:: Scenes
    :annotation:

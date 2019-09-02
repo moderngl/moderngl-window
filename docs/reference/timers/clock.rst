@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.timers.clock
 .. py:currentmodule:: moderngl_window.timers.clock
 
-timers.clock.Timer
-==================
+clock.Timer
+===========
 
 .. autodata:: Timer
    :annotation:

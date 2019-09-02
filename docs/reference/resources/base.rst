@@ -1,8 +1,8 @@
 
 .. py:module:: moderngl_window.resources.base
 
-resources.base.BaseRegistry
-===========================
+base.BaseRegistry
+=================
 
 .. autodata:: BaseRegistry
    :annotation:

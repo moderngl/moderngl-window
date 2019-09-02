@@ -1,6 +1,6 @@
 
-timers
-======
+moderngl_window.timers
+======================
 
 .. toctree::
    :maxdepth: 2

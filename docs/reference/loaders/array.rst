@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.loaders.texture.array
 .. py:currentmodule:: moderngl_window.loaders.texture.array
 
-loaders.texture.array.Loader
-============================
+texture.array.Loader
+====================
 
 Method
 ------

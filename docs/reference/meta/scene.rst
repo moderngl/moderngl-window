@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.meta.scene
 .. py:currentmodule:: moderngl_window.meta.scene
 
-meta.scene.SceneDescription
-===========================
+scene.SceneDescription
+======================
 
 .. autodata:: SceneDescription
    :annotation:

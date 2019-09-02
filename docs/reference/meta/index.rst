@@ -1,6 +1,6 @@
 
-meta
-====
+moderngl_window.meta
+====================
 
 .. toctree::
    :maxdepth: 2

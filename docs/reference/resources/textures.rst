@@ -1,8 +1,8 @@
 
 .. py:module:: moderngl_window.resources.textures
 
-resources.textures.Textures
-===========================
+textures.Textures
+=================
 
 .. autodata:: Textures
    :annotation:

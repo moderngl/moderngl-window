@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.loaders.data.json
 .. py:currentmodule:: moderngl_window.loaders.data.json
 
-loaders.data.json.Loader
-========================
+data.json.Loader
+================
 
 Method
 ------

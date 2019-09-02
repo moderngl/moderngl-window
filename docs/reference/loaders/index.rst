@@ -1,6 +1,6 @@
 
-loaders
-=======
+moderngl_window.loaders
+=======================
 
 .. toctree::
    :maxdepth: 2

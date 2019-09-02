@@ -1,6 +1,6 @@
 
-opengl
-======
+moderngl_window.opengl
+======================
 
 .. toctree::
    :maxdepth: 2

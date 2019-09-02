@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.loaders.program.single
 .. py:currentmodule:: moderngl_window.loaders.program.single
 
-loaders.program.single.Loader
-=============================
+program.single.Loader
+=====================
 
 Method
 ------

@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.context.base.window
 .. py:currentmodule:: moderngl_window.context.base.window
 
-context.base.BaseWindow
-=======================
+base.BaseWindow
+===============
 
 Methods
 -------

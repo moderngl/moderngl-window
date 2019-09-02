@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.loaders.base
 .. py:currentmodule:: moderngl_window.loaders.base
 
-loaders.base.BaseLoader
-=======================
+base.BaseLoader
+===============
 
 Method
 ------

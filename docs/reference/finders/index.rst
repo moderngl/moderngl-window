@@ -1,6 +1,6 @@
 
-finders
-=======
+moderngl_window.finders
+=======================
 
 .. toctree::
    :maxdepth: 2

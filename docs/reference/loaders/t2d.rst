@@ -1,8 +1,8 @@
 
 .. py:module:: moderngl_window.loaders.texture.t2d
 
-loaders.texture.t2d.Loader
-==========================
+texture.t2d.Loader
+==================
 
 Method
 ------

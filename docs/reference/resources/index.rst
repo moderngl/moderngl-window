@@ -1,6 +1,6 @@
 
-resources
-=========
+moderngl_window.resources
+=========================
 
 .. toctree::
    :maxdepth: 2

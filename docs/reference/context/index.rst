@@ -1,6 +1,6 @@
 
-context
-=======
+moderngl_window.context
+=======================
 
 .. toctree::
    :maxdepth: 2

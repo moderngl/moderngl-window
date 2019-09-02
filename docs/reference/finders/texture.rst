@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.finders.texture
 .. py:currentmodule:: moderngl_window.finders.texture
 
-finders.texture.FilesystemFinder
-================================
+texture.FilesystemFinder
+========================
 
 .. autodata:: FilesystemFinder
    :annotation:
