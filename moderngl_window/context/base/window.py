@@ -762,7 +762,7 @@ class WindowConfig:
 
         return resources.data.load(DataDescription(path=path, kind="binary"))
 
-    def load_scene(self, path=str, cache=False, attr_names=AttributeNames,
+    def load_scene(self, path: str, cache=False, attr_names=AttributeNames,
                    kind=None, **kwargs) -> Scene:
         """Loads a scene.
 
