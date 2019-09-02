@@ -1,8 +1,8 @@
 
 .. py:module:: moderngl_window.scene
 
-scene.Node
-==========
+Node
+====
 
 .. autodata:: Node
    :annotation:

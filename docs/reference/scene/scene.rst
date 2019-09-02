@@ -1,8 +1,8 @@
 
 .. py:module:: moderngl_window.scene
 
-scene.Scene
-===========
+Scene
+=====
 
 Methods
 -------

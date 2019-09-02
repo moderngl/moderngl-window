@@ -11,4 +11,5 @@ moderngl_window.scene
    node
    mesh
    material
+   materialtexture
    meshprogram
