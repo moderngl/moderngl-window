@@ -1,7 +1,7 @@
 
 .. py:module:: moderngl_window.resources.programs
 
-Programs.Programs
+programs.Programs
 =================
 
 .. autodata:: Programs
