@@ -1,6 +1,3 @@
-"""
-Mesh class containing geometry information
-"""
 from pyrr import matrix44
 import numpy
 
@@ -9,13 +6,16 @@ class Mesh:
     """Mesh info and geometry"""
 
     def __init__(self, name, vao=None, material=None, attributes=None, bbox_min=None, bbox_max=None):
-        """
+        """Initialize mesh.
+
         Args:
             name (str): name of the mesh
         Keyword Args:
             vao (VAO): geometry
             material (Msterial): material for the mesh
             attributes (dict): Details info about each mesh attribute (dict)
+            bbox_min: xyz min values
+            bbox_max: xyz max values
 
         Attributes example::
 
@@ -33,8 +33,7 @@ class Mesh:
         self.mesh_program = None
 
     def draw(self, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0.0):
-        """
-        Draw the mesh using the assigned mesh program
+        """Draw the mesh using the assigned mesh program
 
         Keyword Args:
             projection_matrix (bytes): projection_matrix
@@ -50,9 +49,18 @@ class Mesh:
                 time=time
             )
 
-    def draw_bbox(self, proj_matrix, view_matrix, cam_matrix, program, vao):
+    def draw_bbox(self, proj_matrix, model_matrix, cam_matrix, program, vao):
+        """Renders the bounding box for this mesh.
+
+        Args:
+            proj_matrix: Projection matrix
+            model_matrix: View/model matrix
+            cam_matrix: Camera matrix
+            program: The moderngl.Program rendering the bounding box
+            vao: The vao mesh for the bounding box
+        """
         program["m_proj"].write(proj_matrix)
-        program["m_model"].write(view_matrix)
+        program["m_model"].write(model_matrix)
         program["m_cam"].write(cam_matrix)
         program["bb_min"].write(self.bbox_min.astype('f4').tobytes())
         program["bb_max"].write(self.bbox_max.astype('f4').tobytes())
@@ -69,6 +77,15 @@ class Mesh:
         self.attributes[attr_type] = {"name": name, "components": components}
 
     def calc_global_bbox(self, view_matrix, bbox_min, bbox_max):
+        """Calculates the global bounding.
+
+        Args:
+            view_matrix: View matrix
+            bbox_min: xyz min
+            bbox_max: xyz max
+        Returns:
+            bbox_min, bbox_max: Combined bbox
+        """
         # Copy and extend to vec4
         bb1 = numpy.append(self.bbox_min[:], 1.0)
         bb2 = numpy.append(self.bbox_max[:], 1.0)
@@ -95,8 +112,16 @@ class Mesh:
 
         return bbox_min, bbox_max
 
-    def has_normals(self):
+    def has_normals(self) -> bool:
+        """
+        Returns:
+            bool: Does the mesh have a normals?
+        """
         return "NORMAL" in self.attributes
 
-    def has_uvs(self, layer=0):
+    def has_uvs(self, layer=0) -> bool:
+        """
+        Returns:
+            bool: Does the mesh have texture coordinates?
+        """
         return "TEXCOORD_{}".format(layer) in self.attributes
