@@ -10,6 +10,7 @@
 * Added missing type hints
 * Revived the STL loader
 * Documentation
+* Added `moderngl_window.__version__` attribute
 
 ## 1.2.0
 
