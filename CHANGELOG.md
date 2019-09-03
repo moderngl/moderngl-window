@@ -2,7 +2,7 @@
 
 ## 1.3.0
 
-* Fixed several issue realted to python 3.5 support
+* Fixed several issue related to python 3.5 support
 * Upgraded to pywavefront 1.2.x
 * Renamed some modules and classes to better reflect their capabiltities
 * Renamed some inconsistent parameter names thoughout the codebase
