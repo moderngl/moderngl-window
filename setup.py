@@ -39,6 +39,8 @@ setup(
         "pyqt5": ['PyQt5>=5.12'],
         "glfw": ['glfw>=1.8.3'],
         "PySDL2": ['PySDL2>=0.9.6'],
+        "pywavefront": ["pywavefront>=1.2.0"],
+        "trimesh": ["trimesh==3.2.6", "scipy>=1.3"],
     },
     project_urls={
         'ModernGL': 'https://github.com/moderngl/moderngl',
