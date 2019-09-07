@@ -6,6 +6,13 @@
 Welcome to moderngl_window's documentation!
 ===========================================
 
+A cross platform helper library for ModernGL making window
+creation and resource loading simple.
+
+Please report documenation improvements on github. Writing documenation is
+diffucult and we can't do it without you. Pull requests with documentation
+improvements are also greatly appreciated.
+
 .. toctree::
    :maxdepth: 3
    :caption: Programming Guide
