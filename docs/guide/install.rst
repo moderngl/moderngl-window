@@ -11,11 +11,36 @@ moderngl_window is available on PyPI::
     # Package name with dash also works
     pip install moderngl-window
 
-If installing the package globally (into site-packages), consider
-using ``--user`` option::
+Optional dependencies
+---------------------
 
-    pip install --user moderngl_window
+We try to have as few requirements as possible and instead offer
+optional dependencies. You can create your own window types
+and loaders and don't want to force installing unnecessary dependencies.
 
+By default we install pyglet as this is the default window type
+as it small and pretty much work out of the box on all platforms.
+
+Optional dependencies for loaders::
+
+    # Wavefront / obj loading
+    pip install moderngl_window[pywavefront}
+    # STL loading
+    pip install moderngl_window[trimesh]
+
+Installing dependencies for window types::
+
+    pip install moderngl_window[PySide2]
+    pip install moderngl_window[pyqt5]
+    pip install moderngl_window[glfw]
+    pip install moderngl_window[PySDL2]
+
+For glfw and sdl2 windows you also need install the library itself.
+Thees are also avaialble as packages on linux and homebrew on OS X.
+For windows the DLLs can simply be placed in the root of your project.
+
+- GLFW : https://www.glfw.org/
+- SDL2 : https://www.libsdl.org/download-2.0.php
 
 Installing from source
 ----------------------
@@ -32,33 +57,12 @@ Installing from source
     # Install moderngl_window in editable mode
     pip install -e .
 
+    # Install optional dev dependecies covering all window and loader types
+    pip install -r requirements.txt
+
 Installing the package in editable mode will make you able
 to run tests and examples. We highly recommend using
 virtualenvs.
-
-Optional dependencies
----------------------
-
-We try to have as few requirements as possible and instead offer
-optional dependencies. You can create your own window types
-and loaders and don't want to force installing unnecessary dependencies.
-
-By default we install pyglet as this is the default window type
-as it small and pretty much work out of the box on all platforms.
-
-Installing dependencies for optional window type::
-
-    pip install moderngl_window[PySide2]
-    pip install moderngl_window[pyqt5]
-    pip install moderngl_window[glfw]
-    pip install moderngl_window[PySDL2]
-
-Optional dependencies for loaders::
-
-    # Wavefront / obj loading
-    pip install moderngl_window[pywavefront}
-    # STL loading
-    pip install moderngl_window[trimesh]
 
 Running examples
 ----------------
