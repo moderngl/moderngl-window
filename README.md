@@ -2,13 +2,15 @@
 
 # moderngl_window
 
-A support library for [ModernGL](https://github.com/moderngl/moderngl)
-making programmers more efficent and ensuring cross platform support.
+A cross platform helper library for [ModernGL](https://github.com/moderngl/moderngl) making window creation and resource loading simple.
 
-* [moderngl_window documentation](https://moderngl-window.readthedocs.io)
+* [moderngl_window Documentation](https://moderngl-window.readthedocs.io)
 * [moderngl_window on PyPI](https://pypi.org/project/moderngl-window)
 * [moderngl_window on Github](https://github.com/moderngl/moderngl_window)
 * [ModernGL](https://github.com/moderngl/moderngl)
+* [ModernGL Discord Server](https://discord.gg/UEMtW8D)
+
+Please report bugs or post questions/feedback on [github](https://github.com/moderngl/moderngl_window/issues).
 
 ## Features
 
