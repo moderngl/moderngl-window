@@ -43,6 +43,7 @@ setup(
         "trimesh": ["trimesh==3.2.6", "scipy>=1.3"],
     },
     project_urls={
+        'Documentation': 'https://moderngl-window.readthedocs.io',
         'ModernGL': 'https://github.com/moderngl/moderngl',
     },
 )
