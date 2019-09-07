@@ -153,6 +153,6 @@ and resources to make this project possible.
 ## Some History
 
 The majority of the code in this library comes from [demosys-py](https://github.com/Contraz/demosys-py) (somewhat modified).
-Because `demosys-py` is a framework we decided to split out a lot useful funtionality into this
+Because `demosys-py` is a framework we decided to split out a lot useful functionality into this
 library. Frameworks are a lot less appealing to users and it would be a shame to not make this
-more avaialble to the ModernGL user base.
+more available to the ModernGL user base.
