@@ -8,10 +8,26 @@ Welcome to moderngl_window's documentation!
 
 .. toctree::
    :maxdepth: 3
-   :caption: Contents:
+   :caption: Programming Guide
 
-   guide/index
-   reference/index
+   guide/install
+   guide/basic_usage
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API Reference
+
+   reference/moderngl_window
+   reference/settings.conf.settings
+   reference/context/index
+   reference/geometry
+   reference/loaders/index
+   reference/meta/index
+   reference/finders/index
+   reference/opengl/index
+   reference/resources/index
+   reference/timers/index
+   reference/scene/index
 
 
 Indices and tables
