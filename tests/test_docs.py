@@ -213,3 +213,15 @@ class TestCase(unittest.TestCase):
 
     def test_scene_node(self):
         self.validate('scene/node.rst', 'moderngl_window.scene', 'Node')
+
+    def test_scene_mesh(self):
+        self.validate('scene/mesh.rst', 'moderngl_window.scene', 'Mesh')
+
+    def test_scene_material(self):
+        self.validate('scene/material.rst', 'moderngl_window.scene', 'Material')
+
+    def test_scene_material_texture(self):
+        self.validate('scene/materialtexture.rst', 'moderngl_window.scene', 'MaterialTexture')
+
+    def test_scene_meshprogram(self):
+        self.validate('scene/meshprogram.rst', 'moderngl_window.scene', 'MeshProgram')

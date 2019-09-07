@@ -10,6 +10,7 @@ MeshProgram
 Methods
 -------
 
+.. automethod:: MeshProgram.__init__
 .. automethod:: MeshProgram.draw
 .. automethod:: MeshProgram.apply
 
