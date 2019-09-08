@@ -81,8 +81,27 @@ provided in the :py:class:`~moderngl_window.context.base.window.WindowConfig`.
     class Test(mglw.WindowConfig):
         resource_dir = (Path(__file__).parent / 'resources').resolve()
 
-If you need more than one search path for your resources, the ``resources``
-module have methods for this.
+If you need more than one search path for your resources, the
+:py:mod:`moderngl_window.resources` module have methods for this.
+
+Generic events and window types
+-------------------------------
+
+The :py:class:`~moderngl_window.context.base.window.WindowConfig`
+interface depends on the built in window types or a self-provided
+window implementation of :py:class:`~moderngl_window.context.base.window.BaseWindow`.
+These window implementations converts window, key and mouse events
+into a unified system so the user can switch between different window
+types without altering the code.
+
+Window libraries are not perfect and may at times work suboptimally
+on some platforms. They might also have different performance profiles.
+The ability switch between window types by just changing a config
+value can be an advantage.
+
+You can change what window class is used by passing in the
+``--window`` option. Optionally you can modify the
+:py:attr:`~moderngl_window.conf.Settings.WINDOW` attribute directly.
 
 Window Events
 -------------
