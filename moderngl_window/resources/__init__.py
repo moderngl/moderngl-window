@@ -11,7 +11,7 @@ from moderngl_window.resources.scenes import scenes  # noqa
 from moderngl_window.resources.data import data  # noqa
 
 
-def register_dir(path: Union[Path, str]):
+def register_dir(path: Union[Path, str]) -> None:
     """Adds a resource directory for all resource types
 
     Args:
@@ -23,8 +23,8 @@ def register_dir(path: Union[Path, str]):
     register_texture_dir(path)
 
 
-def register_program_dir(path: Union[Path, str]):
-    """Adds a resource directory for all resource types
+def register_program_dir(path: Union[Path, str]) -> None:
+    """Adds a resource directory specifically for programs
 
     Args:
         path (Union[Path, str]): Directory path
@@ -32,8 +32,8 @@ def register_program_dir(path: Union[Path, str]):
     _append_unique_path(path, settings.PROGRAM_DIRS)
 
 
-def register_texture_dir(path: Union[Path, str]):
-    """Adds a resource directory for all resource types
+def register_texture_dir(path: Union[Path, str]) -> None:
+    """Adds a resource directory specifically for textures
 
     Args:
         path (Union[Path, str]): Directory path
@@ -41,8 +41,8 @@ def register_texture_dir(path: Union[Path, str]):
     _append_unique_path(path, settings.TEXTURE_DIRS)
 
 
-def register_scene_dir(path: Union[Path, str]):
-    """Adds a resource directory for all resource types
+def register_scene_dir(path: Union[Path, str]) -> None:
+    """Adds a resource directory specifically for scenes
 
     Args:
         path (Union[Path, str]): Directory path
@@ -50,8 +50,8 @@ def register_scene_dir(path: Union[Path, str]):
     _append_unique_path(path, settings.SCENE_DIRS)
 
 
-def register_data_dir(path: Union[Path, str]):
-    """Adds a resource directory for all resource types
+def register_data_dir(path: Union[Path, str]) -> None:
+    """Adds a resource directory specifically for data files
 
     Args:
         path (Union[Path, str]): Directory path
