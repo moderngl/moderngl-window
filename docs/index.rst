@@ -19,6 +19,7 @@ improvements are also greatly appreciated.
 
    guide/install
    guide/basic_usage
+   guide/custom_usage
 
 .. toctree::
    :maxdepth: 2
