@@ -35,6 +35,9 @@ Installing dependencies for window types::
     pip install moderngl_window[glfw]
     pip install moderngl_window[PySDL2]
 
+Installing optional dependencies this way should ensure
+a compatible version is installed.
+
 For glfw and sdl2 windows you also need install the library itself.
 Thees are also avaialble as packages on linux and homebrew on OS X.
 For windows the DLLs can simply be placed in the root of your project.
