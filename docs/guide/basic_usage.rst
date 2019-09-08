@@ -27,8 +27,6 @@ and access simpler shortcut methods for loading resources.
         window_size = (1920, 1080)
 
         def __init__(self, **kwargs):
-            # By default we get the moderngl context and the window here
-            # self.wnd and self.ctx will be easily accessible later.
             super().__init__(**kwargs)
             # Do initialization here
             self.prog = self.ctx.program(...)
@@ -41,6 +39,15 @@ and access simpler shortcut methods for loading resources.
 
     # Blocking call entering rendering/event loop
     mglw.run_window_config(Test)
+
+The :py:class:`~moderngl_window.context.base.window.WindowConfig`
+instance will by default recieve three external instances in ``__init__``
+that can be accessed later with ``self``.
+
+- ``self.ctx``: The ``moderngl.Context`` created by the configured window type
+- ``self.wnd``: The window instance
+- ``self.timer``: The :py:class:`moderngl_window.timers.clock.Timer`
+  instance to control the current time (Values passed into ``render``)
 
 Command Line Arguments
 ----------------------
