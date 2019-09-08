@@ -1,10 +1,10 @@
-import moderngl_window as mglw
+import moderngl_window
 from moderngl_window.conf import settings
 
 
 def main():
     # settings.WINDOW['class'] = 'moderngl_window.context.headless.Window'
-    window = mglw.create_window_from_settings()
+    window = moderngl_window.create_window_from_settings()
 
     while not window.is_closing:
         window.use()
