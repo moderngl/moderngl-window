@@ -8,7 +8,7 @@ from moderngl_window.scene.camera import KeyboardCamera
 
 resources.register_dir((Path(__file__).parent / 'resources').resolve())
 # Test models from: https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0
-resources.register_dir(Path(__file__, '../../../glTF-Sample-Models/2.0').resolve())
+# resources.register_dir(Path(__file__, '../../../glTF-Sample-Models/2.0').resolve())
 
 
 class CubeModel(mglw.WindowConfig):
