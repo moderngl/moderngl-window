@@ -111,3 +111,6 @@ The rendering loop for build in windows are simple::
         window.clear()
         # Render stuff here
         window.swap_buffers()
+
+The ``swap_buffers`` method is important as it also pulls new input
+events for the next frame.
