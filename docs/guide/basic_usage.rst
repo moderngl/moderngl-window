@@ -2,6 +2,11 @@
 Basic Usage (WindowConfig)
 ==========================
 
+.. note:: This section is only relevant when using
+   :py:class:`~moderngl_window.context.base.window.WindowConfig`.
+   Go to the Custom Usage section if your provide your own window
+   and context or want more control.
+
 Using the :py:class:`~moderngl_window.context.base.window.WindowConfig`
 interface is the simplest way to start with moderngl_window.
 This can work for projects smaller projects and implies that this library
