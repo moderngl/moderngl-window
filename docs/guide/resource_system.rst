@@ -104,9 +104,20 @@ Now that we know about the different resoure categories,
 search paths and resource descriptions, we're ready to
 actually load something.
 
+Loading resources can in some situation be a bit verbose,
+but you can simplify by wrapping them in your own functions
+if needed.
+The :py:class:`~moderngl_window.context.base.window.WindowConfig`
+class is already doing this and can be used as a referene.
+
 .. code:: python
 
-    from moderngl_window import resources
+    from moderngl_window.resources import (
+        textures,
+        programs,
+        scenes,
+        data,
+    )
     from moderngl_window.meta import (
         TextureDescription,
         ProgramDescription,
@@ -114,16 +125,63 @@ actually load something.
         DataDescription,
     )
 
-    texture = resource.textures.load(TextureDescription(path='wood.png')
-    program = resource.programs.load(ProgramDescription(path='fun.glsl')
-    program = resource.programs.load(ProgramDescription(
-        vertex_shader='sphere_vert.glsl',
-        geometry_shader='sphere_geo.glsl',
-        fragment_shader='sphere_fs.glsl'
-    ))
-    scene = resources.load(SceneDescription(path="city.gltf')
-    text = resources.load(DataDescription(path='notes.txt')
-    config_dict = resources.load(DataDescription(path='config.json')
-    data = resources.load(DataDescription(path='data.bin', kind='binary)
+Textures
+~~~~~~~~
+
+.. code:: python
+
+    # Load a 2D texture
+    texture = textures.load(TextureDescription(path='wood.png'))
+
+    # Load wood.png horizontally flipped with generated mipmaps and high anisotropic filtering.
+    textures.load(TextureDescription(path='wood.png', flip=True, mipmap=True, anisotropy=16.0))
+
+    # Load a texture array containing 10 vertically stacked tile textures
+    textures.load(TextureDescription(path='tiles.png', layers=10, mipmap=True, anisotrpy=8.0))
+
+Programs
+~~~~~~~~
+
+.. code:: python
+
+    # Load a shader program in a single glsl file
+    program = programs.load(ProgramDescription(path='fun.glsl'))
+
+    # Load a shader program from multiple glsl files
+    program = programs.load(
+        ProgramDescription(
+            vertex_shader='sphere_vert.glsl',
+            geometry_shader='sphere_geo.glsl',
+            fragment_shader='sphere_fs.glsl',
+        )
+    )
+
+Scenes
+~~~~~~
+
+.. code:: python
+
+    # Load a GLTF2 scene
+    scene = scenes.load(SceneDescription(path="city.gltf'))
+
+    # Load a wavefront scene
+    scene = scenes.load(SceneDescription(path="earth.obj'))
+
+    # Load an STL file
+    scene = scenes.load(SceneDescription(path="apollo_landing_site_18.stl"))
+
+Data
+~~~~
+
+.. code:: python
+
+    # Load text file
+    text = data.load(DataDescription(path='notes.txt'))
+
+    # Load config file as a dict
+    config_dict = data.load(DataDescription(path='config.json'))
+
+    # Load binary data
+    data = data.load(DataDescription(path='data.bin', kind='binary))
 
 For more information about supported parameters see the api documenation.
