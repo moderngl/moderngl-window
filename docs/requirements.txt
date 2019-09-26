@@ -1,4 +1,4 @@
-Sphinx==1.8.4
+Sphinx==2.2.0
 sphinx-rtd-theme==0.4.3
 sphinxcontrib-napoleon==0.7
 doc8
