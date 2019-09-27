@@ -72,6 +72,7 @@ class BaseWindow:
         self._mouse_position_event_func = dummy_func
         self._mouse_press_event_func = dummy_func
         self._mouse_release_event_func = dummy_func
+        self._mouse_drag_event_func = dummy_func
 
         # Internal states
         self._ctx = None  # type: moderngl.Context
@@ -287,6 +288,19 @@ class BaseWindow:
     @require_callable
     def mouse_release_event_func(self, func):
         self._mouse_release_event_func = func
+
+    @property
+    def mouse_drag_event_func(self):
+        """callable: The mouse_drag callable
+
+        This property can also be used to assign a callable.
+        """
+        return self._mouse_drag_event_func
+
+    @mouse_release_event_func.setter
+    @require_callable
+    def mouse_drag_event_func(self, func):
+        self.mouse_drag_event_func = func
 
     @property
     def modifiers(self) -> Type[KeyModifiers]:
@@ -619,6 +633,15 @@ class WindowConfig:
             x (int): X position the release occured
             y (int): Y position the release occured
             button (int): 1 = Left button, 2 = right button
+        """
+
+    def mouse_drag_event(self, x: int, y: int):
+        """
+        Called when the mouse is moved while a button is pressed.
+
+        Args:
+            x (int): X postion of the mouse cursor
+            y Iint): Y position of the mouse cursor
         """
 
     def load_texture_2d(self, path: str, flip=True, mipmap=False, mipmap_levels: Tuple[int, int] = None,
