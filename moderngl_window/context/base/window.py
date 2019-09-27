@@ -208,6 +208,7 @@ class BaseWindow:
         self.mouse_position_event_func = getattr(config, 'mouse_position_event', dummy_func)
         self.mouse_press_event_func = getattr(config, 'mouse_press_event', dummy_func)
         self.mouse_release_event_func = getattr(config, 'mouse_release_event', dummy_func)
+        self.mouse_drag_event_func = getattr(config, 'mouse_drag_event', dummy_func)
 
         self._config = config
 
@@ -300,7 +301,7 @@ class BaseWindow:
     @mouse_drag_event_func.setter
     @require_callable
     def mouse_drag_event_func(self, func):
-        self.mouse_drag_event_func = func
+        self._mouse_drag_event_func = func
 
     @property
     def modifiers(self) -> Type[KeyModifiers]:

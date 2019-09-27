@@ -42,6 +42,7 @@ class WindowConfigTestCase(WindowConfigTestCase):
         self.assertTrue(callable(self.window.mouse_position_event_func))
         self.assertTrue(callable(self.window.mouse_press_event_func))
         self.assertTrue(callable(self.window.mouse_release_event_func))
+        self.assertTrue(callable(self.window.mouse_drag_event_func))
 
     def test_missing_wnd_ctx(self):
         """Attempt creating WindogConfig without a window or ctx"""
