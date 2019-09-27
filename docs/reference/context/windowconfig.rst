@@ -17,6 +17,7 @@ Methods
 .. automethod:: WindowConfig.mouse_position_event
 .. automethod:: WindowConfig.mouse_press_event
 .. automethod:: WindowConfig.mouse_release_event
+.. automethod:: WindowConfig.mouse_drag_event
 .. automethod:: WindowConfig.load_texture_2d
 .. automethod:: WindowConfig.load_texture_array
 .. automethod:: WindowConfig.load_program
