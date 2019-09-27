@@ -101,7 +101,8 @@ Generic events and window types
 
 The :py:class:`~moderngl_window.context.base.window.WindowConfig`
 interface depends on the built in window types or a self-provided
-window implementation of :py:class:`~moderngl_window.context.base.window.BaseWindow`.
+window implementation of
+:py:class:`~moderngl_window.context.base.window.BaseWindow`.
 These window implementations converts window, key and mouse events
 into a unified system so the user can switch between different window
 types without altering the code.
@@ -160,6 +161,9 @@ Implement the ``mouse_*`` methods to handle mouse input.
 
     def mouse_position_event(self, x, y):
         print("Mouse position:", x, y)
+
+    def mouse_drag_event(self, x, y):
+        print("Mouse drag:", x, y)
 
     def mouse_press_event(self, x, y, button):
         print("Mouse button {} pressed at {}, {}".format(button, x, y))
