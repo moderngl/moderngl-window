@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.0
+
+* Added support for mouse_drag events
+
 ## 1.3.0
 
 * Fixed several issue related to python 3.5 support
