@@ -297,7 +297,7 @@ class BaseWindow:
         """
         return self._mouse_drag_event_func
 
-    @mouse_release_event_func.setter
+    @mouse_drag_event_func.setter
     @require_callable
     def mouse_drag_event_func(self, func):
         self.mouse_drag_event_func = func
