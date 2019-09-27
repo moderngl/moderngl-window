@@ -2,7 +2,7 @@ from setuptools import setup, find_namespace_packages
 
 setup(
     name="moderngl_window",
-    version="1.3.0",
+    version="1.4.0",
     description="A cross platform helper library for ModernGL making window creation and resource loading simple",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
