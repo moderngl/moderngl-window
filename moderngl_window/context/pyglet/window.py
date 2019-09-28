@@ -61,6 +61,7 @@ class Window(BaseWindow):
         self._window.event(self.on_resize)
         self._window.event(self.on_mouse_press)
         self._window.event(self.on_mouse_release)
+        self._window.event(self.on_mouse_scroll)
         self._window.event(self.on_text)
 
         self.init_mgl_context()
@@ -179,6 +180,15 @@ class Window(BaseWindow):
                 x, self._buffer_height - y,
                 button,
             )
+
+    def on_mouse_scroll(self, x, y, x_offset: float, y_offset: float):
+        """Handle mouse wheel.
+
+        Args:
+            x_offset (float): X scroll offset
+            y_offset (float): Y scroll offset
+        """
+        self.mouse_scroll_event_func(x_offset, y_offset)
 
     def on_resize(self, width: int, height: int):
         """Pyglet specific callback for window resize events forwarding to standard methods

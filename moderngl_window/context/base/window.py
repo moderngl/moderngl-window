@@ -211,6 +211,7 @@ class BaseWindow:
         self.mouse_press_event_func = getattr(config, 'mouse_press_event', dummy_func)
         self.mouse_release_event_func = getattr(config, 'mouse_release_event', dummy_func)
         self.mouse_drag_event_func = getattr(config, 'mouse_drag_event', dummy_func)
+        self.mouse_scroll_event_func = getattr(config, 'mouse_scroll_event', dummy_func)
         self.unicode_char_entered_func = getattr(config, 'unicode_char_entered', dummy_func)
 
         self._config = config
