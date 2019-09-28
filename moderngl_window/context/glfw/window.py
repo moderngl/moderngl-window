@@ -67,6 +67,7 @@ class Window(BaseWindow):
         glfw.set_mouse_button_callback(self._window, self.glfw_mouse_button_callback)
         glfw.set_scroll_callback(self._window, self.glfw_mouse_scroll_callback)
         glfw.set_window_size_callback(self._window, self.glfw_window_resize_callback)
+        glfw.set_char_callback(self._window, self.glfw_char_callback)
 
         self.init_mgl_context()
         self.set_default_viewport()
@@ -155,6 +156,15 @@ class Window(BaseWindow):
             y_offest (float): y wheel offset
         """
         self._mouse_scroll_event_func(x_offset, y_offset)
+
+    def glfw_char_callback(self, window, codepoint: int):
+        """Handle text input (only unicode charaters)
+
+        Args:
+            window: The glfw window
+            codepoint (int): The unicode codepoint
+        """
+        self._unicode_char_entered_func(chr(codepoint))
 
     def glfw_window_resize_callback(self, window, width, height):
         """
