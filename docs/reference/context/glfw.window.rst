@@ -27,7 +27,9 @@ Window Specific Methods
 .. automethod:: Window.glfw_window_resize_callback
 .. automethod:: Window.glfw_mouse_event_callback
 .. automethod:: Window.glfw_mouse_button_callback
+.. automethod:: Window.glfw_mouse_scroll_callback
 .. automethod:: Window.glfw_key_event_callback
+.. automethod:: Window.glfw_char_callback
 
 Attributes
 ----------
