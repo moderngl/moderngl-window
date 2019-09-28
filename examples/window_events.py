@@ -41,6 +41,9 @@ class WindowEvents(mglw.WindowConfig):
     def mouse_position_event(self, x, y):
         print("Mouse position:", x, y)
 
+    def mouse_drag_event(self, x, y):
+        print("Mouse drag:", x, y)
+
     def mouse_press_event(self, x, y, button):
         print("Mouse button {} pressed at {}, {}".format(button, x, y))
 
