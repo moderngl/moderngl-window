@@ -65,6 +65,7 @@ class Window(BaseWindow):
         glfw.set_key_callback(self._window, self.glfw_key_event_callback)
         glfw.set_cursor_pos_callback(self._window, self.glfw_mouse_event_callback)
         glfw.set_mouse_button_callback(self._window, self.glfw_mouse_button_callback)
+        glfw.set_scroll_callback(self._window, self.glfw_mouse_scroll_callback)
         glfw.set_window_size_callback(self._window, self.glfw_window_resize_callback)
 
         self.init_mgl_context()
@@ -144,6 +145,16 @@ class Window(BaseWindow):
             self._mouse_press_event_func(xpos, ypos, button)
         else:
             self._mouse_release_event_func(xpos, ypos, button)
+
+    def glfw_mouse_scroll_callback(self, window, x_offset: float, y_offset: float):
+        """Handle mouse scoll events and forward them to the example
+
+        Args:
+            window: The window
+            x_offset (float): x wheel offset
+            y_offest (float): y wheel offset
+        """
+        self._mouse_scroll_event_func(x_offset, y_offset)
 
     def glfw_window_resize_callback(self, window, width, height):
         """
