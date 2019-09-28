@@ -50,6 +50,9 @@ class WindowEvents(mglw.WindowConfig):
     def mouse_release_event(self, x: int, y: int, button: int):
         print("Mouse button {} released at {}, {}".format(button, x, y))
 
+    def unicode_char_entered(self, char):
+        print("unicode_char_entered:", char)
+
 
 if __name__ == '__main__':
     mglw.run_window_config(WindowEvents)

@@ -61,6 +61,7 @@ class Window(BaseWindow):
         self._window.event(self.on_resize)
         self._window.event(self.on_mouse_press)
         self._window.event(self.on_mouse_release)
+        self._window.event(self.on_text)
 
         self.init_mgl_context()
         self._buffer_width, self._buffer_height = self._window.get_framebuffer_size()
@@ -99,6 +100,16 @@ class Window(BaseWindow):
         self._key_pressed_map[symbol] = True
         self._handle_modifiers(modifiers)
         self._key_event_func(symbol, self.keys.ACTION_PRESS, self._modifiers)
+
+    def on_text(self, text):
+        """Pyglet specific text input callback
+
+        Forwards and translates the events to the standard methods.
+
+        Args:
+            text (str): The unicode character entered
+        """
+        self._unicode_char_entered_func(text)
 
     def on_key_release(self, symbol, modifiers):
         """Pyglet specific key release callback.

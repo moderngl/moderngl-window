@@ -73,6 +73,7 @@ class BaseWindow:
         self._mouse_press_event_func = dummy_func
         self._mouse_release_event_func = dummy_func
         self._mouse_drag_event_func = dummy_func
+        self._unicode_char_entered_func = dummy_func
 
         # Internal states
         self._ctx = None  # type: moderngl.Context
@@ -209,6 +210,7 @@ class BaseWindow:
         self.mouse_press_event_func = getattr(config, 'mouse_press_event', dummy_func)
         self.mouse_release_event_func = getattr(config, 'mouse_release_event', dummy_func)
         self.mouse_drag_event_func = getattr(config, 'mouse_drag_event', dummy_func)
+        self.unicode_char_entered_func = getattr(config, 'unicode_char_entered', dummy_func)
 
         self._config = config
 
@@ -302,6 +304,19 @@ class BaseWindow:
     @require_callable
     def mouse_drag_event_func(self, func):
         self._mouse_drag_event_func = func
+
+    @property
+    def unicode_char_entered_func(self):
+        """callable: The unicode_char_entered callable
+
+        This property can also be used to assign a callable.
+        """
+        return self._unicode_char_entered_func
+
+    @unicode_char_entered_func.setter
+    @require_callable
+    def unicode_char_entered_func(self, func):
+        self._unicode_char_entered_func = func
 
     @property
     def modifiers(self) -> Type[KeyModifiers]:
@@ -608,8 +623,7 @@ class WindowConfig:
         """
 
     def mouse_position_event(self, x: int, y: int):
-        """
-        Reports the current mouse cursor position in the window
+        """Reports the current mouse cursor position in the window
 
         Args:
             x (int): X postion of the mouse cursor
@@ -617,8 +631,7 @@ class WindowConfig:
         """
 
     def mouse_press_event(self, x: int, y: int, button: int):
-        """
-        Called when a mouse button in pressed
+        """Called when a mouse button in pressed
 
         Args:
             x (int): X position the press occured
@@ -627,8 +640,7 @@ class WindowConfig:
         """
 
     def mouse_release_event(self, x: int, y: int, button: int):
-        """
-        Called when a mouse button in released
+        """Called when a mouse button in released
 
         Args:
             x (int): X position the release occured
@@ -637,12 +649,17 @@ class WindowConfig:
         """
 
     def mouse_drag_event(self, x: int, y: int):
-        """
-        Called when the mouse is moved while a button is pressed.
+        """Called when the mouse is moved while a button is pressed.
 
         Args:
             x (int): X postion of the mouse cursor
             y Iint): Y position of the mouse cursor
+        """
+    def unicode_char_entered(self, char: str):
+        """Called when the user entered a unicode character.
+
+        Args:
+            char (str): The character entered
         """
 
     def load_texture_2d(self, path: str, flip=True, mipmap=False, mipmap_levels: Tuple[int, int] = None,
