@@ -135,7 +135,7 @@ class Window(BaseWindow):
         When a mouse button is pressed this is the only way
         to capture mouse posision events
         """
-        self._mouse_position_event_func(x, self._buffer_height - y)
+        self._mouse_drag_event_func(x, self._buffer_height - y)
 
     def on_mouse_press(self, x: int, y: int, button, mods):
         """Handle mouse press events and forward to standard methods
