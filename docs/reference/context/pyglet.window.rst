@@ -30,6 +30,7 @@ Window Specific Methods
 .. automethod:: Window.on_key_press
 .. automethod:: Window.on_mouse_release
 .. automethod:: Window.on_mouse_motion
+.. automethod:: Window.on_mouse_scroll
 .. automethod:: Window.on_text
 .. automethod:: Window.on_resize
 
