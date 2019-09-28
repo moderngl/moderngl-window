@@ -56,6 +56,7 @@ Attributes
 .. autoattribute:: Window.mouse_press_event_func
 .. autoattribute:: Window.mouse_release_event_func
 .. autoattribute:: Window.mouse_drag_event_func
+.. autoattribute:: Window.unicode_char_entered_func
 .. autoattribute:: Window.is_closing
 .. autoattribute:: Window.modifiers
 .. autoattribute:: Window.gl_version_code

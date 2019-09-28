@@ -51,6 +51,7 @@ Attributes
 .. autoattribute:: BaseWindow.mouse_press_event_func
 .. autoattribute:: BaseWindow.mouse_release_event_func
 .. autoattribute:: BaseWindow.mouse_drag_event_func
+.. autoattribute:: BaseWindow.unicode_char_entered_func
 .. autoattribute:: BaseWindow.is_closing
 .. autoattribute:: BaseWindow.modifiers
 .. autoattribute:: BaseWindow.gl_version_code

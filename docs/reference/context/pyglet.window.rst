@@ -30,6 +30,7 @@ Window Specific Methods
 .. automethod:: Window.on_key_press
 .. automethod:: Window.on_mouse_release
 .. automethod:: Window.on_mouse_motion
+.. automethod:: Window.on_text
 .. automethod:: Window.on_resize
 
 Attributes
@@ -62,6 +63,7 @@ Attributes
 .. autoattribute:: Window.mouse_press_event_func
 .. autoattribute:: Window.mouse_release_event_func
 .. autoattribute:: Window.mouse_drag_event_func
+.. autoattribute:: Window.unicode_char_entered_func
 .. autoattribute:: Window.is_closing
 .. autoattribute:: Window.modifiers
 .. autoattribute:: Window.gl_version_code
