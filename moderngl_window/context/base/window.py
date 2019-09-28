@@ -73,6 +73,7 @@ class BaseWindow:
         self._mouse_press_event_func = dummy_func
         self._mouse_release_event_func = dummy_func
         self._mouse_drag_event_func = dummy_func
+        self._mouse_scroll_event_func = dummy_func
         self._unicode_char_entered_func = dummy_func
 
         # Internal states
@@ -317,6 +318,19 @@ class BaseWindow:
     @require_callable
     def unicode_char_entered_func(self, func):
         self._unicode_char_entered_func = func
+
+    @property
+    def mouse_scroll_event_func(self):
+        """callable: The mouse_scroll_event calable
+
+        This property can also be used to assign a callable.
+        """
+        return self._mouse_scroll_event_func
+
+    @mouse_scroll_event_func.setter
+    @require_callable
+    def mouse_scroll_event_func(self, func):
+        self._mouse_scroll_event_func = func
 
     @property
     def modifiers(self) -> Type[KeyModifiers]:
@@ -655,6 +669,18 @@ class WindowConfig:
             x (int): X postion of the mouse cursor
             y Iint): Y position of the mouse cursor
         """
+
+    def mouse_scroll_event(self, x_offset: float, y_offset: float):
+        """Called when the mouse wheel is scrolled.
+
+        Some input devices also support horisontal scrolling,
+        but vertical scrolling is fairly universal.
+
+        Args:
+            x_offset (int): X scroll offset
+            y_offset Iint): Y scroll offset
+        """
+
     def unicode_char_entered(self, char: str):
         """Called when the user entered a unicode character.
 
