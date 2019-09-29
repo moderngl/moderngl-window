@@ -92,6 +92,7 @@ class Window(BaseWindow):
         self.widget.mouseMoveEvent = self.mouse_move_event
         self.widget.mousePressEvent = self.mouse_press_event
         self.widget.mouseReleaseEvent = self.mouse_release_event
+        self.widget.wheelEvent = self.mouse_wheel_event
         self.widget.closeEvent = self.close_event
 
         # Attach to the context
@@ -189,6 +190,30 @@ class Window(BaseWindow):
 
         self._handle_mouse_button_state_change(button, False)
         self.mouse_release_event_func(event.x(), event.y(), button)
+
+    def mouse_wheel_event(self, event):
+        """Forward mouse wheel events to standard metods.
+
+        From Qt docs:
+
+        Returns the distance that the wheel is rotated, in eighths of a degree.
+        A positive value indicates that the wheel was rotated forwards away from the user;
+        a negative value indicates that the wheel was rotated backwards toward the user.
+
+        Most mouse types work in steps of 15 degrees, in which case the delta value is a
+        multiple of 120; i.e., 120 units * 1/8 = 15 degrees.
+
+        However, some mice have finer-resolution wheels and send delta values that are less
+        than 120 units (less than 15 degrees). To support this possibility, you can either
+        cumulatively add the delta values from events until the value of 120 is reached,
+        then scroll the widget, or you can partially scroll the widget in response to each
+        wheel event.
+
+        Args:
+            event (QWheelEvent): Mouse wheel event
+        """
+        point = event.angleDelta()
+        self._mouse_scroll_event_func(point.x() / 120.0, point.y() / 120.0)
 
     def close_event(self, event) -> None:
         """The standard PyQt close events
