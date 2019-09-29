@@ -101,6 +101,7 @@ class Window(BaseWindow):
             elif event.type == sdl2.SDL_MOUSEBUTTONDOWN:
                 button = self._mouse_button_map.get(event.button.button, None)
                 if button is not None:
+                    self._handle_mouse_button_state_change(button, True)
                     self._mouse_release_event_func(
                         event.motion.x, event.motion.y,
                         button,
@@ -109,6 +110,7 @@ class Window(BaseWindow):
             elif event.type == sdl2.SDL_MOUSEBUTTONUP:
                 button = self._mouse_button_map.get(event.button.button, None)
                 if button is not None:
+                    self._handle_mouse_button_state_change(button, False)
                     self._mouse_press_event_func(
                         event.motion.x, event.motion.y,
                         button,
