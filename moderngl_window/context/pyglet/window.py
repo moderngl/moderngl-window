@@ -19,6 +19,7 @@ class Window(BaseWindow):
     #: Pyglet specific key constants
     keys = Keys
 
+    # pyglet button id -> universal button id
     _mouse_button_map = {
         1: 1,
         4: 2,
@@ -160,6 +161,7 @@ class Window(BaseWindow):
         """
         button = self._mouse_button_map.get(button, None)
         if button is not None:
+            self._handle_mouse_button_state_change(button, True)
             self._mouse_press_event_func(
                 x, self._buffer_height - y,
                 button,
@@ -176,6 +178,7 @@ class Window(BaseWindow):
         """
         button = self._mouse_button_map.get(button, None)
         if button is not None:
+            self._handle_mouse_button_state_change(button, False)
             self._mouse_release_event_func(
                 x, self._buffer_height - y,
                 button,

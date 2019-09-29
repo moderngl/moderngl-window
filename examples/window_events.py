@@ -49,9 +49,11 @@ class WindowEvents(mglw.WindowConfig):
 
     def mouse_press_event(self, x, y, button):
         print("Mouse button {} pressed at {}, {}".format(button, x, y))
+        print("Mouse states:", self.wnd.mouse_states)
 
     def mouse_release_event(self, x: int, y: int, button: int):
         print("Mouse button {} released at {}, {}".format(button, x, y))
+        print("Mouse states:", self.wnd.mouse_states)
 
     def unicode_char_entered(self, char):
         print("unicode_char_entered:", char)

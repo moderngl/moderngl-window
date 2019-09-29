@@ -30,12 +30,21 @@ def require_callable(func):
     return wrapper
 
 
+class MouseButtons:
+    """Maps what button id to a name"""
+    left = 1
+    right = 2
+    middle = 3
+
+
 class BaseWindow:
     """
     Helper base class for a generic window implementation
     """
     #: Window specific key constants
     keys = BaseKeys
+    #: Mouse button enum
+    mouse = MouseButtons
 
     def __init__(self, title="ModernGL", gl_version=(3, 3), size=(1280, 720), resizable=True,
                  fullscreen=False, vsync=True, aspect_ratio=16 / 9, samples=4, cursor=True,
@@ -84,7 +93,7 @@ class BaseWindow:
         self._config = None
         self._key_pressed_map = {}
         self._modifiers = KeyModifiers
-        self._mouse_buttons = MouseButtonStates
+        self._mouse_buttons = MouseButtonStates()
 
         # Do not allow resize in fullscreen
         if self._fullscreen:
@@ -340,32 +349,32 @@ class BaseWindow:
         return self._modifiers
 
     @property
-    def mouse_buttons(self) -> MouseButtonStates:
+    def mouse_states(self) -> MouseButtonStates:
         """MouseButtonStates: Mouse button state structure.
 
         The current mouse button states.
 
         .. code::
 
-            window.mouse_buttons.left == True
-            window.mouse_buttons.right == True
-            window.mouse_buttons.middle == True
+            window.mouse_buttons.left
+            window.mouse_buttons.right
+            window.mouse_buttons.middle
         """
         return self._mouse_buttons
 
-    def handle_mouse_button_state_change(self, button: int, pressed: bool):
+    def _handle_mouse_button_state_change(self, button: int, pressed: bool):
         """Updates the internal mouse button state object.
 
         Args:
             button (int): The button number [1, 2 or 3]
             pressed (bool): Pressed (True) or released (False)
         """
-        if button == 1:
+        if button == self.mouse.left:
             self._mouse_buttons.left = pressed
-        elif button == 2:
+        elif button == self.mouse.right:
             self._mouse_buttons.right = pressed
-        elif button == 3:
-            self._mouse_buttons = 3
+        elif button == self.mouse.middle:
+            self._mouse_buttons.middle = pressed
         else:
             raise ValueError("Incompatible mouse button number: {}".format(button))
 

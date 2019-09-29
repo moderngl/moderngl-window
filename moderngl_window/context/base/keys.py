@@ -12,6 +12,12 @@ class MouseButtonStates:
     right = False
     middle = False
 
+    def __repr__(self) -> str:
+        return str(self)
+    
+    def __str__(self) -> str:
+        return "<MouseButtonStates left={} right={} middle={}".format(self.left, self.right, self.middle)
+
 
 class BaseKeys:
     """
