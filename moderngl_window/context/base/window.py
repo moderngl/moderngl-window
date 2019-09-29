@@ -5,7 +5,7 @@ import sys
 from typing import Any, Tuple, Type
 
 import moderngl
-from moderngl_window.context.base import KeyModifiers, BaseKeys
+from moderngl_window.context.base import KeyModifiers, BaseKeys, MouseButtonStates
 from moderngl_window.timers.base import BaseTimer
 from moderngl_window import resources
 from moderngl_window.geometry.attributes import AttributeNames
@@ -84,6 +84,7 @@ class BaseWindow:
         self._config = None
         self._key_pressed_map = {}
         self._modifiers = KeyModifiers
+        self._mouse_buttons = MouseButtonStates
 
         # Do not allow resize in fullscreen
         if self._fullscreen:
@@ -337,6 +338,20 @@ class BaseWindow:
     def modifiers(self) -> Type[KeyModifiers]:
         """(KeyModifiers) The current keyboard modifiers"""
         return self._modifiers
+
+    @property
+    def mouse_buttons(self) -> MouseButtonStates:
+        """MouseButtonStates: Mouse button state structure.
+
+        The current mouse button states.
+
+        .. code::
+
+            window.mouse_buttons.left == True
+            window.mouse_buttons.right == True
+            window.mouse_buttons.middle == True
+        """
+        return self._mouse_buttons
 
     def is_key_pressed(self, key) -> bool:
         """Returns: The press state of a key"""

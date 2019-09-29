@@ -6,6 +6,12 @@ class KeyModifiers:
     ctrl = False
 
 
+class MouseButtonStates:
+    left = False
+    right = False
+    middle = False
+
+
 class BaseKeys:
     """
     Namespace for mapping key constants.
