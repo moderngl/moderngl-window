@@ -96,7 +96,10 @@ class Window(BaseWindow):
         """Handle all queued events in sdl2 dispatching events to standard methods"""
         for event in sdl2.ext.get_events():
             if event.type == sdl2.SDL_MOUSEMOTION:
-                self._mouse_position_event_func(event.motion.x, event.motion.y)
+                if self.mouse_states.any:
+                    self._mouse_drag_event_func(event.motion.x, event.motion.y)
+                else:
+                    self._mouse_position_event_func(event.motion.x, event.motion.y)
 
             elif event.type == sdl2.SDL_MOUSEBUTTONDOWN:
                 button = self._mouse_button_map.get(event.button.button, None)
