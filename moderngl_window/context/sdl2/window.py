@@ -129,6 +129,9 @@ class Window(BaseWindow):
 
                 self._key_event_func(event.key.keysym.sym, event.type, self._modifiers)
 
+            elif event.type == sdl2.SDL_MOUSEWHEEL:
+                self._mouse_scroll_event_func(float(event.wheel.x), float(event.wheel.y))
+
             elif event.type == sdl2.SDL_QUIT:
                 self.close()
 
