@@ -174,6 +174,7 @@ class Window(BaseWindow):
         if button is None:
             return
 
+        self._handle_mouse_button_state_change(button, True)
         self.mouse_press_event_func(event.x(), event.y(), button)
 
     def mouse_release_event(self, event) -> None:
@@ -186,6 +187,7 @@ class Window(BaseWindow):
         if button is None:
             return
 
+        self._handle_mouse_button_state_change(button, False)
         self.mouse_release_event_func(event.x(), event.y(), button)
 
     def close_event(self, event) -> None:
