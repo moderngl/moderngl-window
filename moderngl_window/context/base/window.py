@@ -353,6 +353,22 @@ class BaseWindow:
         """
         return self._mouse_buttons
 
+    def handle_mouse_button_state_change(self, button: int, pressed: bool):
+        """Updates the internal mouse button state object.
+
+        Args:
+            button (int): The button number [1, 2 or 3]
+            pressed (bool): Pressed (True) or released (False)
+        """
+        if button == 1:
+            self._mouse_buttons.left = pressed
+        elif button == 2:
+            self._mouse_buttons.right = pressed
+        elif button == 3:
+            self._mouse_buttons = 3
+        else:
+            raise ValueError("Incompatible mouse button number: {}".format(button))
+
     def is_key_pressed(self, key) -> bool:
         """Returns: The press state of a key"""
         return self._key_pressed_map.get(key) is True

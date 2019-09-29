@@ -7,6 +7,7 @@ class KeyModifiers:
 
 
 class MouseButtonStates:
+    """Namespace for storing the current mouse button states"""
     left = False
     right = False
     middle = False
