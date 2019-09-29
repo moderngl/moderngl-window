@@ -116,16 +116,20 @@ class Window(BaseWindow):
         self._key_event_func(key, action, self._modifiers)
 
     def glfw_mouse_event_callback(self, window, xpos, ypos):
-        """Mouse event callback from glfw.
+        """Mouse position event callback from glfw.
         Translates the events forwarding them to :py:func:`cursor_event`.
+
+        Screen coordinates relative to the top-left corner
 
         Args:
             window: The window
             xpos: viewport x pos
             ypos: viewport y pos
         """
-        # screen coordinates relative to the top-left corner
-        self._mouse_position_event_func(xpos, ypos)
+        if self.mouse_states.any:
+            self._mouse_drag_event_func(xpos, ypos)
+        else:
+            self._mouse_position_event_func(xpos, ypos)
 
     def glfw_mouse_button_callback(self, window, button, action, mods):
         """Handle mouse button events and forward them to the example
