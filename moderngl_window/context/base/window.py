@@ -5,7 +5,7 @@ import sys
 from typing import Any, Tuple, Type
 
 import moderngl
-from moderngl_window.context.base import KeyModifiers, BaseKeys, MouseButtonStates
+from moderngl_window.context.base import KeyModifiers, BaseKeys
 from moderngl_window.timers.base import BaseTimer
 from moderngl_window import resources
 from moderngl_window.geometry.attributes import AttributeNames
@@ -35,6 +35,24 @@ class MouseButtons:
     left = 1
     right = 2
     middle = 3
+
+
+class MouseButtonStates:
+    """Namespace for storing the current mouse button states"""
+    left = False
+    right = False
+    middle = False
+
+    @property
+    def any(self):
+        """bool: if any mouse buttons are pressed"""
+        return self.left or self.right or self.middle
+
+    def __repr__(self) -> str:
+        return str(self)
+
+    def __str__(self) -> str:
+        return "<MouseButtonStates left={} right={} middle={}".format(self.left, self.right, self.middle)
 
 
 class BaseWindow:
