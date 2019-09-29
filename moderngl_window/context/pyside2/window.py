@@ -163,7 +163,10 @@ class Window(BaseWindow):
         Args:
             event: The qtevent instance
         """
-        self.mouse_position_event_func(event.x(), event.y())
+        if self.mouse_states.any:
+            self.mouse_drag_event_func(event.x(), event.y())
+        else:
+            self.mouse_position_event_func(event.x(), event.y())
 
     def mouse_press_event(self, event) -> None:
         """Forward mouse press events to standard methods
