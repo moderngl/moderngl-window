@@ -143,8 +143,10 @@ class Window(BaseWindow):
         xpos, ypos = glfw.get_cursor_pos(self._window)
 
         if action == glfw.PRESS:
+            self._handle_mouse_button_state_change(button, True)
             self._mouse_press_event_func(xpos, ypos, button)
         else:
+            self._handle_mouse_button_state_change(button, False)
             self._mouse_release_event_func(xpos, ypos, button)
 
     def glfw_mouse_scroll_callback(self, window, x_offset: float, y_offset: float):
