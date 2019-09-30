@@ -1,3 +1,5 @@
+import unicodedata
+
 from PyQt5 import QtCore, QtOpenGL, QtWidgets
 
 from moderngl_window.context.base import BaseWindow
@@ -145,7 +147,11 @@ class Window(BaseWindow):
 
         self._handle_modifiers(event.modifiers())
         self._key_pressed_map[event.key()] = True
-        self.key_event_func(event.key(), self.keys.ACTION_PRESS, self._modifiers)
+        self._key_event_func(event.key(), self.keys.ACTION_PRESS, self._modifiers)
+
+        text = event.text()
+        if text:
+            self._unicode_char_entered_func(text)
 
     def key_release_event(self, event) -> None:
         """Process Qt key release events forwarding them to standard methods
@@ -155,7 +161,7 @@ class Window(BaseWindow):
         """
         self._handle_modifiers(event.modifiers())
         self._key_pressed_map[event.key()] = False
-        self.key_event_func(event.key(), self.keys.ACTION_RELEASE, self._modifiers)
+        self._key_event_func(event.key(), self.keys.ACTION_RELEASE, self._modifiers)
 
     def mouse_move_event(self, event) -> None:
         """Forward mouse cursor position events to standard methods
@@ -164,9 +170,9 @@ class Window(BaseWindow):
             event: The qtevent instance
         """
         if self.mouse_states.any:
-            self.mouse_drag_event_func(event.x(), event.y())
+            self._mouse_drag_event_func(event.x(), event.y())
         else:
-            self.mouse_position_event_func(event.x(), event.y())
+            self._mouse_position_event_func(event.x(), event.y())
 
     def mouse_press_event(self, event) -> None:
         """Forward mouse press events to standard methods
@@ -179,7 +185,7 @@ class Window(BaseWindow):
             return
 
         self._handle_mouse_button_state_change(button, True)
-        self.mouse_press_event_func(event.x(), event.y(), button)
+        self._mouse_press_event_func(event.x(), event.y(), button)
 
     def mouse_release_event(self, event) -> None:
         """Forward mouse release events to standard methods
@@ -192,7 +198,7 @@ class Window(BaseWindow):
             return
 
         self._handle_mouse_button_state_change(button, False)
-        self.mouse_release_event_func(event.x(), event.y(), button)
+        self._mouse_release_event_func(event.x(), event.y(), button)
 
     def mouse_wheel_event(self, event):
         """Forward mouse wheel events to standard metods.
