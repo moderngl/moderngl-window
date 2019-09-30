@@ -54,5 +54,7 @@ Attributes
 .. autoattribute:: BaseWindow.mouse_scroll_event_func
 .. autoattribute:: BaseWindow.unicode_char_entered_func
 .. autoattribute:: BaseWindow.is_closing
+.. autoattribute:: BaseWindow.mouse
+.. autoattribute:: BaseWindow.mouse_states
 .. autoattribute:: BaseWindow.modifiers
 .. autoattribute:: BaseWindow.gl_version_code

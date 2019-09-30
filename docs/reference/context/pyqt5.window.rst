@@ -30,6 +30,7 @@ Window Specific Methods
 .. automethod:: Window.mouse_move_event
 .. automethod:: Window.key_pressed_event
 .. automethod:: Window.mouse_press_event
+.. automethod:: Window.mouse_wheel_event
 
 Attributes
 ----------
@@ -64,5 +65,7 @@ Attributes
 .. autoattribute:: Window.unicode_char_entered_func
 .. autoattribute:: Window.mouse_scroll_event_func
 .. autoattribute:: Window.is_closing
+.. autoattribute:: Window.mouse
+.. autoattribute:: Window.mouse_states
 .. autoattribute:: Window.modifiers
 .. autoattribute:: Window.gl_version_code
