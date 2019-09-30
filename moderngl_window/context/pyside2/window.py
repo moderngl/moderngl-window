@@ -147,6 +147,10 @@ class Window(BaseWindow):
         self._key_pressed_map[event.key()] = True
         self.key_event_func(event.key(), self.keys.ACTION_PRESS, self._modifiers)
 
+        text = event.text()
+        if text:
+            self._unicode_char_entered_func(text)
+
     def key_release_event(self, event):
         """Process Qt key release events forwarding them to standard methods
 
