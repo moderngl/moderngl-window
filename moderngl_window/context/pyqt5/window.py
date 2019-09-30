@@ -1,5 +1,3 @@
-import unicodedata
-
 from PyQt5 import QtCore, QtOpenGL, QtWidgets
 
 from moderngl_window.context.base import BaseWindow
