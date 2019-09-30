@@ -2,7 +2,9 @@
 
 ## 1.4.0
 
-* Added support for mouse_drag events
+* Added support for mouse_drag events for all window types
+* Added support for unicode_char_entred (text input) for all windows
+* Added support for mouse wheel events for all window types
 
 ## 1.3.0
 
