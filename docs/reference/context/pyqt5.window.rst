@@ -2,8 +2,8 @@
 .. py:module:: moderngl_window.context.pyqt5.window
 .. py:currentmodule:: moderngl_window.context.pyqt5.window
 
-pyqt5Window
-===========
+pyqt5.Window
+============
 
 Methods
 -------
