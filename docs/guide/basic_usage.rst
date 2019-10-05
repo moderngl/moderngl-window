@@ -54,18 +54,6 @@ that can be accessed later with ``self``.
 - ``self.timer``: The :py:class:`moderngl_window.timers.clock.Timer`
   instance to control the current time (Values passed into ``render``)
 
-Command Line Arguments
-----------------------
-
-The :py:func:`~moderngl_window.run_window_config` method also reads arguments
-from ``sys.argv`` making the user able to override config values in the class.
-
-Example::
-
-    python test.py --window glfw --fullscreen --vsync --samples 16 --cursor false --size 800x600
-
-See code for :py:func:`moderngl_window.parse_args` for more details.
-
 Resource Loading
 ----------------
 
@@ -115,6 +103,18 @@ value can be an advantage.
 You can change what window class is used by passing in the
 ``--window`` option. Optionally you can modify the
 :py:attr:`~moderngl_window.conf.Settings.WINDOW` attribute directly.
+
+Command Line Arguments
+----------------------
+
+The :py:func:`~moderngl_window.run_window_config` method also reads arguments
+from ``sys.argv`` making the user able to override config values in the class.
+
+Example::
+
+    python test.py --window glfw --fullscreen --vsync --samples 16 --cursor false --size 800x600
+
+See code for :py:func:`moderngl_window.parse_args` for more details.
 
 Window Events
 -------------
