@@ -129,7 +129,8 @@ Implement the ``resize`` method to customize window resize handling.
 Keyboard Input
 --------------
 
-Implement the ``key_event`` method to handle key events.
+Implement the ``key_event`` and ``unicode_char_entered`` method to handle
+key events.
 
 .. code:: python
 
@@ -152,6 +153,10 @@ Implement the ``key_event`` method to handle key events.
             if key == self.wnd.keys.SPACE:
                 print("SPACE key was released")
 
+    def unicode_char_entered(self, char: str):
+        print('character entered:', char)
+
+
 Mouse Input
 -----------
 
@@ -164,6 +169,9 @@ Implement the ``mouse_*`` methods to handle mouse input.
 
     def mouse_drag_event(self, x, y):
         print("Mouse drag:", x, y)
+
+    def mouse_scroll_event(self, x_offset: float, y_offset: float):
+        prtin("Mouse wheel:', x_offset, y_offset)
 
     def mouse_press_event(self, x, y, button):
         print("Mouse button {} pressed at {}, {}".format(button, x, y))
