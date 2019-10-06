@@ -19,7 +19,8 @@ creation and resource loading simple.
 
    guide/install
    guide/basic_usage
-   guide/custom_usage
+   guide/window_guide
+   guide/event_guide
    guide/resource_system
 
 .. toctree::
