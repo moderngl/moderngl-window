@@ -33,13 +33,16 @@ class CubeModel(mglw.WindowConfig):
         # self.scene = self.load_scene('BoxInterleaved/glTF/BoxInterleaved.gltf')
 
         self.camera = KeyboardCamera(self.wnd.keys, fov=75.0, aspect_ratio=self.wnd.aspect_ratio, near=0.1, far=1000.0)
+        self.camera.velocity = 7.0
+        self.camera.mouse_sensitivity = 0.3
+
         # Use this for gltf scenes for better camera controls
         # if self.scene.diagonal_size > 0:
         # self.camera.velocity = self.scene.diagonal_size / 5.0
 
     def render(self, time: float, frametime: float):
         """Render the scene"""
-        self.ctx.enable_only(moderngl.DEPTH_TEST)  # | moderngl.CULL_FACE)
+        self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
 
         # Create camera matrix with rotation and translation
         translation = matrix44.create_from_translation((0, 0, -1.5))
