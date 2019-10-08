@@ -45,7 +45,12 @@ class Camera:
         self._up = Vector3([0.0, 1.0, 0.0])
 
         # Projection
-        self.projection = Projection3D(aspect_ratio, fov, near, far)
+        self._projection = Projection3D(aspect_ratio, fov, near, far)
+
+    @property
+    def projection(self):
+        """:py:class:`~moderngl_window.opengl.projection.Projection3D`: The 3D projection"""
+        return self._projection
 
     def set_position(self, x, y, z) -> None:
         """Set the 3D position of the camera.
@@ -147,12 +152,40 @@ class KeyboardCamera(Camera):
         self._last_time = 0
 
         # Velocity in axis units per second
-        self.velocity = 10.0
-        self.mouse_sensitivity = 0.5
+        self._velocity = 10.0
+        self._mouse_sensitivity = 0.5
         self.last_x = None
         self.last_y = None
 
         super().__init__(fov=fov, aspect_ratio=aspect_ratio, near=near, far=far)
+
+    @property
+    def mouse_sensitivity(self) -> float:
+        """float: Mouse sensitivity (rotation speed).
+
+        This property can also be set::
+
+            camera.mouse_sensitivity = 2.5
+        """
+        return self._mouse_sensitivity
+
+    @mouse_sensitivity.setter
+    def mouse_sensitivity(self, value: float):
+        self._mouse_sensitivity = value
+
+    @property
+    def velocity(self):
+        """float: The speed this camera move based on key inputs
+
+        The property can also be modified::
+
+            camera.velocity = 5.0
+        """
+        return self._velocity
+
+    @velocity.setter
+    def velocity(self, value: float):
+        self._velocity = value
 
     def key_input(self, key, action, modifiers) -> None:
         """Process key inputs and move camera
@@ -288,8 +321,8 @@ class KeyboardCamera(Camera):
         self.last_x = x
         self.last_y = y
 
-        x_offset *= self.mouse_sensitivity
-        y_offset *= self.mouse_sensitivity
+        x_offset *= self._mouse_sensitivity
+        y_offset *= self._mouse_sensitivity
 
         self.yaw -= x_offset
         self.pitch += y_offset
@@ -313,20 +346,20 @@ class KeyboardCamera(Camera):
 
         # X Movement
         if self._xdir == POSITIVE:
-            self.position += self.right * self.velocity * t
+            self.position += self.right * self._velocity * t
         elif self._xdir == NEGATIVE:
-            self.position -= self.right * self.velocity * t
+            self.position -= self.right * self._velocity * t
 
         # Z Movement
         if self._zdir == NEGATIVE:
-            self.position += self.dir * self.velocity * t
+            self.position += self.dir * self._velocity * t
         elif self._zdir == POSITIVE:
-            self.position -= self.dir * self.velocity * t
+            self.position -= self.dir * self._velocity * t
 
         # Y Movement
         if self._ydir == POSITIVE:
-            self.position += self.up * self.velocity * t
+            self.position += self.up * self._velocity * t
         elif self._ydir == NEGATIVE:
-            self.position -= self.up * self.velocity * t
+            self.position -= self.up * self._velocity * t
 
         return self._gl_look_at(self.position, self.position + self.dir, self._up)
