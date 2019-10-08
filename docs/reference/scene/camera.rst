@@ -18,3 +18,4 @@ Attributes
 ----------
 
 .. autoattribute:: Camera.matrix
+.. autoattribute:: Camera.projection

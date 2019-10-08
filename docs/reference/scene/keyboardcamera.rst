@@ -12,6 +12,8 @@ Methods
 
 .. automethod:: KeyboardCamera.__init__
 .. automethod:: KeyboardCamera.key_input
+.. automethod:: KeyboardCamera.set_position
+.. automethod:: KeyboardCamera.look_at
 .. automethod:: KeyboardCamera.move_left
 .. automethod:: KeyboardCamera.move_right
 .. automethod:: KeyboardCamera.move_forward
@@ -21,13 +23,10 @@ Methods
 .. automethod:: KeyboardCamera.move_state
 .. automethod:: KeyboardCamera.rot_state
 
-Inherited Methods
------------------
-
-.. automethod:: KeyboardCamera.set_position
-.. automethod:: KeyboardCamera.look_at
-
 Attributes
 ----------
 
 .. autoattribute:: KeyboardCamera.matrix
+.. autoattribute:: KeyboardCamera.mouse_sensitivity
+.. autoattribute:: KeyboardCamera.velocity
+.. autoattribute:: KeyboardCamera.projection
