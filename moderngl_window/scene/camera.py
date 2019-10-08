@@ -22,7 +22,19 @@ NEGATIVE = 2
 
 
 class Camera:
-    """Simple camera class containing projection"""
+    """Simple camera class containing projection.
+
+    .. code:: python
+
+        # create a camera
+        camera = Camera(fov=60.0, aspect_ratio=1.0, near=1.0, far=100.0)
+
+        # Get the current camera matrix as numpy array
+        print(camera.matrix)
+
+        # Get projection matrix as numpy array
+        print(camera.projection.matrix)
+    """
     def __init__(self, fov=60.0, aspect_ratio=1.0, near=1.0, far=100.0):
         """Initialize camera using a specific projection
 
@@ -132,7 +144,33 @@ class Camera:
 
 
 class KeyboardCamera(Camera):
-    """Camera controlled by mouse and keyboard"""
+    """Camera controlled by mouse and keyboard.
+    The class interacts with the key constants in the
+    built in window types.
+
+    Creating a keyboard camera:
+
+    .. code:: python
+
+        camera = KeyboardCamera(
+            self.wnd.keys,
+            fov=75.0,
+            aspect_ratio=self.wnd.aspect_ratio,
+            near=0.1,
+            far=1000.0,
+        )
+
+    We can also interact with the belonging
+    :py:class:`~moderngl_window.opengl.projection.Projection3D` instance.
+
+    .. code:: python
+
+        # Update aspect ratio
+        camera.projection.update(aspect_ratio=1.0)
+
+        # Get projection matrix in bytes (f4)
+        camera.projection.tobytes()
+    """
     def __init__(self, keys: BaseKeys, fov=60.0, aspect_ratio=1.0, near=1.0, far=100.0):
         """Initialize the camera
 
