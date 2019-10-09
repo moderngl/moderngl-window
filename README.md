@@ -17,9 +17,9 @@ Please report bugs or post questions/feedback on [github](https://github.com/mod
 * Cross platform support. Tested on Windows 10, Linux and Mac OS X.
   This can save users a lot of time and is often more difficult than most people
   imagine it to be.
-* Easily create a window for ModernGL using Pyglet, PySide2, GLFW, SDL2, PyQt5 
-  or tkinter supporing basic keyboard and mouse controls. These events are unified 
-  into a single system so we can switch to any window at any point in time.
+* Easily create a window for ModernGL using Pyglet, PySide2, GLFW, SDL2, PyQt5
+  or tkinter supporing window, keyboard and mouse controls. These events are unified
+  into a single system so your project can work with any window.
 * Load 2D textures and texture arrays
 * Load shaders as single or multiple `glsl` files
 * Load objects/scenes from wavefront/obj, GLTF 2.0 or STL
@@ -50,6 +50,7 @@ pip install moderngl-window
 Simple example opening a window clearing every frame using red (color).
 
 ```py
+# test.py
 import moderngl_window as mglw
 
 class Test(mglw.WindowConfig):
@@ -60,6 +61,18 @@ class Test(mglw.WindowConfig):
 
 mglw.run_window_config(Test)
 ```
+
+Run the example with differnt window backends:
+
+```bash
+python test.py --window pyglet
+python test.py --window glfw
+python test.py --window sdl2
+python test.py --window pyside2
+python test.py --window pyqt5
+python test.py --window tkinter
+```
+
 
 `WindowConfig` classes are the simplest way to get started without knowing
 a lot about this library. For more advanced usage see documenation
