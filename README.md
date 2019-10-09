@@ -106,6 +106,7 @@ tox -e pep8
 ## Building Docs
 
 ```bash
+pip install -r docs/requirements.txt
 python setup.py build_sphinx
 ```
 
