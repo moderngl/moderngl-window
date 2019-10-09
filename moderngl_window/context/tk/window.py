@@ -153,6 +153,12 @@ class Window(BaseWindow):
         self._width, self._height = event.width, event.height
         # TODO: How do we know the actual buffer size?
         self._buffer_width, self._buffer_height = event.width, event.height
+
+        # Race condition when going fullscreen mode.
+        # The moderngl context might not be created yet.
+        if not self._ctx:
+            return
+
         self.set_default_viewport()
         self._resize_func(event.width, event.height)
 
