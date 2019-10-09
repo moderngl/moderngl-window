@@ -5,6 +5,12 @@ class KeyModifiers:
     shift = False
     ctrl = False
 
+    def __repr__(self):
+        return str(self)
+
+    def __str__(self):
+        return "<KeyModifiers shift={} ctrl={}".format(self.shift, self.ctrl)
+
 
 class BaseKeys:
     """
