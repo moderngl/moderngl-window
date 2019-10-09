@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.5.0
+
+* Added experimental support for tkinter window. Relies on
+  Jon Wright's pyopengltk package: https://github.com/jonwright/pyopengltk.
+  Currently only supports windows and linux, but that might change
+  in the future.
+
 ## 1.4.0
 
 * Added support for mouse_drag events for all window types
