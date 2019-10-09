@@ -14,7 +14,9 @@ class Window(BaseWindow):
         self._tk = tkinter.Tk()
         self._gl_widget = ModernglTkWindow(self._tk, width=self.width, height=self.height)
         self._gl_widget.pack(fill=tkinter.BOTH, expand=tkinter.YES)
+        self._tk.resizable(self._resizable, self._resizable)
 
+        # Set up events
         self._gl_widget.bind('<Configure>', self.tk_resize)
         self._tk.bind('<KeyPress>', self.tk_key_press)
         self._tk.bind('<KeyRelease>', self.tk_key_release)
