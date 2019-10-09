@@ -6,7 +6,14 @@ from pyopengltk import OpenGLFrame
 
 
 class Window(BaseWindow):
+    #: tkinter specific key constants
     keys = Keys
+
+    _mouse_button_map = {
+        1: 1,
+        3: 2,
+        2: 3,
+    }
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -21,6 +28,8 @@ class Window(BaseWindow):
         self._tk.bind('<KeyPress>', self.tk_key_press)
         self._tk.bind('<KeyRelease>', self.tk_key_release)
         self._tk.bind('<Motion>', self.tk_mouse_motion)
+        self._tk.bind('<Button>', self.tk_mouse_button_press)
+        self._tk.bind('<ButtonRelease>', self.tk_mouse_button_release)
 
         self._tk.protocol("WM_DELETE_WINDOW", self.tk_close_window)
 
@@ -80,6 +89,32 @@ class Window(BaseWindow):
             event (tkinter.Event): The mouse motion event
         """
         self._mouse_position_event_func(event.x, event.y)
+
+    def tk_mouse_button_press(self, event: tkinter.Event) -> None:
+        """Handle tkinter mouse press events.
+        
+        Args:
+            event (tkinter.Event): The mouse button press event
+        """
+        button = self._mouse_button_map.get(event.num)
+        if not button:
+            return
+
+        self._handle_mouse_button_state_change(button, True)
+        self._mouse_press_event_func(event.x, event.y, button)
+
+    def tk_mouse_button_release(self, event: tkinter.Event) -> None:
+        """Handle tkinter mouse press events.
+
+        Args:
+            event (tkinter.Event): The mouse button release event
+        """
+        button = self._mouse_button_map.get(event.num)
+        if not button:
+            return
+
+        self._handle_mouse_button_state_change(button, False)
+        self._mouse_release_event_func(event.x, event.y, button)
 
     def _handle_modifiers(self, event: tkinter.Event, press: bool) -> None:
         """Update internal key modifiers
