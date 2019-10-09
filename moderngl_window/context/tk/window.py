@@ -22,8 +22,12 @@ class Window(BaseWindow):
         self._gl_widget = ModernglTkWindow(self._tk, width=self.width, height=self.height)
         self._gl_widget.pack(fill=tkinter.BOTH, expand=tkinter.YES)
         self._tk.resizable(self._resizable, self._resizable)
+
         if self._fullscreen:
             self._tk.attributes('-fullscreen', True)
+
+        if self._cursor is False:
+            self._tk.config(cursor="none")
 
         # Set up events
         self._gl_widget.bind('<Configure>', self.tk_resize)
