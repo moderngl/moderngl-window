@@ -22,6 +22,8 @@ class Window(BaseWindow):
         self._gl_widget = ModernglTkWindow(self._tk, width=self.width, height=self.height)
         self._gl_widget.pack(fill=tkinter.BOTH, expand=tkinter.YES)
         self._tk.resizable(self._resizable, self._resizable)
+        if self._fullscreen:
+            self._tk.attributes('-fullscreen', True)
 
         # Set up events
         self._gl_widget.bind('<Configure>', self.tk_resize)
@@ -38,9 +40,9 @@ class Window(BaseWindow):
 
         # Ensure the window is opened/visible
         self._tk.update()
-
         self._gl_widget.tkMakeCurrent()
         self.init_mgl_context()
+
         self.set_default_viewport()
 
     def swap_buffers(self) -> None:
@@ -58,8 +60,6 @@ class Window(BaseWindow):
 
     def tk_key_press(self, event: tkinter.Event) -> None:
         """Handle all queued key press events in tkinter dispatching events to standard methods"""
-        print('press', event)
-
         keys = self.keys
         self._key_event_func(event.keysym, self.keys.ACTION_PRESS, self._modifiers)
 
@@ -77,7 +77,6 @@ class Window(BaseWindow):
         Args:
             event (tkinter.Event): The key release event
         """
-        print('release', event)
         self._key_event_func(event.keysym, self.keys.ACTION_RELEASE, self._modifiers)
 
         if not event.char:
