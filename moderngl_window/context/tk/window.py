@@ -44,6 +44,7 @@ class Window(BaseWindow):
         self._tk.update()
 
         self._gl_widget.tkSwapBuffers()
+        self._frames += 1
 
     def tk_resize(self, event):
         """tkinter specific window resize event.
