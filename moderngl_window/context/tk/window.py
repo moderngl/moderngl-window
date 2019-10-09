@@ -30,6 +30,7 @@ class Window(BaseWindow):
         self._tk.bind('<Motion>', self.tk_mouse_motion)
         self._tk.bind('<Button>', self.tk_mouse_button_press)
         self._tk.bind('<ButtonRelease>', self.tk_mouse_button_release)
+        self._tk.bind('<MouseWheel>', self.tk_mouse_wheel)
 
         self._tk.protocol("WM_DELETE_WINDOW", self.tk_close_window)
 
@@ -118,6 +119,14 @@ class Window(BaseWindow):
 
         self._handle_mouse_button_state_change(button, False)
         self._mouse_release_event_func(event.x, event.y, button)
+
+    def tk_mouse_wheel(self, event: tkinter.Event) -> None:
+        """Handle mouse wheel event.
+
+        Args:
+            event (tkinter.Event): The mouse wheel event
+        """
+        self._mouse_scroll_event_func(0, event.delta / 120.0)
 
     def _handle_modifiers(self, event: tkinter.Event, press: bool) -> None:
         """Update internal key modifiers
