@@ -23,7 +23,7 @@ class Window(BaseWindow):
         self._gl_widget.bind('<Configure>', self.tk_resize)
         self._tk.protocol("WM_DELETE_WINDOW", self.tk_close_window)
 
-        self._gl_widget.winfo_toplevel().title(self._title)
+        self._tk.title(self._title)
 
         # Ensure the window is opened/visible
         self._tk.update()
