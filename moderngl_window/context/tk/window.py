@@ -1,10 +1,12 @@
 import tkinter
 
 from moderngl_window.context.base import BaseWindow
+from moderngl_window.context.tk.keys import Keys
 from pyopengltk import OpenGLFrame
 
 
 class Window(BaseWindow):
+    keys = Keys
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -15,6 +17,8 @@ class Window(BaseWindow):
 
         # Configure is the tkinter's resize event
         self._gl_widget.bind('<Configure>', self.tk_resize)
+        self._tk.bind('<KeyPress>', self.tk_key_press)
+        self._tk.bind('<KeyRelease>', self.tk_key_release)
         self._tk.protocol("WM_DELETE_WINDOW", self.tk_close_window)
 
         self._tk.title(self._title)
@@ -26,9 +30,8 @@ class Window(BaseWindow):
         self.init_mgl_context()
         self.set_default_viewport()
 
-    def swap_buffers(self):
-        """tkinter buffer swapping"""
-
+    def swap_buffers(self) -> None:
+        """Swap buffers, set viewport, trigger events and increment frame counter"""
         err = self._ctx.error
         if err != 'GL_NO_ERROR':
             print(err)
@@ -40,7 +43,23 @@ class Window(BaseWindow):
         self._gl_widget.tkSwapBuffers()
         self._frames += 1
 
-    def tk_resize(self, event):
+    def tk_key_press(self, event: tkinter.Event) -> None:
+        """Handle all queued key press events in tkinter dispatching events to standard methods"""
+        print('press', event)
+
+        keys = self.keys
+        self._key_event_func(event.keysym, self.keys.ACTION_PRESS, self._modifiers)
+
+        if event.keysym == keys.ESCAPE:
+            self.close()
+
+    def tk_key_release(self, event: tkinter.Event) -> None:
+        """Handle all queued key release events in tkinter dispatching events to standard methods"""
+        print('release', event)
+        keys = self.keys
+        self._key_event_func(event.keysym, self.keys.ACTION_RELEASE, self._modifiers)
+
+    def tk_resize(self, event) -> None:
         """tkinter specific window resize event.
         Forwards resize events to the configured resize function.
 
@@ -53,11 +72,11 @@ class Window(BaseWindow):
         self.set_default_viewport()
         self._resize_func(event.width, event.height)
 
-    def tk_close_window(self):
+    def tk_close_window(self) -> None:
         """tkinter close window callback"""
         self._close = True
 
-    def destroy(self):
+    def destroy(self) -> None:
         """Destroy logic for tkinter window. Currently empty."""
         pass
 
