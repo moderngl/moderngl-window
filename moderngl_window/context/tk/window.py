@@ -21,6 +21,7 @@ class Window(BaseWindow):
 
         # Configure is the tkinter's resize event
         self._gl_widget.bind('<Configure>', self.tk_resize)
+        self._tk.protocol("WM_DELETE_WINDOW", self.tk_close_window)
 
         self._gl_widget.winfo_toplevel().title(self._title)
 
@@ -56,6 +57,14 @@ class Window(BaseWindow):
         self._buffer_width, self._buffer_height = event.width, event.height
         self.set_default_viewport()
         self._resize_func(event.width, event.height)
+
+    def tk_close_window(self):
+        """tkinter close window callback"""
+        self._close = True
+
+    def destroy(self):
+        """Destroy logic for tkinter window. Currently empty."""
+        pass
 
 
 class ModernglTkWindow(OpenGLFrame):
