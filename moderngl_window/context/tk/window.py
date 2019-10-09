@@ -50,6 +50,11 @@ class Window(BaseWindow):
         keys = self.keys
         self._key_event_func(event.keysym, self.keys.ACTION_PRESS, self._modifiers)
 
+        if event.char:
+            self._unicode_char_entered_func(event.char)
+        else:
+            self._handle_modifiers(event, True)
+
         if event.keysym == keys.ESCAPE:
             self.close()
 
@@ -58,6 +63,16 @@ class Window(BaseWindow):
         print('release', event)
         keys = self.keys
         self._key_event_func(event.keysym, self.keys.ACTION_RELEASE, self._modifiers)
+
+        if not event.char:
+            self._handle_modifiers(event, False)
+
+    def _handle_modifiers(self, event: tkinter.Event, press: bool):
+        """Update internal key modifiers"""
+        if event.keysym in ['Shift_L', 'Shift_R']:
+            self._modifiers.shift = press
+        elif event.keysym in ['Control_L', 'Control_R']:
+            self._modifiers.ctrl = press
 
     def tk_resize(self, event) -> None:
         """tkinter specific window resize event.
