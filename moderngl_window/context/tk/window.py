@@ -1,10 +1,4 @@
-"""
-Temp resource
-    https://www.python-course.eu/tkinter_events_binds.php
-"""
-import time
 import tkinter
-import moderngl
 
 from moderngl_window.context.base import BaseWindow
 from pyopengltk import OpenGLFrame
