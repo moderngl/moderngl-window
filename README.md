@@ -62,7 +62,7 @@ class Test(mglw.WindowConfig):
 mglw.run_window_config(Test)
 ```
 
-Run the example with differnt window backends:
+Run the example with different window backends:
 
 ```bash
 python test.py --window pyglet
