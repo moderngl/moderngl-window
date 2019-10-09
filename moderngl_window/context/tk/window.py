@@ -15,10 +15,11 @@ class Window(BaseWindow):
         self._gl_widget = ModernglTkWindow(self._tk, width=self.width, height=self.height)
         self._gl_widget.pack(fill=tkinter.BOTH, expand=tkinter.YES)
 
-        # Configure is the tkinter's resize event
         self._gl_widget.bind('<Configure>', self.tk_resize)
         self._tk.bind('<KeyPress>', self.tk_key_press)
         self._tk.bind('<KeyRelease>', self.tk_key_release)
+        self._tk.bind('<Motion>', self.tk_mouse_motion)
+
         self._tk.protocol("WM_DELETE_WINDOW", self.tk_close_window)
 
         self._tk.title(self._title)
@@ -59,16 +60,32 @@ class Window(BaseWindow):
             self.close()
 
     def tk_key_release(self, event: tkinter.Event) -> None:
-        """Handle all queued key release events in tkinter dispatching events to standard methods"""
+        """Handle all queued key release events in tkinter dispatching events to standard methods
+
+        Args:
+            event (tkinter.Event): The key release event
+        """
         print('release', event)
-        keys = self.keys
         self._key_event_func(event.keysym, self.keys.ACTION_RELEASE, self._modifiers)
 
         if not event.char:
             self._handle_modifiers(event, False)
 
-    def _handle_modifiers(self, event: tkinter.Event, press: bool):
-        """Update internal key modifiers"""
+    def tk_mouse_motion(self, event: tkinter.Event) -> None:
+        """Handle and translate tkinter mouse position events
+
+        Args:
+            event (tkinter.Event): The mouse motion event
+        """
+        self._mouse_position_event_func(event.x, event.y)
+
+    def _handle_modifiers(self, event: tkinter.Event, press: bool) -> None:
+        """Update internal key modifiers
+
+        Args:
+            event (tkinter.Event): The key event
+            press (bool): Press or release event
+        """
         if event.keysym in ['Shift_L', 'Shift_R']:
             self._modifiers.shift = press
         elif event.keysym in ['Control_L', 'Control_R']:
