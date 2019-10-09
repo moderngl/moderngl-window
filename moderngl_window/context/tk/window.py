@@ -14,6 +14,8 @@ class Window(BaseWindow):
         self.root = tkinter.Tk()
         self.gl_widget = ModernglTkWindow(self.root, width=self.width, height=self.height)
         self.gl_widget.pack(fill=tkinter.BOTH, expand=tkinter.YES)
+
+        # Configure is the tkinter's resize event
         self.gl_widget.bind('<Configure>', self.tk_resize)
 
         self.gl_widget.winfo_toplevel().title(self._title)
@@ -52,6 +54,7 @@ class Window(BaseWindow):
         self._resize_func(event.width, event.height)
 
 
+# https://www.python-course.eu/tkinter_events_binds.php
 class ModernglTkWindow(OpenGLFrame):
 
     def __init__(self, *args, **kwargs):
@@ -62,14 +65,19 @@ class ModernglTkWindow(OpenGLFrame):
         print("ModernglTkWindow.redraw", time.time())
 
     def initgl(self):
-        print("ModernglTkWindow.initgl", time.time())
+        """pyopengltk's user code for initialization."""
         pass
 
     def tkResize(self, event):
         """Should never be called. Event overidden."""
-        pass
+        raise ValueError("tkResize should never be called. The event is overriden.")
 
     def tkMap(self, event):
         """Called when frame goes onto the screen"""
         print("ModernglTkWindow.tkMap", time.time())
-        super().tkMap(event)
+
+        # Only create context once
+        # In a window like this we are not likely to lose the context
+        # even when window is minimized.
+        if not getattr(self, '_wid', None):
+            super().tkMap(event)
