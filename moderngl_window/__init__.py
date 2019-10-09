@@ -176,7 +176,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         title=config_cls.title,
         size=size,
         fullscreen=values.fullscreen,
-        resizable=config_cls.resizable,
+        resizable=values.resizable if values.resizable is not None else config_cls.resizable,
         gl_version=config_cls.gl_version,
         aspect_ratio=config_cls.aspect_ratio,
         vsync=values.vsync,
@@ -222,6 +222,12 @@ def parse_args(args=None):
         type=valid_bool,
         default='1',
         help="Enable or disable vsync",
+    )
+    parser.add_argument(
+        '-r', '--resizable',
+        type=valid_bool,
+        default=None,
+        help="Enable/disable window resize",
     )
     parser.add_argument(
         '-s', '--samples',
