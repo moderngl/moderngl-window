@@ -110,7 +110,7 @@ class BaseWindow:
         self._close = False
         self._config = None
         self._key_pressed_map = {}
-        self._modifiers = KeyModifiers
+        self._modifiers = KeyModifiers()
         self._mouse_buttons = MouseButtonStates()
 
         # Do not allow resize in fullscreen
