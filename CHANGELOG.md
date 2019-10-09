@@ -6,6 +6,9 @@
   Jon Wright's pyopengltk package: https://github.com/jonwright/pyopengltk.
   Currently only supports windows and linux, but that might change
   in the future.
+* KeyboardCamera: Exposed `mouse_sensitivity`, `velocity` and `projection` attributes
+* Various missing docstring and docstring improvements
+* Various missing type hints
 
 ## 1.4.0
 
