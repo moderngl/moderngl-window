@@ -41,7 +41,7 @@ setup(
         "PySDL2": ['PySDL2>=0.9.6'],
         "pywavefront": ["pywavefront>=1.2.0"],
         "trimesh": ["trimesh==3.2.6", "scipy>=1.3"],
-        "tk": ["pyopengl==3.1.0", "pyopengltk==0.0.1"],
+        "tk": ["pyopengl==3.1.0", "pyopengltk==0.0.2"],
     },
     project_urls={
         'Documentation': 'https://moderngl-window.readthedocs.io',
