@@ -167,8 +167,8 @@ class Window(BaseWindow):
         self._close = True
 
     def destroy(self) -> None:
-        """Destroy logic for tkinter window. Currently empty."""
-        pass
+        """Destroy logic for tkinter window."""
+        self._tk.destroy()
 
 
 class ModernglTkWindow(OpenGLFrame):
