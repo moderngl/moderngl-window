@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.1
+
+* Upgraded dependecy for tkinter window. `pyopengltk==0.0.2`.
+
 ## 1.5.0
 
 * Added experimental support for tkinter window. Relies on
