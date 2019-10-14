@@ -169,6 +169,16 @@ class BaseWindow:
         return self._width, self._height
 
     @property
+    def buffer_width(self) -> int:
+        """int: the current window buffer width"""
+        return self._buffer_width
+
+    @property
+    def buffer_height(self) -> int:
+        """int: the current window buffer height"""
+        return self._buffer_height
+
+    @property
     def buffer_size(self) -> Tuple[int, int]:
         """Tuple[int, int]: tuple with the current window buffer size"""
         return self._buffer_width, self._buffer_height
