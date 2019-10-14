@@ -39,7 +39,7 @@ setup(
         "pyqt5": ['PyQt5<6'],
         "glfw": ['glfw<2'],
         "PySDL2": ['PySDL2<1'],
-        "pywavefront": ["pywavefront>=1.2.0"],
+        "pywavefront": ["pywavefront>=1.2.0<2"],
         "trimesh": ["trimesh==3.2.6", "scipy>=1.3"],
         "tk": ["pyopengl==3.1.0", "pyopengltk==0.0.3"],
     },
