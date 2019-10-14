@@ -38,6 +38,8 @@ Attributes
 .. autoattribute:: Window.width
 .. autoattribute:: Window.height
 .. autoattribute:: Window.size
+.. autoattribute:: Window.buffer_width
+.. autoattribute:: Window.buffer_height
 .. autoattribute:: Window.buffer_size
 .. autoattribute:: Window.pixel_ratio
 .. autoattribute:: Window.viewport
