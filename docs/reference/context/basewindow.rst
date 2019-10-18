@@ -38,6 +38,9 @@ Attributes
 .. autoattribute:: BaseWindow.buffer_size
 .. autoattribute:: BaseWindow.pixel_ratio
 .. autoattribute:: BaseWindow.viewport
+.. autoattribute:: BaseWindow.viewport_size
+.. autoattribute:: BaseWindow.viewport_width
+.. autoattribute:: BaseWindow.viewport_height
 .. autoattribute:: BaseWindow.frames
 .. autoattribute:: BaseWindow.resizable
 .. autoattribute:: BaseWindow.fullscreen
