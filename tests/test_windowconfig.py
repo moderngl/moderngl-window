@@ -8,7 +8,7 @@ from moderngl_window.scene import Scene
 
 class WindowConfigTestCase(WindowConfigTestCase):
     class TestConfig(WindowConfig):
-        window_size = (16, 16)
+        window_size = (16, 32)
         aspect_ratio = 1.0
         gl_version = (4, 1)
         title = "Test"
@@ -25,10 +25,16 @@ class WindowConfigTestCase(WindowConfigTestCase):
     def test_properties(self):
         """Ensure all callback funcs are callable"""
         # Configured Values
+        self.assertIsInstance(self.window.config, WindowConfig)
         self.assertEqual(self.window.size, self.config.window_size)
+        self.assertEqual(self.window.width, self.config.window_size[0])
+        self.assertEqual(self.window.height, self.config.window_size[1])
         self.assertEqual(self.window.title, self.config.title)
         self.assertEqual(self.window.gl_version, self.config.gl_version)
         self.assertEqual(self.config.aspect_ratio, self.window.aspect_ratio)
+        self.assertIsInstance(self.window.ctx, moderngl.Context)
+        self.assertIsInstance(self.window.fbo, moderngl.Framebuffer)
+        self.assertEqual(self.window.vsync, True)
 
         # Defaults
         self.assertEqual(self.config.resizable, True)  # Disabled in headless
@@ -43,6 +49,18 @@ class WindowConfigTestCase(WindowConfigTestCase):
         self.assertTrue(callable(self.window.mouse_press_event_func))
         self.assertTrue(callable(self.window.mouse_release_event_func))
         self.assertTrue(callable(self.window.mouse_drag_event_func))
+        self.assertEqual(self.window.pixel_ratio, 1.0)
+        self.assertEqual(self.window.buffer_size, self.config.window_size)
+        self.assertEqual(self.window.buffer_width, self.config.window_size[0])
+        self.assertEqual(self.window.buffer_height, self.config.window_size[1])
+
+        # Other windows properties
+        self.assertEqual(self.window.viewport, (0, 8, 16, 16))
+        self.assertEqual(self.window.viewport_size, (16, 16))
+        self.assertEqual(self.window.viewport_width, 16)
+        self.assertEqual(self.window.viewport_height, 16)
+        self.assertEqual(self.window.frames, 0)
+
 
     def test_missing_wnd_ctx(self):
         """Attempt creating WindogConfig without a window or ctx"""
