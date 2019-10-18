@@ -1,3 +1,5 @@
+from typing import Tuple
+from ctypes import c_int
 import sdl2
 import sdl2.ext
 import sdl2.video
@@ -64,6 +66,24 @@ class Window(BaseWindow):
         self.init_mgl_context()
 
         self.set_default_viewport()
+
+    @property
+    def position(self) -> Tuple[int, int]:
+        """Tuple[int, int]: The current window position.
+
+        This property can also be set to move the window::
+
+            # Move window to 100, 100
+            window.position = 100, 100
+        """
+        x = c_int(0)
+        y = c_int(0)
+        sdl2.SDL_GetWindowPosition(self._window, x, y)
+        return x.value, y.value
+
+    @position.setter
+    def position(self, value: Tuple[int, int]):
+        sdl2.SDL_SetWindowPosition(self._window, value[0], value[1])
 
     def swap_buffers(self) -> None:
         """Swap buffers, set viewport, trigger events and increment frame counter"""
