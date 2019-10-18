@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.5.2
+
+* Upgraded dependecy for tkinter window. `pyopengltk>=0.0.3`.
+* Losened up most of the requirements
+* Added window properties: `viewport_size`, `viewport_width`, `viewport_height`
+* Bug: Missing call to `tk.destroy()` in tk window
+
 ## 1.5.1
 
 * Upgraded dependecy for tkinter window. `pyopengltk==0.0.2`.
