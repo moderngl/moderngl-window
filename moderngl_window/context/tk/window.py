@@ -1,3 +1,4 @@
+from typing import Tuple
 import tkinter
 
 from moderngl_window.context.base import BaseWindow
@@ -48,6 +49,22 @@ class Window(BaseWindow):
         self.init_mgl_context()
 
         self.set_default_viewport()
+
+    @property
+    def position(self) -> Tuple[int, int]:
+        """Tuple[int, int]: The current window position.
+
+        This property can also be set to move the window::
+
+            # Move window to 100, 100
+            window.position = 100, 100
+        """
+        _, x, y = self._tk.geometry().split('+')
+        return int(x), int(y)
+
+    @position.setter
+    def position(self, value: Tuple[int, int]):
+        self._tk.geometry('+{}+{}'.format(value[0], value[1]))
 
     def swap_buffers(self) -> None:
         """Swap buffers, set viewport, trigger events and increment frame counter"""
