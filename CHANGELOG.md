@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.5.2
+## 1.5.2 (WIP)
 
 * Upgraded dependecy for tkinter window. `pyopengltk>=0.0.3`.
 * Losened up most of the requirements
