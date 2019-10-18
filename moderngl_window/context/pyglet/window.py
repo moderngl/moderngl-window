@@ -1,3 +1,4 @@
+from typing import Tuple
 import platform
 import pyglet
 
@@ -68,6 +69,21 @@ class Window(BaseWindow):
         self.init_mgl_context()
         self._buffer_width, self._buffer_height = self._window.get_framebuffer_size()
         self.set_default_viewport()
+
+    @property
+    def position(self) -> Tuple[int, int]:
+        """Tuple[int, int]: The current window position.
+
+        This property can also be set to move the window::
+
+            # Move window to 100, 100
+            window.position = 100, 100
+        """
+        return self._window.get_location()
+
+    @position.setter
+    def position(self, value: Tuple[int, int]):
+        self._window.set_location(value[0], value[1])
 
     @property
     def is_closing(self) -> bool:
