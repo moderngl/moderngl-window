@@ -1,3 +1,4 @@
+from typing import Tuple
 from PyQt5 import QtCore, QtOpenGL, QtWidgets
 
 from moderngl_window.context.base import BaseWindow
@@ -43,19 +44,19 @@ class Window(BaseWindow):
 
         # We need an application object, but we are bypassing the library's
         # internal event loop to avoid unnecessary work
-        self.app = QtWidgets.QApplication([])
+        self._app = QtWidgets.QApplication([])
 
         # Create the OpenGL widget
-        self.widget = QtOpenGL.QGLWidget(gl)
-        self.widget.setWindowTitle(self.title)
+        self._widget = QtOpenGL.QGLWidget(gl)
+        self._widget.setWindowTitle(self._title)
 
         # If fullscreen we change the window to match the desktop on the primary screen
         if self.fullscreen:
             rect = QtWidgets.QDesktopWidget().screenGeometry()
             self._width = rect.width()
             self._height = rect.height()
-            self._buffer_width = rect.width() * self.widget.devicePixelRatio()
-            self._buffer_height = rect.height() * self.widget.devicePixelRatio()
+            self._buffer_width = rect.width() * self._widget.devicePixelRatio()
+            self._buffer_height = rect.height() * self._widget.devicePixelRatio()
 
         if self.resizable:
             # Ensure a valid resize policy when window is resizable
@@ -63,52 +64,68 @@ class Window(BaseWindow):
                 QtWidgets.QSizePolicy.Expanding,
                 QtWidgets.QSizePolicy.Expanding,
             )
-            self.widget.setSizePolicy(size_policy)
-            self.widget.resize(self.width, self.height)
+            self._widget.setSizePolicy(size_policy)
+            self._widget.resize(self.width, self.height)
         else:
-            self.widget.setFixedSize(self.width, self.height)
+            self._widget.setFixedSize(self.width, self.height)
 
         # Center the window on the screen if in window mode
         if not self.fullscreen:
-            self.widget.move(QtWidgets.QDesktopWidget().rect().center() - self.widget.rect().center())
+            self._widget.move(QtWidgets.QDesktopWidget().rect().center() - self._widget.rect().center())
 
         # Needs to be set before show()
-        self.widget.resizeGL = self.resize
+        self._widget.resizeGL = self.resize
 
         if not self.cursor:
-            self.widget.setCursor(QtCore.Qt.BlankCursor)
+            self._widget.setCursor(QtCore.Qt.BlankCursor)
 
         if self.fullscreen:
-            self.widget.showFullScreen()
+            self._widget.showFullScreen()
         else:
-            self.widget.show()
+            self._widget.show()
 
         # We want mouse position events
-        self.widget.setMouseTracking(True)
+        self._widget.setMouseTracking(True)
 
         # Override event functions in qt
-        self.widget.keyPressEvent = self.key_pressed_event
-        self.widget.keyReleaseEvent = self.key_release_event
-        self.widget.mouseMoveEvent = self.mouse_move_event
-        self.widget.mousePressEvent = self.mouse_press_event
-        self.widget.mouseReleaseEvent = self.mouse_release_event
-        self.widget.wheelEvent = self.mouse_wheel_event
-        self.widget.closeEvent = self.close_event
+        self._widget.keyPressEvent = self.key_pressed_event
+        self._widget.keyReleaseEvent = self.key_release_event
+        self._widget.mouseMoveEvent = self.mouse_move_event
+        self._widget.mousePressEvent = self.mouse_press_event
+        self._widget.mouseReleaseEvent = self.mouse_release_event
+        self._widget.wheelEvent = self.mouse_wheel_event
+        self._widget.closeEvent = self.close_event
 
         # Attach to the context
         self.init_mgl_context()
 
         # Ensure retina and 4k displays get the right viewport
-        self._buffer_width = self._width * self.widget.devicePixelRatio()
-        self._buffer_height = self._height * self.widget.devicePixelRatio()
+        self._buffer_width = self._width * self._widget.devicePixelRatio()
+        self._buffer_height = self._height * self._widget.devicePixelRatio()
 
         self.set_default_viewport()
+
+    @property
+    def position(self) -> Tuple[int, int]:
+        """Tuple[int, int]: The current window position.
+
+        This property can also be set to move the window::
+
+            # Move window to 100, 100
+            window.position = 100, 100
+        """
+        geo = self._widget.geometry()
+        return geo.x(), geo.y()
+
+    @position.setter
+    def position(self, value: Tuple[int, int]):
+        self._widget.setGeometry(value[0], value[1], self._width, self._height)
 
     def swap_buffers(self) -> None:
         """Swap buffers, set viewport, trigger events and increment frame counter"""
-        self.widget.swapBuffers()
+        self._widget.swapBuffers()
         self.set_default_viewport()
-        self.app.processEvents()
+        self._app.processEvents()
         self._frames += 1
 
     def resize(self, width: int, height: int) -> None:
@@ -118,8 +135,8 @@ class Window(BaseWindow):
             width: New window width
             height: New window height
         """
-        self._width = width // self.widget.devicePixelRatio()
-        self._height = height // self.widget.devicePixelRatio()
+        self._width = width // self._widget.devicePixelRatio()
+        self._height = height // self._widget.devicePixelRatio()
         self._buffer_width = width
         self._buffer_height = height
 
