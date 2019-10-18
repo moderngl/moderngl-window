@@ -1,3 +1,4 @@
+from typing import Tuple
 import glfw
 
 from moderngl_window.context.base import BaseWindow
@@ -71,6 +72,21 @@ class Window(BaseWindow):
 
         self.init_mgl_context()
         self.set_default_viewport()
+
+    @property
+    def position(self) -> Tuple[int, int]:
+        """Tuple[int, int]: The current window position.
+
+        This property can also be set to move the window::
+
+            # Move window to 100, 100
+            window.position = 100, 100
+        """
+        return glfw.get_window_pos(self._window)
+
+    @position.setter
+    def position(self, value: Tuple[int, int]):
+        self._position = glfw.set_window_pos(self._window, value[0], value[1])
 
     def close(self) -> None:
         """Suggest to glfw the window should be closed soon"""
