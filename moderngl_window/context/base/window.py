@@ -106,6 +106,7 @@ class BaseWindow:
         # Internal states
         self._ctx = None  # type: moderngl.Context
         self._viewport = None
+        self._position = 0, 0
         self._frames = 0  # Frame counter
         self._close = False
         self._config = None
@@ -182,6 +183,21 @@ class BaseWindow:
     def buffer_size(self) -> Tuple[int, int]:
         """Tuple[int, int]: tuple with the current window buffer size"""
         return self._buffer_width, self._buffer_height
+
+    @property
+    def position(self) -> Tuple[int, int]:
+        """Tuple[int, int]: The current window position.
+
+        This property can also be set to move the window::
+
+            # Move window to 100, 100
+            window.position = 100, 100
+        """
+        return self._position
+
+    @position.setter
+    def position(self, value: Tuple[int, int]):
+        self._position = value
 
     @property
     def pixel_ratio(self):
