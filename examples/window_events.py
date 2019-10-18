@@ -20,23 +20,36 @@ class WindowEvents(mglw.WindowConfig):
         print("Window was resized. buffer size is {} x {}".format(width, height))
 
     def key_event(self, key, action, modifiers):
+        keys = self.wnd.keys
+
         # Key presses
-        if action == self.wnd.keys.ACTION_PRESS:
-            if key == self.wnd.keys.SPACE:
+        if action == keys.ACTION_PRESS:
+            if key == keys.SPACE:
                 print("SPACE key was pressed")
 
             # Using modifiers (shift and ctrl)
 
-            if key == self.wnd.keys.Z and modifiers.shift:
+            if key == keys.Z and modifiers.shift:
                 print("Shift + Z was pressed")
 
-            if key == self.wnd.keys.Z and modifiers.ctrl:
+            if key == keys.Z and modifiers.ctrl:
                 print("ctrl + Z was pressed")
 
         # Key releases
         elif action == self.wnd.keys.ACTION_RELEASE:
-            if key == self.wnd.keys.SPACE:
+            if key == keys.SPACE:
                 print("SPACE key was released")
+
+        # Move the window around with AWSD
+        if action == keys.ACTION_PRESS:
+            if key == keys.A:
+                self.wnd.position = self.wnd.position[0] - 10, self.wnd.position[1]
+            if key == keys.D:
+                self.wnd.position = self.wnd.position[0] + 10, self.wnd.position[1]
+            if key == keys.W:
+                self.wnd.position = self.wnd.position[0], self.wnd.position[1] - 10
+            if key == keys.S:
+                self.wnd.position = self.wnd.position[0], self.wnd.position[1] + 10
 
     def mouse_position_event(self, x, y):
         print("Mouse position:", x, y)
