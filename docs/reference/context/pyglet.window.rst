@@ -46,6 +46,7 @@ Attributes
 .. autoattribute:: Window.width
 .. autoattribute:: Window.height
 .. autoattribute:: Window.size
+.. autoattribute:: Window.position
 .. autoattribute:: Window.buffer_width
 .. autoattribute:: Window.buffer_height
 .. autoattribute:: Window.buffer_size

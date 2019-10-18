@@ -33,6 +33,7 @@ Attributes
 .. autoattribute:: BaseWindow.width
 .. autoattribute:: BaseWindow.height
 .. autoattribute:: BaseWindow.size
+.. autoattribute:: BaseWindow.position
 .. autoattribute:: BaseWindow.buffer_width
 .. autoattribute:: BaseWindow.buffer_height
 .. autoattribute:: BaseWindow.buffer_size
