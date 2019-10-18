@@ -194,6 +194,30 @@ class BaseWindow:
         return self._viewport
 
     @property
+    def viewport_size(self) -> Tuple[int, int]:
+        """Tuple[int,int]: Size of the viewport.
+
+        Equivalent to ``self.viewport[2], self.viewport[3]``
+        """
+        return self._viewport[2], self._viewport[3]
+
+    @property
+    def viewport_width(self) -> int:
+        """int: The width of the viewport.
+
+        Equivalent to ``self.viewport[2]``.
+        """
+        return self.viewport[2]
+
+    @property
+    def viewport_height(self) -> int:
+        """int: The height of the viewport
+
+        Equivalent to ``self.viewport[3]``.
+        """
+        return self.viewport[3]
+
+    @property
     def frames(self) -> int:
         """int: Number of frames rendered"""
         return self._frames
