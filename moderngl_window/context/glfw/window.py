@@ -157,10 +157,16 @@ class Window(BaseWindow):
             xpos: viewport x pos
             ypos: viewport y pos
         """
+        xpos, ypos = int(xpos), int(ypos)
+        # Calculate position delta. glfw does not support delta values.
+        last_x, last_y = self._mouse_pos
+        dx, dy = xpos - last_x, ypos - last_y
+        self._mouse_pos = xpos, ypos
+
         if self.mouse_states.any:
-            self._mouse_drag_event_func(xpos, ypos)
+            self._mouse_drag_event_func(xpos, ypos, dx, dy)
         else:
-            self._mouse_position_event_func(xpos, ypos)
+            self._mouse_position_event_func(xpos, ypos, dx, dy)
 
     def glfw_mouse_button_callback(self, window, button, action, mods):
         """Handle mouse button events and forward them to the example
