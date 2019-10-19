@@ -134,9 +134,15 @@ class Window(BaseWindow):
         for event in sdl2.ext.get_events():
             if event.type == sdl2.SDL_MOUSEMOTION:
                 if self.mouse_states.any:
-                    self._mouse_drag_event_func(event.motion.x, event.motion.y)
+                    self._mouse_drag_event_func(
+                        event.motion.x, event.motion.y,
+                        event.motion.xrel, event.motion.yrel,
+                    )
                 else:
-                    self._mouse_position_event_func(event.motion.x, event.motion.y)
+                    self._mouse_position_event_func(
+                        event.motion.x, event.motion.y,
+                        event.motion.xrel, event.motion.yrel,
+                    )
 
             elif event.type == sdl2.SDL_MOUSEBUTTONDOWN:
                 button = self._mouse_button_map.get(event.button.button, None)
