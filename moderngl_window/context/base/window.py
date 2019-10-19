@@ -166,7 +166,13 @@ class BaseWindow:
 
     @property
     def size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: current window size"""
+        """Tuple[int, int]: current window size.
+
+        This property also support assignment::
+
+            # Resize the window to 1000 x 1000
+            window.size = 1000, 1000
+        """
         return self._width, self._height
 
     @size.setter
