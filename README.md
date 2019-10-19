@@ -70,7 +70,7 @@ python test.py --window glfw
 python test.py --window sdl2
 python test.py --window pyside2
 python test.py --window pyqt5
-python test.py --window tkinter
+python test.py --window tk
 ```
 
 
