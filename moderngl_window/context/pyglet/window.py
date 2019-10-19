@@ -171,7 +171,7 @@ class Window(BaseWindow):
         # NOTE: Screen coordinates relative to the lower-left corner
         # so we have to flip the y axis to make this consistent with
         # other window libraries
-        self._mouse_position_event_func(x, self._buffer_height - y)
+        self._mouse_position_event_func(x, self._buffer_height - y, dx, -dy)
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
         """Pyglet specific mouse drag event.
@@ -179,7 +179,7 @@ class Window(BaseWindow):
         When a mouse button is pressed this is the only way
         to capture mouse posision events
         """
-        self._mouse_drag_event_func(x, self._buffer_height - y)
+        self._mouse_drag_event_func(x, self._buffer_height - y, dx, -dy)
 
     def on_mouse_press(self, x: int, y: int, button, mods):
         """Handle mouse press events and forward to standard methods
