@@ -124,10 +124,13 @@ class Window(BaseWindow):
         Args:
             event (tkinter.Event): The mouse motion event
         """
+        x, y = event.x, event.y
+        dx, dy = self._calc_mouse_delta(x, y)
+
         if self._mouse_buttons.any:
-            self._mouse_drag_event_func(event.x, event.y)
+            self._mouse_drag_event_func(x, y, dx, dy)
         else:
-            self._mouse_position_event_func(event.x, event.y)
+            self._mouse_position_event_func(x, y, dx, dy)
 
     def tk_mouse_button_press(self, event: tkinter.Event) -> None:
         """Handle tkinter mouse press events.
