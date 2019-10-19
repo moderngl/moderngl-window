@@ -1,5 +1,10 @@
 # Changelog
 
+## Next version
+
+* Window property `size` is now assignable for all window types. This should used when resizing windows.
+
+
 ## 1.5.2
 
 * Added window property `position` for getting and setting window position for all window types
