@@ -71,6 +71,21 @@ class Window(BaseWindow):
         self.set_default_viewport()
 
     @property
+    def size(self) -> Tuple[int, int]:
+        """Tuple[int, int]: current window size.
+
+        This property also support assignment::
+
+            # Resize the window to 1000 x 1000
+            window.size = 1000, 1000
+        """
+        return self._width, self._height
+
+    @size.setter
+    def size(self, value: Tuple[int, int]):
+        self._window.set_size(value[0], value[1])
+
+    @property
     def position(self) -> Tuple[int, int]:
         """Tuple[int, int]: The current window position.
 
