@@ -7,6 +7,7 @@ class WindowEvents(mglw.WindowConfig):
     """
     gl_version = (3, 3)
     title = "Window Events"
+    cursor = True
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -50,6 +51,10 @@ class WindowEvents(mglw.WindowConfig):
                 self.wnd.position = self.wnd.position[0], self.wnd.position[1] - 10
             if key == keys.S:
                 self.wnd.position = self.wnd.position[0], self.wnd.position[1] + 10
+
+            # toggle cursor
+            if key == keys.C:
+                self.wnd.cursor = not self.wnd.cursor
 
     def mouse_position_event(self, x, y, dx, dy):
         print("Mouse drag pos={} {} delta={} {}".format(x, y, dx, dy))
