@@ -67,7 +67,7 @@ class CubeModel(mglw.WindowConfig):
     def key_event(self, key, action, modifiers):
         self.camera.key_input(key, action, modifiers)
 
-    def mouse_position_event(self, x: int, y: int):
+    def mouse_position_event(self, x: int, y: int, dx, dy):
         self.camera.rot_state(x, y)
 
     def resize(self, width: int, height: int):

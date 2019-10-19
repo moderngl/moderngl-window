@@ -51,11 +51,11 @@ class WindowEvents(mglw.WindowConfig):
             if key == keys.S:
                 self.wnd.position = self.wnd.position[0], self.wnd.position[1] + 10
 
-    def mouse_position_event(self, x, y):
-        print("Mouse position:", x, y)
+    def mouse_position_event(self, x, y, dx, dy):
+        print("Mouse drag pos={} {} delta={} {}".format(x, y, dx, dy))
 
-    def mouse_drag_event(self, x, y):
-        print("Mouse drag:", x, y)
+    def mouse_drag_event(self, x, y, dx, dy):
+        print("Mouse drag pos={} {} delta={} {}".format(x, y, dx, dy))
 
     def mouse_scroll_event(self, x_offset, y_offet):
         print("mouse_scroll_event", x_offset, y_offet)

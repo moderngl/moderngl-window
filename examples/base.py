@@ -14,7 +14,7 @@ class CameraWindow(mglw.WindowConfig):
         if key == self.wnd.keys.SPACE and action == self.wnd.keys.ACTION_PRESS:
             self.timer.toggle_pause()
 
-    def mouse_position_event(self, x: int, y: int):
+    def mouse_position_event(self, x: int, y: int, dx, dy):
         self.camera.rot_state(x, y)
 
     def resize(self, width: int, height: int):
