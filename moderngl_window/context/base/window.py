@@ -572,6 +572,19 @@ class BaseWindow:
         logger.info('platform: %s', sys.platform)
         logger.info('code: %s', self._ctx.version_code)
 
+    def _calc_mouse_delta(self, xpos: int, ypos: int) -> Tuple[int, int]:
+        """Calculates the mouse position delta for events that don's support this
+
+        Args:
+            xpos (int): current mouse x
+            ypos (int): current mouse y
+        Returns:
+            Tuple[int, int]: The x, y delta values
+        """
+        dx, dy = xpos - self._mouse_pos[0], ypos - self._mouse_pos[1]
+        self._mouse_pos = xpos, ypos
+        return dx, dy
+
 
 class WindowConfig:
     """
