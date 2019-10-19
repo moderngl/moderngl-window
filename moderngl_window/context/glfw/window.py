@@ -158,10 +158,7 @@ class Window(BaseWindow):
             ypos: viewport y pos
         """
         xpos, ypos = int(xpos), int(ypos)
-        # Calculate position delta. glfw does not support delta values.
-        last_x, last_y = self._mouse_pos
-        dx, dy = xpos - last_x, ypos - last_y
-        self._mouse_pos = xpos, ypos
+        dx, dy = self._calc_mouse_delta(xpos, ypos)
 
         if self.mouse_states.any:
             self._mouse_drag_event_func(xpos, ypos, dx, dy)
