@@ -169,6 +169,10 @@ class BaseWindow:
         """Tuple[int, int]: current window size"""
         return self._width, self._height
 
+    @size.setter
+    def size(self, value: Tuple[int, int]):
+        self._width, self._height = value
+
     @property
     def buffer_width(self) -> int:
         """int: the current window buffer width"""
