@@ -113,6 +113,8 @@ class BaseWindow:
         self._key_pressed_map = {}
         self._modifiers = KeyModifiers()
         self._mouse_buttons = MouseButtonStates()
+        # Manual tracking of mouse position used by some windows
+        self._mouse_pos = 0, 0
 
         # Do not allow resize in fullscreen
         if self._fullscreen:
@@ -177,7 +179,7 @@ class BaseWindow:
 
     @size.setter
     def size(self, value: Tuple[int, int]):
-        self._width, self._height = value
+        self._width, self._height = int(value[0]), int(value[1])
 
     @property
     def buffer_width(self) -> int:
@@ -207,10 +209,10 @@ class BaseWindow:
 
     @position.setter
     def position(self, value: Tuple[int, int]):
-        self._position = value
+        self._position = int(value[0]), int(value[1])
 
     @property
-    def pixel_ratio(self):
+    def pixel_ratio(self) -> float:
         """float: The frambuffer/window size ratio"""
         return self.buffer_size[0] / self.size[0]
 
@@ -357,6 +359,19 @@ class BaseWindow:
         self._mouse_position_event_func = func
 
     @property
+    def mouse_drag_event_func(self):
+        """callable: The mouse_drag callable
+
+        This property can also be used to assign a callable.
+        """
+        return self._mouse_drag_event_func
+
+    @mouse_drag_event_func.setter
+    @require_callable
+    def mouse_drag_event_func(self, func):
+        self._mouse_drag_event_func = func
+
+    @property
     def mouse_press_event_func(self):
         """callable: The mouse_press callable
 
@@ -381,19 +396,6 @@ class BaseWindow:
     @require_callable
     def mouse_release_event_func(self, func):
         self._mouse_release_event_func = func
-
-    @property
-    def mouse_drag_event_func(self):
-        """callable: The mouse_drag callable
-
-        This property can also be used to assign a callable.
-        """
-        return self._mouse_drag_event_func
-
-    @mouse_drag_event_func.setter
-    @require_callable
-    def mouse_drag_event_func(self, func):
-        self._mouse_drag_event_func = func
 
     @property
     def unicode_char_entered_func(self):
@@ -755,12 +757,24 @@ class WindowConfig:
             modifiers: Modifier state for shift and ctrl
         """
 
-    def mouse_position_event(self, x: int, y: int):
+    def mouse_position_event(self, x: int, y: int, dx: int, dy: int):
         """Reports the current mouse cursor position in the window
 
         Args:
             x (int): X postion of the mouse cursor
             y Iint): Y position of the mouse cursor
+            dx (int): X delta postion
+            dy Iint): Y delta position
+        """
+
+    def mouse_drag_event(self, x: int, y: int, dx: int, dy: int):
+        """Called when the mouse is moved while a button is pressed.
+
+        Args:
+            x (int): X postion of the mouse cursor
+            y (int): Y position of the mouse cursor
+            dx (int): X delta postion
+            dy Iint): Y delta position
         """
 
     def mouse_press_event(self, x: int, y: int, button: int):
@@ -779,14 +793,6 @@ class WindowConfig:
             x (int): X position the release occured
             y (int): Y position the release occured
             button (int): 1 = Left button, 2 = right button
-        """
-
-    def mouse_drag_event(self, x: int, y: int):
-        """Called when the mouse is moved while a button is pressed.
-
-        Args:
-            x (int): X postion of the mouse cursor
-            y Iint): Y position of the mouse cursor
         """
 
     def mouse_scroll_event(self, x_offset: float, y_offset: float):
