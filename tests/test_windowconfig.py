@@ -61,6 +61,15 @@ class WindowConfigTestCase(WindowConfigTestCase):
         self.assertEqual(self.window.viewport_height, 16)
         self.assertEqual(self.window.frames, 0)
 
+        # set properties
+        self.window.title = "Modified Title"
+        self.assertEqual(self.window.title, "Modified Title")
+        value = not self.window.cursor
+        self.window.cursor = value
+        self.assertEqual(self.window.cursor, value)
+        value = self.window.position[0] + 10, self.window.position[1] + 10
+        self.window.position = value
+        self.assertEqual(self.window.position, value)
 
     def test_missing_wnd_ctx(self):
         """Attempt creating WindogConfig without a window or ctx"""
