@@ -50,6 +50,7 @@ Attributes
 .. autoattribute:: BaseWindow.aspect_ratio
 .. autoattribute:: BaseWindow.samples
 .. autoattribute:: BaseWindow.cursor
+.. autoattribute:: BaseWindow.mouse_exclusivity
 .. autoattribute:: BaseWindow.render_func
 .. autoattribute:: BaseWindow.resize_func
 .. autoattribute:: BaseWindow.key_event_func

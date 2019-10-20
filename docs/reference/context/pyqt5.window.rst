@@ -61,6 +61,7 @@ Attributes
 .. autoattribute:: Window.aspect_ratio
 .. autoattribute:: Window.samples
 .. autoattribute:: Window.cursor
+.. autoattribute:: Window.mouse_exclusivity
 .. autoattribute:: Window.render_func
 .. autoattribute:: Window.resize_func
 .. autoattribute:: Window.key_event_func

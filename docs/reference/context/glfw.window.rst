@@ -21,16 +21,6 @@ Methods
 .. automethod:: Window.set_default_viewport
 .. automethod:: Window.print_context_info
 
-Window Specific Methods
------------------------
-
-.. automethod:: Window.glfw_window_resize_callback
-.. automethod:: Window.glfw_mouse_event_callback
-.. automethod:: Window.glfw_mouse_button_callback
-.. automethod:: Window.glfw_mouse_scroll_callback
-.. automethod:: Window.glfw_key_event_callback
-.. automethod:: Window.glfw_char_callback
-
 Attributes
 ----------
 
@@ -60,6 +50,7 @@ Attributes
 .. autoattribute:: Window.aspect_ratio
 .. autoattribute:: Window.samples
 .. autoattribute:: Window.cursor
+.. autoattribute:: Window.mouse_exclusivity
 .. autoattribute:: Window.render_func
 .. autoattribute:: Window.resize_func
 .. autoattribute:: Window.key_event_func
@@ -74,3 +65,15 @@ Attributes
 .. autoattribute:: Window.mouse_states
 .. autoattribute:: Window.modifiers
 .. autoattribute:: Window.gl_version_code
+
+Window Specific Methods
+-----------------------
+
+.. automethod:: Window.glfw_window_resize_callback
+.. automethod:: Window.glfw_mouse_event_callback
+.. automethod:: Window.glfw_mouse_button_callback
+.. automethod:: Window.glfw_mouse_scroll_callback
+.. automethod:: Window.glfw_key_event_callback
+.. automethod:: Window.glfw_char_callback
+.. automethod:: Window.glfw_cursor_enter
+.. automethod:: Window.glfw_window_focus
