@@ -117,6 +117,27 @@ class Window(BaseWindow):
         self._cursor = value
 
     @property
+    def mouse_exclusivity(self) -> bool:
+        """bool: If mouse exclusivity is enabled.
+
+        When you enable mouse-exclusive mode, the mouse cursor is no longer
+        available. It is not merely hidden – no amount of mouse movement
+        will make it leave your application. This is for example useful
+        when you don't want the mouse leaving the screen when rotating
+        a 3d scene.
+
+        This property can also be set::
+
+            window.mouse_exclusivity = True
+        """
+        return self._mouse_exclusivity
+
+    @mouse_exclusivity.setter
+    def mouse_exclusivity(self, value: bool):
+        self._window.set_exclusive_mouse(value)
+        self._mouse_exclusivity = value
+
+    @property
     def title(self) -> str:
         """str: Window title.
 
