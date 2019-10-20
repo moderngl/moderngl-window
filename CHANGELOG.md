@@ -7,12 +7,18 @@ Breaking Changes
   This means you will also be getting the relative position change.
 * `mouse_drag_event` signature has changed from `(x, y)` to `(x, y, dx, dy)`.
   This means you will also be getting the relative position change.
+* `KeyboardCamera.rot_state` now takes dx and dy instead of x and y
 
 Improvements
+* Window property `mouse_exclusivity` added for all window types.
+  When enabled the mouse cursor is invisible and mouse position changes
+  are only reported through the dx and dy values.
 * Window property `size` is now assignable for all window types
 * Window property `position` is now assignable for all window types
 * Window property `title` is now assignable for all window types
 * Window property `cursor` is now assignable for all window types
+* The `KeyboardCamera` class should now be better at reducing the
+  chance of rotation and movement popping.
 
 ## 1.5.2
 
