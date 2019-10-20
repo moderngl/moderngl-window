@@ -49,12 +49,12 @@ class Window(BaseWindow):
             glfw.window_hint(glfw.REFRESH_RATE, mode.refresh_rate)
 
         self._window = glfw.create_window(self.width, self.height, self.title, monitor, None)
+        self._has_focus = True
 
         if not self._window:
             glfw.terminate()
             raise ValueError("Failed to create window")
 
-        print(self._cursor)
         self.cursor = self._cursor
 
         self._buffer_width, self._buffer_height = glfw.get_framebuffer_size(self._window)
@@ -69,6 +69,8 @@ class Window(BaseWindow):
         glfw.set_scroll_callback(self._window, self.glfw_mouse_scroll_callback)
         glfw.set_window_size_callback(self._window, self.glfw_window_resize_callback)
         glfw.set_char_callback(self._window, self.glfw_char_callback)
+        glfw.set_window_focus_callback(self._window, self.glfw_window_focus)
+        glfw.set_cursor_enter_callback(self._window, self.glfw_cursor_enter)
 
         self.init_mgl_context()
         self.set_default_viewport()
@@ -116,12 +118,38 @@ class Window(BaseWindow):
 
     @cursor.setter
     def cursor(self, value: bool):
-        if value is True:
-            glfw.set_input_mode(self._window, glfw.CURSOR, glfw.CURSOR_NORMAL)
-        elif value is False:
-            glfw.set_input_mode(self._window, glfw.CURSOR, glfw.CURSOR_HIDDEN)
+        if not self.mouse_exclusivity:
+            if value is True:
+                glfw.set_input_mode(self._window, glfw.CURSOR, glfw.CURSOR_NORMAL)
+            elif value is False:
+                glfw.set_input_mode(self._window, glfw.CURSOR, glfw.CURSOR_HIDDEN)
 
         self._cursor = value
+
+    @property
+    def mouse_exclusivity(self) -> bool:
+        """bool: If mouse exclusivity is enabled.
+
+        When you enable mouse-exclusive mode, the mouse cursor is no longer
+        available. It is not merely hidden – no amount of mouse movement
+        will make it leave your application. This is for example useful
+        when you don't want the mouse leaving the screen when rotating
+        a 3d scene.
+
+        This property can also be set::
+
+            window.mouse_exclusivity = True
+        """
+        return self._mouse_exclusivity
+
+    @mouse_exclusivity.setter
+    def mouse_exclusivity(self, value: bool):
+        self._mouse_exclusivity = value
+        if value is True:
+            self._mouse_pos = glfw.get_cursor_pos(self._window)
+            glfw.set_input_mode(self._window, glfw.CURSOR, glfw.CURSOR_DISABLED)
+        else:
+            self.cursor = self._cursor
 
     @property
     def title(self) -> str:
@@ -255,6 +283,24 @@ class Window(BaseWindow):
         self.set_default_viewport()
 
         super().resize(self._buffer_width, self._buffer_height)
+
+    def glfw_window_focus(self, window, focused: int):
+        """Called when the window focus is changed.
+
+        Args:
+            window: The window instance
+            focused (int): 0: defocus, 1: focused
+        """
+        self._has_focus = True if focused == 1 else False
+
+    def glfw_cursor_enter(self, window, enter: int):
+        """called when the cursor enters or leaves the content area of the window.
+
+        Args:
+            window: the window instance
+            enter (int): 0: leave, 1: enter
+        """
+        pass
 
     def destroy(self):
         """Gracefully terminate GLFW"""
