@@ -1,9 +1,18 @@
 # Changelog
 
-## Next version
+## 1.6.0
 
-* Window property `size` is now assignable for all window types. This should used when resizing windows.
+Breaking Changes
+* `mouse_position_event` signature has changed from `(x, y)` to `(x, y, dx, dy)`.
+  This means you will also be getting the relative position change.
+* `mouse_drag_event` signature has changed from `(x, y)` to `(x, y, dx, dy)`.
+  This means you will also be getting the relative position change.
 
+Improvements
+* Window property `size` is now assignable for all window types
+* Window property `position` is now assignable for all window types
+* Window property `title` is now assignable for all window types
+* Window property `cursor` is now assignable for all window types
 
 ## 1.5.2
 
