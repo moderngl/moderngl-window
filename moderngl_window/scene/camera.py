@@ -340,30 +340,25 @@ class KeyboardCamera(Camera):
         elif direction == DOWN:
             self._ydir = NEGATIVE if activate else STILL
 
-    def rot_state(self, x, y) -> None:
-        """Set the rotation state of the camera.
-        This value is normally the current mouse position.
+    def rot_state(self, dx: int, dy: int) -> None:
+        """Update the rotation of the camera.
+
+        This is done by passing in the relative
+        mouse movement change on x and y (delta x, delta y).
+
+        In the past this method took the viewport position
+        of the mouse. This does not work well when
+        mouse exclusivity mode is enabled.
 
         Args:
-            x: viewport x pos
-            y: viewport y pos
+            dx: Relative mouse position change on x
+            dy: Relative mouse position change on y
         """
-        if self.last_x is None:
-            self.last_x = x
-        if self.last_y is None:
-            self.last_y = y
+        dx *= self._mouse_sensitivity
+        dy *= self._mouse_sensitivity
 
-        x_offset = self.last_x - x
-        y_offset = self.last_y - y
-
-        self.last_x = x
-        self.last_y = y
-
-        x_offset *= self._mouse_sensitivity
-        y_offset *= self._mouse_sensitivity
-
-        self.yaw -= x_offset
-        self.pitch += y_offset
+        self.yaw -= dx
+        self.pitch += dy
 
         if self.pitch > 85.0:
             self.pitch = 85.0
