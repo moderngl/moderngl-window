@@ -188,12 +188,11 @@ class KeyboardCamera(Camera):
         self._zdir = STILL
         self._ydir = STILL
         self._last_time = 0
+        self._last_rot_time = 0
 
         # Velocity in axis units per second
         self._velocity = 10.0
         self._mouse_sensitivity = 0.5
-        self.last_x = None
-        self.last_y = None
 
         super().__init__(fov=fov, aspect_ratio=aspect_ratio, near=near, far=far)
 
@@ -354,6 +353,16 @@ class KeyboardCamera(Camera):
             dx: Relative mouse position change on x
             dy: Relative mouse position change on y
         """
+        now = time.time()
+        delta = now - self._last_rot_time
+        self._last_rot_time = now
+
+        # Creatly decrease the chance of camera popping.
+        # This can happen when the mouse enters and leaves the window
+        # or when getting focus again.
+        if delta > 0.1 and max(abs(dx), abs(dy)) > 2:
+            return
+
         dx *= self._mouse_sensitivity
         dy *= self._mouse_sensitivity
 
