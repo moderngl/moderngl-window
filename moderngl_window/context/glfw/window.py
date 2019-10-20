@@ -123,6 +123,21 @@ class Window(BaseWindow):
 
         self._cursor = value
 
+    @property
+    def title(self) -> str:
+        """str: Window title.
+
+        This property can also be set::
+
+            window.title = "New Title"
+        """
+        return self._title
+
+    @title.setter
+    def title(self, value: str):
+        glfw.set_window_title(self._window, value)
+        self._title = value
+
     def close(self) -> None:
         """Suggest to glfw the window should be closed soon"""
         glfw.set_window_should_close(self._window, True)

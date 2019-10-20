@@ -48,7 +48,7 @@ class Window(BaseWindow):
 
         # Create the OpenGL widget
         self._widget = QtOpenGL.QGLWidget(gl)
-        self._widget.setWindowTitle(self._title)
+        self.title = self._title
 
         # If fullscreen we change the window to match the desktop on the primary screen
         if self.fullscreen:
@@ -155,6 +155,21 @@ class Window(BaseWindow):
             self._widget.setCursor(QtCore.Qt.BlankCursor)
 
         self._cursor = value
+
+    @property
+    def title(self) -> str:
+        """str: Window title.
+
+        This property can also be set::
+
+            window.title = "New Title"
+        """
+        return self._title
+
+    @title.setter
+    def title(self, value: str):
+        self._widget.setWindowTitle(value)
+        self._title = value
 
     def swap_buffers(self) -> None:
         """Swap buffers, set viewport, trigger events and increment frame counter"""

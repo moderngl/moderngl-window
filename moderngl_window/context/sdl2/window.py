@@ -1,5 +1,5 @@
 from typing import Tuple
-from ctypes import c_int
+from ctypes import c_int, c_char_p
 import sdl2
 import sdl2.ext
 import sdl2.video
@@ -117,6 +117,22 @@ class Window(BaseWindow):
     def cursor(self, value: bool):
         sdl2.SDL_ShowCursor(sdl2.SDL_ENABLE if value else sdl2.SDL_DISABLE)
         self._cursor = value
+
+    @property
+    def title(self) -> str:
+        """str: Window title.
+
+        This property can also be set::
+
+            window.title = "New Title"
+        """
+        return self._title
+
+    @title.setter
+    def title(self, value: str):
+        data = c_char_p(value.encode())
+        sdl2.SDL_SetWindowTitle(self._window, data)
+        self._title = value
 
     def swap_buffers(self) -> None:
         """Swap buffers, set viewport, trigger events and increment frame counter"""

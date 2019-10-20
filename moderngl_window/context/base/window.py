@@ -148,8 +148,17 @@ class BaseWindow:
 
     @property
     def title(self) -> str:
-        """str: Window title"""
+        """str: Window title.
+
+        This property can also be set::
+
+            window.title = "New Title"
+        """
         return self._title
+
+    @title.setter
+    def title(self, value: str):
+        self._title = value
 
     @property
     def gl_version(self) -> Tuple[int, int]:

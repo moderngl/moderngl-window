@@ -117,6 +117,21 @@ class Window(BaseWindow):
         self._cursor = value
 
     @property
+    def title(self) -> str:
+        """str: Window title.
+
+        This property can also be set::
+
+            window.title = "New Title"
+        """
+        return self._title
+
+    @title.setter
+    def title(self, value: str):
+        self._window.set_caption(value)
+        self._title = value
+
+    @property
     def is_closing(self) -> bool:
         """Check pyglet's internal exit state"""
         return self._window.has_exit or super().is_closing

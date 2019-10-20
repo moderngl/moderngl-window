@@ -40,7 +40,7 @@ class Window(BaseWindow):
 
         self._tk.protocol("WM_DELETE_WINDOW", self.tk_close_window)
 
-        self._tk.title(self._title)
+        self.title = self._title
 
         # Ensure the window is opened/visible
         self._tk.update()
@@ -99,6 +99,21 @@ class Window(BaseWindow):
             self._tk.config(cursor="none")
 
         self._cursor = value
+
+    @property
+    def title(self) -> str:
+        """str: Window title.
+
+        This property can also be set::
+
+            window.title = "New Title"
+        """
+        return self._title
+
+    @title.setter
+    def title(self, value: str):
+        self._tk.title(value)
+        self._title = value
 
     def swap_buffers(self) -> None:
         """Swap buffers, set viewport, trigger events and increment frame counter"""
