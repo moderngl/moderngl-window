@@ -164,11 +164,11 @@ Implement the ``mouse_*`` methods to handle mouse input.
 
 .. code:: python
 
-    def mouse_position_event(self, x, y):
-        print("Mouse position:", x, y)
+    def mouse_position_event(self, x, y, dx, dy):
+        print("Mouse position:", x, y, dx, dy)
 
-    def mouse_drag_event(self, x, y):
-        print("Mouse drag:", x, y)
+    def mouse_drag_event(self, x, y, dx, dy):
+        print("Mouse drag:", x, y, dx, dy)
 
     def mouse_scroll_event(self, x_offset: float, y_offset: float):
         prtin("Mouse wheel:', x_offset, y_offset)
