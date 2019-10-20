@@ -27,8 +27,7 @@ class Window(BaseWindow):
         if self._fullscreen:
             self._tk.attributes('-fullscreen', True)
 
-        if self._cursor is False:
-            self._tk.config(cursor="none")
+        self.cursor = self._cursor
 
         # Set up events
         self._gl_widget.bind('<Configure>', self.tk_resize)
@@ -80,6 +79,26 @@ class Window(BaseWindow):
     @position.setter
     def position(self, value: Tuple[int, int]):
         self._tk.geometry('+{}+{}'.format(value[0], value[1]))
+
+    @property
+    def cursor(self) -> bool:
+        """bool: Should the mouse cursor be visible inside the window?
+
+        This property can also be assigned to::
+
+            # Disable cursor
+            window.cursor = False
+        """
+        return self._cursor
+
+    @cursor.setter
+    def cursor(self, value: bool):
+        if value is True:
+            self._tk.config(cursor="arrow")
+        else:
+            self._tk.config(cursor="none")
+
+        self._cursor = value
 
     def swap_buffers(self) -> None:
         """Swap buffers, set viewport, trigger events and increment frame counter"""

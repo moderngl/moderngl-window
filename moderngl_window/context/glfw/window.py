@@ -54,8 +54,8 @@ class Window(BaseWindow):
             glfw.terminate()
             raise ValueError("Failed to create window")
 
-        if not self.cursor:
-            glfw.set_input_mode(self._window, glfw.CURSOR, glfw.CURSOR_DISABLED)
+        print(self._cursor)
+        self.cursor = self._cursor
 
         self._buffer_width, self._buffer_height = glfw.get_framebuffer_size(self._window)
         glfw.make_context_current(self._window)
@@ -102,6 +102,26 @@ class Window(BaseWindow):
     @position.setter
     def position(self, value: Tuple[int, int]):
         self._position = glfw.set_window_pos(self._window, value[0], value[1])
+
+    @property
+    def cursor(self) -> bool:
+        """bool: Should the mouse cursor be visible inside the window?
+
+        This property can also be assigned to::
+
+            # Disable cursor
+            window.cursor = False
+        """
+        return self._cursor
+
+    @cursor.setter
+    def cursor(self, value: bool):
+        if value is True:
+            glfw.set_input_mode(self._window, glfw.CURSOR, glfw.CURSOR_NORMAL)
+        elif value is False:
+            glfw.set_input_mode(self._window, glfw.CURSOR, glfw.CURSOR_HIDDEN)
+
+        self._cursor = value
 
     def close(self) -> None:
         """Suggest to glfw the window should be closed soon"""

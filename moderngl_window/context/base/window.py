@@ -282,8 +282,18 @@ class BaseWindow:
 
     @property
     def cursor(self) -> bool:
-        """bool: Should the mouse cursor be visible inside the window?"""
+        """bool: Should the mouse cursor be visible inside the window?
+
+        This property can also be assigned to::
+
+            # Disable cursor
+            window.cursor = False
+        """
         return self._cursor
+
+    @cursor.setter
+    def cursor(self, value: bool):
+        self._cursor = value
 
     @config.setter
     def config(self, config):

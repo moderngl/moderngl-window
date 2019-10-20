@@ -34,7 +34,7 @@ class Window(BaseWindow):
         sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_DOUBLEBUFFER, 1)
         sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_DEPTH_SIZE, 24)
 
-        sdl2.SDL_ShowCursor(sdl2.SDL_ENABLE if self.cursor else sdl2.SDL_DISABLE)
+        self.cursor = self._cursor
 
         if self.samples > 1:
             sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_MULTISAMPLEBUFFERS, 1)
@@ -101,6 +101,22 @@ class Window(BaseWindow):
     @position.setter
     def position(self, value: Tuple[int, int]):
         sdl2.SDL_SetWindowPosition(self._window, value[0], value[1])
+
+    @property
+    def cursor(self) -> bool:
+        """bool: Should the mouse cursor be visible inside the window?
+
+        This property can also be assigned to::
+
+            # Disable cursor
+            window.cursor = False
+        """
+        return self._cursor
+
+    @cursor.setter
+    def cursor(self, value: bool):
+        sdl2.SDL_ShowCursor(sdl2.SDL_ENABLE if value else sdl2.SDL_DISABLE)
+        self._cursor = value
 
     def swap_buffers(self) -> None:
         """Swap buffers, set viewport, trigger events and increment frame counter"""

@@ -76,8 +76,7 @@ class Window(BaseWindow):
         # Needs to be set before show()
         self._widget.resizeGL = self.resize
 
-        if not self.cursor:
-            self._widget.setCursor(QtCore.Qt.BlankCursor)
+        self.cursor = self._cursor
 
         if self.fullscreen:
             self._widget.showFullScreen()
@@ -136,6 +135,26 @@ class Window(BaseWindow):
     @position.setter
     def position(self, value: Tuple[int, int]):
         self._widget.setGeometry(value[0], value[1], self._width, self._height)
+
+    @property
+    def cursor(self) -> bool:
+        """bool: Should the mouse cursor be visible inside the window?
+
+        This property can also be assigned to::
+
+            # Disable cursor
+            window.cursor = False
+        """
+        return self._cursor
+
+    @cursor.setter
+    def cursor(self, value: bool):
+        if value is True:
+            self._widget.setCursor(QtCore.Qt.ArrowCursor)
+        else:
+            self._widget.setCursor(QtCore.Qt.BlankCursor)
+
+        self._cursor = value
 
     def swap_buffers(self) -> None:
         """Swap buffers, set viewport, trigger events and increment frame counter"""

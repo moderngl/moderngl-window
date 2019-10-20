@@ -54,7 +54,7 @@ class Window(BaseWindow):
             config=config,
         )
 
-        self._window.set_mouse_visible(self.cursor)
+        self.cursor = self._cursor
 
         self._window.event(self.on_key_press)
         self._window.event(self.on_key_release)
@@ -99,6 +99,22 @@ class Window(BaseWindow):
     @position.setter
     def position(self, value: Tuple[int, int]):
         self._window.set_location(value[0], value[1])
+
+    @property
+    def cursor(self) -> bool:
+        """bool: Should the mouse cursor be visible inside the window?
+
+        This property can also be assigned to::
+
+            # Disable cursor
+            window.cursor = False
+        """
+        return self._cursor
+
+    @cursor.setter
+    def cursor(self, value: bool):
+        self._window.set_mouse_visible(value)
+        self._cursor = value
 
     @property
     def is_closing(self) -> bool:
