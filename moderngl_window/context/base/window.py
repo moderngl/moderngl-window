@@ -272,7 +272,14 @@ class BaseWindow:
 
     @property
     def config(self) -> 'WindowConfig':
-        """Get the current WindowConfig instance"""
+        """Get the current WindowConfig instance
+
+        This property can also be set.
+        Assinging a WindowConfig instance will automatically
+        set up the necessary event callback methods::
+
+            window.config = window_config_instance
+        """
         return self._config
 
     @property
@@ -327,13 +334,6 @@ class BaseWindow:
 
     @config.setter
     def config(self, config):
-        """Set up the WindowConfig instance.
-
-        A WindowConfig class is not required, but callback methods must be mapped.
-
-        Args:
-            config (WindowConfig): The WindowConfig instance
-        """
         self.render_func = getattr(config, 'render', dummy_func)
         self.resize_func = getattr(config, 'resize', dummy_func)
         self.key_event_func = getattr(config, 'key_event', dummy_func)
