@@ -63,6 +63,10 @@ class WindowEvents(mglw.WindowConfig):
                 random.shuffle(title)
                 self.wnd.title = ''.join(title)
 
+            # Toggle mouse exclusivity
+            if key == keys.M:
+                self.wnd.mouse_exclusivity = not self.wnd.mouse_exclusivity
+
     def mouse_position_event(self, x, y, dx, dy):
         print("Mouse drag pos={} {} delta={} {}".format(x, y, dx, dy))
 

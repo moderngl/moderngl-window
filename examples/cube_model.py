@@ -17,6 +17,7 @@ class CubeModel(mglw.WindowConfig):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.wnd.mouse_exclusivity = True
         self.scene = self.load_scene('scenes/crate.obj')
         # self.scene = self.load_scene('scenes/Apollo_17.stl')
 
@@ -68,7 +69,7 @@ class CubeModel(mglw.WindowConfig):
         self.camera.key_input(key, action, modifiers)
 
     def mouse_position_event(self, x: int, y: int, dx, dy):
-        self.camera.rot_state(x, y)
+        self.camera.rot_state(-dx, -dy)
 
     def resize(self, width: int, height: int):
         self.camera.projection.update(aspect_ratio=self.wnd.aspect_ratio)
