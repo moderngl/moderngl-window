@@ -1,4 +1,5 @@
 import moderngl_window as mglw
+import random
 
 
 class WindowEvents(mglw.WindowConfig):
@@ -55,6 +56,12 @@ class WindowEvents(mglw.WindowConfig):
             # toggle cursor
             if key == keys.C:
                 self.wnd.cursor = not self.wnd.cursor
+
+            # Shuffle window tittle
+            if key == keys.T:
+                title = list(self.wnd.title)
+                random.shuffle(title)
+                self.wnd.title = ''.join(title)
 
     def mouse_position_event(self, x, y, dx, dy):
         print("Mouse drag pos={} {} delta={} {}".format(x, y, dx, dy))
