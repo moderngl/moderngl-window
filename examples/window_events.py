@@ -21,6 +21,10 @@ class WindowEvents(mglw.WindowConfig):
     def resize(self, width: int, height: int):
         print("Window was resized. buffer size is {} x {}".format(width, height))
 
+    def iconify(self, iconify: bool):
+        """Window hide/minimize and restore"""
+        print("Window was iconified:", iconify)
+
     def key_event(self, key, action, modifiers):
         keys = self.wnd.keys
 
