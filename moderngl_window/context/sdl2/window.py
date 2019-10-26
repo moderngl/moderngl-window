@@ -244,6 +244,10 @@ class Window(BaseWindow):
             elif event.type == sdl2.SDL_WINDOWEVENT:
                 if event.window.event == sdl2.SDL_WINDOWEVENT_RESIZED:
                     self.resize(event.window.data1, event.window.data2)
+                elif event.window.event == sdl2.SDL_WINDOWEVENT_MINIMIZED:
+                    self._iconify_func(True)
+                elif event.window.event == sdl2.SDL_WINDOWEVENT_RESTORED:
+                    self._iconify_func(False)
 
     def destroy(self) -> None:
         """Gracefully close the window"""
