@@ -71,6 +71,7 @@ class Window(BaseWindow):
         glfw.set_char_callback(self._window, self.glfw_char_callback)
         glfw.set_window_focus_callback(self._window, self.glfw_window_focus)
         glfw.set_cursor_enter_callback(self._window, self.glfw_cursor_enter)
+        glfw.set_window_iconify_callback(self._window, self.glfw_window_iconify)
 
         self.init_mgl_context()
         self.set_default_viewport()
@@ -301,6 +302,15 @@ class Window(BaseWindow):
             enter (int): 0: leave, 1: enter
         """
         pass
+
+    def glfw_window_iconify(self, window, iconified: int):
+        """Called when the windiw is minimized or restored.
+
+        Args:
+            window: The window
+            iconified (int): 1 = minimized, 0 = restored.
+        """
+        self._iconify_func(True if iconified == 1 else False)
 
     def destroy(self):
         """Gracefully terminate GLFW"""
