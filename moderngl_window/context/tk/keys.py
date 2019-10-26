@@ -15,6 +15,7 @@ class Keys(BaseKeys):
     # <KeyPress event state=Mod1 keysym=d keycode=68 char='d'>
     # <KeyPress event state=Shift|Mod1 keysym=D keycode=68 char='D'>
     #
+    # See : https://www.tcl.tk/man/tcl8.4/TkCmd/keysyms.htm
     ESCAPE = 'Escape'
     SPACE = ' '
     ENTER = 'Return'
