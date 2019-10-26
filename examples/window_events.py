@@ -68,7 +68,7 @@ class WindowEvents(mglw.WindowConfig):
                 self.wnd.mouse_exclusivity = not self.wnd.mouse_exclusivity
 
     def mouse_position_event(self, x, y, dx, dy):
-        print("Mouse drag pos={} {} delta={} {}".format(x, y, dx, dy))
+        print("Mouse position pos={} {} delta={} {}".format(x, y, dx, dy))
 
     def mouse_drag_event(self, x, y, dx, dy):
         print("Mouse drag pos={} {} delta={} {}".format(x, y, dx, dy))
