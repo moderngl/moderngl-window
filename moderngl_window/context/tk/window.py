@@ -37,6 +37,8 @@ class Window(BaseWindow):
         self._tk.bind('<Button>', self.tk_mouse_button_press)
         self._tk.bind('<ButtonRelease>', self.tk_mouse_button_release)
         self._tk.bind('<MouseWheel>', self.tk_mouse_wheel)
+        self._tk.bind('<Map>', self.tk_map)
+        self._tk.bind('<Unmap>', self.tk_unmap)
 
         self._tk.protocol("WM_DELETE_WINDOW", self.tk_close_window)
 
@@ -234,6 +236,12 @@ class Window(BaseWindow):
     def tk_close_window(self) -> None:
         """tkinter close window callback"""
         self._close = True
+
+    def tk_map(self, event):
+        self._iconify_func(False)
+
+    def tk_unmap(self, event):
+        self._iconify_func(True)
 
     def destroy(self) -> None:
         """Destroy logic for tkinter window."""
