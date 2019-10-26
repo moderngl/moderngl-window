@@ -65,6 +65,8 @@ class Window(BaseWindow):
         self._window.event(self.on_mouse_release)
         self._window.event(self.on_mouse_scroll)
         self._window.event(self.on_text)
+        self._window.event(self.on_show)
+        self._window.event(self.on_hide)
 
         self.init_mgl_context()
         self._buffer_width, self._buffer_height = self._window.get_framebuffer_size()
@@ -288,6 +290,14 @@ class Window(BaseWindow):
         self.set_default_viewport()
 
         super().resize(self._buffer_width, self._buffer_height)
+
+    def on_show(self):
+        """Called when window first appear or restored from hidden state"""
+        self._iconify_func(False)
+
+    def on_hide(self):
+        """Called when window is minimized"""
+        self._iconify_func(True)
 
     def destroy(self):
         """Destroy the pyglet window"""
