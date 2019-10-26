@@ -53,6 +53,7 @@ Attributes
 .. autoattribute:: Window.mouse_exclusivity
 .. autoattribute:: Window.render_func
 .. autoattribute:: Window.resize_func
+.. autoattribute:: Window.iconify_func
 .. autoattribute:: Window.key_event_func
 .. autoattribute:: Window.mouse_position_event_func
 .. autoattribute:: Window.mouse_press_event_func
@@ -77,3 +78,4 @@ Window Specific Methods
 .. automethod:: Window.glfw_char_callback
 .. automethod:: Window.glfw_cursor_enter
 .. automethod:: Window.glfw_window_focus
+.. automethod:: Window.glfw_window_iconify

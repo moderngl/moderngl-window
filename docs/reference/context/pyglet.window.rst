@@ -33,6 +33,8 @@ Window Specific Methods
 .. automethod:: Window.on_mouse_scroll
 .. automethod:: Window.on_text
 .. automethod:: Window.on_resize
+.. automethod:: Window.on_show
+.. automethod:: Window.on_hide
 
 Attributes
 ----------
@@ -66,6 +68,7 @@ Attributes
 .. autoattribute:: Window.mouse_exclusivity
 .. autoattribute:: Window.render_func
 .. autoattribute:: Window.resize_func
+.. autoattribute:: Window.iconify_func
 .. autoattribute:: Window.key_event_func
 .. autoattribute:: Window.mouse_position_event_func
 .. autoattribute:: Window.mouse_press_event_func
