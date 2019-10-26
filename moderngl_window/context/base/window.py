@@ -95,6 +95,7 @@ class BaseWindow:
         # Callback functions
         self._render_func = dummy_func
         self._resize_func = dummy_func
+        self._iconify_func = dummy_func
         self._key_event_func = dummy_func
         self._mouse_position_event_func = dummy_func
         self._mouse_press_event_func = dummy_func
@@ -336,6 +337,7 @@ class BaseWindow:
     def config(self, config):
         self.render_func = getattr(config, 'render', dummy_func)
         self.resize_func = getattr(config, 'resize', dummy_func)
+        self.iconify_func = getattr(config, 'iconify', dummy_func)
         self.key_event_func = getattr(config, 'key_event', dummy_func)
         self.mouse_position_event_func = getattr(config, 'mouse_position_event', dummy_func)
         self.mouse_press_event_func = getattr(config, 'mouse_press_event', dummy_func)
@@ -371,6 +373,19 @@ class BaseWindow:
     @require_callable
     def resize_func(self, func):
         self._resize_func = func
+
+    @property
+    def iconify_func(self):
+        """callable: The iconify/show/hide callback function
+
+        The property can also be used to assign a callable.
+        """
+        return self._iconify_func
+
+    @iconify_func.setter
+    @require_callable
+    def iconify_func(self, func):
+        self._iconify_func = func
 
     @property
     def key_event_func(self):
@@ -794,6 +809,15 @@ class WindowConfig:
         Args:
             width (int): width in buffer size (not window size)
             height (int): height in buffer size (not window size)
+        """
+
+    def iconify(self, iconified: bool):
+        """
+        Called when the window is minimized/iconified
+        or restored from this state
+
+        Args:
+            iconified (bool): If ``True`` the window is iconified/minimized. Otherwise restored.
         """
 
     def key_event(self, key: Any, action: Any, modifiers: KeyModifiers):
