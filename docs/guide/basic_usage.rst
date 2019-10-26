@@ -1,5 +1,5 @@
 
-Basic Usage (WindowConfig)
+Basic usage (WindowConfig)
 ==========================
 
 .. note:: This section is only relevant when using
@@ -15,7 +15,7 @@ provides the window and moderngl context.
 The API docs for this class alone should cover a lot of ground,
 but we'll go through the basics here.
 
-Basic Example
+Basic example
 -------------
 
 The :py:class:`~moderngl_window.context.base.window.WindowConfig` is
@@ -54,7 +54,7 @@ that can be accessed later with ``self``.
 - ``self.timer``: The :py:class:`moderngl_window.timers.clock.Timer`
   instance to control the current time (Values passed into ``render``)
 
-Resource Loading
+Resource loading
 ----------------
 
 The :py:class:`~moderngl_window.context.base.window.WindowConfig` class has
@@ -104,7 +104,7 @@ You can change what window class is used by passing in the
 ``--window`` option. Optionally you can modify the
 :py:attr:`~moderngl_window.conf.Settings.WINDOW` attribute directly.
 
-Command Line Arguments
+Command line arguments
 ----------------------
 
 The :py:func:`~moderngl_window.run_window_config` method also reads arguments
@@ -116,7 +116,7 @@ Example::
 
 See code for :py:func:`moderngl_window.parse_args` for more details.
 
-Window Events
+Window events
 -------------
 
 Implement the ``resize`` method to customize window resize handling.
@@ -126,7 +126,7 @@ Implement the ``resize`` method to customize window resize handling.
     def resize(self, width: int, height: int):
         print("Window was resized. buffer size is {} x {}".format(width, height))
 
-Keyboard Input
+Keyboard input
 --------------
 
 Implement the ``key_event`` and ``unicode_char_entered`` method to handle
@@ -157,7 +157,7 @@ key events.
         print('character entered:', char)
 
 
-Mouse Input
+Mouse input
 -----------
 
 Implement the ``mouse_*`` methods to handle mouse input.

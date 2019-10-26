@@ -2,7 +2,7 @@
 Installation
 ============
 
-Installing With pip
+Installing with pip
 -------------------
 
 moderngl_window is available on PyPI::
@@ -11,7 +11,7 @@ moderngl_window is available on PyPI::
     # Package name with dash also works
     pip install moderngl-window
 
-Optional Dependencies
+Optional dependencies
 ---------------------
 
 We try to have as few requirements as possible and instead offer
@@ -45,7 +45,7 @@ For windows the DLLs can simply be placed in the root of your project.
 - GLFW : https://www.glfw.org/
 - SDL2 : https://www.libsdl.org/download-2.0.php
 
-Installing From Source
+Installing from source
 ----------------------
 
 .. code:: bash
@@ -67,7 +67,7 @@ Installing the package in editable mode will make you able
 to run tests and examples. We highly recommend using
 virtualenvs.
 
-Running Examples
+Running examples
 ----------------
 
 Assuming you installed from source you should be able to run the examples
@@ -76,7 +76,7 @@ in the root of the project::
 
     pip install -r requirements.txt
 
-Running Tests
+Running tests
 -------------
 
 Install test requirements::

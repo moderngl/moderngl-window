@@ -2,7 +2,7 @@
 The Resource System
 ===================
 
-Resource Types
+Resource types
 --------------
 
 The resource system has four different resource
@@ -20,7 +20,7 @@ directories, one or multiple loader classes and a
 class we use to describe the resource we are loading
 with all its parameters.
 
-Resource Paths
+Resource paths
 --------------
 
 Resources are loaded using relative paths. These paths
@@ -67,7 +67,7 @@ in more complex situations. It could even be used to
 support themes by promoting a theme directory overriding
 global/default resources or some default theme directory.
 
-Resource Descriptions
+Resource descriptions
 ---------------------
 
 Resource descriptions are basically just classes
@@ -97,7 +97,7 @@ by extending the base
 :py:class:`~moderngl_window.meta.base.ResourceDescription` class.
 This is not uncommon when for example making a new loader class.
 
-Loading Resources
+Loading resources
 -----------------
 
 Now that we know about the different resoure categories,

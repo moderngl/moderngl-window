@@ -2,8 +2,16 @@
 Window Guide
 ============
 
+We support the following window types:
 
-Using Built In Window Types
+* pyglet
+* glfw
+* sdl2
+* pyside2
+* pyqt5
+* headless
+
+Using built in window types
 ---------------------------
 
 The library provides shortcuts for window creation
@@ -102,7 +110,7 @@ loading.
 When using the built in window types the context activation
 is normally done for you on creation.
 
-Register Resource Directories
+Register resource directories
 -----------------------------
 
 The resource loading system are using relative paths. These paths
