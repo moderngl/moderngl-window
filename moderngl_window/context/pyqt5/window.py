@@ -94,6 +94,8 @@ class Window(BaseWindow):
         self._widget.mouseReleaseEvent = self.mouse_release_event
         self._widget.wheelEvent = self.mouse_wheel_event
         self._widget.closeEvent = self.close_event
+        self._widget.showEvent = self.show_event
+        self._widget.hideEvent = self.hide_event
 
         # Attach to the context
         self.init_mgl_context()
@@ -299,6 +301,14 @@ class Window(BaseWindow):
             event: The qtevent instance
         """
         self.close()
+
+    def show_event(self, event):
+        """The standard Qt show event"""
+        self._iconify_func(False)
+
+    def hide_event(self, event):
+        """The standard Qt hide event"""
+        self._iconify_func(True)
 
     def destroy(self) -> None:
         """Quit the Qt application to exit the window gracefully"""
