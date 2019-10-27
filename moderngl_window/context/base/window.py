@@ -65,7 +65,7 @@ class BaseWindow:
     mouse = MouseButtons
 
     def __init__(self, title="ModernGL", gl_version=(3, 3), size=(1280, 720), resizable=True,
-                 fullscreen=False, vsync=True, aspect_ratio=16 / 9, samples=4, cursor=True,
+                 fullscreen=False, vsync=True, aspect_ratio: float = None, samples=4, cursor=True,
                  **kwargs):
         """Initialize a window instance.
 
@@ -76,7 +76,8 @@ class BaseWindow:
             resizable (bool): Should the window be resizable?
             fullscreen (bool): Open window in fullsceeen mode
             vsync (bool): Enable/disable vsync
-            aspect_ratio (float): The desired aspect ratio. Can be set to None.
+            aspect_ratio (float): The desired fixed aspect ratio. Can be set to ``None`` to make
+                                  aspect ratio be based on the actual window size.
             samples (int): Number of MSAA samples for the default framebuffer
             cursor (bool): Enable/disable displaying the cursor inside the window
         """
@@ -88,7 +89,7 @@ class BaseWindow:
         self._buffer_width, self._buffer_height = size
         self._fullscreen = fullscreen
         self._vsync = vsync
-        self._aspect_ratio = aspect_ratio
+        self._fixed_aspect_ratio = aspect_ratio
         self._samples = samples
         self._cursor = cursor
 
@@ -290,8 +291,17 @@ class BaseWindow:
 
     @property
     def aspect_ratio(self) -> float:
-        """float: Aspect ratio configured for the viewport"""
-        return self._aspect_ratio
+        """float: The current aspect ratio of the window.
+        If a fixed aspect ratio was passed to the window
+        initializer this value will always be returned.
+        Otherwise ``width / height`` will be returned.
+
+        This property is read only.
+        """
+        if self._fixed_aspect_ratio:
+            return self._fixed_aspect_ratio
+
+        return self.width / self.height
 
     @property
     def samples(self) -> float:
@@ -584,13 +594,13 @@ class BaseWindow:
         If aspect ratio is None the viewport will be scaled
         to the entire window size regardless of size.
         """
-        if self._aspect_ratio:
-            expected_width = int(self._buffer_height * self._aspect_ratio)
-            expected_height = int(expected_width / self._aspect_ratio)
+        if self._fixed_aspect_ratio:
+            expected_width = int(self._buffer_height * self._fixed_aspect_ratio)
+            expected_height = int(expected_width / self._fixed_aspect_ratio)
 
             if expected_width > self._buffer_width:
                 expected_width = self._buffer_width
-                expected_height = int(expected_width / self._aspect_ratio)
+                expected_height = int(expected_width / self._fixed_aspect_ratio)
 
             blank_space_x = self._buffer_width - expected_width
             blank_space_y = self._buffer_height - expected_height
