@@ -304,6 +304,28 @@ class BaseWindow:
         return self.width / self.height
 
     @property
+    def fixed_aspect_ratio(self):
+        """float: The fixed aspect ratio for the window.
+
+        Can be set to ``None`` to disable fixed aspect ratio
+        making the aspect ratio adjust to the actual window size
+
+        This will affects how the viewport is calculated and
+        the reported value from the ``aspect_ratio`` property::
+
+            # Enabled fixed aspect ratio
+            window.fixed_aspect_ratio = 16 / 9
+
+            # Disable fixed aspect ratio
+            window.fixed_aspect_ratio = None
+        """
+        return self._fixed_aspect_ratio
+
+    @fixed_aspect_ratio.setter
+    def fixed_aspect_ratio(self, value: float):
+        self._fixed_aspect_ratio = value
+
+    @property
     def samples(self) -> float:
         """float: Number of Multisample anti-aliasing (MSAA) samples"""
         return self._samples
@@ -587,12 +609,14 @@ class BaseWindow:
 
     def set_default_viewport(self) -> None:
         """
-        Calculates the viewport based on the configured aspect ratio.
-        Will add black borders and center the viewport if the window
-        do not match the configured viewport.
+        Calculates the and sets the viewport based on window configuration.
 
-        If aspect ratio is None the viewport will be scaled
+        The viewport will based on the configured fixed aspect ratio if set.
+        If no fixed aspect ratio is set the viewport will be scaled
         to the entire window size regardless of size.
+
+        Will add black borders and center the viewport if the window
+        do not match the configured viewport (fixed only)
         """
         if self._fixed_aspect_ratio:
             expected_width = int(self._buffer_height * self._fixed_aspect_ratio)
