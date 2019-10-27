@@ -10,6 +10,8 @@ Breaking Changes
 * `KeyboardCamera.rot_state` now takes dx and dy instead of x and y
 
 Improvements
+* Added window callback `iconify` for all window types that will be called
+  when a window is minimised or restored
 * Window property `mouse_exclusivity` added for all window types.
   When enabled the mouse cursor is invisible and mouse position changes
   are only reported through the dx and dy values.
@@ -18,7 +20,13 @@ Improvements
 * Window property `title` is now assignable for all window types
 * Window property `cursor` is now assignable for all window types
 * The `KeyboardCamera` class should now be better at reducing the
-  chance of rotation and movement popping.
+  chance of rotation and movement popping
+* All windows now properly separate viewport calculations when
+  using fixed and free viewport (derived from window size)
+* The window `aspect_ratio` property should always return
+  the a value based on if the aspect ratio is fixed or free
+* Added window `fixed_aspect_ratio` property so users can freely
+  control this after window creation
 
 ## 1.5.2
 
