@@ -18,8 +18,8 @@ Please report bugs or post questions/feedback on [github](https://github.com/mod
   This can save users a lot of time and is often more difficult than most people
   imagine it to be.
 * Easily create a window for ModernGL using Pyglet, PySide2, GLFW, SDL2, PyQt5
-  or tkinter supporing window, keyboard and mouse controls. These events are unified
-  into a single system so your project can work with any window.
+  or tkinter supporting a wide range of window, keyboard and mouse events.
+  These events are unified into a single system so your project can work with any window.
 * Load 2D textures and texture arrays
 * Load shaders as single or multiple `glsl` files
 * Load objects/scenes from wavefront/obj, GLTF 2.0 or STL
