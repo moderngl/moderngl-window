@@ -3,43 +3,24 @@ from pyrr import Matrix44, matrix44, Vector3
 
 import moderngl
 import moderngl_window as mglw
-from moderngl_window import resources
 from moderngl_window.scene.camera import KeyboardCamera
-
-resources.register_dir((Path(__file__).parent / 'resources').resolve())
-# Test models from: https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0
-# resources.register_dir(Path(__file__, '../../../glTF-Sample-Models/2.0').resolve())
 
 
 class CubeModel(mglw.WindowConfig):
     # window_size = (1920, 1080)
     aspect_ratio = 16 / 9
+    resource_dir = Path(__file__).parent.resolve() / 'resources'
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.wnd.mouse_exclusivity = True
+        # self.wnd.mouse_exclusivity = True
+
         self.scene = self.load_scene('scenes/crate.obj')
         # self.scene = self.load_scene('scenes/Apollo_17.stl')
-
-        # --- glTF-Sample-Models ---
-        # self.scene = self.load_scene('2CylinderEngine/glTF-Binary/2CylinderEngine.glb')
-        # self.scene = self.load_scene('CesiumMilkTruck/glTF-Embedded/CesiumMilkTruck.gltf')
-        # self.scene = self.load_scene('CesiumMilkTruck/glTF-Binary/CesiumMilkTruck.glb')
-        # self.scene = self.load_scene('CesiumMilkTruck/glTF/CesiumMilkTruck.gltf')
-        # self.scene = self.load_scene('Sponza/glTF/Sponza.gltf')
-        # self.scene = self.load_scene('Lantern/glTF-Binary/Lantern.glb')
-        # self.scene = self.load_scene('Buggy/glTF-Binary/Buggy.glb')
-        # self.scene = self.load_scene('VC/glTF-Binary/VC.glb')
-        # self.scene = self.load_scene('DamagedHelmet/glTF-Binary/DamagedHelmet.glb')
-        # self.scene = self.load_scene('BoxInterleaved/glTF/BoxInterleaved.gltf')
 
         self.camera = KeyboardCamera(self.wnd.keys, fov=75.0, aspect_ratio=self.wnd.aspect_ratio, near=0.1, far=1000.0)
         self.camera.velocity = 7.0
         self.camera.mouse_sensitivity = 0.3
-
-        # Use this for gltf scenes for better camera controls
-        # if self.scene.diagonal_size > 0:
-        # self.camera.velocity = self.scene.diagonal_size / 5.0
 
     def render(self, time: float, frametime: float):
         """Render the scene"""
@@ -58,12 +39,6 @@ class CubeModel(mglw.WindowConfig):
             camera_matrix=camera_matrix,
             time=time,
         )
-        # # Currently only works with GLTF2
-        # self.scene.draw_bbox(
-        #     projection_matrix=self.camera.projection.matrix,
-        #     camera_matrix=camera_matrix,
-        #     children=True,
-        # )
 
     def key_event(self, key, action, modifiers):
         self.camera.key_input(key, action, modifiers)
