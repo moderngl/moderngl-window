@@ -48,6 +48,7 @@ Attributes
 .. autoattribute:: BaseWindow.config
 .. autoattribute:: BaseWindow.vsync
 .. autoattribute:: BaseWindow.aspect_ratio
+.. autoattribute:: BaseWindow.fixed_aspect_ratio
 .. autoattribute:: BaseWindow.samples
 .. autoattribute:: BaseWindow.cursor
 .. autoattribute:: BaseWindow.mouse_exclusivity

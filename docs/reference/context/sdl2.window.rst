@@ -53,6 +53,7 @@ Attributes
 .. autoattribute:: Window.config
 .. autoattribute:: Window.vsync
 .. autoattribute:: Window.aspect_ratio
+.. autoattribute:: Window.fixed_aspect_ratio
 .. autoattribute:: Window.samples
 .. autoattribute:: Window.cursor
 .. autoattribute:: Window.mouse_exclusivity
