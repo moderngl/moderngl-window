@@ -3,6 +3,7 @@ from moderngl_window.scene.camera import KeyboardCamera
 
 
 class CameraWindow(mglw.WindowConfig):
+    """Base class with built in 3D camera support"""
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

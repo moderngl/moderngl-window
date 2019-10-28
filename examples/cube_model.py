@@ -13,7 +13,7 @@ class CubeModel(mglw.WindowConfig):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # self.wnd.mouse_exclusivity = True
+        self.wnd.mouse_exclusivity = True
 
         self.scene = self.load_scene('scenes/crate.obj')
         # self.scene = self.load_scene('scenes/Apollo_17.stl')
