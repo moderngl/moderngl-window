@@ -2,6 +2,7 @@ import moderngl_window as mglw
 
 
 class BasicWindowConfig(mglw.WindowConfig):
+    """Minimal WindowConfig example"""
     gl_version = (3, 3)
     title = "Basic Window Config"
 
