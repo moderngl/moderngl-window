@@ -1,9 +1,11 @@
 """
 Custom usage: window creation and mapping callbacks functions at module level
 """
+import math
 import random
 import moderngl_window
 from moderngl_window.conf import settings
+from moderngl_window.timers.clock import Timer
 
 window = None
 
@@ -25,11 +27,20 @@ def main():
     window.mouse_release_event_func = mouse_release_event
     window.unicode_char_entered_func = unicode_char_entered
 
+    timer = Timer()
+    timer.start()
+
     while not window.is_closing:
         window.use()
         window.clear()
-        # Render stuff here
-        # ...
+
+        time, frame_time = timer.next_frame()
+
+        window.ctx.clear(
+            (math.sin(time) + 1.0) / 2,
+            (math.sin(time + 2) + 1.0) / 2,
+            (math.sin(time + 3) + 1.0) / 2,
+        )
 
         window.swap_buffers()
 
