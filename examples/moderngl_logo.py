@@ -4,6 +4,7 @@ import moderngl_window as mglw
 
 
 class ModernglLogo(mglw.WindowConfig):
+    title = "ModernGL Logo"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
