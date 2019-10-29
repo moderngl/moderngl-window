@@ -20,9 +20,9 @@ We try to follow semantic versioning as much as possible: https://semver.org/spe
 * `rm -rf .tox` (Force env recreation)
 * Run tests. Ensure it passes for `py35`, `py36`, `py37` and `pep8`.
   Run using `tox`.
-* Create release on Github : https://github.com/moderngl/moderngl_window/releases with entries from `CHANGELOG.md`
+* Create release on Github : https://github.com/moderngl/moderngl-window/releases with entries from `CHANGELOG.md`
 * `python setup.py bdist_wheel`
-* `twine upload dist/moderngl_window-<version>-py3-none-any.whl`
+* `twine upload dist/moderngl-window-<version>-py3-none-any.whl`
 * Ensure docs are updated : https://moderngl-window.readthedocs.io/
 * Ensure things look correct on PyPI : https://pypi.org/project/moderngl-window/
 
