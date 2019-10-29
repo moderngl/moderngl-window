@@ -162,7 +162,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'moderngl_window.tex', 'moderngl\\_window Documentation',
+    (master_doc, 'moderngl-window.tex', 'moderngl\\_window Documentation',
      'Einar Forselv', 'manual'),
 ]
 
@@ -172,7 +172,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'moderngl_window', 'moderngl_window Documentation',
+    (master_doc, 'moderngl-window', 'moderngl-window Documentation',
      [author], 1)
 ]
 
@@ -183,8 +183,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'moderngl_window', 'moderngl_window Documentation',
-     author, 'moderngl_window', 'A cross platform helper library for ModernGL making window creation and resource loading simple',
+    (master_doc, 'moderngl-window', 'moderngl-window Documentation',
+     author, 'moderngl-window', 'A cross platform helper library for ModernGL making window creation and resource loading simple',
      'Miscellaneous'),
 ]
 
