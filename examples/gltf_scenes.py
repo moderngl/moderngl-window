@@ -3,17 +3,16 @@ from pyrr import Matrix44, matrix44, Vector3
 
 import moderngl
 import moderngl_window as mglw
-from moderngl_window import resources
 from moderngl_window.scene.camera import KeyboardCamera
+from base import CameraWindow
 
-
-class CubeModel(mglw.WindowConfig):
+class CubeModel(CameraWindow):
     """
     In oder for this example to work you need to clone the gltf
     model samples repository and ensure resource_dir is set correctly:
     https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0
     """
-    window_size = (1920, 1080)
+    window_size = 1920, 1080
     aspect_ratio = None
     resource_dir = Path(__file__, '../../../glTF-Sample-Models/2.0').resolve()
 
@@ -55,22 +54,12 @@ class CubeModel(mglw.WindowConfig):
             time=time,
         )
 
-        # Draw bounding boxes
+        # # Draw bounding boxes
         # self.scene.draw_bbox(
         #     projection_matrix=self.camera.projection.matrix,
         #     camera_matrix=camera_matrix,
         #     children=True,
         # )
-
-    def key_event(self, key, action, modifiers):
-        self.camera.key_input(key, action, modifiers)
-
-    def mouse_position_event(self, x: int, y: int, dx, dy):
-        self.camera.rot_state(-dx, -dy)
-
-    def resize(self, width: int, height: int):
-        # self.camera.projection.update(aspect_ratio=self.wnd.width / self.wnd.height)
-        self.camera.projection.update(aspect_ratio=self.wnd.aspect_ratio)
 
 
 if __name__ == '__main__':
