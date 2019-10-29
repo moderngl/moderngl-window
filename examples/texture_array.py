@@ -7,7 +7,6 @@ import moderngl
 import moderngl_window as mglw
 from moderngl_window import geometry
 from moderngl_window import resources
-from moderngl_window.meta import ProgramDescription, TextureDescription
 
 from base import CameraWindow
 
@@ -15,9 +14,13 @@ resources.register_dir((Path(__file__).parent / 'resources').resolve())
 
 
 class TextureArrayExample(CameraWindow):
-
+    """
+    Cycles different texture layers in an array texture
+    rendered on a cube.
+    """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.wnd.mouse_exclusivity = True
         self.cube = geometry.cube(size=(2, 2, 2))
         self.texture = self.load_texture_array('textures/array.png', layers=10, mipmap=True, anisotrpy=8.0)
         self.prog = self.load_program('programs/cube_texture_array.glsl')
@@ -33,7 +36,7 @@ class TextureArrayExample(CameraWindow):
         self.prog['m_model'].write(m_mv.astype('f4').tobytes())
         self.prog['m_camera'].write(self.camera.matrix.astype('f4').tobytes())
         self.prog['layer'].value = math.fmod(time, 10)
-        
+
         self.prog['texture0'].value = 0
         self.texture.use(location=0)
         self.cube.render(self.prog)
