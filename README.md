@@ -1,16 +1,16 @@
 [![pypi](https://badge.fury.io/py/moderngl-window.svg)](https://pypi.python.org/pypi/moderngl-window) [![rtd](https://readthedocs.org/projects/moderngl-window/badge/?version=latest)](https://moderngl-window.readthedocs.io)
 
-# moderngl_window
+# moderngl-window
 
 A cross platform helper library for [ModernGL](https://github.com/moderngl/moderngl) making window creation and resource loading simple.
 
-* [moderngl_window Documentation](https://moderngl-window.readthedocs.io)
-* [moderngl_window on PyPI](https://pypi.org/project/moderngl-window)
-* [moderngl_window on Github](https://github.com/moderngl/moderngl_window)
+* [moderngl-window Documentation](https://moderngl-window.readthedocs.io)
+* [moderngl-window on PyPI](https://pypi.org/project/moderngl-window)
+* [moderngl-window on Github](https://github.com/moderngl/moderngl-window)
 * [ModernGL](https://github.com/moderngl/moderngl)
 * [ModernGL Discord Server](https://discord.gg/UEMtW8D)
 
-Please report bugs or post questions/feedback on [github](https://github.com/moderngl/moderngl_window/issues).
+Please report bugs or post questions/feedback on [github](https://github.com/moderngl/moderngl-window/issues).
 
 ## Features
 
@@ -131,7 +131,7 @@ be included.
 If you create your own repo/package containing plugins for
 this library, please make an issue and we'll link back to it.
 Be sure to include what platforms are suppored, install
-instructions, how you configure it in `moderngl_window` and
+instructions, how you configure it in `moderngl-window` and
 of course a clear and concise description of what exactly
 your package provides. 
 
