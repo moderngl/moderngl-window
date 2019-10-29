@@ -1,9 +1,9 @@
-.. moderngl_window documentation master file, created by
+.. moderngl-window documentation master file, created by
    sphinx-quickstart on Fri Aug 16 18:42:13 2019.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to moderngl_window's documentation!
+Welcome to moderngl-window's documentation!
 ===========================================
 
 A cross platform helper library for ModernGL making window
