@@ -16,7 +16,7 @@ class CameraWindow(mglw.WindowConfig):
             self.timer.toggle_pause()
 
     def mouse_position_event(self, x: int, y: int, dx, dy):
-        self.camera.rot_state(dx, dy)
+        self.camera.rot_state(-dx, -dy)
 
     def resize(self, width: int, height: int):
         self.camera.projection.update(aspect_ratio=self.wnd.aspect_ratio)
