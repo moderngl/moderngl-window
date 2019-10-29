@@ -6,7 +6,10 @@ from moderngl_window import geometry
 
 
 class CubeSimple(mglw.WindowConfig):
-
+    """
+    Simply shows two cubes rendered with the
+    same uniform block data
+    """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.cube = geometry.cube(size=(2, 2, 2))
