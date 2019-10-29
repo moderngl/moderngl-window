@@ -5,10 +5,8 @@ Installation
 Installing with pip
 -------------------
 
-moderngl_window is available on PyPI::
+moderngl-window is available on PyPI::
 
-    pip install moderngl_window
-    # Package name with dash also works
     pip install moderngl-window
 
 Optional dependencies
@@ -24,16 +22,16 @@ as it small and pretty much work out of the box on all platforms.
 Optional dependencies for loaders::
 
     # Wavefront / obj loading
-    pip install moderngl_window[pywavefront}
+    pip install moderngl-window[pywavefront}
     # STL loading
-    pip install moderngl_window[trimesh]
+    pip install moderngl-window[trimesh]
 
 Installing dependencies for window types::
 
-    pip install moderngl_window[PySide2]
-    pip install moderngl_window[pyqt5]
-    pip install moderngl_window[glfw]
-    pip install moderngl_window[PySDL2]
+    pip install moderngl-window[PySide2]
+    pip install moderngl-window[pyqt5]
+    pip install moderngl-window[glfw]
+    pip install moderngl-window[PySDL2]
 
 Installing optional dependencies this way should ensure
 a compatible version is installed.
@@ -51,13 +49,13 @@ Installing from source
 .. code:: bash
 
     # clone repo (optionally clone over https)
-    git clone git@github.com:moderngl/moderngl_window.git
-    cd moderngl_window
+    git clone git@github.com:moderngl/moderngl-window.git
+    cd moderngl-window
 
     # Create your virtualenv and activate
     # We assume the user knows how to work with virtualenvs
 
-    # Install moderngl_window in editable mode
+    # Install moderngl-window in editable mode
     pip install -e .
 
     # Install optional dev dependecies covering all window and loader types
