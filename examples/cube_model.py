@@ -3,10 +3,10 @@ from pyrr import Matrix44, matrix44, Vector3
 
 import moderngl
 import moderngl_window as mglw
-from moderngl_window.scene.camera import KeyboardCamera
+from base import CameraWindow
 
 
-class CubeModel(mglw.WindowConfig):
+class CubeModel(CameraWindow):
     # window_size = (1920, 1080)
     aspect_ratio = 16 / 9
     resource_dir = Path(__file__).parent.resolve() / 'resources'
@@ -18,12 +18,11 @@ class CubeModel(mglw.WindowConfig):
         self.scene = self.load_scene('scenes/crate.obj')
         # self.scene = self.load_scene('scenes/Apollo_17.stl')
 
-        self.camera = KeyboardCamera(self.wnd.keys, fov=75.0, aspect_ratio=self.wnd.aspect_ratio, near=0.1, far=1000.0)
+        self.camera.projection.update(near=0.1, far=100.0)
         self.camera.velocity = 7.0
         self.camera.mouse_sensitivity = 0.3
 
     def render(self, time: float, frametime: float):
-        """Render the scene"""
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
 
         # Create camera matrix with rotation and translation
@@ -39,15 +38,6 @@ class CubeModel(mglw.WindowConfig):
             camera_matrix=camera_matrix,
             time=time,
         )
-
-    def key_event(self, key, action, modifiers):
-        self.camera.key_input(key, action, modifiers)
-
-    def mouse_position_event(self, x: int, y: int, dx, dy):
-        self.camera.rot_state(-dx, -dy)
-
-    def resize(self, width: int, height: int):
-        self.camera.projection.update(aspect_ratio=self.wnd.aspect_ratio)
 
 
 if __name__ == '__main__':
