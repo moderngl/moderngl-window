@@ -10,6 +10,7 @@ class GeometryBbox(CameraWindow):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.wnd.mouse_exclusivity = True
         self.prog = self.load_program('scene_default/bbox.glsl')
         self.bbox = geometry.bbox()
 
