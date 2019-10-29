@@ -8,6 +8,7 @@ resources.register_dir((Path(__file__).parent / 'resources').resolve())
 
 
 class QuadFullscreen(moderngl_window.WindowConfig):
+    window_size = 1980, 1024
     aspect_ratio = 1980 / 1024
 
     def __init__(self, **kwargs):
