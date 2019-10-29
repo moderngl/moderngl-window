@@ -48,7 +48,7 @@ sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 # -- Project information -----------------------------------------------------
 
-project = 'moderngl_window'
+project = 'moderngl-window'
 copyright = '2019, Einar Forselv'
 author = 'Einar Forselv'
 
@@ -135,7 +135,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'moderngl_windowdoc'
+htmlhelp_basename = 'moderngl-windowdoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
