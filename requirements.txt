@@ -5,6 +5,7 @@
 moderngl<6
 
 # Optional
+pyglet<2
 PySide2<6
 PyQt5<6
 glfw<2
