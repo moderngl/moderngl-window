@@ -9,13 +9,13 @@ from moderngl_window import geometry
 class Water(moderngl_window.WindowConfig):
     title = "Water"
     resource_dir = (Path(__file__) / '../../resources').absolute()
-    aspect_ratio = 1.0
+    aspect_ratio = None  # We'll do manual viewport for now
     window_size = 1024, 1024
     resizable = False
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.size = self.window_size
+        self.size = self.wnd.buffer_size
         self.viewport = (0, 0, self.size[0], self.size[1])
 
         self.quad_fs = geometry.quad_fs()
