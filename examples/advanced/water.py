@@ -19,7 +19,7 @@ class Water(moderngl_window.WindowConfig):
         self.viewport = (0, 0, self.size[0], self.size[1])
 
         self.quad_fs = geometry.quad_fs()
-        self.sprite = geometry.quad_2d(size=(0.1, 0.1))
+        self.sprite = geometry.quad_2d(size=(10 / self.size[0], 10 / self.size[1]))
 
         self.texture_1 = self.ctx.texture(self.size, components=3)
         self.texture_2 = self.ctx.texture(self.size, components=3)
@@ -30,14 +30,14 @@ class Water(moderngl_window.WindowConfig):
         self.fbo_2.viewport = self.viewport
 
         drop = np.array([[0.0, 0.0, 1/6, 1/5, 1/4, 1/5, 1/6, 0.0, 0.0],
-                        [0.0, 1/6, 1/5, 1/4, 1/3, 1/4, 1/5, 1/6, 0.0],
-                        [1/6, 1/5, 1/4, 1/3, 1/2, 1/3, 1/4, 1/5, 1/6],
-                        [1/5, 1/2, 1/3, 1/2, 1.0, 1/2, 1/3, 1/4, 1/5],
-                        [1/4, 1/3, 1/2, 1.0, 1.0, 1.0, 1/2, 1/3, 1/4],
-                        [1/5, 1/2, 1/3, 1/2, 1.0, 1/2, 1/3, 1/4, 1/5],
-                        [1/6, 1/5, 1/4, 1/3, 1/2, 1/3, 1/4, 1/5, 1/6],
-                        [0.0, 1/6, 1/5, 1/4, 1/3, 1/4, 1/5, 1/6, 0.0],
-                        [0.0, 0.0, 1/6, 1/5, 1/4, 1/5, 1/6, 0.0, 0.0]])
+                         [0.0, 1/6, 1/5, 1/4, 1/3, 1/4, 1/5, 1/6, 0.0],
+                         [1/6, 1/5, 1/4, 1/3, 1/2, 1/3, 1/4, 1/5, 1/6],
+                         [1/5, 1/4, 1/3, 1/2, 1.0, 1/2, 1/3, 1/4, 1/5],
+                         [1/4, 1/3, 1/2, 1.0, 1.0, 1.0, 1/2, 1/3, 1/4],
+                         [1/5, 1/4, 1/3, 1/2, 1.0, 1/2, 1/3, 1/4, 1/5],
+                         [1/6, 1/5, 1/4, 1/3, 1/2, 1/3, 1/4, 1/5, 1/6],
+                         [0.0, 1/6, 1/5, 1/4, 1/3, 1/4, 1/5, 1/6, 0.0],
+                         [0.0, 0.0, 1/6, 1/5, 1/4, 1/5, 1/6, 0.0, 0.0]])
         self.drops_texture = self.ctx.texture((9, 9), components=1, dtype='f4')
         self.drops_texture.write(drop.astype('f4').tobytes())
 
@@ -52,13 +52,14 @@ class Water(moderngl_window.WindowConfig):
 
         self.fbo_2.use()
 
-        # Render drop (with additive blending)
-        self.ctx.enable(moderngl.BLEND)
-        self.ctx.blend_func = moderngl.ONE, moderngl.ONE
-        self.drops_texture.use()
-        self.drop_program['pos'].value = self.mouse_pos
-        self.sprite.render(self.drop_program)
-        self.ctx.disable(moderngl.BLEND)
+        # Render drop (with additive blending) when mouse is pressed
+        if self.wnd.mouse_states.any:
+            self.ctx.enable(moderngl.BLEND)
+            self.ctx.blend_func = moderngl.ONE, moderngl.ONE
+            self.drops_texture.use()
+            self.drop_program['pos'].value = self.mouse_pos
+            self.sprite.render(self.drop_program)
+            self.ctx.disable(moderngl.BLEND)
 
         self.fbo_1.use()
 
@@ -75,6 +76,8 @@ class Water(moderngl_window.WindowConfig):
     def mouse_position_event(self, x, y, dx, dy):
         self.mouse_pos = x * 2 / self.size[0] - 1.0, -y * 2 / self.size[1] + 1.0
 
+    def mouse_drag_event(self, x, y, dx, dy):
+        self.mouse_position_event(x, y, dx, dy)
 
 
 if __name__ == '__main__':
