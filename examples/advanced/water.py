@@ -50,7 +50,7 @@ class Water(moderngl_window.WindowConfig):
     def render(self, time, frame_time):
         self.ctx.viewport = self.viewport
 
-        self.fbo_1.use()
+        self.fbo_2.use()
 
         # Render drop (with additive blending)
         self.ctx.enable(moderngl.BLEND)
@@ -60,15 +60,17 @@ class Water(moderngl_window.WindowConfig):
         self.sprite.render(self.drop_program)
         self.ctx.disable(moderngl.BLEND)
 
+        self.fbo_1.use()
+
         # Process the water
-        # self.texture_2.use()
-        # self.quad_fs.render(self.wave_program)
+        self.texture_2.use()
+        self.quad_fs.render(self.wave_program)
 
         self.ctx.copy_framebuffer(self.ctx.screen, self.fbo_1)
 
         # Swapperoo
-        # self.texture_1, self.texture_2 = self.texture_2, self.texture_1
-        # self.fbo_1, self.fbo_2 = self.fbo_2, self.fbo_1
+        self.texture_1, self.texture_2 = self.texture_2, self.texture_1
+        self.fbo_1, self.fbo_2 = self.fbo_2, self.fbo_1
 
     def mouse_position_event(self, x, y, dx, dy):
         self.mouse_pos = x * 2 / self.size[0] - 1.0, -y * 2 / self.size[1] + 1.0
