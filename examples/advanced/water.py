@@ -8,13 +8,15 @@ class Water(moderngl_window.WindowConfig):
     title = "Water"
     resource_dir = (Path(__file__) / '../../resources').absolute()
     aspect_ratio = 1.0
+    window_size = 1024, 1024
+    resizable = False
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.quad_fs = geometry.quad_fs()
-        # self.sprite = geometry.quad_2d(size=)
+        self.size = self.window_size
 
-        self.size = (256, 256)
+        self.quad_fs = geometry.quad_fs()
+        self.sprite = geometry.quad_2d(size=(0.1, 0.1))
 
         self.texture_1 = self.ctx.texture(self.size, components=3)
         self.texture_2 = self.ctx.texture(self.size, components=3)
@@ -37,11 +39,17 @@ class Water(moderngl_window.WindowConfig):
         # programs
         self.drop_program = self.load_program('programs/water/drop.glsl')
         # self.wave_program = self.load_program('programs/water/wave.glsl')
+        self.mouse_pos = 0, 0
 
     def render(self, time, frame_time):
+        self.ctx.viewport = (0, 0, self.size[0], self.size[1])
 
         self.drops_texture.use()
-        self.quad_fs.render(self.drop_program)
+        self.drop_program['pos'].value = self.mouse_pos
+        self.sprite.render(self.drop_program)
+
+    def mouse_position_event(self, x, y, dx, dy):
+        self.mouse_pos = x * 2 / self.size[0] - 1.0, -y * 2 / self.size[1] + 1.0
 
 
 if __name__ == '__main__':
