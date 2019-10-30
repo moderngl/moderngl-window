@@ -71,7 +71,7 @@ class Water(moderngl_window.WindowConfig):
         self.ctx.enable(moderngl.BLEND)
         self.ctx.blend_func = moderngl.ONE, moderngl.ONE
         self.drops_texture.use()
-        for i in range(10):
+        for i in range(100):
             self.drop_program['pos'].value = random.random() * 2 - 1.0, random.random() * 2 - 1
             self.sprite.render(self.drop_program)
         self.ctx.disable(moderngl.BLEND)
@@ -83,7 +83,7 @@ class Water(moderngl_window.WindowConfig):
         self.texture_1.use(location=1)
         self.quad_fs.render(self.wave_program)
 
-        self.ctx.copy_framebuffer(self.ctx.screen, self.fbo_1)
+        self.ctx.copy_framebuffer(self.wnd.fbo, self.fbo_1)
 
         # Swapperoo
         self.texture_1, self.texture_2 = self.texture_2, self.texture_1
