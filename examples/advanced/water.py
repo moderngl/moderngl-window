@@ -53,6 +53,8 @@ class Water(moderngl_window.WindowConfig):
 
     def render(self, time, frame_time):
         self.ctx.viewport = self.viewport
+        # randomize color
+        self.drop_program['color'].value = random.random(), random.random(), random.random()
 
         self.fbo_2.use()
 
@@ -69,7 +71,7 @@ class Water(moderngl_window.WindowConfig):
         self.ctx.enable(moderngl.BLEND)
         self.ctx.blend_func = moderngl.ONE, moderngl.ONE
         self.drops_texture.use()
-        for i in range(25):
+        for i in range(100):
             self.drop_program['pos'].value = random.random() * 2 - 1.0, random.random() * 2 - 1
             self.sprite.render(self.drop_program)
         self.ctx.disable(moderngl.BLEND)
