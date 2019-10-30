@@ -4,13 +4,10 @@
 
 in vec3 in_position;
 in vec2 in_texcoord_0;
-
-uniform vec2 pos;
-
 out vec2 uv0;
 
 void main() {
-    gl_Position = vec4(vec3(in_position.xy + pos.xy, 0.0), 1.0);
+    gl_Position = vec4(in_position, 1);
     uv0 = in_texcoord_0;
 }
 
