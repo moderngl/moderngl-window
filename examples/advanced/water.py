@@ -1,3 +1,4 @@
+import random
 from pathlib import Path
 import numpy as np
 
@@ -63,6 +64,15 @@ class Water(moderngl_window.WindowConfig):
             self.drop_program['pos'].value = self.mouse_pos
             self.sprite.render(self.drop_program)
             self.ctx.disable(moderngl.BLEND)
+
+        # HACK: Just draw 100 new drops per frame (copy paste from above)
+        self.ctx.enable(moderngl.BLEND)
+        self.ctx.blend_func = moderngl.ONE, moderngl.ONE
+        self.drops_texture.use()
+        for i in range(25):
+            self.drop_program['pos'].value = random.random() * 2 - 1.0, random.random() * 2 - 1
+            self.sprite.render(self.drop_program)
+        self.ctx.disable(moderngl.BLEND)
 
         self.fbo_1.use()
 
