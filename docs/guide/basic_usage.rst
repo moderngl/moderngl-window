@@ -19,8 +19,8 @@ Basic example
 -------------
 
 The :py:class:`~moderngl_window.context.base.window.WindowConfig` is
-simply a class you extend to customize/implement initalization,
-window parameters, rendering code, keybord input, mouse input
+simply a class you extend to customize/implement initialization,
+window parameters, rendering code, keyboard input, mouse input
 and access simpler shortcut methods for loading resources.
 
 .. code:: python
@@ -46,7 +46,7 @@ and access simpler shortcut methods for loading resources.
     mglw.run_window_config(Test)
 
 The :py:class:`~moderngl_window.context.base.window.WindowConfig`
-instance will by default recieve three external instances in ``__init__``
+instance will by default receive three external instances in ``__init__``
 that can be accessed later with ``self``.
 
 - ``self.ctx``: The ``moderngl.Context`` created by the configured window type
@@ -95,7 +95,7 @@ These window implementations converts window, key and mouse events
 into a unified system so the user can switch between different window
 types without altering the code.
 
-Window libraries are not perfect and may at times work suboptimally
+Window libraries are not perfect and may at times work sub-optimally
 on some platforms. They might also have different performance profiles.
 The ability switch between window types by just changing a config
 value can be an advantage.

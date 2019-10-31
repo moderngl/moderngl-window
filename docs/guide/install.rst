@@ -37,7 +37,7 @@ Installing optional dependencies this way should ensure
 a compatible version is installed.
 
 For glfw and sdl2 windows you also need install the library itself.
-Thees are also avaialble as packages on linux and homebrew on OS X.
+Thees are also available as packages on linux and homebrew on OS X.
 For windows the DLLs can simply be placed in the root of your project.
 
 - GLFW : https://www.glfw.org/
@@ -58,7 +58,7 @@ Installing from source
     # Install moderngl-window in editable mode
     pip install -e .
 
-    # Install optional dev dependecies covering all window and loader types
+    # Install optional dev dependencies covering all window and loader types
     pip install -r requirements.txt
 
 Installing the package in editable mode will make you able
@@ -83,7 +83,7 @@ Install test requirements::
 
 Run tests with ``tox``::
 
-    # Run for specific enviroment
+    # Run for specific environment
     tox -e py35
     tox -e py36
     tox -e py37
@@ -91,5 +91,5 @@ Run tests with ``tox``::
     # pep8 run
     tox -e pep8
 
-    # Run all enviroments
+    # Run all environments
     tox

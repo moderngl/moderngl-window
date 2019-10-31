@@ -104,7 +104,7 @@ moderngl_window what your ``moderngl.Context`` is.
     moderngl_window.activate_context(ctx=ctx)
 
 If there are no context activated the library will raise an exception
-when doing opertations that requires one such as texture and scene
+when doing operations that requires one such as texture and scene
 loading.
 
 When using the built in window types the context activation
@@ -114,7 +114,7 @@ Register resource directories
 -----------------------------
 
 The resource loading system are using relative paths. These paths
-are relative one or multiple directories we registed in the
+are relative one or multiple directories we registered in the
 resource system.
 
 The :py:mod:`moderngl_window.resources` module has methods for this.

@@ -100,7 +100,7 @@ This is not uncommon when for example making a new loader class.
 Loading resources
 -----------------
 
-Now that we know about the different resoure categories,
+Now that we know about the different resource categories,
 search paths and resource descriptions, we're ready to
 actually load something.
 
@@ -108,7 +108,7 @@ Loading resources can in some situation be a bit verbose,
 but you can simplify by wrapping them in your own functions
 if needed.
 The :py:class:`~moderngl_window.context.base.window.WindowConfig`
-class is already doing this and can be used as a referene.
+class is already doing this and can be used as a reference.
 
 .. code:: python
 
@@ -184,4 +184,4 @@ Data
     # Load binary data
     data = data.load(DataDescription(path='data.bin', kind='binary))
 
-For more information about supported parameters see the api documenation.
+For more information about supported parameters see the api documentation.
