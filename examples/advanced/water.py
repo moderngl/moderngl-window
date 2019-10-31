@@ -12,7 +12,7 @@ class Water(moderngl_window.WindowConfig):
     title = "Water"
     resource_dir = (Path(__file__) / '../../resources').absolute()
     aspect_ratio = None  # We'll do manual viewport for now
-    window_size = 1024, 1024
+    window_size = 512, 512
     resizable = False
 
     def __init__(self, *args, **kwargs):
@@ -21,7 +21,7 @@ class Water(moderngl_window.WindowConfig):
         self.viewport = (0, 0, self.size[0], self.size[1])
 
         self.quad_fs = geometry.quad_fs()
-        self.sprite = geometry.quad_2d(size=(9 / self.size[0], 9 / self.size[1]))
+        self.sprite = geometry.quad_2d(size=(9 / self.wnd.size[0], 9 / self.wnd.size[1]))
 
         self.texture_1 = self.ctx.texture(self.size, components=3)
         self.texture_2 = self.ctx.texture(self.size, components=3)
@@ -46,13 +46,14 @@ class Water(moderngl_window.WindowConfig):
         # programs
         self.drop_program = self.load_program('programs/water/drop.glsl')
         self.wave_program = self.load_program('programs/water/wave.glsl')
+        self.texture_program = self.load_program('programs/water/texture.glsl')
         self.wave_program['texture0'].value = 0
         self.wave_program['texture1'].value = 1
 
         self.mouse_pos = 0, 0
+        self.wnd.fbo.viewport = self.viewport
 
     def render(self, time, frame_time):
-        self.ctx.viewport = self.viewport
         # randomize color
         self.drop_program['color'].value = random.random(), random.random(), random.random()
 
@@ -71,7 +72,7 @@ class Water(moderngl_window.WindowConfig):
         self.ctx.enable(moderngl.BLEND)
         self.ctx.blend_func = moderngl.ONE, moderngl.ONE
         self.drops_texture.use()
-        for i in range(10):
+        for i in range(25):
             self.drop_program['pos'].value = random.random() * 2 - 1.0, random.random() * 2 - 1
             self.sprite.render(self.drop_program)
         self.ctx.disable(moderngl.BLEND)
@@ -83,14 +84,19 @@ class Water(moderngl_window.WindowConfig):
         self.texture_1.use(location=1)
         self.quad_fs.render(self.wave_program)
 
-        self.ctx.copy_framebuffer(self.wnd.fbo, self.fbo_1)
+        # self.ctx.copy_framebuffer(self.wnd.fbo, self.fbo_1)
+        self.wnd.fbo.use()
+        self.texture_1.use()
+        self.quad_fs.render(self.texture_program)
 
         # Swapperoo
         self.texture_1, self.texture_2 = self.texture_2, self.texture_1
         self.fbo_1, self.fbo_2 = self.fbo_2, self.fbo_1
 
     def mouse_position_event(self, x, y, dx, dy):
-        self.mouse_pos = x * 2 / self.size[0] - 1.0, -y * 2 / self.size[1] + 1.0
+        xx = x * 2 / self.wnd.size[0] - 1.0
+        yy = -y * 2 / self.wnd.size[1] + 1.0
+        self.mouse_pos = xx, yy
 
     def mouse_drag_event(self, x, y, dx, dy):
         self.mouse_position_event(x, y, dx, dy)
