@@ -12,7 +12,7 @@ class Water(moderngl_window.WindowConfig):
     title = "Water"
     resource_dir = (Path(__file__) / '../../resources').absolute()
     aspect_ratio = None  # We'll do manual viewport for now
-    window_size = 512, 512
+    window_size = 1280, 720
     resizable = False
 
     def __init__(self, *args, **kwargs):
@@ -69,10 +69,11 @@ class Water(moderngl_window.WindowConfig):
             self.ctx.disable(moderngl.BLEND)
 
         # HACK: Just draw 100 new drops per frame (copy paste from above)
+        # This is pretty terrible and slow!
         self.ctx.enable(moderngl.BLEND)
         self.ctx.blend_func = moderngl.ONE, moderngl.ONE
         self.drops_texture.use()
-        for i in range(25):
+        for i in range(10):
             self.drop_program['pos'].value = random.random() * 2 - 1.0, random.random() * 2 - 1
             self.sprite.render(self.drop_program)
         self.ctx.disable(moderngl.BLEND)
