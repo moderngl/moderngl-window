@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.6.0 (Unreleased)
+## 2.0.0 (Unreleased)
 
 Breaking Changes
 * `mouse_position_event` signature has changed from `(x, y)` to `(x, y, dx, dy)`.
