@@ -11,7 +11,7 @@ Breaking Changes
 
 Improvements
 * Added window callback `iconify` for all window types that will be called
-  when a window is minimised or restored
+  when a window is minimized or restored
 * Window property `mouse_exclusivity` added for all window types.
   When enabled the mouse cursor is invisible and mouse position changes
   are only reported through the dx and dy values.
@@ -32,13 +32,13 @@ Improvements
 
 * Added window property `position` for getting and setting window position for all window types
 * Added window properties: `viewport_size`, `viewport_width`, `viewport_height`
-* Upgraded dependecy for tkinter window. `pyopengltk>=0.0.3`
-* Losened up most of the requirements
+* Upgraded dependency for tkinter window. `pyopengltk>=0.0.3`
+* Loosened up most of the requirements
 * Bug: Missing call to `tk.destroy()` in tk window
 
 ## 1.5.1
 
-* Upgraded dependecy for tkinter window. `pyopengltk==0.0.2`.
+* Upgraded dependency for tkinter window. `pyopengltk==0.0.2`.
 
 ## 1.5.0
 
@@ -53,7 +53,7 @@ Improvements
 ## 1.4.0
 
 * Added support for mouse_drag events for all window types
-* Added support for unicode_char_entred (text input) for all windows
+* Added support for unicode_char_entered (text input) for all windows
 * Added support for mouse wheel events for all window types
 
 ## 1.3.0
@@ -61,8 +61,8 @@ Improvements
 * Fixed several issue related to python 3.5 support
 * Upgraded to pywavefront 1.2.x
 * Renamed some modules and classes to better reflect their capabiltities
-* Renamed some inconsistent parameter names thoughout the codebase
-* Complete overhaul of docstrings thoughtout the entire codebase
+* Renamed some inconsistent parameter names in the codebase
+* Complete overhaul of docstrings in the entire codebase
 * Added missing type hints
 * Revived the STL loader
 * Documentation
@@ -84,7 +84,7 @@ Improvements
 ## 1.1.0
 
 * Supported buffer formats in the VAO wrapper now matches moderngl better
-* VAO wrapper now uses buffer format strings maching moderngl including divisors
+* VAO wrapper now uses buffer format strings matching moderngl including divisors
 * Fixed some logging issues
 
 ## 1.0.0
