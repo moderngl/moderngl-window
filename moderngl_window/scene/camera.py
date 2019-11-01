@@ -357,7 +357,7 @@ class KeyboardCamera(Camera):
         delta = now - self._last_rot_time
         self._last_rot_time = now
 
-        # Creatly decrease the chance of camera popping.
+        # Greatly decrease the chance of camera popping.
         # This can happen when the mouse enters and leaves the window
         # or when getting focus again.
         if delta > 0.1 and max(abs(dx), abs(dy)) > 2:

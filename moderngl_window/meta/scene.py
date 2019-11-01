@@ -6,7 +6,7 @@ class SceneDescription(ResourceDescription):
     """Describes a scene to load.
 
     The correct loader is resolved by looking at the file extension.
-    This can be overriden by specifying a ``kind`` that maps directly
+    This can be overridden by specifying a ``kind`` that maps directly
     to a specific loader class.
 
     .. code:: python

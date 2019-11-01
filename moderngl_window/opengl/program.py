@@ -190,13 +190,15 @@ class ShaderError(Exception):
 
 class ReloadableProgram:
     """
-    Programs we want to be reloadabla must be created with this wrapper
+    Programs we want to be reloadable must be created with this wrapper
     """
     def __init__(self, meta: ProgramDescription, program: moderngl.Program):
         """
-        Create a shader using either a file path or a name
-        :param meta: The ProgramMeta
-        :param program: The program instance
+        Create a shader using either a file path or a name.
+
+        Args:
+            meta: The ProgramMeta
+            program: The program instance
         """
         self.program = program
         self.meta = meta

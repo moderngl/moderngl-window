@@ -155,7 +155,7 @@ class Scene:
     def prepare(self) -> None:
         """prepare the scene for rendering.
 
-        Calls ``apply_mesh_programs()`` assining default meshprograms if needed
+        Calls ``apply_mesh_programs()`` assigning default meshprograms if needed
         and sets the model matrix.
         """
         self.apply_mesh_programs()

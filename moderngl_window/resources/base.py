@@ -69,7 +69,7 @@ class BaseRegistry:
         pool using ``add()``.
 
         Returns:
-            Generator of (meta, resoure) tuples
+            Generator of (meta, resource) tuples
         """
         for meta in self._resources:
             resource = self.load(meta)
@@ -79,7 +79,7 @@ class BaseRegistry:
 
     def resolve_loader(self, meta: ResourceDescription) -> None:
         """
-        Attempts to assign a loader class to a ResourceDecription.
+        Attempts to assign a loader class to a ResourceDescription.
 
         Args:
             meta (:py:class:`~moderngl_window.meta.base.ResourceDescription`): The resource description instance
@@ -92,7 +92,7 @@ class BaseRegistry:
                     return
 
             raise ImproperlyConfigured(
-                "Resource has invalid loader kind '{}': {}\nAvailiable loaders: {}".format(
+                "Resource has invalid loader kind '{}': {}\nAvailable loaders: {}".format(
                     meta.kind, meta, [loader.kind for loader in self.loaders]))
 
         # Get loader based on file extension

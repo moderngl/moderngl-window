@@ -7,7 +7,7 @@ class ProgramDescription(ResourceDescription):
     By default a program can be loaded in the following ways:
 
     - By supplying a `path` to s single glsl file containing all shaders
-    - By supplying several paths to separate files containing each shader trype.
+    - By supplying several paths to separate files containing each shader type.
       For example ``vertex_shader``, ``fragment_shader`` .. etc.
 
     .. code:: python
@@ -31,7 +31,7 @@ class ProgramDescription(ResourceDescription):
         """Create a program description
 
         Keyword Args:
-            path (str): path to the resource realive to search directories
+            path (str): path to the resource relative to search directories
             kind (str): The kind of loader to use
             reloadable (bool): Should this program be reloadable
             vertex_shader (str): Path to vertex shader file

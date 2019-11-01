@@ -48,7 +48,7 @@ class BaseLoader:
     def supports_file(cls, meta):
         """Check if the loader has a supported file extension.
 
-        What extensions are supported can be defiened in the
+        What extensions are supported can be defined in the
         :py:attr:`file_extensions` class attribute.
         """
         path = Path(meta.path)
@@ -111,7 +111,7 @@ class BaseLoader:
         return self._find(Path(path), scene.get_finders())
 
     def _find(self, path: Path, finders: list):
-        """Find the first occurance of this path in all finders.
+        """Find the first occurrance of this path in all finders.
 
         Args:
             path (Path): The path to find

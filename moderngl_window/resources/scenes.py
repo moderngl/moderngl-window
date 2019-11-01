@@ -1,5 +1,5 @@
 """
-Scene Regisry
+Scene Registry
 """
 from moderngl_window.resources.base import BaseRegistry
 from moderngl_window.scene import Scene

@@ -175,7 +175,7 @@ class Loader(BaseLoader):
     def load_samplers(self):
         """Load samplers referenced in gltf metadata"""
         for sampler in self.gltf.samplers:
-            # Use a sane default sampler if the sampelr data is empty
+            # Use a sane default sampler if the sampler data is empty
             # Samplers can simply just be json data: "{}"
             if sampler.minFilter is sampler.magFilter is None:
                 self.samplers.append(

@@ -7,7 +7,7 @@ from moderngl_window.geometry.attributes import AttributeNames
 
 def quad_fs(attr_names=AttributeNames, normals=True, uvs=True, name=None) -> VAO:
     """
-    Creates a screen aligned quad using two triangles with normals and texture coordiantes.
+    Creates a screen aligned quad using two triangles with normals and texture coordinates.
 
     Keyword Args:
         attr_names (AttributeNames): Attrib name config
@@ -15,7 +15,7 @@ def quad_fs(attr_names=AttributeNames, normals=True, uvs=True, name=None) -> VAO
         uvs (bool): Include normals in VAO
         name (str): Optional name for the VAO
     Returns:
-        A :py:class:`demosys.opengl.vao.VAO` instance.
+        A :py:class:`~moderngl_window.opengl.vao.VAO` instance.
     """
     return quad_2d(
         size=(2.0, 2.0),
@@ -39,7 +39,7 @@ def quad_2d(size=(1.0, 1.0), pos=(0.0, 0.0),
         attr_names (AttributeNames): Attrib name config
         name (str): Optional name for the VAO
     Returns:
-        A :py:class:`VAO` instance.
+        A :py:class:`~moderngl_window.opengl.vao.VAO` instance.
     """
     width, height = size
     xpos, ypos = pos

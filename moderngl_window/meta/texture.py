@@ -29,7 +29,7 @@ class TextureDescription(ResourceDescription):
 
         Args:
             path (str): path to resource relative to search directories
-            flip (boolean): Flip the image horisontally
+            flip (boolean): Flip the image horizontally
             mipmap (bool): Generate mipmaps. Will generate max possible levels unless
                            `mipmap_levels` is defined.
             mipmap_levels (tuple): (base, max_level) controlling mipmap generation.
@@ -54,7 +54,7 @@ class TextureDescription(ResourceDescription):
 
     @property
     def flip(self) -> bool:
-        """bool: If the image should be flipped horisontally"""
+        """bool: If the image should be flipped horizontally"""
         return self._kwargs.get('flip')
 
     @property

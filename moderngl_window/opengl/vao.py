@@ -86,7 +86,7 @@ class VAO:
 
     The shader program doesn't need to use all the buffers registered in
     this wrapper. When a subset is used only the used buffers are mapped
-    and the approproate padding is calculated when iterleaved data is used.
+    and the appropriate padding is calculated when interleaved data is used.
 
     There is no requirements to use this class, but most methods in the
     system creating vertexbuffers will return this type. You can obtain
@@ -316,7 +316,7 @@ class VAO:
         return vao
 
     def release(self, buffer=True):
-        """Destroy all iternally cached vaos and release all buffers.
+        """Destroy all internally cached vaos and release all buffers.
 
         Keyword Args:
             buffers (bool): also release buffers

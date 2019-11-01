@@ -41,7 +41,7 @@ class ResourceDescription:
         """str: default resource kind.
 
         The resource ``kind`` is directly matched
-        with the ``kind`` in loder classes.
+        with the ``kind`` in loader classes.
 
         This property also supports assignment
         and is useful if the ``kind`` is detected

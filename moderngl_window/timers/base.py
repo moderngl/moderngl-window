@@ -21,9 +21,8 @@ class BaseTimer:
 
     @property
     def time(self) -> float:
-        """Get the current time in seconds
-
-        The current time can also be assigned to this attribute.
+        """Get or set the current time.
+        This can be used to jump around in the timeline.
 
         Returns:
             float: The current time in seconds

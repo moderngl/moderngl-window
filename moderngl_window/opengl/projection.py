@@ -10,7 +10,7 @@ class Projection3D:
         """Create a 3D projection
 
         Keyword Args:
-            aspect_ratio (float): Sspect ratio
+            aspect_ratio (float): Aspect ratio
             fov (float): Field of view
             near (float): Near plane value
             far (float): Far plane value
@@ -53,7 +53,7 @@ class Projection3D:
         """Update the projection matrix
 
         Keyword Args:
-            aspect_ratio (float): Sspect ratio
+            aspect_ratio (float): Aspect ratio
             fov (float): Field of view
             near (float): Near plane value
             far (float): Far plane value

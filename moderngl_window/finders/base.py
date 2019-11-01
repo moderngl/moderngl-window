@@ -20,7 +20,7 @@ class BaseFilesystemFinder:
     """Base class for searching filesystem directories"""
     settings_attr = None
     """str: Name of the attribute in :py:class:`~moderngl_window.conf.Settings`
-    containing a list of paths the finder should seach in.
+    containing a list of paths the finder should search in.
     """
 
     def __init__(self):

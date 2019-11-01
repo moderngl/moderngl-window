@@ -12,7 +12,7 @@ class Mesh:
             name (str): name of the mesh
         Keyword Args:
             vao (VAO): geometry
-            material (Msterial): material for the mesh
+            material (Material): material for the mesh
             attributes (dict): Details info about each mesh attribute (dict)
             bbox_min: xyz min values
             bbox_max: xyz max values
