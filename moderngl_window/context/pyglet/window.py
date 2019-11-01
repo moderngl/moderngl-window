@@ -3,7 +3,7 @@ import platform
 import pyglet
 
 # On OS X we need to disable the shadow context
-# because the 2.1 shadow contect cannot be upgrade to a 3.3+ core
+# because the 2.1 shadow context cannot be upgrade to a 3.3+ core
 if platform.system() == 'Darwin':
     pyglet.options['shadow_window'] = False
 
@@ -214,7 +214,7 @@ class Window(BaseWindow):
     def on_mouse_motion(self, x, y, dx, dy):
         """Pyglet specific mouse motion callback.
 
-        Forwards and traslates the event to the standard methods.
+        Forwards and translates the event to the standard methods.
 
         Args:
             x: x position of the mouse
@@ -231,7 +231,7 @@ class Window(BaseWindow):
         """Pyglet specific mouse drag event.
 
         When a mouse button is pressed this is the only way
-        to capture mouse posision events
+        to capture mouse position events
         """
         self._mouse_drag_event_func(x, self._buffer_height - y, dx, -dy)
 
@@ -256,8 +256,8 @@ class Window(BaseWindow):
         """Handle mouse release events and forward to standard methods
 
         Args:
-            x: x position when moutse button was released
-            y: y position when moutse button was released
+            x: x position when mouse button was released
+            y: y position when mouse button was released
             button: The button pressed
             mods: Modifiers
         """

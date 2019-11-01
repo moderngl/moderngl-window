@@ -873,9 +873,9 @@ class WindowConfig:
 
         Args:
             x (int): X postion of the mouse cursor
-            y Iint): Y position of the mouse cursor
+            y (int): Y position of the mouse cursor
             dx (int): X delta postion
-            dy Iint): Y delta position
+            dy (int): Y delta position
         """
 
     def mouse_drag_event(self, x: int, y: int, dx: int, dy: int):
@@ -885,15 +885,15 @@ class WindowConfig:
             x (int): X postion of the mouse cursor
             y (int): Y position of the mouse cursor
             dx (int): X delta postion
-            dy Iint): Y delta position
+            dy (int): Y delta position
         """
 
     def mouse_press_event(self, x: int, y: int, button: int):
         """Called when a mouse button in pressed
 
         Args:
-            x (int): X position the press occured
-            y (int): Y position the press occured
+            x (int): X position the press ocurred
+            y (int): Y position the press ocurred
             button (int): 1 = Left button, 2 = right button
         """
 
@@ -901,20 +901,20 @@ class WindowConfig:
         """Called when a mouse button in released
 
         Args:
-            x (int): X position the release occured
-            y (int): Y position the release occured
+            x (int): X position the release ocurred
+            y (int): Y position the release ocurred
             button (int): 1 = Left button, 2 = right button
         """
 
     def mouse_scroll_event(self, x_offset: float, y_offset: float):
         """Called when the mouse wheel is scrolled.
 
-        Some input devices also support horisontal scrolling,
+        Some input devices also support horizontal scrolling,
         but vertical scrolling is fairly universal.
 
         Args:
             x_offset (int): X scroll offset
-            y_offset Iint): Y scroll offset
+            y_offset (int): Y scroll offset
         """
 
     def unicode_char_entered(self, char: str):
@@ -931,13 +931,13 @@ class WindowConfig:
         Args:
             path (str): Path to the texture relative to search directories
         Keyword Args:
-            flip (boolean): Flip the image horisontally
+            flip (boolean): Flip the image horizontally
             mipmap (bool): Generate mipmaps. Will generate max possible levels unless
                            `mipmap_levels` is defined.
             mipmap_levels (tuple): (base, max_level) controlling mipmap generation.
                                    When defined the `mipmap` parameter is automatically `True`
             anisotropy (float): Number of samples for anisotropic filtering
-            **kwargs: Additonal parameters to TextureDescription
+            **kwargs: Additional parameters to TextureDescription
         Returns:
             moderngl.Texture: Texture instance
         """
@@ -959,14 +959,14 @@ class WindowConfig:
             path (str): Path to the texture relative to search directories
         Keyword Args:
             layers (int): How many layers to split the texture into vertically
-            flip (boolean): Flip the image horisontally
+            flip (boolean): Flip the image horizontally
             mipmap (bool): Generate mipmaps. Will generate max possible levels unless
                            `mipmap_levels` is defined.
             mipmap_levels (tuple): (base, max_level) controlling mipmap generation.
                                    When defined the `mipmap` parameter is automatically `True`
             anisotropy (float): Number of samples for anisotropic filtering
 
-            **kwargs: Additonal parameters to TextureDescription
+            **kwargs: Additional parameters to TextureDescription
         Returns:
             moderngl.TextureArray: The texture instance
         """

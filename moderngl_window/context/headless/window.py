@@ -62,5 +62,5 @@ class Window(BaseWindow):
         self._frames += 1
 
     def destroy(self) -> None:
-        # TODO: A context can currently not be invaldiated in ModernGL
+        # TODO: A context can currently not be invalidated in ModernGL
         pass

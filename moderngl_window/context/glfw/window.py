@@ -252,7 +252,7 @@ class Window(BaseWindow):
             self._mouse_release_event_func(xpos, ypos, button)
 
     def glfw_mouse_scroll_callback(self, window, x_offset: float, y_offset: float):
-        """Handle mouse scoll events and forward them to the example
+        """Handle mouse scroll events and forward them to the example
 
         Args:
             window: The window
@@ -290,7 +290,7 @@ class Window(BaseWindow):
 
         Args:
             window: The window instance
-            focused (int): 0: defocus, 1: focused
+            focused (int): 0: de-focus, 1: focused
         """
         self._has_focus = True if focused == 1 else False
 
@@ -304,7 +304,7 @@ class Window(BaseWindow):
         pass
 
     def glfw_window_iconify(self, window, iconified: int):
-        """Called when the windiw is minimized or restored.
+        """Called when the window is minimized or restored.
 
         Args:
             window: The window

@@ -262,8 +262,8 @@ class ModernglTkWindow(OpenGLFrame):
         pass
 
     def tkResize(self, event):
-        """Should never be called. Event overidden."""
-        raise ValueError("tkResize should never be called. The event is overriden.")
+        """Should never be called. Event overridden."""
+        raise ValueError("tkResize should never be called. The event is overridden.")
 
     def tkMap(self, event):
         """Called when frame goes onto the screen"""

@@ -3,7 +3,7 @@ import platform
 import pyglet
 
 # On OS X we need to disable the shadow context
-# because the 2.1 shadow contect cannot be upgrade to a 3.3+ core
+# because the 2.1 shadow context cannot be upgrade to a 3.3+ core
 if platform.system() == 'Darwin':
     pyglet.options['shadow_window'] = False
 
