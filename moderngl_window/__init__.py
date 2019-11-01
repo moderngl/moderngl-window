@@ -16,7 +16,7 @@ from moderngl_window.timers.clock import Timer
 from moderngl_window.conf import settings
 from moderngl_window.utils.module_loading import import_string
 
-__version__ = '1.5.2'
+__version__ = '2.0.0'
 
 IGNORE_DIRS = [
     '__pycache__',
@@ -61,10 +61,11 @@ def activate_context(window: BaseWindow = None, ctx: moderngl.Context = None):
     """
     Register the active window and context.
     If only a window is supplied the context is taken from the window.
+    Only a context can also be passed in.
 
     Keyword Args:
-        window (window): The currenty active window
-        ctx (moderngl.Context): The active moderngl context
+        window (window): The window to activate
+        ctx (moderngl.Context): The moderngl context to activate
     """
     ContextRefs.WINDOW = window
     ContextRefs.CONTEXT = ctx
@@ -90,7 +91,7 @@ def ctx():
 
 def get_window_cls(window: str = None) -> Type[BaseWindow]:
     """
-    Attept to obtain a window class using the full dotted
+    Attempt to obtain a window class using the full dotted
     python path. This can be used to import custom or modified
     window classes.
 
@@ -106,7 +107,7 @@ def get_window_cls(window: str = None) -> Type[BaseWindow]:
 
 def get_local_window_cls(window: str = None) -> Type[BaseWindow]:
     """
-    Attept to obtain a window class in the moderngl_window package
+    Attempt to obtain a window class in the moderngl_window package
     using short window names such as ``pyglet`` or ``glfw``.
 
     Args:
@@ -127,7 +128,7 @@ def find_window_classes() -> List[str]:
     Find available window packages
 
     Returns:
-        A list of avaialble window packages
+        A list of available window packages
     """
     return [
         path.parts[-1] for path in Path(__file__).parent.joinpath('context').iterdir()
@@ -291,7 +292,7 @@ def valid_window_size(value):
 def valid_window_size_multiplier(value):
     """Validates window size multiplier
 
-    Must be an integer or float creater than 0
+    Must be an integer or float greater than 0
     """
     try:
         val = float(value)
