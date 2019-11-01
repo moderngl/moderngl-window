@@ -39,7 +39,7 @@ class Settings:
         # Fallback in code
         value = getattr(settings, 'VALUE', 'default_value')
 
-        # Pretty printed string represenation for easy inspection
+        # Pretty printed string representation for easy inspection
         print(settings)
     """
     WINDOW = dict()
@@ -76,7 +76,7 @@ class Settings:
     - ``cursor``: Should the mouse cursor be visible on the screen? Disabling
       this is also useful in windowed mode when controlling the camera on some
       platforms as moving the mouse outside the window can cause issues.
-    - ``Samples``: Number if samples used in multusampling. Values above 1
+    - ``Samples``: Number if samples used in multisampling. Values above 1
       enables multisampling.
 
     The created window frame buffer will by default use:
@@ -222,7 +222,7 @@ class Settings:
         """
         Apply keys and values from the default settings module
         located in this package. This is to ensure we always
-        have the minimnal settings for the system to run.
+        have the minimal settings for the system to run.
 
         If replacing or customizing the settings class
         you must always apply default settings to ensure
@@ -233,7 +233,7 @@ class Settings:
     def apply_settings_from_env(self) -> None:
         """
         Apply settings from ``MODERNGL_WINDOW_SETTINGS_MODULE`` environment variable.
-        If the enviroment variable is undefined no action will be taken.
+        If the environment variable is undefined no action will be taken.
         Normally this would be used to easily be able to switch between
         different configuration by setting env vars before executing the program.
 
@@ -335,11 +335,11 @@ class Settings:
                 setattr(self, name, value)
 
     def to_dict(self):
-        """Create a dict represenation of the settings
+        """Create a dict representation of the settings
         Only uppercase attributes are included
 
         Returns:
-            dict: dict represenation
+            dict: dict representation
         """
         return {k: v for k, v in self.__dict__.items() if k.upper()}
 
