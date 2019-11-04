@@ -8,13 +8,11 @@ out vec2 uv0;
 
 void main() {
     gl_Position = vec4(in_position, 1);
-    uv0 = in_texcoord_0;
 }
 
 #elif defined FRAGMENT_SHADER
 
 out float fragColor;
-in vec2 uv0;
 
 uniform sampler2D texture;
 
@@ -23,8 +21,6 @@ const ivec2 kpos[9] = ivec2[9](
     ivec2(-1,  0),  ivec2(0,  0),  ivec2(1,  0),
     ivec2(-1, -1),  ivec2(0, -1),  ivec2(1, -1)
 );
-
-const float external_flow = .4;
 
 const float poi_kernel[9] = float[9](
       0.0, .25,  0.0,

@@ -17,6 +17,7 @@ out float fragColor;
 in vec2 uv0;
 
 uniform sampler2D momentum_texture;
+uniform float external_flow;
 
 const ivec2 kpos[9] = ivec2[9](
     ivec2(-1,  1),  ivec2(0,  1),  ivec2(1,  1),
@@ -24,9 +25,7 @@ const ivec2 kpos[9] = ivec2[9](
     ivec2(-1, -1),  ivec2(0, -1),  ivec2(1, -1)
 );
 
-const float external_flow = .35;
-
-const float flow_kernel[9] = float[9](
+float flow_kernel[9] = float[9](
     0.0, 0.0, 0.0,
     external_flow, 1.0, -external_flow,
     0.0, 0.0, 0.0

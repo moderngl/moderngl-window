@@ -9,17 +9,18 @@ from pyrr import matrix44
 import moderngl_window
 from moderngl_window import geometry
 
-external_flow = .4
+external_flow = .35
 viscosity = .018  # Is it odd that negative viscosity still works?
+rho = 1.06  # Density
+damping = 0.999
 
 
 class NavierStokes2D(moderngl_window.WindowConfig):
     title = "Navier Stokes 2D"
     resource_dir = (Path(__file__) / '../../resources').absolute()
-    # window_size = (3440, 1440)
-    aspect_ratio = None  # 1280 / 720
+    # window_size = 3440, 1440
     # window_size = 512, 512
-    # aspect_ratio = 1.0
+    aspect_ratio = None  # Aspect ratio should change with window size
     resizable = False
 
     def __init__(self, *args, **kwargs):
@@ -67,12 +68,18 @@ class NavierStokes2D(moderngl_window.WindowConfig):
         self.combine_prog['pressure_texture'].value = 0
         self.combine_prog['wall_texture'].value = 1
         self.momentum_prog = self.load_program('programs/navier-stokes/momentum.glsl')
+        self.momentum_prog['rho'].value = rho
+        self.momentum_prog['damping'].value = damping
+        self.momentum_prog['external_flow'].value = external_flow
         self.momentum_prog['momentum_texture'].value = 0
         self.momentum_prog['pressure_texture'].value = 1
         self.momentum_prog['walls_texture'].value = 3
         self.flow_prog = self.load_program('programs/navier-stokes/flow.glsl')
+        self.flow_prog['external_flow'].value = external_flow
         self.poisson_prog = self.load_program('programs/navier-stokes/poisson.glsl')
         self.pressure_prog = self.load_program('programs/navier-stokes/pressure.glsl')
+        self.pressure_prog['rho'].value = rho
+        self.pressure_prog['damping'].value = damping
         self.pressure_prog['pressure_texture'].value = 0
         self.pressure_prog['difference_texture'].value = 1
         self.pressure_prog['walls_texture'].value = 3
@@ -135,10 +142,6 @@ class NavierStokes2D(moderngl_window.WindowConfig):
         self.difference_texture.use(location=1)
         self.walls_texture.use(location=3)
         self.quad_fs.render(self.pressure_prog)
-
-        # Wall boundary conditions
-        # self.momentum = np.where(self.walls !=1, self.momentum, -external_flow)
-        # self.pressure = np.where(self.walls !=1, self.pressure, 0)
 
         # Render final result
         self.wnd.fbo.use()

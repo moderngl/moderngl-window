@@ -19,6 +19,9 @@ in vec2 uv0;
 uniform sampler2D momentum_texture;
 uniform sampler2D pressure_texture;
 uniform sampler2D walls_texture;
+uniform float rho;
+uniform float damping;
+uniform float external_flow;
 
 const ivec2 kpos[9] = ivec2[9](
     ivec2(-1,  1),  ivec2(0,  1),  ivec2(1,  1),
@@ -47,7 +50,6 @@ float diffusion(ivec2 uv, sampler2D source) {
 }
 
 const float viscosity = .018;
-const float rho = 1.06;  // Density
 
 float convection(ivec2 uv, sampler2D source) {
     float value = 0;
@@ -56,7 +58,7 @@ float convection(ivec2 uv, sampler2D source) {
     }
     return value;
 }
-const float external_flow = .35;
+
 void main() {
     ivec2 uv = ivec2(gl_FragCoord.xy);
 
@@ -73,7 +75,7 @@ void main() {
         fragColor = (diff_momentum - 
                     viscosity * momentum *
                     con_momentum +
-                    con_pressure * rho); // * .994;
+                    con_pressure * rho) * damping;
     }
 }
 #endif

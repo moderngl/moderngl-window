@@ -19,14 +19,14 @@ in vec2 uv0;
 uniform sampler2D pressure_texture;
 uniform sampler2D difference_texture;
 uniform sampler2D walls_texture;
+uniform float rho;  // Density
+uniform float damping;
 
 const ivec2 kpos[9] = ivec2[9](
     ivec2(-1,  1),  ivec2(0,  1),  ivec2(1,  1),
     ivec2(-1,  0),  ivec2(0,  0),  ivec2(1,  0),
     ivec2(-1, -1),  ivec2(0, -1),  ivec2(1, -1)
 );
-
-const float external_flow = .4;
 
 const float poi_kernel[9] = float[9](
       0.0, .25,  0.0,
@@ -41,9 +41,6 @@ float poisson(ivec2 uv, sampler2D source) {
     }
     return value;
 }
-
-const float rho = 1.06;  // Density
-const float damping = .994;
 
 void main() {
     ivec2 uv = ivec2(gl_FragCoord.xy);
