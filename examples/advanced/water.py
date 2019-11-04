@@ -1,3 +1,8 @@
+"""
+GPU Version of https://github.com/salt-die/ripple
+
+Hold left mouse button to place drop in the surface
+"""
 import random
 from pathlib import Path
 import numpy as np

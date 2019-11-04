@@ -1,5 +1,9 @@
 """
 GPU version of https://github.com/salt-die/navier-stokes
+
+Interact with the window using to add pressure and momentum.
+* Left mouse button (including drag) pokes the surface
+* Right mouse button places walls
 """
 import random
 from pathlib import Path
