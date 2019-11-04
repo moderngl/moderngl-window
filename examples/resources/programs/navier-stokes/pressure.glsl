@@ -18,6 +18,7 @@ in vec2 uv0;
 
 uniform sampler2D pressure_texture;
 uniform sampler2D difference_texture;
+uniform sampler2D walls_texture;
 
 const ivec2 kpos[9] = ivec2[9](
     ivec2(-1,  1),  ivec2(0,  1),  ivec2(1,  1),
@@ -48,7 +49,8 @@ void main() {
     ivec2 uv = ivec2(gl_FragCoord.xy);
     float poi = poisson(uv, pressure_texture);
     float diff = texelFetch(difference_texture, uv, 0).r;
+    float wall = texelFetch(walls_texture, uv, 0).r;
 
-    fragColor = (poi + rho / 2.0 * (diff - pow(diff, 2.0))) *  damping;
+    fragColor = (poi + rho / 2.0 * (diff - pow(diff, 2.0))) * (1.0 - wall) * damping;
 }
 #endif

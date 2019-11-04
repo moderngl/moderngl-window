@@ -18,6 +18,7 @@ in vec2 uv0;
 
 uniform sampler2D momentum_texture;
 uniform sampler2D pressure_texture;
+uniform sampler2D walls_texture;
 
 const ivec2 kpos[9] = ivec2[9](
     ivec2(-1,  1),  ivec2(0,  1),  ivec2(1,  1),
@@ -55,20 +56,24 @@ float convection(ivec2 uv, sampler2D source) {
     }
     return value;
 }
-
+const float external_flow = .35;
 void main() {
     ivec2 uv = ivec2(gl_FragCoord.xy);
 
     float momentum = texelFetch(momentum_texture, uv, 0).r;
-
+    float wall = texelFetch(walls_texture, uv, 0).r;
+    
     float diff_momentum = diffusion(uv, momentum_texture);
     float con_momentum = convection(uv, momentum_texture);
     float con_pressure = convection(uv, pressure_texture);
 
-    fragColor = (diff_momentum - 
-                viscosity * momentum *
-                con_momentum +
-                con_pressure * rho)
-                * 1.0;
+    if (wall > 0) {
+        fragColor = -external_flow;
+    } else {
+        fragColor = (diff_momentum - 
+                    viscosity * momentum *
+                    con_momentum +
+                    con_pressure * rho); // * .994;
+    }
 }
 #endif

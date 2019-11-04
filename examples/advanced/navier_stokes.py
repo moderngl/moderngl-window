@@ -69,25 +69,20 @@ class NavierStokes2D(moderngl_window.WindowConfig):
         self.momentum_prog = self.load_program('programs/navier-stokes/momentum.glsl')
         self.momentum_prog['momentum_texture'].value = 0
         self.momentum_prog['pressure_texture'].value = 1
+        self.momentum_prog['walls_texture'].value = 3
         self.flow_prog = self.load_program('programs/navier-stokes/flow.glsl')
         self.poisson_prog = self.load_program('programs/navier-stokes/poisson.glsl')
         self.pressure_prog = self.load_program('programs/navier-stokes/pressure.glsl')
         self.pressure_prog['pressure_texture'].value = 0
         self.pressure_prog['difference_texture'].value = 1
+        self.pressure_prog['walls_texture'].value = 3
 
         self.reset()
 
     def reset(self):
-        size = self.wnd.buffer_size
-        momentum = np.zeros(size, dtype=np.float32).T
-        # momentum[3 * size[0] // 8 : 5 * size[0] // 8,
-        #          3 * size[1] // 8 : 5 * size[1] // 8] = .04
-        self.momentum_texture_2.write(momentum.tobytes())
-
-        pressure = np.zeros(size, dtype=np.float32).T
-        # pressure[3 * size[0] // 8 : 5 * size[0] // 8,
-        #          3 * size[1] // 8 : 5 * size[1] // 8] = 1
-        self.pressure_texture_2.write(pressure.tobytes())
+        self.momentum_fbo_2.clear()
+        self.pressure_fbo_2.clear()
+        self.walls_fbo.clear()
 
     def drop(self, x, y):
         rng = 40
@@ -120,6 +115,7 @@ class NavierStokes2D(moderngl_window.WindowConfig):
         self.momentum_fbo_1.use()
         self.momentum_texture_2.use(location=0)
         self.pressure_texture_2.use(location=1)
+        self.walls_texture.use(location=3)
         self.quad_fs.render(self.momentum_prog)
 
         # External Flow
@@ -137,10 +133,12 @@ class NavierStokes2D(moderngl_window.WindowConfig):
         self.pressure_fbo_1.use()
         self.pressure_texture_2.use(location=0)
         self.difference_texture.use(location=1)
+        self.walls_texture.use(location=3)
         self.quad_fs.render(self.pressure_prog)
 
         # Wall boundary conditions
-        # (for handling walls)
+        # self.momentum = np.where(self.walls !=1, self.momentum, -external_flow)
+        # self.pressure = np.where(self.walls !=1, self.pressure, 0)
 
         # Render final result
         self.wnd.fbo.use()
