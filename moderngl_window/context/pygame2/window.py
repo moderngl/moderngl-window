@@ -1,5 +1,4 @@
 from typing import Tuple
-from ctypes import c_int, c_char_p
 import pygame
 import pygame.display
 import pygame.event
@@ -270,9 +269,10 @@ class Window(BaseWindow):
                     else:
                         self._iconify_func(True)
 
-            elif event.type == pygame.VIDEOEXPOSE:
-                # On OS X we only get VIDEOEXPOSE when restoring the windoe
-                self._iconify_func(False)
+            # This is also a problem on linux, but is too disruptive during resize events
+            # elif event.type == pygame.VIDEOEXPOSE:
+            #     # On OS X we only get VIDEOEXPOSE when restoring the windoe
+            #     self._iconify_func(False)
 
     def destroy(self) -> None:
         """Gracefully close the window"""
