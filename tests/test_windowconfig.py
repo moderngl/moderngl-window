@@ -15,7 +15,7 @@ class WindowConfigTestCase(WindowConfigTestCase):
         resource_dir = Path(__file__).parent / 'fixtures' / 'resources'
 
     def create_window_config(self, cls):
-        """Create a WindoeConfig instance passing in the standard params"""
+        """Create a WindowConfig instance passing in the standard params"""
         instance = cls(ctx=self.window.ctx, wnd=self.window, timer=None)
         instance.window_size = self.config.window_size
         instance.aspect_ratio = self.config.aspect_ratio
@@ -34,7 +34,7 @@ class WindowConfigTestCase(WindowConfigTestCase):
         self.assertEqual(self.config.aspect_ratio, self.window.aspect_ratio)
         self.assertIsInstance(self.window.ctx, moderngl.Context)
         self.assertIsInstance(self.window.fbo, moderngl.Framebuffer)
-        self.assertEqual(self.window.vsync, True)
+        self.assertEqual(self.window.vsync, False)
 
         # Defaults
         self.assertEqual(self.config.resizable, True)  # Disabled in headless
@@ -42,7 +42,7 @@ class WindowConfigTestCase(WindowConfigTestCase):
         self.assertEqual(self.config.samples, self.window.samples)
         self.assertIsInstance(self.config.resource_dir, Path)
 
-        # Ensure callback funcs are actuall callable
+        # Ensure callback funcs are actual callable
         self.assertTrue(callable(self.window.resize_func))
         self.assertTrue(callable(self.window.key_event_func))
         self.assertTrue(callable(self.window.mouse_position_event_func))
@@ -94,7 +94,7 @@ class WindowConfigTestCase(WindowConfigTestCase):
             self.window.resize_func = "Hello"
 
     def test_load_texture_2d(self):
-        """Load texure with shortcut method"""
+        """Load texture with shortcut method"""
         texture = self.config.load_texture_2d(
             "textures/crate.png",
             flip=True,

@@ -36,7 +36,7 @@ class WindowConfigTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        window_cls = mglw.get_local_window_cls()
+        window_cls = mglw.get_local_window_cls('headless')
         cls.window = window_cls(
             title=cls.TestConfig.title,
             size=cls.TestConfig.window_size,
