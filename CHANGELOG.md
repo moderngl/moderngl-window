@@ -10,6 +10,7 @@ Breaking Changes
 * `KeyboardCamera.rot_state` now takes dx and dy instead of x and y
 
 Improvements
+* Added pygame2 window
 * Added window callback `iconify` for all window types that will be called
   when a window is minimized or restored
 * Window property `mouse_exclusivity` added for all window types.
