@@ -41,7 +41,7 @@ class Window(BaseWindow):
             pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLEBUFFERS, 1)
             pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLESAMPLES, self.samples)
 
-        flags = pygame.OPENGL
+        flags = pygame.OPENGL | pygame.DOUBLEBUF
         if self.fullscreen:
             flags |= pygame.FULLSCREEN
         else:
