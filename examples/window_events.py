@@ -1,3 +1,4 @@
+import math
 import moderngl_window as mglw
 import random
 
@@ -14,6 +15,12 @@ class WindowEvents(mglw.WindowConfig):
         super().__init__(**kwargs)
 
     def render(self, time: float, frametime: float):
+        self.ctx.clear(
+            (math.sin(time) + 1.0) / 2,
+            (math.sin(time + 2) + 1.0) / 2,
+            (math.sin(time + 3) + 1.0) / 2,
+        )
+
         # We can also check if a key is in press state here
         if self.wnd.is_key_pressed(self.wnd.keys.SPACE):
             print("User is holding SPACE button")
