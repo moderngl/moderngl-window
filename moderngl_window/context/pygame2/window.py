@@ -41,38 +41,25 @@ class Window(BaseWindow):
             pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLEBUFFERS, 1)
             pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLESAMPLES, self.samples)
 
-        flags = pygame.OPENGL | pygame.DOUBLEBUF
+        self._depth = 24
+        self._flags = pygame.OPENGL | pygame.DOUBLEBUF
         if self.fullscreen:
-            flags |= pygame.FULLSCREEN
+            self._flags |= pygame.FULLSCREEN
         else:
             if self.resizable:
-                flags |= pygame.RESIZABLE
+                self._flags |= pygame.RESIZABLE
 
-        pygame.display.set_mode(
-            (self._width, self._height),
-            flags=flags,
-            depth=24,
-        )
-        pygame.display
-        # self._window = sdl2.SDL_CreateWindow(
-        #     self.title.encode(),
-        #     sdl2.SDL_WINDOWPOS_UNDEFINED,
-        #     sdl2.SDL_WINDOWPOS_UNDEFINED,
-        #     self.width,
-        #     self.height,
-        #     flags,
-        # )
-
-        # if not self._window:
-        #     raise ValueError("Failed to create window:", sdl2.SDL_GetError())
-
-        # self._context = sdl2.SDL_GL_CreateContext(self._window)
-
-        # sdl2.video.SDL_GL_SetSwapInterval(1 if self.vsync else 0)
-
+        self._set_mode()
+        self.title = self._title
         self.init_mgl_context()
-
         self.set_default_viewport()
+
+    def _set_mode(self):
+        self._surface = pygame.display.set_mode(
+            (self._width, self._height),
+            flags=self._flags,
+            depth=self._depth,
+        )
 
     @property
     def size(self) -> Tuple[int, int]:
@@ -87,8 +74,8 @@ class Window(BaseWindow):
 
     @size.setter
     def size(self, value: Tuple[int, int]):
-        sdl2.SDL_SetWindowSize(self._window, value[0], value[1])
-        # SDL_SetWindowSize don't trigger a resize event
+        self._width, self._height = value
+        self._set_mode()
         self.resize(value[0], value[1])
 
     @property
@@ -100,14 +87,13 @@ class Window(BaseWindow):
             # Move window to 100, 100
             window.position = 100, 100
         """
-        x = c_int(0)
-        y = c_int(0)
-        sdl2.SDL_GetWindowPosition(self._window, x, y)
-        return x.value, y.value
+        # FIXME: pygame don't seem to support this
+        return (0, 0)
 
     @position.setter
     def position(self, value: Tuple[int, int]):
-        sdl2.SDL_SetWindowPosition(self._window, value[0], value[1])
+        # FIXME: pygame don't seem to support this
+        pass
 
     @property
     def cursor(self) -> bool:
@@ -252,17 +238,26 @@ class Window(BaseWindow):
                 self.resize(event.size[0], event.size[1])
 
             elif event.type == pygame.ACTIVEEVENT:
-                print('ACTIVEEVENT', event)
-                # gain 0/1: mouse inside or outside window
-                pass
+                # Mouse cursor state
+                # if event.state == 0:
+                #     if event.gain:
+                #         print("Mouse enters viewport")
+                #     else:
+                #         print("Mouse leaves viewport")
 
-            elif event.type == pygame.WINDOWEVENT:
-                if event.window.event == pygame.WINDOWEVENT_MINIMIZED:
-                    self._iconify_func(True)
-                elif event.window.event == pygame.WINDOWEVENT_RESTORED:
-                    self._iconify_func(False)
-            else:
-                print('****', event)
+                # Window focus state
+                # if event.state == 1:
+                #     if event.gain:
+                #         print("Window gained focus")
+                #     else:
+                #         print("Window lost focus")
+
+                # Window iconify state
+                if event.state == 2:
+                    if event.gain:
+                        self._iconify_func(False)
+                    else:
+                        self._iconify_func(True)
 
     def destroy(self) -> None:
         """Gracefully close the window"""
