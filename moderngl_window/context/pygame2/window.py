@@ -10,7 +10,7 @@ from moderngl_window.context.pygame2.keys import Keys
 
 class Window(BaseWindow):
     """
-    Basic window implementation using SDL2.
+    Basic window implementation using pygame2.
     """
     #: pygame specific key constants
     keys = Keys
@@ -188,7 +188,7 @@ class Window(BaseWindow):
         self._modifiers.ctrl = mods & pygame.KMOD_CTRL
 
     def process_events(self) -> None:
-        """Handle all queued events in sdl2 dispatching events to standard methods"""
+        """Handle all queued events in pygame2 dispatching events to standard methods"""
 
         for event in pygame.event.get():
             if event.type == pygame.MOUSEMOTION:
