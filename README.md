@@ -17,7 +17,7 @@ Please report bugs or post questions/feedback on [github](https://github.com/mod
 * Cross platform support. Tested on Windows 10, Linux and Mac OS X.
   This can save users a lot of time and is often more difficult than most people
   imagine it to be.
-* Easily create a window for ModernGL using Pyglet, PySide2, GLFW, SDL2, PyQt5
+* Easily create a window for ModernGL using pyglet, pygame, PySide2, GLFW, SDL2, PyQt5
   or tkinter supporting a wide range of window, keyboard and mouse events.
   These events are unified into a single system so your project can work with any window.
 * Load 2D textures and texture arrays
