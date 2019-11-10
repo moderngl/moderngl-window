@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.0 (Unreleased)
+## 2.0.0
 
 Breaking Changes
 * `mouse_position_event` signature has changed from `(x, y)` to `(x, y, dx, dy)`.
@@ -10,6 +10,7 @@ Breaking Changes
 * `KeyboardCamera.rot_state` now takes dx and dy instead of x and y
 
 Improvements
+* Python 3.8 support (PySide2 will take a few more months. SDL2 has issues on windows)
 * Added pygame2 window
 * Added window callback `iconify` for all window types that will be called
   when a window is minimized or restored
