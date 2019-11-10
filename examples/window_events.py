@@ -46,16 +46,26 @@ class WindowEvents(mglw.WindowConfig):
             if key == keys.SPACE:
                 print("SPACE key was released")
 
-        # Move the window around with AWSD
         if action == keys.ACTION_PRESS:
+            # Move the window around with AWSD
             if key == keys.A:
-                self.wnd.position = self.wnd.position[0] - 10, self.wnd.position[1]
+                self.wnd.position = self.wnd.position[0] - 20, self.wnd.position[1]
             if key == keys.D:
-                self.wnd.position = self.wnd.position[0] + 10, self.wnd.position[1]
+                self.wnd.position = self.wnd.position[0] + 20, self.wnd.position[1]
             if key == keys.W:
-                self.wnd.position = self.wnd.position[0], self.wnd.position[1] - 10
+                self.wnd.position = self.wnd.position[0], self.wnd.position[1] - 20
             if key == keys.S:
-                self.wnd.position = self.wnd.position[0], self.wnd.position[1] + 10
+                self.wnd.position = self.wnd.position[0], self.wnd.position[1] + 20
+
+            # Resize window around with Shift + AWSD
+            if self.wnd.modifiers.shift and key == keys.A:
+                self.wnd.size = self.wnd.size[0] - 50, self.wnd.size[1]
+            if self.wnd.modifiers.shift and key == keys.D:
+                self.wnd.size = self.wnd.size[0] + 50, self.wnd.size[1]
+            if self.wnd.modifiers.shift and key == keys.W:
+                self.wnd.size = self.wnd.size[0], self.wnd.size[1] - 50
+            if self.wnd.modifiers.shift and key == keys.S:
+                self.wnd.size = self.wnd.size[0], self.wnd.size[1] + 50
 
             # toggle cursor
             if key == keys.C:
