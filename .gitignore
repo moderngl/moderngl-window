@@ -49,6 +49,7 @@ docs/_build/
 .venv35
 .venv36
 .venv37
+.venv38
 env/
 venv/
 ENV/
