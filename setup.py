@@ -40,7 +40,7 @@ setup(
         "glfw": ['glfw<2'],
         "PySDL2": ['PySDL2<1'],
         "pywavefront": ["pywavefront>=1.2.0<2"],
-        "trimesh": ["trimesh>=3.2.6<4", "scipy>=1.3"],
+        "trimesh": ["trimesh>=3.2.6<4", "scipy>=1.3.2"],
         "tk": ["pyopengltk>=0.0.3"],
         "pygame": ["pygame==2.0.0.dev6"],
     },
