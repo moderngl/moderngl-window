@@ -270,6 +270,10 @@ class Window(BaseWindow):
                     else:
                         self._iconify_func(True)
 
+            elif event.type == pygame.VIDEOEXPOSE:
+                # On OS X we only get VIDEOEXPOSE when restoring the windoe
+                self._iconify_func(False)
+
     def destroy(self) -> None:
         """Gracefully close the window"""
         pygame.quit()
