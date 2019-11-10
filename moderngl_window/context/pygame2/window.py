@@ -35,28 +35,38 @@ class Window(BaseWindow):
         pygame.display.gl_set_attribute(pygame.GL_DOUBLEBUFFER, 1)
         pygame.display.gl_set_attribute(pygame.GL_DEPTH_SIZE, 24)
 
-        self.cursor = self._cursor
-
         if self.samples > 1:
             pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLEBUFFERS, 1)
             pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLESAMPLES, self.samples)
+
+        # # Does not reveal resolution hertz or
+        # print('Available modes:')
+        # for mode in pygame.display.list_modes():
+        #     print(' -', mode)
 
         self._depth = 24
         self._flags = pygame.OPENGL | pygame.DOUBLEBUF
         if self.fullscreen:
             self._flags |= pygame.FULLSCREEN
+
+            # FIXME: Does not include hertz. Future.
+            info = pygame.display.Info()
+            desktop_size = info.current_w, info.current_h
+            self._width, self._height = desktop_size
+            self._buffer_width, self._buffer_height = self._width, self._height
         else:
             if self.resizable:
                 self._flags |= pygame.RESIZABLE
 
         self._set_mode()
         self.title = self._title
+        self.cursor = self._cursor
         self.init_mgl_context()
         self.set_default_viewport()
 
     def _set_mode(self):
         self._surface = pygame.display.set_mode(
-            (self._width, self._height),
+            size=(self._width, self._height),
             flags=self._flags,
             depth=self._depth,
         )
@@ -129,11 +139,10 @@ class Window(BaseWindow):
 
     @mouse_exclusivity.setter
     def mouse_exclusivity(self, value: bool):
-        # if value is True:
-        #     sdl2.SDL_SetRelativeMouseMode(sdl2.SDL_TRUE)
-        # else:
-        #     sdl2.SDL_SetRelativeMouseMode(sdl2.SDL_FALSE)
+        if self._cursor:
+            self.cursor = False
 
+        pygame.event.set_grab(value)
         self._mouse_exclusivity = value
 
     @property
@@ -238,6 +247,8 @@ class Window(BaseWindow):
                 self.resize(event.size[0], event.size[1])
 
             elif event.type == pygame.ACTIVEEVENT:
+
+                # # We might support these in the future
                 # Mouse cursor state
                 # if event.state == 0:
                 #     if event.gain:
