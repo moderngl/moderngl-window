@@ -181,7 +181,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         gl_version=config_cls.gl_version,
         aspect_ratio=config_cls.aspect_ratio,
         vsync=values.vsync,
-        samples=values.samples or config_cls.samples,
+        samples=values.samples if values.samples is not None else config_cls.samples,
         cursor=show_cursor if show_cursor is not None else True,
     )
     window.print_context_info()
