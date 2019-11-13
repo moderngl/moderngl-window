@@ -40,7 +40,7 @@ class Window(BaseWindow):
             sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_MULTISAMPLEBUFFERS, 1)
             sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_MULTISAMPLESAMPLES, self.samples)
 
-        flags = sdl2.SDL_WINDOW_OPENGL
+        flags = sdl2.SDL_WINDOW_OPENGL | sdl2.SDL_WINDOW_ALLOW_HIGHDPI
         if self.fullscreen:
             flags |= sdl2.SDL_WINDOW_FULLSCREEN_DESKTOP
         else:
@@ -60,12 +60,17 @@ class Window(BaseWindow):
             raise ValueError("Failed to create window:", sdl2.SDL_GetError())
 
         self._context = sdl2.SDL_GL_CreateContext(self._window)
-
         sdl2.video.SDL_GL_SetSwapInterval(1 if self.vsync else 0)
+        self._buffer_width, self._buffer_height = self._get_drawable_size()
 
         self.init_mgl_context()
-
         self.set_default_viewport()
+
+    def _get_drawable_size(self):
+        x = c_int()
+        y = c_int()
+        sdl2.video.SDL_GL_GetDrawableSize(self._window, x, y)
+        return x.value, y.value
 
     @property
     def size(self) -> Tuple[int, int]:
@@ -167,7 +172,7 @@ class Window(BaseWindow):
         self._frames += 1
 
     def resize(self, width, height) -> None:
-        """Resize callback
+        """Resize callback.
 
         Args:
             width: New window width
@@ -175,7 +180,7 @@ class Window(BaseWindow):
         """
         self._width = width
         self._height = height
-        self._buffer_width, self._buffer_height = self._width, self._height
+        self._buffer_width, self._buffer_height = self._get_drawable_size()
         self.set_default_viewport()
 
         super().resize(self._buffer_width, self._buffer_height)
