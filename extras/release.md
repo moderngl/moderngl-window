@@ -18,7 +18,7 @@ We try to follow semantic versioning as much as possible: https://semver.org/spe
 * Change version numbers in docs/conf.py (`version` and `release`)
 * Change version in `setup.py`
 * `rm -rf .tox` (Force env recreation)
-* Run tests. Ensure it passes for `py35`, `py36`, `py37` and `pep8`.
+* Run tests. Ensure it passes for `py35`, `py36`, `py37`, `py38` and `pep8`.
   Run using `tox`.
 * Create release on Github : https://github.com/moderngl/moderngl-window/releases with entries from `CHANGELOG.md`
 * `python setup.py bdist_wheel`
