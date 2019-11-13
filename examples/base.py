@@ -19,6 +19,8 @@ class CameraWindow(mglw.WindowConfig):
         if action == keys.ACTION_PRESS:
             if key == keys.C:
                 self.camera_enabled = not self.camera_enabled
+                self.wnd.mouse_exclusivity = self.camera_enabled
+                self.wnd.cursor = not self.camera_enabled
             if key == keys.SPACE:
                 self.timer.toggle_pause()
 
