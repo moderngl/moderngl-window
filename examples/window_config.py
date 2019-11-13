@@ -1,3 +1,4 @@
+import math
 import moderngl_window as mglw
 
 
@@ -10,8 +11,11 @@ class BasicWindowConfig(mglw.WindowConfig):
         super().__init__(**kwargs)
 
     def render(self, time, frametime):
-        pass
-
+        self.ctx.clear(
+            (math.sin(time) + 1.0) / 2,
+            (math.sin(time + 2) + 1.0) / 2,
+            (math.sin(time + 3) + 1.0) / 2,
+        )
 
 if __name__ == '__main__':
     mglw.run_window_config(BasicWindowConfig)
