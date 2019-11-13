@@ -1,8 +1,8 @@
 import math
-import moderngl_window as mglw
+import moderngl_window
 
 
-class BasicWindowConfig(mglw.WindowConfig):
+class BasicWindowConfig(moderngl_window.WindowConfig):
     """Minimal WindowConfig example"""
     gl_version = (3, 3)
     title = "Basic Window Config"
@@ -17,5 +17,6 @@ class BasicWindowConfig(mglw.WindowConfig):
             (math.sin(time + 3) + 1.0) / 2,
         )
 
+
 if __name__ == '__main__':
-    mglw.run_window_config(BasicWindowConfig)
+    moderngl_window.run_window_config(BasicWindowConfig)
