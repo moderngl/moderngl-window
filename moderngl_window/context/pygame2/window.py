@@ -23,9 +23,7 @@ class Window(BaseWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        # TODO: We initialize all modules for now. Probably not needed.
-        if pygame.init()[1] != 0:
-            raise ValueError("Failed to initialize pygame")
+        pygame.display.init()
 
         pygame.display.gl_set_attribute(pygame.GL_CONTEXT_MAJOR_VERSION, self.gl_version[0])
         pygame.display.gl_set_attribute(pygame.GL_CONTEXT_MINOR_VERSION, self.gl_version[1])
@@ -38,17 +36,11 @@ class Window(BaseWindow):
             pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLEBUFFERS, 1)
             pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLESAMPLES, self.samples)
 
-        # # Does not reveal resolution hertz or
-        # print('Available modes:')
-        # for mode in pygame.display.list_modes():
-        #     print(' -', mode)
-
         self._depth = 24
         self._flags = pygame.OPENGL | pygame.DOUBLEBUF
         if self.fullscreen:
             self._flags |= pygame.FULLSCREEN
 
-            # FIXME: Does not include hertz. Future.
             info = pygame.display.Info()
             desktop_size = info.current_w, info.current_h
             self._width, self._height = desktop_size
