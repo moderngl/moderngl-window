@@ -16,7 +16,7 @@ from moderngl_window.timers.clock import Timer
 from moderngl_window.conf import settings
 from moderngl_window.utils.module_loading import import_string
 
-__version__ = '2.0.0'
+__version__ = '2.0.1'
 
 IGNORE_DIRS = [
     '__pycache__',
