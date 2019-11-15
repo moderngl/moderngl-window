@@ -3,10 +3,9 @@ import moderngl_window
 from OpenGL.GL import *
 
 
-class BasicWindowConfig(moderngl_window.WindowConfig):
-    """Minimal WindowConfig example"""
+class PyOpenGL(moderngl_window.WindowConfig):
     gl_version = (3, 3)
-    title = "Basic Window Config"
+    title = "PyOpenGL"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -22,4 +21,4 @@ class BasicWindowConfig(moderngl_window.WindowConfig):
 
 
 if __name__ == '__main__':
-    moderngl_window.run_window_config(BasicWindowConfig)
+    moderngl_window.run_window_config(PyOpenGL)
