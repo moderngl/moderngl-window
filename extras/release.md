@@ -29,5 +29,5 @@ We try to follow semantic versioning as much as possible: https://semver.org/spe
 ## Notes
 
 The advantage of using `tox` is that the package is properly built
-and installed in each python enviroment. This eliminates many common
+and installed in each python environment. This eliminates many common
 issues related to package management.
