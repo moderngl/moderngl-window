@@ -660,6 +660,8 @@ class BaseWindow:
         logger.info('python: %s', sys.version)
         logger.info('platform: %s', sys.platform)
         logger.info('code: %s', self._ctx.version_code)
+        # Consume potential glerror from querying info
+        self._ctx.error
 
     def _calc_mouse_delta(self, xpos: int, ypos: int) -> Tuple[int, int]:
         """Calculates the mouse position delta for events that don's support this
