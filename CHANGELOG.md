@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.2
+
+* Bug: An `INVALID_ENUM` glerror triggered after querying context info is now consumed.
+
 ## 2.0.1
 
 Bugfixes
