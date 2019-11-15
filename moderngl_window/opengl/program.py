@@ -22,6 +22,7 @@ class ProgramShaders:
         self.fragment_source = None
         self.tess_control_source = None
         self.tess_evaluation_source = None
+        self.compute_shader_source = None
 
     @property
     def ctx(self) -> moderngl.Context:
@@ -107,6 +108,16 @@ class ProgramShaders:
                 tess_evaluation_source,
             )
 
+        return instance
+
+    @classmethod
+    def compute_shader(cls, meta: ProgramDescription, compute_shader_source: str = None):
+        instance = cls(meta)
+        instance.compute_shader_source = ShaderSource(
+            COMPUTE_SHADER,
+            meta.compute_shader,
+            compute_shader_source
+        )
         return instance
 
     def create(self):
