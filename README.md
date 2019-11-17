@@ -2,7 +2,9 @@
 
 # moderngl-window
 
-A cross platform helper library for [ModernGL](https://github.com/moderngl/moderngl) making window creation and resource loading simple.
+A cross platform helper library for [ModernGL](https://github.com/moderngl/moderngl) making window
+creation and resource loading simple. It can also be used with PyOpenGL for
+rendering with the programmable pipeline.
 
 * [moderngl-window Documentation](https://moderngl-window.readthedocs.io)
 * [moderngl-window on PyPI](https://pypi.org/project/moderngl-window)
@@ -73,7 +75,6 @@ python test.py --window pyside2
 python test.py --window pyqt5
 python test.py --window tk
 ```
-
 
 `WindowConfig` classes are the simplest way to get started without knowing
 a lot about this library. For more advanced usage see documenation
