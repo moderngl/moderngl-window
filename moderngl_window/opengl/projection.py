@@ -63,8 +63,12 @@ class Projection3D:
         self._near = near or self._near
         self._far = far or self._far
 
-        self._matrix = Matrix44.perspective_projection(self._fov, self._aspect_ratio, self._near, self._far)
-        self._matrix_bytes = self._matrix.astype('f4').tobytes()
+        self._matrix = Matrix44.perspective_projection(
+            self._fov, self._aspect_ratio,
+            self._near, self._far,
+            dtype='f4',
+        )
+        self._matrix_bytes = self._matrix.tobytes()
 
     def tobytes(self) -> bytes:
         """Get the byte representation of the projection matrix

@@ -2,7 +2,7 @@ import time
 from math import cos, radians, sin
 
 import numpy
-from pyrr import Vector3, matrix44, vector, vector3
+from pyrr import Vector3, Matrix44, vector, vector3
 
 from moderngl_window.opengl.projection import Projection3D
 from moderngl_window.context.base import BaseKeys
@@ -124,12 +124,12 @@ class Camera:
         x = vector.normalise(vector3.cross(vector.normalise(up), z))
         y = vector3.cross(z, x)
 
-        translate = matrix44.create_identity()
+        translate = Matrix44.identity(dtype='f4')
         translate[3][0] = -pos.x
         translate[3][1] = -pos.y
         translate[3][2] = -pos.z
 
-        rotate = matrix44.create_identity()
+        rotate = Matrix44.identity(dtype='f4')
         rotate[0][0] = x[0]  # -- X
         rotate[1][0] = x[1]
         rotate[2][0] = x[2]
@@ -140,7 +140,7 @@ class Camera:
         rotate[1][2] = z[1]
         rotate[2][2] = z[2]
 
-        return matrix44.multiply(translate, rotate)
+        return rotate * translate
 
 
 class KeyboardCamera(Camera):
