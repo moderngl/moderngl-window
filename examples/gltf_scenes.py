@@ -1,5 +1,5 @@
 from pathlib import Path
-from pyrr import Matrix44, matrix44, Vector3
+from pyrr import Matrix44
 
 import moderngl
 import moderngl_window as mglw
@@ -46,9 +46,9 @@ class CubeModel(CameraWindow):
         """Render the scene"""
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
 
-        # Create camera matrix with rotation and translation
-        translation = matrix44.create_from_translation((0, 0, -1.5))
-        camera_matrix = matrix44.multiply(translation, self.camera.matrix)
+        # Move camera in on the z axis slightly by default
+        translation = Matrix44.from_translation((0, 0, -1.5), dtype='f4')
+        camera_matrix = self.camera.matrix * translation
 
         self.scene.draw(
             projection_matrix=self.camera.projection.matrix,

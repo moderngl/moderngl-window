@@ -1,15 +1,14 @@
-from pyrr import Matrix44, matrix44, Vector3
+from pyrr import Matrix44
 
 import moderngl
-import moderngl_window as mglw
+import moderngl_window
 from moderngl_window import geometry
 
 
-class CubeSimple(mglw.WindowConfig):
-    """
-    Simply shows two cubes rendered with the
-    same uniform block data
-    """
+class CubeSimple(moderngl_window.WindowConfig):
+    """Simply shows two cubes rendered with the same uniform block data"""
+    title = "Uniform Blocks"
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.cube = geometry.cube(size=(2, 2, 2))
@@ -63,7 +62,7 @@ class CubeSimple(mglw.WindowConfig):
         self.vao1 = self.cube.instance(self.prog1)
         self.vao2 = self.cube.instance(self.prog2)
 
-        self.m_proj = matrix44.create_perspective_projection_matrix(
+        self.m_proj = Matrix44.perspective_projection(
             75, self.wnd.aspect_ratio,  # fov, aspect
             0.1, 100.0,  # near, far
             dtype='f4',
@@ -105,11 +104,11 @@ class CubeSimple(mglw.WindowConfig):
     def render(self, time=0.0, frametime=0.0, target: moderngl.Framebuffer = None):
         self.ctx.enable_only(moderngl.CULL_FACE | moderngl.DEPTH_TEST)
 
-        m_rot = Matrix44.from_eulers(Vector3((time, time, time)))
-        m_trans = matrix44.create_from_translation(Vector3((0.0, 0.0, -5.0)))
-        m_modelview = matrix44.multiply(m_rot, m_trans)
+        rotation = Matrix44.from_eulers((time, time, time), dtype='f4')
+        translation = Matrix44.from_translation((0.0, 0.0, -5.0), dtype='f4')
+        modelview = translation * rotation
 
-        self.view_buffer.write(m_modelview.astype('f4').tobytes())
+        self.view_buffer.write(modelview)
 
         with self.scope1:
             self.vao1.render(mode=moderngl.TRIANGLES)
@@ -119,4 +118,4 @@ class CubeSimple(mglw.WindowConfig):
 
 
 if __name__ == '__main__':
-    mglw.run_window_config(CubeSimple)
+    moderngl_window.run_window_config(CubeSimple)

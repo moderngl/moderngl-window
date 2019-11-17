@@ -10,7 +10,6 @@ class CustomSetup:
     Custom setup using a class.
     We create the window, main loop and register events.
     """
-
     def __init__(self):
         # Configure to use pyglet window
         settings.WINDOW['class'] = 'moderngl_window.context.pyglet.Window'

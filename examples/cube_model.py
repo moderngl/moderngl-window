@@ -1,15 +1,15 @@
 from pathlib import Path
-from pyrr import Matrix44, matrix44, Vector3
+from pyrr import Matrix44
 
 import moderngl
-import moderngl_window as mglw
+import moderngl_window
 from base import CameraWindow
 
 
 class CubeModel(CameraWindow):
-    # window_size = (1920, 1080)
     aspect_ratio = 16 / 9
     resource_dir = Path(__file__).parent.resolve() / 'resources'
+    title = "Cube Model"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -25,13 +25,10 @@ class CubeModel(CameraWindow):
     def render(self, time: float, frametime: float):
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
 
-        # Create camera matrix with rotation and translation
-        translation = matrix44.create_from_translation((0, 0, -1.5))
-        # rotation = matrix44.create_from_eulers((time, time, time))
-        rotation = matrix44.create_from_eulers((0, 0, 0))
-        model_matrix = matrix44.multiply(rotation, translation)
-
-        camera_matrix = matrix44.multiply(model_matrix, self.camera.matrix)
+        translation = Matrix44.from_translation((0, 0, -1.5))
+        rotation = Matrix44.from_eulers((0, 0, 0))
+        model_matrix = translation * rotation
+        camera_matrix = self.camera.matrix * model_matrix
 
         self.scene.draw(
             projection_matrix=self.camera.projection.matrix,
@@ -41,4 +38,4 @@ class CubeModel(CameraWindow):
 
 
 if __name__ == '__main__':
-    mglw.run_window_config(CubeModel)
+    moderngl_window.run_window_config(CubeModel)

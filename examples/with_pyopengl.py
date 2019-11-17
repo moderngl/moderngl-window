@@ -1,6 +1,6 @@
 import math
 import moderngl_window
-from OpenGL.GL import *
+from OpenGL import GL
 
 
 class PyOpenGL(moderngl_window.WindowConfig):
@@ -11,13 +11,13 @@ class PyOpenGL(moderngl_window.WindowConfig):
         super().__init__(**kwargs)
 
     def render(self, time, frametime):
-        glClearColor(
+        GL.glClearColor(
             (math.sin(time) + 1.0) / 2,
             (math.sin(time + 2) + 1.0) / 2,
             (math.sin(time + 3) + 1.0) / 2,
             1.0,
         )
-        glClear(GL_COLOR_BUFFER_BIT)
+        GL.glClear(GL.GL_COLOR_BUFFER_BIT)
 
 
 if __name__ == '__main__':

@@ -1,9 +1,9 @@
 import math
-import moderngl_window as mglw
+import moderngl_window
 import random
 
 
-class WindowEvents(mglw.WindowConfig):
+class WindowEvents(moderngl_window.WindowConfig):
     """
     Demonstrates handling mouse, keyboard, render and resize events
     """
@@ -110,4 +110,4 @@ class WindowEvents(mglw.WindowConfig):
 
 
 if __name__ == '__main__':
-    mglw.run_window_config(WindowEvents)
+    moderngl_window.run_window_config(WindowEvents)

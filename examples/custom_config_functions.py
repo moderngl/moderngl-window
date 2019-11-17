@@ -117,8 +117,8 @@ def mouse_drag_event(x, y, dx, dy):
     print("Mouse drag pos={} {} delta={} {}".format(x, y, dx, dy))
 
 
-def mouse_scroll_event(x_offset, y_offet):
-    print("mouse_scroll_event", x_offset, y_offet)
+def mouse_scroll_event(x_offset, y_offset):
+    print("mouse_scroll_event", x_offset, y_offset)
 
 
 def mouse_press_event(x, y, button):

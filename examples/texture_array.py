@@ -1,16 +1,11 @@
-import math
 from pathlib import Path
-from pyrr import Matrix44, matrix44, Vector3
+from pyrr import Matrix44
 
 import moderngl
 
-import moderngl_window as mglw
+import moderngl_window
 from moderngl_window import geometry
-from moderngl_window import resources
-
 from base import CameraWindow
-
-resources.register_dir((Path(__file__).parent / 'resources').resolve())
 
 
 class TextureArrayExample(CameraWindow):
@@ -18,29 +13,35 @@ class TextureArrayExample(CameraWindow):
     Cycles different texture layers in an array texture
     rendered on a cube.
     """
+    title = "Texture Array"
+    resource_dir = (Path(__file__).parent / 'resources').resolve()
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.wnd.mouse_exclusivity = True
+        self.num_layers = 10
         self.cube = geometry.cube(size=(2, 2, 2))
-        self.texture = self.load_texture_array('textures/array.png', layers=10, mipmap=True, anisotrpy=8.0)
+        self.texture = self.load_texture_array(
+            'textures/array.png', layers=self.num_layers, mipmap=True, anisotrpy=8.0)
         self.prog = self.load_program('programs/cube_texture_array.glsl')
+        self.prog['texture0'].value = 0
+        self.prog['num_layers'].value = 10
 
     def render(self, time: float, frametime: float):
         self.ctx.enable_only(moderngl.CULL_FACE | moderngl.DEPTH_TEST)
 
-        m_rot = Matrix44.from_eulers(Vector3((time, time, time)))
-        m_trans = matrix44.create_from_translation(Vector3((0.0, 0.0, -3.0)))
-        m_mv = matrix44.multiply(m_rot, m_trans)
+        rotation = Matrix44.from_eulers((time, time, time), dtype='f4')
+        translation = Matrix44.from_translation((0.0, 0.0, -3.5), dtype='f4')
+        modelview = translation * rotation
 
-        self.prog['m_proj'].write(self.camera.projection.tobytes())
-        self.prog['m_model'].write(m_mv.astype('f4').tobytes())
-        self.prog['m_camera'].write(self.camera.matrix.astype('f4').tobytes())
-        self.prog['layer'].value = math.fmod(time, 10)
+        self.prog['m_proj'].write(self.camera.projection.matrix)
+        self.prog['m_model'].write(modelview)
+        self.prog['m_camera'].write(self.camera.matrix)
+        self.prog['time'].value = time
 
-        self.prog['texture0'].value = 0
         self.texture.use(location=0)
         self.cube.render(self.prog)
 
 
 if __name__ == '__main__':
-    mglw.run_window_config(TextureArrayExample)
+    moderngl_window.run_window_config(TextureArrayExample)

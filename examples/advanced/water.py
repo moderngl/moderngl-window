@@ -90,12 +90,13 @@ class Water(moderngl_window.WindowConfig):
         self.texture_1.use(location=1)
         self.quad_fs.render(self.wave_program)
 
-        # self.ctx.copy_framebuffer(self.wnd.fbo, self.fbo_1)
+        # Render the result to the screen.
+        # We can blit only when the texture format matches the default framebuffer
         self.wnd.fbo.use()
         self.texture_1.use()
         self.quad_fs.render(self.texture_program)
 
-        # Swapperoo
+        # Swap texture and fbo
         self.texture_1, self.texture_2 = self.texture_2, self.texture_1
         self.fbo_1, self.fbo_2 = self.fbo_2, self.fbo_1
 
