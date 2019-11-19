@@ -61,6 +61,7 @@ class Window(BaseWindow):
         self._window.event(self.on_mouse_motion)
         self._window.event(self.on_mouse_drag)
         self._window.event(self.on_resize)
+        self._window.event(self.on_close)
         self._window.event(self.on_mouse_press)
         self._window.event(self.on_mouse_release)
         self._window.event(self.on_mouse_scroll)
@@ -290,6 +291,10 @@ class Window(BaseWindow):
         self.set_default_viewport()
 
         super().resize(self._buffer_width, self._buffer_height)
+
+    def on_close(self):
+        """Pyglet specific window close callback"""
+        self._close_func()
 
     def on_show(self):
         """Called when window first appear or restored from hidden state"""

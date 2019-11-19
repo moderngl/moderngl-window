@@ -96,6 +96,7 @@ class BaseWindow:
         # Callback functions
         self._render_func = dummy_func
         self._resize_func = dummy_func
+        self._close_func = dummy_func
         self._iconify_func = dummy_func
         self._key_event_func = dummy_func
         self._mouse_position_event_func = dummy_func
@@ -369,6 +370,7 @@ class BaseWindow:
     def config(self, config):
         self.render_func = getattr(config, 'render', dummy_func)
         self.resize_func = getattr(config, 'resize', dummy_func)
+        self.close_func = getattr(config, 'close', dummy_func)
         self.iconify_func = getattr(config, 'iconify', dummy_func)
         self.key_event_func = getattr(config, 'key_event', dummy_func)
         self.mouse_position_event_func = getattr(config, 'mouse_position_event', dummy_func)
@@ -395,10 +397,7 @@ class BaseWindow:
 
     @property
     def resize_func(self):
-        """callable: The resize callable
-
-        This property can also be used to assign a callable.
-        """
+        """callable: Get or set the resize callable"""
         return self._resize_func
 
     @resize_func.setter
@@ -407,11 +406,18 @@ class BaseWindow:
         self._resize_func = func
 
     @property
-    def iconify_func(self):
-        """callable: The iconify/show/hide callback function
+    def close_func(self):
+        """callable: Get or set the close callable"""
+        return self._resize_func
 
-        The property can also be used to assign a callable.
-        """
+    @close_func.setter
+    @require_callable
+    def close_func(self, func):
+        self._close_func = func
+
+    @property
+    def iconify_func(self):
+        """callable: Get or set ehe iconify/show/hide callable"""
         return self._iconify_func
 
     @iconify_func.setter
@@ -421,10 +427,7 @@ class BaseWindow:
 
     @property
     def key_event_func(self):
-        """callable: The key_event callable
-
-        This property can also be used to assign a callable.
-        """
+        """callable: Get or set the key_event callable"""
         return self._key_event_func
 
     @key_event_func.setter
@@ -434,10 +437,7 @@ class BaseWindow:
 
     @property
     def mouse_position_event_func(self):
-        """callable: The mouse_position callable
-
-        This property can also be used to assign a callable.
-        """
+        """callable: Get or set the mouse_position callable"""
         return self._mouse_position_event_func
 
     @mouse_position_event_func.setter
@@ -447,10 +447,7 @@ class BaseWindow:
 
     @property
     def mouse_drag_event_func(self):
-        """callable: The mouse_drag callable
-
-        This property can also be used to assign a callable.
-        """
+        """callable: Get or set the mouse_drag callable"""
         return self._mouse_drag_event_func
 
     @mouse_drag_event_func.setter
@@ -460,10 +457,7 @@ class BaseWindow:
 
     @property
     def mouse_press_event_func(self):
-        """callable: The mouse_press callable
-
-        This property can also be used to assign a callable.
-        """
+        """callable: Get or set the mouse_press callable"""
         return self._mouse_press_event_func
 
     @mouse_press_event_func.setter
@@ -473,10 +467,7 @@ class BaseWindow:
 
     @property
     def mouse_release_event_func(self):
-        """callable: The mouse_release callable
-
-        This property can also be used to assign a callable.
-        """
+        """callable: Get or set the mouse_release callable"""
         return self._mouse_release_event_func
 
     @mouse_release_event_func.setter
@@ -486,10 +477,7 @@ class BaseWindow:
 
     @property
     def unicode_char_entered_func(self):
-        """callable: The unicode_char_entered callable
-
-        This property can also be used to assign a callable.
-        """
+        """callable: Get or set the unicode_char_entered callable"""
         return self._unicode_char_entered_func
 
     @unicode_char_entered_func.setter
@@ -499,10 +487,7 @@ class BaseWindow:
 
     @property
     def mouse_scroll_event_func(self):
-        """callable: The mouse_scroll_event calable
-
-        This property can also be used to assign a callable.
-        """
+        """callable: Get or set the mouse_scroll_event calable"""
         return self._mouse_scroll_event_func
 
     @mouse_scroll_event_func.setter
@@ -845,6 +830,9 @@ class WindowConfig:
             width (int): width in buffer size (not window size)
             height (int): height in buffer size (not window size)
         """
+
+    def close(self):
+        """Called when the window is closed"""
 
     def iconify(self, iconified: bool):
         """
