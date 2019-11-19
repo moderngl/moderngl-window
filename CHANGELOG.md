@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.3
+
+* Missing `WindowConfig.close` method and support for close callback for all window types
+* Bug: KeyboardCamera's matrix is now always returned as a 32bit floats
+* Bug: Projection3D's matrix is now always returned as a 32bit floats
+* Example cleanup and improvements
+
 ## 2.0.2
 
 * Bug: An `INVALID_ENUM` glerror triggered after querying context info is now consumed.
