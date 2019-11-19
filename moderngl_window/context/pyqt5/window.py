@@ -304,7 +304,7 @@ class Window(BaseWindow):
 
     def close(self):
         """Close the window"""
-        super().close()        
+        super().close()
         self._close_func()
 
     def show_event(self, event):
