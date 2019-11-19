@@ -54,6 +54,7 @@ Attributes
 .. autoattribute:: BaseWindow.mouse_exclusivity
 .. autoattribute:: BaseWindow.render_func
 .. autoattribute:: BaseWindow.resize_func
+.. autoattribute:: BaseWindow.close_func
 .. autoattribute:: BaseWindow.iconify_func
 .. autoattribute:: BaseWindow.key_event_func
 .. autoattribute:: BaseWindow.mouse_position_event_func

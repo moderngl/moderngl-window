@@ -44,6 +44,7 @@ Attributes
 .. autoattribute:: Window.viewport_height
 .. autoattribute:: Window.frames
 .. autoattribute:: Window.resizable
+.. autoattribute:: Window.close_func
 .. autoattribute:: Window.fullscreen
 .. autoattribute:: Window.config
 .. autoattribute:: Window.vsync
