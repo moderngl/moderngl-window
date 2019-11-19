@@ -649,9 +649,7 @@ class BaseWindow:
         return self.gl_version[0] * 100 + self.gl_version[1] * 10
 
     def print_context_info(self):
-        """
-        Prints moderngl context info.
-        """
+        """Prints moderngl context info."""
         logger.info("Context Version:")
         logger.info('ModernGL: %s', moderngl.__version__)
         logger.info('vendor: %s', self._ctx.info['GL_VENDOR'])
@@ -664,7 +662,7 @@ class BaseWindow:
         self._ctx.error
 
     def _calc_mouse_delta(self, xpos: int, ypos: int) -> Tuple[int, int]:
-        """Calculates the mouse position delta for events that don's support this
+        """Calculates the mouse position delta for events not support this.
 
         Args:
             xpos (int): current mouse x
@@ -688,7 +686,9 @@ class WindowConfig:
 
     .. code:: python
 
-        class MyConfig(mglw.WindowConfig):
+        import moderngl_window
+
+        class MyConfig(moderngl_window.WindowConfig):
             gl_version = (3, 3)
             window_size = (1920, 1080)
             aspect_ratio = 16 / 9
@@ -706,7 +706,7 @@ class WindowConfig:
             def resize(self, width: int, height: int):
                 print("Window was resized. buffer size is {} x {}".format(width, height))
 
-            def mouse_position_event(self, x, y):
+            def mouse_position_event(self, x, y, dx, dy):
                 print("Mouse position:", x, y)
 
             def mouse_press_event(self, x, y, button):
@@ -717,7 +717,6 @@ class WindowConfig:
 
             def key_event(self, key, action, modifiers):
                 print(key, action, modifiers)
-
     """
     window_size = (1280, 720)
     """
@@ -757,8 +756,8 @@ class WindowConfig:
     """
     aspect_ratio = 16 / 9
     """
-    The endorced aspect ratio of the viewport. When specified back borders
-    will be calulcated both vertically and horizontally if needed.
+    The enforced aspect ratio of the viewport. When specified back borders
+    will be calculated both vertically and horizontally if needed.
 
     This property can be set to ``None`` to disable the fixed viewport system.
 
