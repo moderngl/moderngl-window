@@ -59,6 +59,12 @@ class VolumetricTetrahedralMesh(CameraWindow):
         indices = np.load(self.resource_dir / 'data/tetrahedral_mesh/element_nodes.npy')
         indices = np.concatenate(indices) - 1
 
+        # Probability of a tetrahedron is still alive
+        w, h = 8192, int(np.ceil(indices.shape[0] / 8192))
+        self.alive_data = np.random.random_sample(w * h)
+        self.alive_texture = self.ctx.texture((w, h), 1, dtype='f2')
+        self.alive_texture.write(self.alive_data.astype('f2'))
+
         # Original geometry with indices
         self.geometry = VAO(name='geometry_indices')
         self.geometry.buffer(vertices, '3f', 'in_position')
@@ -103,6 +109,8 @@ class VolumetricTetrahedralMesh(CameraWindow):
 
         # All render calls inside this context are timed
         with self.query:
+            self.alive_texture.use(location=0)
+            self.prog_gen_tetra_lines['alive_texture'].value = 0
             self.prog_gen_tetra['color'].value = self.mesh_color
             self.prog_gen_tetra['m_cam'].write(mat)
             self.prog_gen_tetra['m_proj'].write(self.camera.projection.matrix)
@@ -111,6 +119,8 @@ class VolumetricTetrahedralMesh(CameraWindow):
             # Render lines
             # self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
             self.ctx.wireframe = True
+            self.alive_texture.use(location=0)
+            self.prog_gen_tetra_lines['alive_texture'].value = 0
             self.prog_gen_tetra_lines['color'].value = self.line_color
             self.prog_gen_tetra_lines['m_cam'].write(mat)
             self.prog_gen_tetra_lines['m_proj'].write(self.camera.projection.matrix)
