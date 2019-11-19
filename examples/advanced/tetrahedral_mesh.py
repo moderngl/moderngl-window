@@ -9,8 +9,22 @@ from moderngl_window import geometry
 from base import CameraWindow
 
 
-class TetrahedralMesh(CameraWindow):
-    """Minimal WindowConfig example"""
+class VolumetricTetrahedralMesh(CameraWindow):
+    """Volumetric Tetrahedral Mesh.
+
+    The dataset was provided by:
+    Mara Catalina Aguilera Canon at the Bournemouth University (UK).
+    Area of research: Graph Neuro Networks, Finite Element Method
+
+    An example rendering a volumetric mesh of the format:
+    ``[[p1, p2, p3, p4], [p1, p2, p3, p4], ..]``
+    were ```px``` represent a 3d point in a tetraherdon.
+    A geometry shader calculates and emits the tetraherdons
+    as triangles and calculate normals on the fly while rendering data.
+
+    This helps us avoid doing this expensive operation
+    in python and greatly reduces the memory requirement.
+    """
     gl_version = (4, 1)
     title = "Basic Window Config"
     aspect_ratio = None
@@ -19,10 +33,12 @@ class TetrahedralMesh(CameraWindow):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        # Finetune camera
         self.wnd.mouse_exclusivity = True
         self.camera.projection.update(near=.01, far=100)
         self.camera.mouse_sensitivity = .5
         self.camera.velocity = 2.5
+        self.camera.projection.update(fov=60)
 
         self.quad_fs = geometry.quad_fs()
 
@@ -51,6 +67,10 @@ class TetrahedralMesh(CameraWindow):
             fragment_shader='programs/tetrahedral_mesh/lines_frag.glsl',
         )
 
+        # Query for measuring the rendering call in OpenGL
+        self.query = self.ctx.query(time=True)
+        self.total_elapsed = 0
+
     def render(self, time, frametime):
         self.ctx.wireframe = False
         self.ctx.disable(moderngl.DEPTH_TEST)
@@ -58,16 +78,19 @@ class TetrahedralMesh(CameraWindow):
 
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
 
-        # translate = Matrix44.from_translation((0.0, 3.0, -12.0), dtype='f4')
-        translate = Matrix44.from_translation((0.0, 0.0, 0.0), dtype='f4')
+        translate = Matrix44.from_translation((0.0, 2.5, -15.0), dtype='f4')
+        # translate = Matrix44.from_translation((0.0, 0.0, 0.0), dtype='f4')
         rotate = Matrix44.from_eulers((np.radians(180), 0, 0), dtype='f4')
         scale = Matrix44.from_scale((400, 400, 400), dtype='f4')
         mat = self.camera.matrix * translate * rotate * scale
 
-        self.prog_gen_tetra['color'].value = 0.0, 0.8, 0.0
-        self.prog_gen_tetra['m_cam'].write(mat)
-        self.prog_gen_tetra['m_proj'].write(self.camera.projection.matrix)
-        self.geometry.render(self.prog_gen_tetra, mode=moderngl.LINES_ADJACENCY)
+        with self.query:
+            self.prog_gen_tetra['color'].value = 0.0, 0.8, 0.0
+            self.prog_gen_tetra['m_cam'].write(mat)
+            self.prog_gen_tetra['m_proj'].write(self.camera.projection.matrix)
+            self.geometry.render(self.prog_gen_tetra, mode=moderngl.LINES_ADJACENCY)
+
+        self.total_elapsed = self.query.elapsed
 
         # # Uncomment for black lines
         self.ctx.wireframe = True
@@ -76,6 +99,10 @@ class TetrahedralMesh(CameraWindow):
         self.prog_gen_tetra_lines['m_proj'].write(self.camera.projection.matrix)
         self.geometry.render(self.prog_gen_tetra_lines, mode=moderngl.LINES_ADJACENCY)
 
+    def close(self):
+        avg = self.total_elapsed / self.wnd.frames
+        print("Average rendering time: ", avg)
+
 
 if __name__ == '__main__':
-    moderngl_window.run_window_config(TetrahedralMesh)
+    moderngl_window.run_window_config(VolumetricTetrahedralMesh)
