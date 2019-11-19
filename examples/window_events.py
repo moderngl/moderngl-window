@@ -28,6 +28,9 @@ class WindowEvents(moderngl_window.WindowConfig):
     def resize(self, width: int, height: int):
         print("Window was resized. buffer size is {} x {}".format(width, height))
 
+    def close(self):
+        print("Window is closing")
+
     def iconify(self, iconify: bool):
         """Window hide/minimize and restore"""
         print("Window was iconified:", iconify)
