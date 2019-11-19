@@ -34,7 +34,7 @@ class VolumetricTetrahedralMesh(CameraWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # Finetune camera
-        self.wnd.mouse_exclusivity = True
+        # self.wnd.mouse_exclusivity = True
         self.camera.projection.update(near=.01, far=100)
         self.camera.mouse_sensitivity = .5
         self.camera.velocity = 2.5
@@ -67,8 +67,9 @@ class VolumetricTetrahedralMesh(CameraWindow):
             fragment_shader='programs/tetrahedral_mesh/lines_frag.glsl',
         )
 
-        # Query for measuring the rendering call in OpenGL
-        self.query = self.ctx.query(time=True)
+        # Query object for measuring the rendering call in OpenGL
+        # It delivers the GPU time it took to process commands
+        self.query = self.ctx.query(samples=True, any_samples=True, time=True, primitives=True)
         self.total_elapsed = 0
 
     def render(self, time, frametime):
@@ -90,18 +91,23 @@ class VolumetricTetrahedralMesh(CameraWindow):
             self.prog_gen_tetra['m_proj'].write(self.camera.projection.matrix)
             self.geometry.render(self.prog_gen_tetra, mode=moderngl.LINES_ADJACENCY)
 
+            # # Uncomment for black lines
+            self.ctx.wireframe = True
+            self.prog_gen_tetra_lines['color'].value = 0.0, 0.0, 0.0
+            self.prog_gen_tetra_lines['m_cam'].write(mat)
+            self.prog_gen_tetra_lines['m_proj'].write(self.camera.projection.matrix)
+            self.geometry.render(self.prog_gen_tetra_lines, mode=moderngl.LINES_ADJACENCY)
+
         self.total_elapsed = self.query.elapsed
 
-        # # Uncomment for black lines
-        self.ctx.wireframe = True
-        self.prog_gen_tetra_lines['color'].value = 0.0, 0.0, 0.0
-        self.prog_gen_tetra_lines['m_cam'].write(mat)
-        self.prog_gen_tetra_lines['m_proj'].write(self.camera.projection.matrix)
-        self.geometry.render(self.prog_gen_tetra_lines, mode=moderngl.LINES_ADJACENCY)
-
     def close(self):
+        # 1 s = 1000000000 ns
+        # 1 s = 1000000 μs
         avg = self.total_elapsed / self.wnd.frames
-        print("Average rendering time: ", avg)
+        print("Average rendering time per frame: {} ns | {} μs".format(
+            round(avg, 4),  # ns
+            round(avg / 1000, 4),  # μs
+        ))
 
 
 if __name__ == '__main__':
