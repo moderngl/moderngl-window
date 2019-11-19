@@ -169,6 +169,7 @@ class Window(BaseWindow):
 
     def close(self) -> None:
         """Suggest to glfw the window should be closed soon"""
+        self._close_func()
         glfw.set_window_should_close(self._window, True)
 
     @property

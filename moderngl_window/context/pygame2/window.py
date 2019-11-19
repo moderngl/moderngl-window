@@ -172,6 +172,11 @@ class Window(BaseWindow):
 
         super().resize(self._buffer_width, self._buffer_height)
 
+    def close(self):
+        """Close the window"""
+        super().close()
+        self._close_func()
+
     def _handle_mods(self) -> None:
         """Update key mods"""
         mods = pygame.key.get_mods()

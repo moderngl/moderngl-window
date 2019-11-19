@@ -235,6 +235,7 @@ class Window(BaseWindow):
 
     def tk_close_window(self) -> None:
         """tkinter close window callback"""
+        self._close_func()
         self._close = True
 
     def tk_map(self, event):

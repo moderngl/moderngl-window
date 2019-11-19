@@ -302,6 +302,11 @@ class Window(BaseWindow):
         """
         self.close()
 
+    def close(self):
+        """Close the window"""
+        super().close()        
+        self._close_func()
+
     def show_event(self, event):
         """The standard Qt show event"""
         self._iconify_func(False)

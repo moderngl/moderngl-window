@@ -254,6 +254,11 @@ class Window(BaseWindow):
                 elif event.window.event == sdl2.SDL_WINDOWEVENT_RESTORED:
                     self._iconify_func(False)
 
+    def close(self):
+        """Close the window"""
+        super().close()
+        self._close_func()
+
     def destroy(self) -> None:
         """Gracefully close the window"""
         sdl2.SDL_GL_DeleteContext(self._context)
