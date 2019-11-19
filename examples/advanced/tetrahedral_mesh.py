@@ -28,6 +28,7 @@ class VolumetricTetrahedralMesh(CameraWindow):
     Controls:
     - Camera: Mouse for rotation. AWSD + QE for translation
     - Press b to toggle blend mode on/off
+    - Mouse wheel to increase or decrease the threshold for a tetra to be alive
     """
     gl_version = (4, 1)
     title = "Basic Window Config"
@@ -48,6 +49,7 @@ class VolumetricTetrahedralMesh(CameraWindow):
         self.with_blending = False
         self.line_color = (0.0, 0.0, 0.0)
         self.mesh_color = (0.0, 0.8, 0.0)
+        self.threshold = 0.5
 
         # For rendering background
         self.quad_fs = geometry.quad_fs()
@@ -110,7 +112,8 @@ class VolumetricTetrahedralMesh(CameraWindow):
         # All render calls inside this context are timed
         with self.query:
             self.alive_texture.use(location=0)
-            self.prog_gen_tetra_lines['alive_texture'].value = 0
+            self.prog_gen_tetra['alive_texture'].value = 0
+            self.prog_gen_tetra['threshold'].value = self.threshold
             self.prog_gen_tetra['color'].value = self.mesh_color
             self.prog_gen_tetra['m_cam'].write(mat)
             self.prog_gen_tetra['m_proj'].write(self.camera.projection.matrix)
@@ -121,6 +124,7 @@ class VolumetricTetrahedralMesh(CameraWindow):
             self.ctx.wireframe = True
             self.alive_texture.use(location=0)
             self.prog_gen_tetra_lines['alive_texture'].value = 0
+            self.prog_gen_tetra_lines['threshold'].value = self.threshold
             self.prog_gen_tetra_lines['color'].value = self.line_color
             self.prog_gen_tetra_lines['m_cam'].write(mat)
             self.prog_gen_tetra_lines['m_proj'].write(self.camera.projection.matrix)
@@ -142,6 +146,14 @@ class VolumetricTetrahedralMesh(CameraWindow):
                 else:
                     self.mesh_color = 0.0, 0.8, 0.0
                     self.line_color = 0.0, 0.0, 0.0
+
+    def mouse_scroll_event(self, x_offset, y_offset):
+        if y_offset > 0:
+            self.threshold += 0.01
+        else:
+            self.threshold -= 0.01
+
+        self.threshold = max(min(self.threshold, 1.0), 0.0)
 
     def close(self):
         # 1 s = 1000000000 ns

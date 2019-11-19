@@ -29,9 +29,9 @@ const int TEX_WIDTH = 8192;
 void main() {
     // Check if the tehtra is alive
     ivec2 uv = ivec2(gl_PrimitiveIDIn % TEX_WIDTH, gl_PrimitiveIDIn / TEX_WIDTH);
-    float value = texelFetch(alive_texture, uv, 0).a;
+    float value = texelFetch(alive_texture, uv, 0).r;
 
-    if (value > 0.9) {
+    if (value > threshold) {
         vec3 v1 = gl_in[0].gl_Position.xyz;
         vec3 v2 = gl_in[1].gl_Position.xyz;
         vec3 v3 = gl_in[2].gl_Position.xyz;
