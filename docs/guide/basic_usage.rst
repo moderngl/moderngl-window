@@ -119,12 +119,16 @@ See code for :py:func:`moderngl_window.parse_args` for more details.
 Window events
 -------------
 
-Implement the ``resize`` method to customize window resize handling.
-
 .. code:: python
 
     def resize(self, width: int, height: int):
         print("Window was resized. buffer size is {} x {}".format(width, height))
+
+    def close(self):
+        print("The window is closing")
+
+    def iconify(self, iconify: bool):
+        print("Window was iconified:", iconify)
 
 Keyboard input
 --------------
