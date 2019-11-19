@@ -34,7 +34,7 @@ class VolumetricTetrahedralMesh(CameraWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # Finetune camera
-        # self.wnd.mouse_exclusivity = True
+        self.wnd.mouse_exclusivity = True
         self.camera.projection.update(near=.01, far=100)
         self.camera.mouse_sensitivity = .5
         self.camera.velocity = 2.5
