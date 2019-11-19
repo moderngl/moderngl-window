@@ -31,7 +31,7 @@ class VolumetricTetrahedralMesh(CameraWindow):
     - Mouse wheel to increase or decrease the threshold for a tetra to be alive
     """
     gl_version = (4, 1)
-    title = "Basic Window Config"
+    title = "Volumetric Tetrahedra lMesh"
     aspect_ratio = None
     resource_dir = (Path(__file__) / '../../resources').resolve()
     samples = 4

@@ -17,8 +17,6 @@ vec3 calc_normal(vec3 a, vec3 b, vec3 c) {
 out vec3 pos;
 out vec3 normal;
 
-const int TEX_WIDTH = 8192;
-
 #define EMIT_V(POS, NORMAL) \
 	normal = NORMAL; \
     pos = POS.xyz; \
@@ -28,7 +26,8 @@ const int TEX_WIDTH = 8192;
 
 void main() {
     // Check if the tehtra is alive
-    ivec2 uv = ivec2(gl_PrimitiveIDIn % TEX_WIDTH, gl_PrimitiveIDIn / TEX_WIDTH);
+    ivec2 tsize = textureSize(alive_texture, 0);
+    ivec2 uv = ivec2(gl_PrimitiveIDIn % tsize.x, gl_PrimitiveIDIn / tsize.x);
     float value = texelFetch(alive_texture, uv, 0).r;
 
     if (value > threshold) {
