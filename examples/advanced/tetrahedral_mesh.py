@@ -24,6 +24,10 @@ class VolumetricTetrahedralMesh(CameraWindow):
 
     This helps us avoid doing this expensive operation
     in python and greatly reduces the memory requirement.
+
+    Controls:
+    - Camera: Mouse for rotation. AWSD + QE for translation
+    - Press b to toggle blend mode on/off
     """
     gl_version = (4, 1)
     title = "Basic Window Config"
@@ -40,12 +44,17 @@ class VolumetricTetrahedralMesh(CameraWindow):
         self.camera.velocity = 2.5
         self.camera.projection.update(fov=60)
 
+        # Scene states
+        self.with_blending = False
+        self.line_color = (0.0, 0.0, 0.0)
+        self.mesh_color = (0.0, 0.8, 0.0)
+
+        # For rendering background
         self.quad_fs = geometry.quad_fs()
 
         # (172575,) | 57,525 vertices
         vertices = np.load(self.resource_dir / 'data/tetrahedral_mesh/mesh_nodes.npy')
         vertices = np.concatenate(vertices)
-
         # (259490, 4) (1037960,) indices
         indices = np.load(self.resource_dir / 'data/tetrahedral_mesh/element_nodes.npy')
         indices = np.concatenate(indices) - 1
@@ -73,32 +82,56 @@ class VolumetricTetrahedralMesh(CameraWindow):
         self.total_elapsed = 0
 
     def render(self, time, frametime):
+
+        # Render background
         self.ctx.wireframe = False
-        self.ctx.disable(moderngl.DEPTH_TEST)
+        self.ctx.enable_only(moderngl.NOTHING)
         self.quad_fs.render(self.prog_background)
 
-        self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
+        # Handle blend mode toggle
+        if self.with_blending:
+            self.ctx.enable_only(moderngl.BLEND)
+            self.ctx.blend_func = moderngl.ONE, moderngl.ONE
+        else:
+            self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
 
+        # Render tetrahedral mesh
         translate = Matrix44.from_translation((0.0, 2.5, -15.0), dtype='f4')
-        # translate = Matrix44.from_translation((0.0, 0.0, 0.0), dtype='f4')
         rotate = Matrix44.from_eulers((np.radians(180), 0, 0), dtype='f4')
         scale = Matrix44.from_scale((400, 400, 400), dtype='f4')
         mat = self.camera.matrix * translate * rotate * scale
 
+        # All render calls inside this context are timed
         with self.query:
-            self.prog_gen_tetra['color'].value = 0.0, 0.8, 0.0
+            self.prog_gen_tetra['color'].value = self.mesh_color
             self.prog_gen_tetra['m_cam'].write(mat)
             self.prog_gen_tetra['m_proj'].write(self.camera.projection.matrix)
             self.geometry.render(self.prog_gen_tetra, mode=moderngl.LINES_ADJACENCY)
 
-            # # Uncomment for black lines
+            # Render lines
+            # self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
             self.ctx.wireframe = True
-            self.prog_gen_tetra_lines['color'].value = 0.0, 0.0, 0.0
+            self.prog_gen_tetra_lines['color'].value = self.line_color
             self.prog_gen_tetra_lines['m_cam'].write(mat)
             self.prog_gen_tetra_lines['m_proj'].write(self.camera.projection.matrix)
             self.geometry.render(self.prog_gen_tetra_lines, mode=moderngl.LINES_ADJACENCY)
 
         self.total_elapsed = self.query.elapsed
+
+    def key_event(self, key, action, modifiers):
+        super().key_event(key, action, modifiers)
+        keys = self.wnd.keys
+
+        if action == keys.ACTION_PRESS:
+            if key == keys.B:
+                self.with_blending = not self.with_blending
+                print("With blending:", self.with_blending)
+                if self.with_blending:
+                    self.mesh_color = 0.01, 0.01, 0.01
+                    self.line_color = 0.01, 0.01, 0.01
+                else:
+                    self.mesh_color = 0.0, 0.8, 0.0
+                    self.line_color = 0.0, 0.0, 0.0
 
     def close(self):
         # 1 s = 1000000000 ns
