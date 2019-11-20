@@ -1,19 +1,17 @@
 from pathlib import Path
 import imgui
 import moderngl
-from pyrr import matrix44, Matrix44, Vector3
+from pyrr import Matrix44
 import moderngl_window as mglw
 from moderngl_window import geometry
-from moderngl_window import resources
-from moderngl_window.integrations.imgui import ModernglWindowRenderer as ModernglWindowRenderer
-
-resources.register_dir((Path(__file__).parent / 'resources').resolve())
+from moderngl_window.integrations.imgui import ModernglWindowRenderer
 
 
 class WindowEvents(mglw.WindowConfig):
     gl_version = (3, 3)
     title = "imgui Integration"
-    cursor = True
+    resource_dir = (Path(__file__).parent / 'resources').resolve()
+    aspect_ratio = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -23,17 +21,17 @@ class WindowEvents(mglw.WindowConfig):
 
         self.cube = geometry.cube(size=(2, 2, 2))
         self.prog = self.load_program('programs/cube_simple.glsl')
-        self.prog['m_proj'].write(matrix44.create_perspective_projection(75, 1.6, 1, 100).astype('f4').tobytes())
         self.prog['color'].value = (1.0, 1.0, 1.0, 1.0)
-        self.prog['m_camera'].write(matrix44.create_identity().astype('f4').tobytes())
+        self.prog['m_camera'].write(Matrix44.identity(dtype='f4'))
 
     def render(self, time: float, frametime: float):
-        m_rot = Matrix44.from_eulers(Vector3((time, time, time)))
-        m_trans = matrix44.create_from_translation(Vector3((0.0, 0.0, -3.5)))
-        m_mv = matrix44.multiply(m_rot, m_trans)
+        rotation = Matrix44.from_eulers((time, time, time), dtype='f4')
+        translation = Matrix44.from_translation((0.0, 0.0, -3.5), dtype='f4')
+        model = translation * rotation
 
         self.ctx.enable(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
-        self.prog['m_model'].write(m_mv.astype('f4').tobytes())
+        self.prog['m_proj'].write(Matrix44.perspective_projection(75, self.wnd.aspect_ratio, 1, 100, dtype='f4'))
+        self.prog['m_model'].write(model)
         self.cube.render(self.prog)
 
         self.render_ui()
