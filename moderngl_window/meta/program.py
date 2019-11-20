@@ -50,7 +50,7 @@ class ProgramDescription(ResourceDescription):
             "vertex_shader": vertex_shader,
             "geometry_shader": geometry_shader,
             "fragment_shader": fragment_shader,
-            "tess_control_shader": tess_control_shader, 
+            "tess_control_shader": tess_control_shader,
             "tess_evaluation_shader": tess_evaluation_shader,
             "compute_shader": compute_shader,
         })
