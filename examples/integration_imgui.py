@@ -5,7 +5,7 @@ from pyrr import matrix44, Matrix44, Vector3
 import moderngl_window as mglw
 from moderngl_window import geometry
 from moderngl_window import resources
-from moderngl_window.integrations.imgui import ModernglWindowRenderer
+from moderngl_window.integrations.imgui import ModernglWindowRenderer as ModernglWindowRenderer
 
 resources.register_dir((Path(__file__).parent / 'resources').resolve())
 
@@ -32,11 +32,10 @@ class WindowEvents(mglw.WindowConfig):
         m_trans = matrix44.create_from_translation(Vector3((0.0, 0.0, -3.5)))
         m_mv = matrix44.multiply(m_rot, m_trans)
 
-        self.ctx.enable(moderngl.DEPTH_TEST)
+        self.ctx.enable(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
         self.prog['m_model'].write(m_mv.astype('f4').tobytes())
         self.cube.render(self.prog)
 
-        self.ctx.disable(moderngl.DEPTH_TEST)
         self.render_ui()
 
     def render_ui(self):
