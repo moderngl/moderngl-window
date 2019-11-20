@@ -60,3 +60,4 @@ venv.bak/
 /test.py
 .mypy_cache
 /random_fun/
+imgui.ini
