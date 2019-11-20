@@ -23,6 +23,7 @@ class WindowEvents(mglw.WindowConfig):
         self.prog = self.load_program('programs/cube_simple.glsl')
         self.prog['color'].value = (1.0, 1.0, 1.0, 1.0)
         self.prog['m_camera'].write(Matrix44.identity(dtype='f4'))
+        self.prog['m_proj'].write(Matrix44.perspective_projection(75, self.wnd.aspect_ratio, 1, 100, dtype='f4'))
 
     def render(self, time: float, frametime: float):
         rotation = Matrix44.from_eulers((time, time, time), dtype='f4')
@@ -30,7 +31,6 @@ class WindowEvents(mglw.WindowConfig):
         model = translation * rotation
 
         self.ctx.enable(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
-        self.prog['m_proj'].write(Matrix44.perspective_projection(75, self.wnd.aspect_ratio, 1, 100, dtype='f4'))
         self.prog['m_model'].write(model)
         self.cube.render(self.prog)
 
@@ -62,6 +62,7 @@ class WindowEvents(mglw.WindowConfig):
         self.imgui.render(imgui.get_draw_data())
 
     def resize(self, width: int, height: int):
+        self.prog['m_proj'].write(Matrix44.perspective_projection(75, self.wnd.aspect_ratio, 1, 100, dtype='f4'))
         self.imgui.resize(width, height)
 
     def key_event(self, key, action, modifiers):
