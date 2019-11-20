@@ -95,7 +95,6 @@ class ModernglRenderer(BaseOpenGLRenderer):
             gl_Position = ProjMtx * vec4(Position.xy, 0, 1);
         }
     """
-
     FRAGMENT_SHADER_SRC = """
         #version 330
         uniform sampler2D Texture;
@@ -122,7 +121,6 @@ class ModernglRenderer(BaseOpenGLRenderer):
         super().__init__()
 
     def refresh_font_texture(self):
-        print('refresh_font_texture')
         width, height, pixels = self.io.fonts.get_tex_data_as_rgba32()
 
         if self._font_texture:
@@ -133,7 +131,6 @@ class ModernglRenderer(BaseOpenGLRenderer):
         self.io.fonts.clear_tex_data()
 
     def _create_device_objects(self):
-        print('_create_device_objects')
         self._prog = self.ctx.program(
             vertex_shader=self.VERTEX_SHADER_SRC,
             fragment_shader=self.FRAGMENT_SHADER_SRC,
@@ -171,7 +168,6 @@ class ModernglRenderer(BaseOpenGLRenderer):
         self.ctx.blend_equation = moderngl.FUNC_ADD
 
         for commands in draw_data.commands_lists:
-
             # Create a numpy array mapping the vertex and index buffer data without copying it
             vtx_ptr = ctypes.cast(commands.vtx_buffer_data, ctypes.POINTER(ctypes.c_byte))
             idx_ptr = ctypes.cast(commands.idx_buffer_data, ctypes.POINTER(ctypes.c_byte))
@@ -187,9 +183,6 @@ class ModernglRenderer(BaseOpenGLRenderer):
             self._font_texture.use()
             idx_pos = 0
             for command in commands.commands:
-                if command.texture_id != self._font_texture.glo:
-                    raise ValueError("Halp!")
-
                 self._vao.render(moderngl.TRIANGLES, vertices=command.elem_count, first=idx_pos)
                 idx_pos += command.elem_count
 
