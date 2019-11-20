@@ -165,7 +165,12 @@ class ModernglRenderer(BaseOpenGLRenderer):
         )
 
         draw_data.scale_clip_rects(*io.display_fb_scale)
+
+        self.ctx.enable_only(moderngl.BLEND)
         self.ctx.blend_equation = moderngl.FUNC_ADD
+        self.ctx.blend_func = moderngl.SRC_ALPHA, moderngl.ONE_MINUS_SRC_ALPHA
+
+        self._font_texture.use()
 
         for commands in draw_data.commands_lists:
             # Create a numpy array mapping the vertex and index buffer data without copying it
@@ -176,11 +181,6 @@ class ModernglRenderer(BaseOpenGLRenderer):
             self._vertex_buffer.write(vtx_data)
             self._index_buffer.write(idx_data)
 
-            self.ctx.enable_only(moderngl.BLEND)
-            self.ctx.blend_equation = moderngl.FUNC_ADD
-            self.ctx.blend_func = moderngl.SRC_ALPHA, moderngl.ONE_MINUS_SRC_ALPHA
-
-            self._font_texture.use()
             idx_pos = 0
             for command in commands.commands:
                 self._vao.render(moderngl.TRIANGLES, vertices=command.elem_count, first=idx_pos)
