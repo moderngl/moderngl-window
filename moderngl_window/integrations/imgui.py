@@ -102,7 +102,7 @@ class ModernglRenderer(BaseOpenGLRenderer):
         in vec4 Frag_Color;
         out vec4 Out_Color;
         void main() {
-            Out_Color = Frag_Color * texture(Texture, Frag_UV.st);
+            Out_Color = (Frag_Color * texture(Texture, Frag_UV.st));
         }
     """
 
@@ -135,6 +135,7 @@ class ModernglRenderer(BaseOpenGLRenderer):
             vertex_shader=self.VERTEX_SHADER_SRC,
             fragment_shader=self.FRAGMENT_SHADER_SRC,
         )
+        self.projMat = self._prog['ProjMtx']
         self._prog['Texture'].value = 0
         self._vertex_buffer = self.ctx.buffer(reserve=imgui.VERTEX_SIZE * 65536)
         self._index_buffer = self.ctx.buffer(reserve=imgui.INDEX_SIZE * 65536)
@@ -157,7 +158,7 @@ class ModernglRenderer(BaseOpenGLRenderer):
         if fb_width == 0 or fb_height == 0:
             return
 
-        self._prog['ProjMtx'].value = (
+        self.projMat.value = (
             2.0 / display_width, 0.0, 0.0, 0.0,
             0.0, 2.0 / -display_height, 0.0, 0.0,
             0.0, 0.0, -1.0, 0.0,
@@ -183,6 +184,8 @@ class ModernglRenderer(BaseOpenGLRenderer):
 
             idx_pos = 0
             for command in commands.commands:
+                x, y, z, w = command.clip_rect
+                # self.ctx.scissor = int(x), int(fb_height - w), int(z - x), int(w - y)
                 self._vao.render(moderngl.TRIANGLES, vertices=command.elem_count, first=idx_pos)
                 idx_pos += command.elem_count
 
