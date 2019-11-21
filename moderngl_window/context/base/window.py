@@ -226,7 +226,7 @@ class BaseWindow:
 
     @property
     def pixel_ratio(self) -> float:
-        """float: The frambuffer/window size ratio"""
+        """float: The framebuffer/window size ratio"""
         return self.buffer_size[0] / self.size[0]
 
     @property
