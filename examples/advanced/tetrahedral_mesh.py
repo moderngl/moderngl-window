@@ -93,8 +93,9 @@ class VolumetricTetrahedralMesh(CameraWindow):
 
         # Render background
         self.ctx.wireframe = False
-        self.ctx.enable_only(moderngl.NOTHING)
-        self.quad_fs.render(self.prog_background)
+        if not self.with_blending:
+            self.ctx.enable_only(moderngl.NOTHING)
+            self.quad_fs.render(self.prog_background)
 
         # Handle blend mode toggle
         if self.with_blending:
@@ -120,7 +121,6 @@ class VolumetricTetrahedralMesh(CameraWindow):
             self.geometry.render(self.prog_gen_tetra, mode=moderngl.LINES_ADJACENCY)
 
             # Render lines
-            # self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
             self.ctx.wireframe = True
             self.alive_texture.use(location=0)
             self.prog_gen_tetra_lines['alive_texture'].value = 0
