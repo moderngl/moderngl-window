@@ -11,7 +11,10 @@ class ModernglWindowMixin:
     REVERSE_KEY_MAP = {}
 
     def resize(self, width: int, height: int):
-        self.io.display_size = self.wnd.viewport_size
+        self.io.display_size = (
+            self.wnd.viewport_width / self.wnd.pixel_ratio,
+            self.wnd.viewport_height / self.wnd.pixel_ratio,
+        )
 
     def key_event(self, key, action, modifiers):
         keys = self.wnd.keys
@@ -26,8 +29,8 @@ class ModernglWindowMixin:
     def _mouse_pos_viewport(self, x, y):
         """Make sure mouse coordinates are correct with black borders"""
         return (
-            x - (self.wnd.buffer_width - self.wnd.viewport_size[0]) // 2,
-            y - (self.wnd.buffer_height - self.wnd.viewport_size[1]) // 2,
+            int(x - (self.wnd.width - self.wnd.viewport_width / self.wnd.pixel_ratio) / 2),
+            int(y - (self.wnd.height - self.wnd.viewport_height / self.wnd.pixel_ratio) / 2),
         )
 
     def mouse_position_event(self, x, y, dx, dy):
@@ -209,17 +212,6 @@ class ModernglWindowRenderer(ModernglRenderer, ModernglWindowMixin):
 
     def __init__(self, window):
         super().__init__(ctx=window.ctx)
-        self.wnd = window
-
-        self.io.display_size = self.wnd.size
-        scale = self.wnd.buffer_size[0] / self.wnd.size[0]
-        self.io.display_fb_scale = scale, scale
-
-
-class ModernglWindowRenderer2(ModernglWindowMixin, ProgrammablePipelineRenderer):
-
-    def __init__(self, window):
-        super().__init__()
         self.wnd = window
 
         self.io.display_size = self.wnd.size
