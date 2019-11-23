@@ -10,9 +10,9 @@ PySide2<6; python_version < '3.8'
 PyQt5<6
 glfw<2
 PySDL2<1
-pyrr>=0.10<1
-pywavefront>=1.2.0<2.0
-numpy>=1.16<2
+pyrr>=0.10
+pywavefront>=1.2.0,<2.0
+numpy>=1.16
 
 # trimesh
 trimesh>=3.2.6
