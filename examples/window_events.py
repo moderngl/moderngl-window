@@ -97,8 +97,8 @@ class WindowEvents(moderngl_window.WindowConfig):
     def mouse_drag_event(self, x, y, dx, dy):
         print("Mouse drag pos={} {} delta={} {}".format(x, y, dx, dy))
 
-    def mouse_scroll_event(self, x_offset, y_offet):
-        print("mouse_scroll_event", x_offset, y_offet)
+    def mouse_scroll_event(self, x_offset, y_offset):
+        print("mouse_scroll_event", x_offset, y_offset)
 
     def mouse_press_event(self, x, y, button):
         print("Mouse button {} pressed at {}, {}".format(button, x, y))
