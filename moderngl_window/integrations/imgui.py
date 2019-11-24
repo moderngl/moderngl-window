@@ -153,6 +153,8 @@ class ModernglRenderer(BaseOpenGLRenderer):
 
     def render(self, draw_data):
         io = self.io
+        old_scissor = self.ctx.scissor
+        print(old_scissor)
 
         display_width, display_height = io.display_size
         fb_width = int(display_width * io.display_fb_scale[0])
@@ -188,9 +190,11 @@ class ModernglRenderer(BaseOpenGLRenderer):
             idx_pos = 0
             for command in commands.commands:
                 x, y, z, w = command.clip_rect
-                # self.ctx.scissor = int(x), int(fb_height - w), int(z - x), int(w - y)
+                self.ctx.scissor = int(x), int(fb_height - w), int(z - x), int(w - y)
                 self._vao.render(moderngl.TRIANGLES, vertices=command.elem_count, first=idx_pos)
                 idx_pos += command.elem_count
+
+        self.ctx.scissor = old_scissor
 
     def _invalidate_device_objects(self):
         if self._font_texture:
