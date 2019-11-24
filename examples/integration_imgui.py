@@ -74,8 +74,8 @@ class WindowEvents(mglw.WindowConfig):
     def mouse_drag_event(self, x, y, dx, dy):
         self.imgui.mouse_drag_event(x, y, dx, dy)
 
-    def mouse_scroll_event(self, x_offset, y_offet):
-        self.imgui.mouse_scroll_event(x_offset, y_offet)
+    def mouse_scroll_event(self, x_offset, y_offset):
+        self.imgui.mouse_scroll_event(x_offset, y_offset)
 
     def mouse_press_event(self, x, y, button):
         self.imgui.mouse_press_event(x, y, button)
