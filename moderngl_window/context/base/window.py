@@ -643,8 +643,11 @@ class BaseWindow:
         logger.info('python: %s', sys.version)
         logger.info('platform: %s', sys.platform)
         logger.info('code: %s', self._ctx.version_code)
+
         # Consume potential glerror from querying info
-        self._ctx.error
+        err = self._ctx.error
+        if err != 'GL_NO_ERROR':
+            logger.warning('glerror consumed after getting context info: %s', err)
 
     def _calc_mouse_delta(self, xpos: int, ypos: int) -> Tuple[int, int]:
         """Calculates the mouse position delta for events not support this.
