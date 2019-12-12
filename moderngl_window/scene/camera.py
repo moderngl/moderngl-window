@@ -91,24 +91,18 @@ class Camera:
         self.right = vector.normalise(vector3.cross(self.dir, self._up))
         self.up = vector.normalise(vector3.cross(self.right, self.dir))
 
-    def look_at(self, vec=None, pos=None) -> numpy.ndarray:
+    def look_at(self, pos) -> None:
         """Look at a specific point
 
-        Either ``vec`` or ``pos`` needs to be supplied.
-
         Keyword Args:
-            vec (pyrr.Vector3): position
-            pos (tuple/list): list of tuple ``[x, y, x]`` / ``(x, y, x)``
+            pos (pyrr.Vector3/tuple/list): vector, list or tuple ``[x, y, x]`` / ``(x, y, x)``
         Returns:
-            numpy.ndarray: Camera matrix
+            None
         """
-        if pos is None:
-            vec = Vector3(pos)
+        if not isinstance(pos, Vector3):
+            pos = Vector3(pos)
 
-        if vec is None:
-            raise ValueError("vector or pos must be set")
-
-        return self._gl_look_at(self.position, vec, self._up)
+        self.dir = self._gl_look_at(self.position, pos, self._up)
 
     def _gl_look_at(self, pos, target, up) -> numpy.ndarray:
         """The standard lookAt method.
