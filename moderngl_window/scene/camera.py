@@ -102,7 +102,7 @@ class Camera:
         Returns:
             numpy.ndarray: Camera matrix
         """
-        if pos is None:
+        if pos is not None:
             vec = Vector3(pos)
 
         if vec is None:
