@@ -26,7 +26,7 @@ Please report bugs or post questions/feedback on [github](https://github.com/mod
 * Load shaders as single or multiple `glsl` files
 * Load objects/scenes from wavefront/obj, GLTF 2.0 or STL
 * Resource finder system supporting multiple resource directories
-* A highly pluggable library supporting custom loaders,
+* A highly plugable library supporting custom loaders,
   resource finders and windows.
 * Type hints everywhere making code completion and linting a breeze
 
@@ -77,7 +77,7 @@ python test.py --window tk
 ```
 
 `WindowConfig` classes are the simplest way to get started without knowing
-a lot about this library. For more advanced usage see documenation
+a lot about this library. For more advanced usage see documentation
 or examples.
 
 ## Setup from source
@@ -125,17 +125,17 @@ We are interested in contributions providing new loaders, windows etc.
 For these to be included in this library we require them
 to work cross platforms (win10/linux/osx) and be fairly easy to set up.
 
-If it requires more than manually downloading a precompiled dll
-(like SDL2, GLEW etc.) it would most likely not be included,
+If it requires more than manually downloading a pre-compiled dll
+(like SDL2, GLFW etc.) it would most likely not be included,
 but you are welcome to present your case if you still think it should
 be included.
 
 If you create your own repo/package containing plugins for
 this library, please make an issue and we'll link back to it.
-Be sure to include what platforms are suppored, install
+Be sure to include what platforms are supported, install
 instructions, how you configure it in `moderngl-window` and
 of course a clear and concise description of what exactly
-your package provides. 
+your package provides.
 
 ## Attributions
 
