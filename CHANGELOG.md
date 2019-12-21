@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.4
+
+Resolved an issue with version constraints causing some dependencies to install pre-release versions
+
 ## 2.0.3
 
 * Missing `WindowConfig.close` method and support for close callback for all window types
