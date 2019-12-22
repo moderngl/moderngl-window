@@ -16,15 +16,19 @@ class FragmentPicking(CameraWindow):
         super().__init__(**kwargs)
         self.camera.projection.update(near=1.0, far=1000)
         self.camera.velocity = 100
-        self.scene = self.load_scene('scenes/fragment_picking/Rogers_Thermal_11_14_Edited.obj')
+        self.scene = self.load_scene('scenes/fragment_picking/centered.obj')
 
     def render(self, time, frametime):
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
+
+        model = Matrix44.from_translation((0, 0, -50))
+        camera = self.camera.matrix
+        modelview = camera * model
+
         self.scene.draw(
             self.camera.projection.matrix,
-            self.camera.matrix,
+            modelview,
         )
-        print(self.camera.matrix)
 
 
 if __name__ == '__main__':
