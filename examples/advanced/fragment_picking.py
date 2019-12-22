@@ -128,7 +128,7 @@ class FragmentPicking(moderngl_window.WindowConfig):
         """Attempts to get the view position from a fragment"""
         # mouse coordinates starts in upper left corner
         # pixel positions starts and lower left corner
-        pos = x * self.wnd.pixel_ratio, self.wnd.buffer_height - y * self.wnd.pixel_ratio
+        pos = int(x * self.wnd.pixel_ratio), int(self.wnd.buffer_height - y * self.wnd.pixel_ratio)
         print("Reading position", pos)
         self.fragment_picker_program['texel_pos'].value = pos
         self.picker_vao.transform(self.fragment_picker_program, self.picker_output, vertices=1)
