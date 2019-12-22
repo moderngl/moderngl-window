@@ -14,7 +14,8 @@ out vec3 normal;
 
 void main() {
     gl_Position = projection * modelview * vec4(in_position, 1.0);
-    normal = in_normal;
+    mat3 normal_matrix = transpose(inverse(mat3(modelview)));
+    normal = normal_matrix * in_normal;
     uv = in_texcoord_0;
 }
 
