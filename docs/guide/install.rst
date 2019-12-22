@@ -22,7 +22,7 @@ as it small and pretty much work out of the box on all platforms.
 Optional dependencies for loaders::
 
     # Wavefront / obj loading
-    pip install moderngl-window[pywavefront}
+    pip install moderngl-window[pywavefront]
     # STL loading
     pip install moderngl-window[trimesh]
 
