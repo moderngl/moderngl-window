@@ -39,7 +39,7 @@ class FragmentPicking(moderngl_window.WindowConfig):
         # RGBA color/diffuse layer
         self.offscreen_diffuse = self.ctx.texture(self.wnd.buffer_size, 4)
         # Textures for storing normals (16 bit floats)
-        self.offscreen_normals = self.ctx.texture(self.wnd.buffer_size, 3, dtype='f2')
+        self.offscreen_normals = self.ctx.texture(self.wnd.buffer_size, 4, dtype='f2')
         # Texture for storing depth values
         self.offscreen_depth = self.ctx.depth_texture(self.wnd.buffer_size)
         # Create a framebuffer we can render to
