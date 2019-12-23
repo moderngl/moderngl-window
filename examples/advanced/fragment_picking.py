@@ -108,14 +108,14 @@ class FragmentPicking(moderngl_window.WindowConfig):
         # self.geometry_program['modelview'].write(self.modelview)
         # self.mesh_texture.use(location=0)  # bind texture from obj file to channel 0
         # self.mesh.render(self.geometry_program)  # render mesh
-        self.fallback_program['modelview'].write(self.modelview)
-        self.fallback_program['projection'].write(self.projection.matrix)
-        self.mesh.render(self.fallback_program)  # render mesh
+        # self.fallback_program['modelview'].write(self.modelview)
+        # self.fallback_program['projection'].write(self.projection.matrix)
+        # self.mesh.render(self.fallback_program)  # render mesh
 
-        # self.scene.draw(
-        #     projection_matrix=self.projection.matrix,
-        #     camera_matrix=self.modelview,
-        # )
+        self.scene.draw(
+            projection_matrix=self.projection.matrix,
+            camera_matrix=self.modelview,
+        )
 
         self.ctx.finish()
         self.ctx.disable(moderngl.DEPTH_TEST)
