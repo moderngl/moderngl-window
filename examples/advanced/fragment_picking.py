@@ -92,14 +92,18 @@ class FragmentPicking(moderngl_window.WindowConfig):
         # self.offscreen.use()
 
         # Render the scene
-        self.geometry_program['modelview'].write(self.modelview)
-        self.mesh_texture.use()
-        self.mesh.render(self.geometry_program)
+        # self.geometry_program['modelview'].write(self.modelview)
+        # self.mesh_texture.use()
+        # self.mesh.render(self.geometry_program)
+        self.scene.draw(
+            projection_matrix=self.projection.matrix,
+            camera_matrix=self.modelview,
+        )
 
-        self.ctx.disable(moderngl.DEPTH_TEST)
+        # self.ctx.disable(moderngl.DEPTH_TEST)
 
         # Activate the window as the render target
-        self.ctx.screen.use()
+        # self.ctx.screen.use()
 
         # Render offscreen diffuse layer to screen
         # self.offscreen_diffuse.use()
