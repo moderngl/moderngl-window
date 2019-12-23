@@ -80,6 +80,9 @@ class FragmentPicking(moderngl_window.WindowConfig):
         self.fragment_picker_program = self.load_program('programs/fragment_picking/picker.glsl')
         self.fragment_picker_program['proj_const'].value = self.projection.projection_constants
 
+        # Fallback shader
+        self.fallback_program = self.load_program('programs/fragment_picking/fallback.glsl')
+
         # Picker geometry
         self.picker_input = self.ctx.buffer(reserve=12)
         self.picker_output = self.ctx.buffer(reserve=12)
@@ -102,9 +105,13 @@ class FragmentPicking(moderngl_window.WindowConfig):
         self.offscreen.use()
 
         # Render the scene
-        self.geometry_program['modelview'].write(self.modelview)
-        self.mesh_texture.use(location=0)  # bind texture from obj file to channel 0
-        self.mesh.render(self.geometry_program)  # render mesh
+        # self.geometry_program['modelview'].write(self.modelview)
+        # self.mesh_texture.use(location=0)  # bind texture from obj file to channel 0
+        # self.mesh.render(self.geometry_program)  # render mesh
+        self.fallback_program['modelview'].write(self.modelview)
+        self.fallback_program['projection'].write(self.projection.matrix)
+        self.mesh.render(self.fallback_program)  # render mesh
+
         # self.scene.draw(
         #     projection_matrix=self.projection.matrix,
         #     camera_matrix=self.modelview,
