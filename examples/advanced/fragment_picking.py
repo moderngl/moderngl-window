@@ -67,8 +67,6 @@ class FragmentPicking(moderngl_window.WindowConfig):
         self.texture_program['texture0'].value = 0
         # Geomtry shader writing to two offscreen layers (color, normal) + depth
         self.geometry_program = self.load_program('programs/fragment_picking/geometry.glsl')
-        self.geometry_program['projection'].write(self.projection.matrix)
-        self.geometry_program['texture0'].value = 0  # use texture channel 0
 
         # Shader for linearizing depth (debug visualization)
         self.linearize_depth_program = self.load_program('programs/fragment_picking/linearize_depth.glsl')
@@ -105,17 +103,16 @@ class FragmentPicking(moderngl_window.WindowConfig):
         self.offscreen.use()
 
         # Render the scene
-        # self.geometry_program['modelview'].write(self.modelview)
-        # self.mesh_texture.use(location=0)  # bind texture from obj file to channel 0
-        # self.mesh.render(self.geometry_program)  # render mesh
-        # self.fallback_program['modelview'].write(self.modelview)
-        # self.fallback_program['projection'].write(self.projection.matrix)
-        # self.mesh.render(self.fallback_program)  # render mesh
+        self.geometry_program['modelview'].write(self.modelview)
+        self.geometry_program['projection'].write(self.projection.matrix)
+        self.geometry_program['texture0'].value = 0  # use texture channel 0
+        self.mesh_texture.use(location=0)  # bind texture from obj file to channel 0
+        self.mesh.render(self.geometry_program)  # render mesh
 
-        self.scene.draw(
-            projection_matrix=self.projection.matrix,
-            camera_matrix=self.modelview,
-        )
+        # self.scene.draw(
+        #     projection_matrix=self.projection.matrix,
+        #     camera_matrix=self.modelview,
+        # )
 
         self.ctx.finish()
         self.ctx.disable(moderngl.DEPTH_TEST)
