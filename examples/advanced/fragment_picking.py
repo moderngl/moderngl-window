@@ -102,8 +102,9 @@ class FragmentPicking(moderngl_window.WindowConfig):
         self.num_markers = 0
 
         # Debug geometry
-        self.quad_normals = geometry.quad_2d(size=(0.5, 0.5), pos=(0.75, 0.75))
-        self.quad_depth = geometry.quad_2d(size=(0.5, 0.5), pos=(0.25, 0.75))
+        self.quad_normals = geometry.quad_2d(size=(0.25, 0.25), pos=(0.75, 0.875))
+        self.quad_depth = geometry.quad_2d(size=(0.25, 0.25), pos=(0.5, 0.875))
+        self.quad_positions = geometry.quad_2d(size=(0.25, 0.25), pos=(0.25, 0.875))
 
     def render(self, time, frametime):
         self.ctx.enable(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
@@ -151,6 +152,9 @@ class FragmentPicking(moderngl_window.WindowConfig):
         self.depth_sampler.use(location=0)  # temp override the parameters
         self.quad_depth.render(self.linearize_depth_program)
         self.depth_sampler.clear(location=0)  # Remove the override
+
+        self.offscreen_viewpos.use()
+        self.quad_positions.render(self.texture_program)
 
     def mouse_drag_event(self, x, y, dx, dy):
         """Pick up mouse drag movements"""
