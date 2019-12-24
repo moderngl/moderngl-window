@@ -134,7 +134,7 @@ class FragmentPicking(moderngl_window.WindowConfig):
 
         # Render markers
         if self.num_markers > 0:
-            self.ctx.point_size = 5.0
+            self.ctx.point_size = 10.0
             self.marker_program['modelview'].write(self.modelview)
             self.marker_program['projection'].write(self.projection.matrix)
             self.marker_vao.render(self.marker_program, vertices=self.num_markers)
@@ -177,7 +177,11 @@ class FragmentPicking(moderngl_window.WindowConfig):
 
         # Print position
         x, y, z = struct.unpack('3f', self.picker_output.read())
-        # print(x, y, z)
+        if z == 0.0:
+            print('Point is not on the mesh')
+            return
+
+        print(x, y, z)
         self.marker_buffer.write(self.picker_output.read(), offset=12 * self.num_markers)
         self.num_markers += 1
 
