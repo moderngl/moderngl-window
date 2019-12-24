@@ -80,16 +80,13 @@ class FragmentPicking(moderngl_window.WindowConfig):
 
         # Shader for picking the world position of a fragment
         self.fragment_picker_program = self.load_program('programs/fragment_picking/picker.glsl')
-        # self.fragment_picker_program['proj_const'].value = self.projection.projection_constants
-        # self.fragment_picker_program['depth_texture'].value = 0  # Read from texture channel 0
         self.fragment_picker_program['position_texture'].value = 0  # Read from texture channel 0
 
-
         # Picker geometry
-        self.picker_input = self.ctx.buffer(reserve=12)
+        # self.picker_input = self.ctx.buffer(reserve=12)
         self.picker_output = self.ctx.buffer(reserve=12)
         self.picker_vao = VAO(mode=moderngl.POINTS)
-        self.picker_vao.buffer(self.picker_input, '3f', ['in_position'])
+        # self.picker_vao.buffer(self.picker_input, '3f', ['in_position'])
 
         # Shader for rendering markers
         self.marker_program = self.load_program('programs/fragment_picking/markers.glsl')

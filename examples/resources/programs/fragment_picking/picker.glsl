@@ -5,8 +5,6 @@
 
 #if defined VERTEX_SHADER
 
-in vec2 in_position;
-
 uniform sampler2D position_texture;
 uniform mat4 modelview;
 uniform ivec2 texel_pos;
@@ -23,5 +21,4 @@ void main() {
         out_position = (inverse(modelview) * vec4(viewpos, 1.0)).xyz;
     }
 }
-
 #endif
