@@ -24,7 +24,7 @@ class FragmentPicking(moderngl_window.WindowConfig):
 
         # Load scene cached to speed up loading!
         self.scene = self.load_scene('scenes/fragment_picking/centered.obj', cache=True)
-        # Grab the raw mesh
+        # Grab the raw mesh/vertexarray
         self.mesh = self.scene.root_nodes[0].mesh.vao
         self.mesh_texture = self.scene.root_nodes[0].mesh.material.mat_texture.texture
 
@@ -39,7 +39,7 @@ class FragmentPicking(moderngl_window.WindowConfig):
         # RGBA color/diffuse layer
         self.offscreen_diffuse = self.ctx.texture(self.wnd.buffer_size, 4)
         # Textures for storing normals (16 bit floats)
-        self.offscreen_normals = self.ctx.texture(self.wnd.buffer_size, 4)  # , dtype='f2')
+        self.offscreen_normals = self.ctx.texture(self.wnd.buffer_size, 4, dtype='f2')
         # Texture for storing depth values
         self.offscreen_depth = self.ctx.depth_texture(self.wnd.buffer_size)
         # Create a framebuffer we can render to
@@ -58,7 +58,7 @@ class FragmentPicking(moderngl_window.WindowConfig):
             compare_func='',
         )
 
-        # A fullscreen quad just for rendering offscreen colors to the window
+        # A fullscreen quad just for rendering offscreen textures to the window
         self.quad_fs = geometry.quad_fs()
 
         # --- Shaders
@@ -67,6 +67,7 @@ class FragmentPicking(moderngl_window.WindowConfig):
         self.texture_program['texture0'].value = 0
         # Geomtry shader writing to two offscreen layers (color, normal) + depth
         self.geometry_program = self.load_program('programs/fragment_picking/geometry.glsl')
+        self.geometry_program['texture0'].value = 0  # use texture channel 0
 
         # Shader for linearizing depth (debug visualization)
         self.linearize_depth_program = self.load_program('programs/fragment_picking/linearize_depth.glsl')
@@ -77,15 +78,23 @@ class FragmentPicking(moderngl_window.WindowConfig):
         # Shader for picking the world position of a fragment
         self.fragment_picker_program = self.load_program('programs/fragment_picking/picker.glsl')
         self.fragment_picker_program['proj_const'].value = self.projection.projection_constants
-
-        # Fallback shader
-        self.fallback_program = self.load_program('programs/fragment_picking/fallback.glsl')
+        self.fragment_picker_program['depth_texture'].value = 0  # Read from texture channel 0
 
         # Picker geometry
         self.picker_input = self.ctx.buffer(reserve=12)
         self.picker_output = self.ctx.buffer(reserve=12)
         self.picker_vao = VAO(mode=moderngl.POINTS)
         self.picker_vao.buffer(self.picker_input, '3f', ['in_position'])
+
+        # Shader for rendering markers
+        self.marker_program = self.load_program('programs/fragment_picking/markers.glsl')
+        self.marker_program['color'].value = 1.0, 0.0, 0.0, 1.0
+
+        # Marker geometry
+        self.marker_buffer = self.ctx.buffer(reserve=12 * 1000)  # Resever room for 1000 points
+        self.marker_vao = VAO(name="markers", mode=moderngl.POINTS)
+        self.marker_vao.buffer(self.marker_buffer, '3f', ['in_position'])
+        self.num_markers = 0
 
         # Debug geometry
         self.quad_normals = geometry.quad_2d(size=(0.5, 0.5), pos=(0.75, 0.75))
@@ -105,24 +114,25 @@ class FragmentPicking(moderngl_window.WindowConfig):
         # Render the scene
         self.geometry_program['modelview'].write(self.modelview)
         self.geometry_program['projection'].write(self.projection.matrix)
-        self.geometry_program['texture0'].value = 0  # use texture channel 0
         self.mesh_texture.use(location=0)  # bind texture from obj file to channel 0
+        self.depth_sampler.use(location=0)
         self.mesh.render(self.geometry_program)  # render mesh
-
-        # self.scene.draw(
-        #     projection_matrix=self.projection.matrix,
-        #     camera_matrix=self.modelview,
-        # )
-
-        self.ctx.finish()
-        self.ctx.disable(moderngl.DEPTH_TEST)
+        self.depth_sampler.clear(location=0)
 
         # Activate the window as the render target
         self.ctx.screen.use()
+        self.ctx.disable(moderngl.DEPTH_TEST)
 
         # Render offscreen diffuse layer to screen
         self.offscreen_diffuse.use(location=0)
         self.quad_fs.render(self.texture_program)
+
+        # Render markers
+        if self.num_markers > 0:
+            self.ctx.point_size = 5.0
+            self.marker_program['modelview'].write(self.modelview)
+            self.marker_program['projection'].write(self.projection.matrix)
+            self.marker_vao.render(self.marker_program, vertices=self.num_markers)
 
         self.render_debug()
 
@@ -146,13 +156,23 @@ class FragmentPicking(moderngl_window.WindowConfig):
         """Attempts to get the view position from a fragment"""
         # mouse coordinates starts in upper left corner
         # pixel positions starts and lower left corner
-        pos = int(x * self.wnd.pixel_ratio), int(self.wnd.buffer_height - y * self.wnd.pixel_ratio)
-        print("Reading position", pos)
+        pos = int(x * self.wnd.pixel_ratio), int(self.wnd.buffer_height - (y * self.wnd.pixel_ratio))
+        print("Picking mouse position", x, y)
+        print("Viewport position", pos)
+
         self.fragment_picker_program['texel_pos'].value = pos
+        # self.fragment_picker_program['modelview'].write(self.modelview)
+        # self.fragment_picker_program['aspect_ratio'].value = self.wnd.aspect_ratio
+        self.offscreen_depth.use(location=0)
+        self.depth_sampler.use(location=0)  # temp override the parameters
         self.picker_vao.transform(self.fragment_picker_program, self.picker_output, vertices=1)
+        self.depth_sampler.clear(location=0)  # Remove the override
 
         # Print position
-        print(struct.unpack('3f', self.picker_output.read()))
+        x, y, z = struct.unpack('3f', self.picker_output.read())
+        print(x, y, z)
+        self.marker_buffer.write(self.picker_output.read(), offset=12 * self.num_markers)
+        self.num_markers += 1
 
 
 if __name__ == '__main__':
