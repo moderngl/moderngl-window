@@ -40,6 +40,8 @@ class FragmentPicking(moderngl_window.WindowConfig):
         self.offscreen_diffuse = self.ctx.texture(self.wnd.buffer_size, 4)
         # Textures for storing normals (16 bit floats)
         self.offscreen_normals = self.ctx.texture(self.wnd.buffer_size, 4, dtype='f2')
+        # Texture for storing the view positions rendered to framebuffer
+        self.offscreen_viewpos = self.ctx.texture(self.wnd.buffer_size, 4, dtype='f4')
         # Texture for storing depth values
         self.offscreen_depth = self.ctx.depth_texture(self.wnd.buffer_size)
         # Create a framebuffer we can render to
@@ -47,6 +49,7 @@ class FragmentPicking(moderngl_window.WindowConfig):
             color_attachments=[
                 self.offscreen_diffuse,
                 self.offscreen_normals,
+                self.offscreen_viewpos,
             ],
             depth_attachment=self.offscreen_depth,
         )
@@ -77,8 +80,10 @@ class FragmentPicking(moderngl_window.WindowConfig):
 
         # Shader for picking the world position of a fragment
         self.fragment_picker_program = self.load_program('programs/fragment_picking/picker.glsl')
-        self.fragment_picker_program['proj_const'].value = self.projection.projection_constants
-        self.fragment_picker_program['depth_texture'].value = 0  # Read from texture channel 0
+        # self.fragment_picker_program['proj_const'].value = self.projection.projection_constants
+        # self.fragment_picker_program['depth_texture'].value = 0  # Read from texture channel 0
+        self.fragment_picker_program['position_texture'].value = 0  # Read from texture channel 0
+
 
         # Picker geometry
         self.picker_input = self.ctx.buffer(reserve=12)
@@ -154,6 +159,11 @@ class FragmentPicking(moderngl_window.WindowConfig):
 
     def mouse_press_event(self, x, y, button):
         """Attempts to get the view position from a fragment"""
+
+        # only care about right mouse button clicks
+        if button != self.wnd.mouse.right:
+            return
+
         # mouse coordinates starts in upper left corner
         # pixel positions starts and lower left corner
         pos = int(x * self.wnd.pixel_ratio), int(self.wnd.buffer_height - (y * self.wnd.pixel_ratio))
@@ -161,16 +171,13 @@ class FragmentPicking(moderngl_window.WindowConfig):
         print("Viewport position", pos)
 
         self.fragment_picker_program['texel_pos'].value = pos
-        # self.fragment_picker_program['modelview'].write(self.modelview)
-        # self.fragment_picker_program['aspect_ratio'].value = self.wnd.aspect_ratio
-        self.offscreen_depth.use(location=0)
-        self.depth_sampler.use(location=0)  # temp override the parameters
+        self.fragment_picker_program['modelview'].write(self.modelview)
+        self.offscreen_viewpos.use(location=0)
         self.picker_vao.transform(self.fragment_picker_program, self.picker_output, vertices=1)
-        self.depth_sampler.clear(location=0)  # Remove the override
 
         # Print position
         x, y, z = struct.unpack('3f', self.picker_output.read())
-        print(x, y, z)
+        # print(x, y, z)
         self.marker_buffer.write(self.picker_output.read(), offset=12 * self.num_markers)
         self.num_markers += 1
 
