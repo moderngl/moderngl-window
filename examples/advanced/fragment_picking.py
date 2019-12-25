@@ -18,6 +18,7 @@ class FragmentPicking(moderngl_window.WindowConfig):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        print("window buffer size:", self.wnd.buffer_size)
         # Object rotation
         self.x_rot = 0
         self.y_rot = 0
