@@ -13,7 +13,8 @@ class FragmentPicking(moderngl_window.WindowConfig):
     title = "Fragment Picking"
     gl_version = 3, 3
     window_size = 1280, 720
-    resizable = False
+    aspect_ratio = None
+    resizable = True
     resource_dir = (Path(__file__) / '../../resources').resolve()
 
     def __init__(self, **kwargs):
