@@ -23,6 +23,8 @@ class FragmentPicking(moderngl_window.WindowConfig):
         # Object rotation
         self.x_rot = 0
         self.y_rot = 0
+        # Object position
+        self.zoom = 0
 
         # Load scene cached to speed up loading!
         self.scene = self.load_scene('scenes/fragment_picking/centered.obj', cache=True)
@@ -109,7 +111,7 @@ class FragmentPicking(moderngl_window.WindowConfig):
     def render(self, time, frametime):
         self.ctx.enable(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
 
-        translation = Matrix44.from_translation((0, 0, -45), dtype='f4')
+        translation = Matrix44.from_translation((0, 0, -45 + self.zoom), dtype='f4')
         rotation = Matrix44.from_eulers((self.y_rot, self.x_rot, 0), dtype='f4')
         self.modelview = translation * rotation
 
@@ -192,6 +194,9 @@ class FragmentPicking(moderngl_window.WindowConfig):
         print(f"Temperature: {round(temperature * 255)} (byte) {temperature} (float)")
         self.marker_buffer.write(self.picker_output.read(), offset=self.marker_byte_size * self.num_markers)
         self.num_markers += 1
+
+    def mouse_scroll_event(self, x_offset, y_offset):
+        self.zoom += y_offset
 
 
 if __name__ == '__main__':
