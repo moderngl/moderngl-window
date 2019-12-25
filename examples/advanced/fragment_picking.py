@@ -81,21 +81,22 @@ class FragmentPicking(moderngl_window.WindowConfig):
         # Shader for picking the world position of a fragment
         self.fragment_picker_program = self.load_program('programs/fragment_picking/picker.glsl')
         self.fragment_picker_program['position_texture'].value = 0  # Read from texture channel 0
+        self.fragment_picker_program['normal_texture'].value = 1  # Read from texture channel 1
+        self.fragment_picker_program['diffuse_texture'].value = 2  # Read from texture channel 2
 
         # Picker geometry
-        # self.picker_input = self.ctx.buffer(reserve=12)
-        self.picker_output = self.ctx.buffer(reserve=12)
+        self.marker_byte_size = 7 * 4  # position + normal + temperature (7 x 32bit floats) 
+        self.picker_output = self.ctx.buffer(reserve=self.marker_byte_size)
         self.picker_vao = VAO(mode=moderngl.POINTS)
-        # self.picker_vao.buffer(self.picker_input, '3f', ['in_position'])
 
         # Shader for rendering markers
         self.marker_program = self.load_program('programs/fragment_picking/markers.glsl')
         self.marker_program['color'].value = 1.0, 0.0, 0.0, 1.0
 
         # Marker geometry
-        self.marker_buffer = self.ctx.buffer(reserve=12 * 1000)  # Resever room for 1000 points
+        self.marker_buffer = self.ctx.buffer(reserve=self.marker_byte_size * 1000)  # Resever room for 1000 points
         self.marker_vao = VAO(name="markers", mode=moderngl.POINTS)
-        self.marker_vao.buffer(self.marker_buffer, '3f', ['in_position'])
+        self.marker_vao.buffer(self.marker_buffer, '3f 3f 1f', ['in_position', 'in_normal', 'temperature'])
         self.num_markers = 0
 
         # Debug geometry
@@ -174,16 +175,20 @@ class FragmentPicking(moderngl_window.WindowConfig):
         self.fragment_picker_program['texel_pos'].value = pos
         self.fragment_picker_program['modelview'].write(self.modelview)
         self.offscreen_viewpos.use(location=0)
+        self.offscreen_normals.use(location=1)
+        self.offscreen_diffuse.use(location=2)
         self.picker_vao.transform(self.fragment_picker_program, self.picker_output, vertices=1)
 
         # Print position
-        x, y, z = struct.unpack('3f', self.picker_output.read())
+        x, y, z, nx, ny, nz, temperature = struct.unpack('7f', self.picker_output.read())
         if z == 0.0:
             print('Point is not on the mesh')
             return
 
-        print(x, y, z)
-        self.marker_buffer.write(self.picker_output.read(), offset=12 * self.num_markers)
+        print(f"Position: {x} {y} {z}")
+        print(f"Normal: {nx} {ny} {nz}")
+        print(f"Temperature: {round(temperature * 255)} (byte) {temperature} (float)")
+        self.marker_buffer.write(self.picker_output.read(), offset=self.marker_byte_size * self.num_markers)
         self.num_markers += 1
 
 
