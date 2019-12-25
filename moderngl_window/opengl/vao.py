@@ -80,17 +80,16 @@ class VAO:
     This is a wrapper class over ``moderngl.VertexArray`` to make interactions
     with programs/shaders simpler. Named buffers are added correspoding with
     attribute names in a vertex shader. When rendering the VAO an internal
-    ```moderngl.VertextArray`` is created by automatically creating a buffer
-    mapping compatible with the supplied program. This program is cached
-    internally.
+    ``moderngl.VertextArray`` is created automatically mapping the named buffers
+    compatible with the supplied program. This program is cached internally.
 
     The shader program doesn't need to use all the buffers registered in
     this wrapper. When a subset is used only the used buffers are mapped
     and the appropriate padding is calculated when interleaved data is used.
 
-    There is no requirements to use this class, but most methods in the
+    You are not required to use this class, but most methods in the
     system creating vertexbuffers will return this type. You can obtain
-    a single ```moderngl.VertexBuffer`` instance by calling :py:meth:`VAO.instance`
+    a single ``moderngl.VertexBuffer`` instance by calling :py:meth:`VAO.instance`
     method if you prefer to work directly on moderngl instances.
 
     Example::
