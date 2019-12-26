@@ -20,6 +20,7 @@ class FragmentPicking(moderngl_window.WindowConfig):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         print("window buffer size:", self.wnd.buffer_size)
+        self.marker_file = Path('markers.bin')
         # Object rotation
         self.x_rot = 0
         self.y_rot = 0
@@ -203,12 +204,31 @@ class FragmentPicking(moderngl_window.WindowConfig):
 
         # Key presses
         if action == keys.ACTION_PRESS:
-            if key == keys.L:
+            if key == keys.F1:
                 print('Loading marker file')
-                with open('markers.bin', mode='wb') as fd:
-                    fd.write(self.marker_buffer.read())
-            if key == keys.S:
+                self.load_markers(self.marker_file)
+
+            if key == keys.F2:
                 print('Saving marker file')
+                self.save_markers(self.marker_file)
+
+    def load_markers(self, path: Path):
+        """Loads markers from file"""
+        if not self.marker_file.exists():
+            return
+
+        with open(self.marker_file, mode='rb') as fd:
+            size = self.marker_file.stat().st_size
+            self.num_markers = size // self.marker_byte_size
+            self.marker_buffer.write(fd.read(), offset=0)
+
+    def save_markers(self, path: Path):
+        """Dump markers from file"""
+        if self.num_markers == 0:
+            return
+
+        with open('markers.bin', mode='wb') as fd:
+            fd.write(self.marker_buffer.read(size=self.num_markers * self.marker_byte_size))
 
 
 if __name__ == '__main__':
