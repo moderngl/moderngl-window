@@ -198,6 +198,18 @@ class FragmentPicking(moderngl_window.WindowConfig):
     def mouse_scroll_event(self, x_offset, y_offset):
         self.zoom += y_offset
 
+    def key_event(self, key, action, modifiers):
+        keys = self.wnd.keys
+
+        # Key presses
+        if action == keys.ACTION_PRESS:
+            if key == keys.L:
+                print('Loading marker file')
+                with open('markers.bin', mode='wb') as fd:
+                    fd.write(self.marker_buffer.read())
+            if key == keys.S:
+                print('Saving marker file')
+
 
 if __name__ == '__main__':
     moderngl_window.run_window_config(FragmentPicking)
