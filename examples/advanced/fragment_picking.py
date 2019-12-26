@@ -138,7 +138,7 @@ class FragmentPicking(moderngl_window.WindowConfig):
 
         # Render markers
         if self.num_markers > 0:
-            self.ctx.point_size = 10.0
+            self.ctx.point_size = 6.0  # Specify fragment size of the markers
             self.marker_program['modelview'].write(self.modelview)
             self.marker_program['projection'].write(self.projection.matrix)
             self.marker_vao.render(self.marker_program, vertices=self.num_markers)
