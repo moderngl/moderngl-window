@@ -10,6 +10,20 @@ from moderngl_window.opengl.vao import VAO
 
 
 class FragmentPicking(moderngl_window.WindowConfig):
+    """
+    Demonstrates how you can pick exact positions on a model
+    efficiently using the gpu. We render the scene info
+    to various layers in an offscreen framebuffer and
+    use this to fetch the view position of the picked
+    fragment. We can then apply the inverse modelview
+    to create points positions that matches the original mesh.
+
+    In this example we pick points on a mesh mapped with
+    a texture containing heat information. We pick the
+    position, heat value and the normal of the fragment.
+    The normal is then used to hide points that point
+    away from the camera.
+    """
     title = "Fragment Picking"
     gl_version = 3, 3
     window_size = 1280, 720
@@ -78,7 +92,7 @@ class FragmentPicking(moderngl_window.WindowConfig):
         self.geometry_program['texture0'].value = 0  # use texture channel 0
 
         # Shader for linearizing depth (debug visualization)
-        self.linearize_depth_program = self.load_program('programs/fragment_picking/linearize_depth.glsl')
+        self.linearize_depth_program = self.load_program('programs/linearize_depth.glsl')
         self.linearize_depth_program['texture0'].value = 0
         self.linearize_depth_program['near'].value = self.projection.near
         self.linearize_depth_program['far'].value = self.projection.far
