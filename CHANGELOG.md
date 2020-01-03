@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.0.5
+
+Improvements
+
+* Windows now has an `exit_key` property that can be used to change
+  or disable the exit key. This key is `ESCAPE` by default and can
+  be disabled by setting the property to `None`. This is useful
+  for users that don't want the default exit key behavior.
+* Log consumed glerrors after context creation as warnings
+
+Bug fixes
+
+* Pyglet mouse coordinates was translated wrong in cases were the
+  framebuffer size is larger that then window. The mouse position
+  should always use window coordinates.
+* VAOs should now properly support 64 bit floats / dvec
+* VAOs should be better at detecting/ignoring built in attributes
+* `Camera.look_at` had broken input validation when passing in a vector
+* Various typos in docstrings
+
 ## 2.0.4
 
 Resolved an issue with version constraints causing some dependencies to install pre-release versions
@@ -17,7 +37,7 @@ Resolved an issue with version constraints causing some dependencies to install 
 
 ## 2.0.1
 
-Bugfixes
+Bug fixes
 
 - SDL2 window now allows highdpi framebuffers when available
 - pygame2 window should only initialize the display module
