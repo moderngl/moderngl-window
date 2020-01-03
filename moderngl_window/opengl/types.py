@@ -123,7 +123,7 @@ BUFFER_FORMATS = {
     'f1': BufferFormat('f1', 1, 1),
     'f2': BufferFormat('f2', 1, 2),
     'f4': BufferFormat('f4', 1, 4),
-    'f8': BufferFormat('f4', 1, 4),
+    'f8': BufferFormat('f8', 1, 8),
     # Unsigned Integers
     'u': BufferFormat('u', 1, 4),
     'u1': BufferFormat('u1', 1, 1),
