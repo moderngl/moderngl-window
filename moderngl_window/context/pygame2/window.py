@@ -220,7 +220,7 @@ class Window(BaseWindow):
             elif event.type in [pygame.KEYDOWN, pygame.KEYUP]:
                 self._handle_mods()
 
-                if event.key == pygame.K_ESCAPE:
+                if self._exit_key is not None and event.key == self._exit_key:
                     self.close()
 
                 if event.type == pygame.KEYDOWN:

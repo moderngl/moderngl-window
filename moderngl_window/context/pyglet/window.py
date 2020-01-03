@@ -185,9 +185,14 @@ class Window(BaseWindow):
             symbol: The symbol of the pressed key
             modifiers: Modifier state (shift, ctrl etc.)
         """
+        if self._exit_key is not None and symbol == self._exit_key:
+            self.close()
+
         self._key_pressed_map[symbol] = True
         self._handle_modifiers(modifiers)
         self._key_event_func(symbol, self.keys.ACTION_PRESS, self._modifiers)
+
+        return pyglet.event.EVENT_HANDLED
 
     def on_text(self, text):
         """Pyglet specific text input callback

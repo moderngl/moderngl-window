@@ -13,6 +13,7 @@ class WindowEvents(moderngl_window.WindowConfig):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        # self.wnd.exit_key = None
 
     def render(self, time: float, frametime: float):
         self.ctx.clear(
@@ -40,6 +41,9 @@ class WindowEvents(moderngl_window.WindowConfig):
 
         # Key presses
         if action == keys.ACTION_PRESS:
+            if key == keys.ESCAPE:
+                print("ESCAPE key was pressed")
+
             if key == keys.SPACE:
                 print("SPACE key was pressed")
 

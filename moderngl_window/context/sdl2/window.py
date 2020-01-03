@@ -227,7 +227,7 @@ class Window(BaseWindow):
             elif event.type in [sdl2.SDL_KEYDOWN, sdl2.SDL_KEYUP]:
                 self._handle_mods()
 
-                if event.key.keysym.sym == sdl2.SDLK_ESCAPE:
+                if self._exit_key is not None and event.key.keysym.sym == self._exit_key:
                     self.close()
 
                 if event.type == sdl2.SDL_KEYDOWN:

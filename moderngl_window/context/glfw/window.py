@@ -199,7 +199,7 @@ class Window(BaseWindow):
             action: ``GLFW_PRESS``, ``GLFW_RELEASE`` or ``GLFW_REPEAT``
             mods: Bit field describing which modifier keys were held down.
         """
-        if key == self.keys.ESCAPE:
+        if self.exit_key is not None and key == self._exit_key:
             self.close()
 
         self._handle_modifiers(mods)

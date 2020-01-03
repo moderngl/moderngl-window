@@ -209,7 +209,7 @@ class Window(BaseWindow):
         Args:
             event: The qtevent instance
         """
-        if event.key() == self.keys.ESCAPE:
+        if self._exit_key is not None and event.key() == self._exit_key:
             self.close()
 
         self._handle_modifiers(event.modifiers())
@@ -217,7 +217,7 @@ class Window(BaseWindow):
         self._key_event_func(event.key(), self.keys.ACTION_PRESS, self._modifiers)
 
         text = event.text()
-        if text:
+        if text.strip() or event.key() == self.keys.SPACE:
             self._unicode_char_entered_func(text)
 
     def key_release_event(self, event) -> None:

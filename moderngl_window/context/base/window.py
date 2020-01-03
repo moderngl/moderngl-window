@@ -92,6 +92,7 @@ class BaseWindow:
         self._fixed_aspect_ratio = aspect_ratio
         self._samples = samples
         self._cursor = cursor
+        self._exit_key = self.keys.ESCAPE
 
         # Callback functions
         self._render_func = dummy_func
@@ -163,6 +164,24 @@ class BaseWindow:
     @title.setter
     def title(self, value: str):
         self._title = value
+
+    @property
+    def exit_key(self) -> Any:
+        """Get or set the exit key for the application.
+
+        By default this key is ``ESC``, but can be overridden or disabled::
+
+            # Default exit key
+            window.exit_key = window.keys.ESCAPE
+
+            # Disable it
+            window.exit_key = None
+        """
+        return self._exit_key
+
+    @exit_key.setter
+    def exit_key(self, value: Any):
+        self._exit_key = value
 
     @property
     def gl_version(self) -> Tuple[int, int]:

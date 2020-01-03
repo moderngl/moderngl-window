@@ -140,7 +140,7 @@ class Window(BaseWindow):
         else:
             self._handle_modifiers(event, True)
 
-        if event.keysym == keys.ESCAPE:
+        if self._exit_key is not None and event.keysym == self._exit_key:
             self.close()
 
     def tk_key_release(self, event: tkinter.Event) -> None:
