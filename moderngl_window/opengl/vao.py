@@ -273,13 +273,13 @@ class VAO:
         if vao:
             return vao
 
-        program_attributes = [name for name, attr in program._members.items() if isinstance(attr, moderngl.Attribute)]
+        program_attributes = [
+            name for name, attr in program._members.items()
+            if isinstance(attr, moderngl.Attribute) and not attr.name.startswith('gl_')
+        ]
 
         # Make sure all attributes are covered
         for attrib_name in program_attributes:
-            # Ignore built in attributes for now
-            if attrib_name.startswith('gl_'):
-                continue
 
             # Do we have a buffer mapping to this attribute?
             if not sum(buffer.has_attribute(attrib_name) for buffer in self._buffers):
@@ -296,11 +296,7 @@ class VAO:
 
         # Any attribute left is not accounted for
         if program_attributes:
-            for attrib_name in program_attributes:
-                if attrib_name.startswith('gl_'):
-                    continue
-
-                raise VAOError("Did not find a buffer mapping for {}".format([n for n in program_attributes]))
+            raise VAOError("Did not find a buffer mapping for {}".format([n for n in program_attributes]))
 
         # Create the vao
         if self._index_buffer:
