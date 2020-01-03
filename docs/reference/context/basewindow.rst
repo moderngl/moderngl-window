@@ -29,6 +29,7 @@ Attributes
 .. autoattribute:: BaseWindow.ctx
 .. autoattribute:: BaseWindow.fbo
 .. autoattribute:: BaseWindow.title
+.. autoattribute:: BaseWindow.exit_key
 .. autoattribute:: BaseWindow.gl_version
 .. autoattribute:: BaseWindow.width
 .. autoattribute:: BaseWindow.height

@@ -167,14 +167,19 @@ class BaseWindow:
 
     @property
     def exit_key(self) -> Any:
-        """Get or set the exit key for the application.
+        """Get or set the exit/close key for the window.
 
-        By default this key is ``ESC``, but can be overridden or disabled::
+        Pressing this key will close the window.
+
+        By default the ``ESCAPE`` is set, but this can be overridden or disabled::
 
             # Default exit key
             window.exit_key = window.keys.ESCAPE
 
-            # Disable it
+            # Set some other random exit key
+            window.exit_key = window.keys.Q
+
+            # Disable the exit key
             window.exit_key = None
         """
         return self._exit_key

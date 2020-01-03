@@ -42,6 +42,7 @@ Attributes
 .. autoattribute:: Window.ctx
 .. autoattribute:: Window.fbo
 .. autoattribute:: Window.title
+.. autoattribute:: Window.exit_key
 .. autoattribute:: Window.gl_version
 .. autoattribute:: Window.width
 .. autoattribute:: Window.height
