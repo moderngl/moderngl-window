@@ -100,3 +100,10 @@ class TextureLoadersTestCase(HeadlessTestCase):
                 tess_evaluation_shader="programs/notfound_te.glsl",
                 fragment_shader="programs/notfound_fs.glsl",
             ))
+
+    def test_compute_shader(self):
+        """Attempt loading a compute shader"""
+        path = 'programs/compute.glsl'
+        descr = ProgramDescription(compute_shader=path)
+        self.assertEqual(descr.compute_shader, path)
+        prog = resources.programs.load(descr)

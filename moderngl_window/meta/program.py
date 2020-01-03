@@ -27,7 +27,8 @@ class ProgramDescription(ResourceDescription):
 
     def __init__(self, path: str = None, kind: str = None, reloadable=False,
                  vertex_shader: str = None, geometry_shader: str = None, fragment_shader: str = None,
-                 tess_control_shader: str = None, tess_evaluation_shader: str = None, **kwargs):
+                 tess_control_shader: str = None, tess_evaluation_shader: str = None,
+                 compute_shader: str = None, **kwargs):
         """Create a program description
 
         Keyword Args:
@@ -39,6 +40,7 @@ class ProgramDescription(ResourceDescription):
             fragment_shader (str): Path to fragmet shader
             tess_control_shader (str) Path to tess control shader
             tess_evaluation_shader (str): Path to tess eval shader
+            compute_shader (str): Path to compute shader
             **kwargs: Optional custom attributes
         """
         kwargs.update({
@@ -50,6 +52,7 @@ class ProgramDescription(ResourceDescription):
             "fragment_shader": fragment_shader,
             "tess_control_shader": tess_control_shader,
             "tess_evaluation_shader": tess_evaluation_shader,
+            "compute_shader": compute_shader,
         })
         super().__init__(**kwargs)
 
@@ -86,3 +89,8 @@ class ProgramDescription(ResourceDescription):
     def tess_evaluation_shader(self):
         """str: Relative path to tessellation evaluation shader"""
         return self._kwargs.get('tess_evaluation_shader')
+
+    @property
+    def compute_shader(self):
+        """str: Relative path to compute shader"""
+        return self._kwargs.get('compute_shader')
