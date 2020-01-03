@@ -132,7 +132,6 @@ class Window(BaseWindow):
 
     def tk_key_press(self, event: tkinter.Event) -> None:
         """Handle all queued key press events in tkinter dispatching events to standard methods"""
-        keys = self.keys
         self._key_event_func(event.keysym, self.keys.ACTION_PRESS, self._modifiers)
 
         if event.char:
