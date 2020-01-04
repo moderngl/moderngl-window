@@ -3,12 +3,10 @@ import ctypes
 import numpy as np
 import moderngl
 import imgui
-from imgui.integrations.opengl import ProgrammablePipelineRenderer
 from imgui.integrations.opengl import BaseOpenGLRenderer
 
 
 class ModernglWindowMixin:
-    REVERSE_KEY_MAP = {}
 
     def resize(self, width: int, height: int):
         self.io.display_size = (
@@ -77,9 +75,7 @@ class ModernglWindowMixin:
 
     def unicode_char_entered(self, char):
         io = imgui.get_io()
-
-        for c in char:
-            io.add_input_character(ord(c))
+        io.add_input_character(ord(char))
 
 
 class ModernglRenderer(BaseOpenGLRenderer):
@@ -221,6 +217,35 @@ class ModernglWindowRenderer(ModernglRenderer, ModernglWindowMixin):
         super().__init__(wnd=window)
         self.wnd = window
 
-        # self.io.display_size = self.wnd.viewport_width, self.wnd.viewport_height
+        self._init_key_maps()
         self.io.display_size = self.wnd.size
         self.io.display_fb_scale = self.wnd.pixel_ratio, self.wnd.pixel_ratio
+
+    def _init_key_maps(self):
+        keys = self.wnd.keys
+
+        self.REVERSE_KEY_MAP = {
+            keys.TAB: imgui.KEY_TAB,
+            keys.LEFT: imgui.KEY_LEFT_ARROW,
+            keys.RIGHT: imgui.KEY_RIGHT_ARROW,
+            keys.UP: imgui.KEY_UP_ARROW,
+            keys.DOWN: imgui.KEY_DOWN_ARROW,
+            keys.PAGE_UP: imgui.KEY_PAGE_UP,
+            keys.PAGE_DOWN: imgui.KEY_PAGE_DOWN,
+            keys.HOME: imgui.KEY_HOME,
+            keys.END: imgui.KEY_END,
+            keys.DELETE: imgui.KEY_DELETE,
+            keys.SPACE: imgui.KEY_SPACE,
+            keys.BACKSPACE: imgui.KEY_BACKSPACE,
+            keys.ENTER: imgui.KEY_ENTER,
+            keys.ESCAPE: imgui.KEY_ESCAPE,
+            keys.A: imgui.KEY_A,
+            keys.C: imgui.KEY_C,
+            keys.V: imgui.KEY_V,
+            keys.X: imgui.KEY_X,
+            keys.Y: imgui.KEY_Y,
+            keys.Z: imgui.KEY_Z,
+        }
+
+        for value in self.REVERSE_KEY_MAP.values():
+            self.io.key_map[value] = value
