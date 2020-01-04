@@ -3,7 +3,6 @@ import ctypes
 import numpy as np
 import moderngl
 import imgui
-from imgui.integrations.opengl import ProgrammablePipelineRenderer
 from imgui.integrations.opengl import BaseOpenGLRenderer
 
 
@@ -154,7 +153,6 @@ class ModernglRenderer(BaseOpenGLRenderer):
     def render(self, draw_data):
         io = self.io
         old_scissor = self.ctx.scissor
-        print(old_scissor)
 
         display_width, display_height = io.display_size
         fb_width = int(display_width * io.display_fb_scale[0])
