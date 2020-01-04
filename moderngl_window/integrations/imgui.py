@@ -75,9 +75,7 @@ class ModernglWindowMixin:
 
     def unicode_char_entered(self, char):
         io = imgui.get_io()
-
-        for c in char:
-            io.add_input_character(ord(c))
+        io.add_input_character(ord(char))
 
 
 class ModernglRenderer(BaseOpenGLRenderer):
