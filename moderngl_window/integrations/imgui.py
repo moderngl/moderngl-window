@@ -116,7 +116,11 @@ class ModernglRenderer(BaseOpenGLRenderer):
         self._vertex_buffer = None
         self._index_buffer = None
         self._vao = None
-        self.ctx = kwargs.get('ctx')
+        self.wnd = kwargs.get('wnd')
+        self.ctx = self.wnd.ctx
+
+        if not self.wnd:
+            raise ValueError('Missing window reference')
 
         if not self.ctx:
             raise ValueError('Missing moderngl contex')
@@ -154,7 +158,6 @@ class ModernglRenderer(BaseOpenGLRenderer):
     def render(self, draw_data):
         io = self.io
         old_scissor = self.ctx.scissor
-        print(old_scissor)
 
         display_width, display_height = io.display_size
         fb_width = int(display_width * io.display_fb_scale[0])
@@ -215,8 +218,9 @@ class ModernglRenderer(BaseOpenGLRenderer):
 class ModernglWindowRenderer(ModernglRenderer, ModernglWindowMixin):
 
     def __init__(self, window):
-        super().__init__(ctx=window.ctx)
+        super().__init__(wnd=window)
         self.wnd = window
 
+        # self.io.display_size = self.wnd.viewport_width, self.wnd.viewport_height
         self.io.display_size = self.wnd.size
-        self.io.display_fb_scale = 1.0, 1.0
+        self.io.display_fb_scale = self.wnd.pixel_ratio, self.wnd.pixel_ratio
