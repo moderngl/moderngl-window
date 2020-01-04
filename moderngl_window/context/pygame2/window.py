@@ -234,7 +234,7 @@ class Window(BaseWindow):
                 self._unicode_char_entered_func(event.text)
 
             elif event.type == pygame.MOUSEWHEEL:
-                self._mouse_scroll_event_func(float(event.wheel.x), float(event.wheel.y))
+                self._mouse_scroll_event_func(float(event.x), float(event.y))
 
             elif event.type == pygame.QUIT:
                 self.close()
