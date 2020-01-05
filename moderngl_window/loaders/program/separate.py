@@ -1,3 +1,5 @@
+from typing import Union, Tuple
+
 import logging
 import moderngl
 from moderngl_window.loaders.base import BaseLoader
@@ -10,7 +12,12 @@ logger = logging.getLogger(__name__)
 class Loader(BaseLoader):
     kind = 'separate'
 
-    def load(self) -> moderngl.Program:
+    def load(self) -> Union[
+        moderngl.Program,
+        moderngl.ComputeShader,
+        program.ComputeProgram,
+        program.ReloadableProgram
+    ]:
         """Loads a shader program were each shader is a separate file.
 
         This detected and dictated by the ``kind`` in the ``ProgramDescription``.
@@ -18,21 +25,35 @@ class Loader(BaseLoader):
         Returns:
             moderngl.Program: The Program instance
         """
+        prog = None
+        compute_shader = None
+
         vs_source = self.load_shader("vertex", self.meta.vertex_shader)
         geo_source = self.load_shader("geometry", self.meta.geometry_shader)
         fs_source = self.load_shader("fragment", self.meta.fragment_shader)
         tc_source = self.load_shader("tess_control", self.meta.tess_control_shader)
         te_source = self.load_shader("tess_evaluation", self.meta.tess_evaluation_shader)
+        cs_source = self.load_shader("compute", self.meta.compute_shader)
 
-        shaders = program.ProgramShaders.from_separate(
-            self.meta,
-            vs_source,
-            geometry_source=geo_source,
-            fragment_source=fs_source,
-            tess_control_source=tc_source,
-            tess_evaluation_source=te_source,
-        )
-        prog = shaders.create()
+        if vs_source:
+            shaders = program.ProgramShaders.from_separate(
+                self.meta,
+                vs_source,
+                geometry_source=geo_source,
+                fragment_source=fs_source,
+                tess_control_source=tc_source,
+                tess_evaluation_source=te_source,
+            )
+            prog = shaders.create()
+
+        if cs_source:
+            shaders = program.ProgramShaders.compute_shader(self.meta, cs_source)
+            compute_shader = shaders.create_compute_shader()
+
+        if prog and compute_shader:
+            prog = program.ComputeProgram(self.meta, prog, compute_shader)
+        elif not prog and compute_shader:
+            prog = compute_shader
 
         # Wrap the program if reloadable is set
         if self.meta.reloadable:
