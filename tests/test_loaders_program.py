@@ -4,7 +4,7 @@ import moderngl
 from headless import HeadlessTestCase
 from moderngl_window import resources
 from moderngl_window.meta import ProgramDescription
-from moderngl_window.opengl.program import ReloadableProgram
+from moderngl_window.opengl.program import ReloadableProgram, ComputeProgram
 from moderngl_window.exceptions import ImproperlyConfigured
 
 resources.register_dir((Path(__file__).parent / 'fixtures' / 'resources').resolve())
@@ -106,4 +106,5 @@ class TextureLoadersTestCase(HeadlessTestCase):
         path = 'programs/compute.glsl'
         descr = ProgramDescription(compute_shader=path)
         self.assertEqual(descr.compute_shader, path)
-        prog = resources.programs.load(descr)
+        program = resources.programs.load(descr)
+        self.assertIsInstance(program, moderngl.ComputeShader)
