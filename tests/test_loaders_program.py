@@ -1,4 +1,6 @@
 from pathlib import Path
+import platform
+import pytest
 
 import moderngl
 from headless import HeadlessTestCase
@@ -101,6 +103,7 @@ class ProgramLoadersTestCase(HeadlessTestCase):
                 fragment_shader="programs/notfound_fs.glsl",
             ))
 
+    @pytest.mark.skipif(platform.system() == 'Darwin', reason="Compute shader not possible on OSX")
     def test_compute_shader(self):
         """Attempt loading a compute shader"""
         path = 'programs/compute.glsl'
