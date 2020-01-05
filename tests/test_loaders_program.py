@@ -10,7 +10,7 @@ from moderngl_window.exceptions import ImproperlyConfigured
 resources.register_dir((Path(__file__).parent / 'fixtures' / 'resources').resolve())
 
 
-class TextureLoadersTestCase(HeadlessTestCase):
+class ProgramLoadersTestCase(HeadlessTestCase):
     window_size = (16, 16)
     aspect_ratio = 1.0
 
