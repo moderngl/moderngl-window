@@ -120,6 +120,9 @@ class ProgramShaders:
         )
         return instance
 
+    def create_compute_shader(self):
+        return self.ctx.compute_shader(self.compute_shader_source.source)
+
     def create(self):
         """
         Creates a shader program.
@@ -201,14 +204,14 @@ class ShaderError(Exception):
 
 class ReloadableProgram:
     """
-    Programs we want to be reloadable must be created with this wrapper
+    Programs we want to be reloadable must be created with this wrapper.
     """
     def __init__(self, meta: ProgramDescription, program: moderngl.Program):
         """
         Create a shader using either a file path or a name.
 
         Args:
-            meta: The ProgramMeta
+            meta: The program meta
             program: The program instance
         """
         self.program = program
@@ -284,3 +287,91 @@ class ReloadableProgram:
 
     def __repr__(self):
         return '<ReloadableProgram: {} id={}>'.format(self.name, self.glo)
+
+
+class ComputeProgram:
+    """
+    Programs that have a compute shader must be created with this wrapper.
+    """
+    def __init__(self, meta: ProgramDescription, program: moderngl.Program, compute_shader: moderngl.ComputeShader):
+        """
+        Create a shader program that has a compute shader.
+
+        Args:
+            meta: The program meta
+            program: The program instance
+        """
+        self.meta = meta
+        self.program = program
+        self.compute_shader = compute_shader
+
+    @property
+    def name(self):
+        return self.meta.path or self.meta.vertex_shader
+
+    @property
+    def _members(self):
+        return self.program._members
+
+    @property
+    def ctx(self) -> moderngl.Context:
+        return self.program.ctx
+
+    def __getitem__(self, key) -> Union[moderngl.Uniform, moderngl.UniformBlock, moderngl.Subroutine,
+                                        moderngl.Attribute, moderngl.Varying]:
+        return self.program[key]
+
+    def get(self, key, default):
+        return self.program.get(key, default)
+
+    @property
+    def extra(self):
+        return self.program.extra
+
+    @property
+    def mglo(self):
+        """The ModernGL Program object"""
+        return self.program.mglo
+
+    @property
+    def glo(self) -> int:
+        """
+        int: The internal OpenGL object.
+        This values is provided for debug purposes only.
+        """
+        return self.program.glo
+
+    @property
+    def subroutines(self) -> Tuple[str, ...]:
+        '''
+            tuple: The subroutine uniforms.
+        '''
+        return self.program.subroutines
+
+    @property
+    def geometry_input(self) -> int:
+        """
+        int: The geometry input primitive.
+        The GeometryShader's input primitive if the GeometryShader exists.
+        The geometry input primitive will be used for validation.
+        """
+        return self.program.geometry_input
+
+    @property
+    def geometry_output(self) -> int:
+        """
+        int: The geometry output primitive.
+        The GeometryShader's output primitive if the GeometryShader exists.
+        """
+        return self.program.geometry_output
+
+    @property
+    def geometry_vertices(self) -> int:
+        """
+        int: The maximum number of vertices that
+        the geometry shader will output.
+        """
+        return self.program.geometry_vertices
+
+    def __repr__(self):
+        return '<ComputeProgram: {} id={}>'.format(self.name, self.glo)
