@@ -120,6 +120,9 @@ class ProgramShaders:
         )
         return instance
 
+    def create_compute_shader(self):
+        return self.ctx.compute_shader(self.compute_shader_source.source)
+
     def create(self):
         """
         Creates a shader program.
@@ -201,14 +204,14 @@ class ShaderError(Exception):
 
 class ReloadableProgram:
     """
-    Programs we want to be reloadable must be created with this wrapper
+    Programs we want to be reloadable must be created with this wrapper.
     """
     def __init__(self, meta: ProgramDescription, program: moderngl.Program):
         """
         Create a shader using either a file path or a name.
 
         Args:
-            meta: The ProgramMeta
+            meta: The program meta
             program: The program instance
         """
         self.program = program
