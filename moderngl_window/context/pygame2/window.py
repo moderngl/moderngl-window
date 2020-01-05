@@ -203,7 +203,7 @@ class Window(BaseWindow):
                 button = self._mouse_button_map.get(event.button, None)
                 if button is not None:
                     self._handle_mouse_button_state_change(button, True)
-                    self._mouse_release_event_func(
+                    self._mouse_press_event_func(
                         event.pos[0], event.pos[1],
                         button,
                     )
@@ -212,7 +212,7 @@ class Window(BaseWindow):
                 button = self._mouse_button_map.get(event.button, None)
                 if button is not None:
                     self._handle_mouse_button_state_change(button, False)
-                    self._mouse_press_event_func(
+                    self._mouse_release_event_func(
                         event.pos[0], event.pos[1],
                         button,
                     )
