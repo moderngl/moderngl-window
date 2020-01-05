@@ -22,6 +22,7 @@ Attributes
 .. autoattribute:: ProgramDescription.reloadable
 .. autoattribute:: ProgramDescription.fragment_shader
 .. autoattribute:: ProgramDescription.tess_control_shader
+.. autoattribute:: ProgramDescription.compute_shader
 
 Inherited Attributes
 --------------------
