@@ -106,4 +106,5 @@ class TextureLoadersTestCase(HeadlessTestCase):
         path = 'programs/compute.glsl'
         descr = ProgramDescription(compute_shader=path)
         self.assertEqual(descr.compute_shader, path)
-        prog = resources.programs.load(descr)
+        program = resources.programs.load(descr)
+        self.assertIsInstance(program, moderngl.ComputeShader)
