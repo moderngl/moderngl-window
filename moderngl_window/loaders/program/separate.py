@@ -33,9 +33,6 @@ class Loader(BaseLoader):
         te_source = self.load_shader("tess_evaluation", self.meta.tess_evaluation_shader)
         cs_source = self.load_shader("compute", self.meta.compute_shader)
 
-        if vs_source and cs_source:
-            raise ImproperlyConfigured("Cannot load program and compute shader simultaneously")
-
         if vs_source:
             shaders = program.ProgramShaders.from_separate(
                 self.meta,
@@ -53,10 +50,11 @@ class Loader(BaseLoader):
                 self.meta.reloadable = False
                 # Wrap it ..
                 prog = program.ReloadableProgram(self.meta, prog)
-
-        if cs_source:
+        elif cs_source:
             shaders = program.ProgramShaders.compute_shader(self.meta, cs_source)
             prog = shaders.create_compute_shader()
+        else:
+            raise ImproperlyConfigured("Cannot load program and compute shader simultaneously")
 
         return prog
 
