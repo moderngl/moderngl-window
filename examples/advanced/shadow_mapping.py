@@ -4,7 +4,7 @@ https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mappin
 """
 import math
 from pathlib import Path
-from pyrr import Matrix44
+from pyrr import Matrix44, matrix44
 
 import moderngl
 import moderngl_window
@@ -35,50 +35,67 @@ class ShadowMapping(CameraWindow):
         # Scene geometry
         self.floor = geometry.cube(size=(25.0, 1.0, 25.0))
         self.wall = geometry.cube(size=(1.0, 5, 25), center=(-12.5, 2, 0))
+        self.sphere = geometry.sphere(radius=5.0)
 
         # Debug geometry
         self.offscreen_quad = geometry.quad_2d(size=(0.5, 0.5), pos=(0.75, 0.75))
         self.offscreen_quad2 = geometry.quad_2d(size=(0.5, 0.5), pos=(0.25, 0.75))
 
         # Programs
-        self.linearize_depth_program = self.load_program('programs/linearize_depth.glsl')
-        self.linearize_depth_program['near'].value = self.camera.projection.near
-        self.linearize_depth_program['far'].value = self.camera.projection.far
+        self.raw_depth_prog = self.load_program('programs/shadow_mapping/raw_depth.glsl')
         self.basic_light = self.load_program('programs/shadow_mapping/directional_light.glsl')
         self.basic_light['color'].value = 1.0, 1.0, 1.0, 1.0
         self.shadowmap_program = self.load_program('programs/shadow_mapping/shadowmap.glsl')
         self.texture_prog = self.load_program('programs/texture.glsl')
         self.texture_prog['texture0'].value = 0
 
+        self.lightpos = 5, 5, 5
+
     def render(self, time, frametime):
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
+        self.lightpos = 5, 5, 5
 
         # --- PASS 1:  Render shadow map
         self.offscreen.clear()
         self.offscreen.use()
-        self.shadowmap_program['projection'].write(Matrix44.orthogonal_projection(-10, 10, -10, 10, -10, 20, dtype='f4'))
-        self.shadowmap_program['model'].write(Matrix44.identity(dtype='f4'))
-        self.shadowmap_program['view'].write(Matrix44.look_at((-10, math.sin(time/10) * 10, 0), (0, 0, 0), (0, 1, 0), dtype='f4'))
+
+        depth_projection = Matrix44.orthogonal_projection(-10, 10, -10, 10, -10, 20, dtype='f4')
+        depth_view = Matrix44.look_at(self.lightpos, (0, 0, 0), (0, 1, 0), dtype='f4')
+        depth_mvp = depth_projection * depth_view
+        self.shadowmap_program['mvp'].write(depth_mvp)
 
         self.floor.render(self.shadowmap_program)
         self.wall.render(self.shadowmap_program)
+        self.sphere.render(self.shadowmap_program)
 
         # --- PASS 2:  Render scene to screen
+        self.offscreen_depth.compare_func = ''
+
         self.wnd.use()
         self.basic_light['m_proj'].write(self.camera.projection.matrix)
         self.basic_light['m_camera'].write(self.camera.matrix)
         self.basic_light['m_model'].write(Matrix44.from_translation((0, -5, -12), dtype='f4'))
-
+        bias_matrix = Matrix44(
+            [[0.5, 0.0, 0.0, 0.0],
+             [0.0, 0.5, 0.0, 0.0],
+             [0.0, 0.0, 0.5, 0.0],
+             [0.5, 0.5, 0.5, 1.0]],
+            dtype='f4',
+        )
+        self.basic_light['m_shadow_bias'].write(matrix44.multiply(bias_matrix, depth_mvp))
+        # self.basic_light['lightDir'].value = -self.lightpos[0], -self.lightpos[1], -self.lightpos[2]
+        self.basic_light['lightDir'].value = self.lightpos[0], self.lightpos[1], self.lightpos[2]
+        self.offscreen_depth.use(location=0)
         self.floor.render(self.basic_light)
         self.wall.render(self.basic_light)
+        self.sphere.render(self.basic_light)
 
         # --- PASS 3: Debug ---
-        self.ctx.enable_only(moderngl.NOTHING)
+        # self.ctx.enable_only(moderngl.NOTHING)
         self.offscreen_depth.use()
-        self.offscreen_depth.compare_func = ''
-        self.offscreen_quad.render(self.linearize_depth_program)
-        self.offscreen_color.use(location=0)
-        self.offscreen_quad2.render(self.texture_prog)
+        self.offscreen_quad.render(self.raw_depth_prog)
+        # self.offscreen_color.use(location=0)
+        # self.offscreen_quad2.render(self.texture_prog)
 
 
 if __name__ == '__main__':
