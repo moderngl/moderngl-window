@@ -839,6 +839,18 @@ class WindowConfig:
         if not self.wnd or not isinstance(self.wnd, BaseWindow):
             raise ValueError("WindowConfig requires a window. wnd={}".format(self.wnd))
 
+    @classmethod
+    def run(cls):
+        """Shortcut for running a ``WindowConfig``.
+
+        This executes the following code::
+
+            import moderngl_window
+            moderngl_window.run_window_config(cls)
+        """
+        import moderngl_window
+        moderngl_window.run_window_config(cls)
+
     def render(self, time: float, frame_time: float):
         """Renders the assigned effect
 

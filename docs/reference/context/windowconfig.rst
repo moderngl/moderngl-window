@@ -11,6 +11,7 @@ Methods
 -------
 
 .. automethod:: WindowConfig.__init__
+.. automethod:: WindowConfig.run
 .. automethod:: WindowConfig.render
 .. automethod:: WindowConfig.resize
 .. automethod:: WindowConfig.close
