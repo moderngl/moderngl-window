@@ -15,7 +15,9 @@ TEXTURE_MODES = [None, 'L', None, 'RGB', 'RGBA']
 def create(source: Union[moderngl.Framebuffer, moderngl.Texture],
            file_format='png', name: str = None, mode="RGB", alignment=1):
     """
-    Create a screenshot from a Framebuffer
+    Create a screenshot from a ``moderngl.Framebuffer`` or ``moderngl.Texture``.
+    The screenshot will be written to :py:attr:`~moderngl_window.conf.Settings.SCREENSHOT_PATH`
+    if set or ``cwd`` or an absolute path can be used.
 
     Args:
         source: The framebuffer or texture to screenshot

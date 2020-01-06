@@ -29,6 +29,7 @@ creation and resource loading simple.
 
    reference/moderngl_window
    reference/settings.conf.settings
+   reference/screenshot.rst
    reference/context/index
    reference/geometry
    reference/loaders/index
