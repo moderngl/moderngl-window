@@ -10,6 +10,10 @@ import moderngl_window
 from moderngl_window import geometry
 from pyrr import matrix44
 
+# from moderngl_window.conf import settings
+# settings.SCREENSHOT_PATH = 'capture'
+# from moderngl_window import screenshot
+
 
 class Pygame(moderngl_window.WindowConfig):
     """
@@ -17,7 +21,7 @@ class Pygame(moderngl_window.WindowConfig):
     Needs to run with ``--window pygame`` option.
     """
     title = "Pygame"
-    window_size = 640, 360
+    window_size = 1280, 720
     resource_dir = (Path(__file__) / '../../resources').absolute()
 
     def __init__(self, **kwargs):
@@ -40,6 +44,8 @@ class Pygame(moderngl_window.WindowConfig):
         self.texture_prog['m_model'].write(matrix44.create_identity(dtype='f4'))
 
     def render(self, time, frametime):
+        # time = self.wnd.frames / 30
+
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
         self.render_pygame(time)
 
@@ -50,6 +56,8 @@ class Pygame(moderngl_window.WindowConfig):
         self.texture_prog['m_camera'].write(camera)
         self.pg_texture.use()
         self.cube.render(self.texture_prog)
+
+        # screenshot.create(self.wnd.fbo, name='frame_{}.png'.format(str(self.wnd.frames).zfill(4)))
 
     def render_pygame(self, time):
         """Render to offscreen surface and copy result into moderngl texture"""
