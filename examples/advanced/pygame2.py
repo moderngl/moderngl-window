@@ -22,6 +22,10 @@ class Pygame(moderngl_window.WindowConfig):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        if self.wnd.name != 'pygame2':
+            raise RuntimeError('This example only works with --window pygame2 option')
+
         self.pg_res = (256, 144)
         # Create a 24bit (rgb) offscreen surface pygame can render to
         self.pg_screen = pygame.Surface(self.pg_res).convert((255, 65280, 16711680, 0))
