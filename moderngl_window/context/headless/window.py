@@ -9,6 +9,8 @@ class Window(BaseWindow):
 
     Do not currently support any form window events or key input.
     """
+    #: Name of the window
+    name = 'headless'
     keys = Keys
 
     def __init__(self, **kwargs):

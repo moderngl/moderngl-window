@@ -17,6 +17,8 @@ class Window(BaseWindow):
     """
     Window based on Pyglet 1.4.x
     """
+    #: Name of the window
+    name = 'pyglet'
     #: Pyglet specific key constants
     keys = Keys
 

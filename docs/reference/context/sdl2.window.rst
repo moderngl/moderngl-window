@@ -29,6 +29,7 @@ Window Specific Methods
 Attributes
 ----------
 
+.. autoattribute:: Window.name
 .. autoattribute:: Window.keys
    :annotation:
 .. autoattribute:: Window.ctx

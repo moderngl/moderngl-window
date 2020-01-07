@@ -12,6 +12,8 @@ class Window(BaseWindow):
     """
     Basic window implementation using SDL2.
     """
+    #: Name of the window
+    name = 'sdl2'
     #: SDL2 specific key constants
     keys = Keys
 

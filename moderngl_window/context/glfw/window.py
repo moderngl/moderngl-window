@@ -9,6 +9,8 @@ class Window(BaseWindow):
     """
     Window based on GLFW
     """
+    #: Name of the window
+    name = 'glfw'
     #: GLFW specific key constants
     keys = Keys
 

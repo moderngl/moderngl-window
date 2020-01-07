@@ -16,6 +16,8 @@ class Window(BaseWindow):
     in Qt as well, this example can still be useful as a reference
     when creating your own window.
     """
+    #: Name of the window
+    name = 'pyside2'
     #: PySide2 specific key constants
     keys = Keys
 

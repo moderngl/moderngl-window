@@ -11,6 +11,8 @@ class Window(BaseWindow):
     """
     Basic window implementation using pygame2.
     """
+    #: Name of the window
+    name = 'pygame2'
     #: pygame specific key constants
     keys = Keys
 

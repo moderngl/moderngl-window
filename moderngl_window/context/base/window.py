@@ -59,6 +59,8 @@ class BaseWindow:
     """
     Helper base class for a generic window implementation
     """
+    #: Name of the window. For example ``pyglet``, ``glfw``
+    name = None
     #: Window specific key constants
     keys = BaseKeys
     #: Mouse button enum

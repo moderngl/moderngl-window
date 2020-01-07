@@ -7,6 +7,8 @@ from pyopengltk import OpenGLFrame
 
 
 class Window(BaseWindow):
+    #: Name of the window
+    name = 'tk'
     #: tkinter specific key constants
     keys = Keys
 
