@@ -8,6 +8,7 @@ import pygame
 import moderngl
 import moderngl_window
 from moderngl_window import geometry
+from pyrr import matrix44
 
 
 class Pygame(moderngl_window.WindowConfig):
@@ -16,7 +17,6 @@ class Pygame(moderngl_window.WindowConfig):
     Needs to run with ``--window pygame`` option.
     """
     title = "Pygame"
-    # window_size = 1280, 720
     window_size = 640, 360
     resource_dir = (Path(__file__) / '../../resources').absolute()
 
@@ -26,7 +26,7 @@ class Pygame(moderngl_window.WindowConfig):
         if self.wnd.name != 'pygame2':
             raise RuntimeError('This example only works with --window pygame2 option')
 
-        self.pg_res = (256, 144)
+        self.pg_res = (160, 160)
         # Create a 24bit (rgb) offscreen surface pygame can render to
         self.pg_screen = pygame.Surface(self.pg_res).convert((255, 65280, 16711680, 0))
         # 24 bit (rgb) moderngl texture
@@ -34,28 +34,36 @@ class Pygame(moderngl_window.WindowConfig):
         self.pg_texture.filter = moderngl.NEAREST, moderngl.NEAREST
 
         # Simple geometry and shader to render
-        self.quad_fs = geometry.quad_fs()
-        self.texture_prog = self.load_program('programs/texture.glsl')
+        self.cube = geometry.cube(size=(2.0, 2.0, 2.0))
+        self.texture_prog = self.load_program('programs/cube_simple_texture.glsl')
+        self.texture_prog['m_proj'].write(matrix44.create_perspective_projection(60, self.wnd.aspect_ratio, 1, 100, dtype='f4'))
+        self.texture_prog['m_model'].write(matrix44.create_identity(dtype='f4'))
 
     def render(self, time, frametime):
+        self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
         self.render_pygame(time)
+
+        rotate = matrix44.create_from_eulers((time, time * 1.2, time * 1.3), dtype='f4')
+        translate = matrix44.create_from_translation((0, 0, -3.5), dtype='f4')
+        camera = matrix44.multiply(rotate, translate)
+
+        self.texture_prog['m_camera'].write(camera)
         self.pg_texture.use()
-        self.quad_fs.render(self.texture_prog)
+        self.cube.render(self.texture_prog)
 
     def render_pygame(self, time):
         """Render to offscreen surface and copy result into moderngl texture"""
-        self.pg_screen.fill((50, 50, 50))
-        # pygame.draw.line(self.pg_screen, (250, 250, 0), (0, 120), (160, 0))
+        self.pg_screen.fill((255, 255, 255))
         N = 8
         for i in range(N):
             time_offset = 6.28 / N * i
             pygame.draw.circle(
                 self.pg_screen,
-                (255, 255, 255),
+                ((i * 50) % 255, (i * 100) % 255, (i * 20) % 255),
                 (
-                    math.sin(time + time_offset) * 50 + self.pg_res[0] // 2,
-                    math.cos(time + time_offset) * 50 + self.pg_res[1] // 2),
-                math.sin(time) * 10 + 15,
+                    math.sin(time + time_offset) * 55 + self.pg_res[0] // 2,
+                    math.cos(time + time_offset) * 55 + self.pg_res[1] // 2),
+                math.sin(time) * 4 + 15,
             )
 
         # Get the buffer view of the Surface's pixels
