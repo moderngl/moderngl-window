@@ -37,13 +37,14 @@ in vec3 normal;
 in vec4 ShadowCoord;
 
 void main() {
-    float bias = 0.0;
+    float bias = 0.05;
     float visibility = 1.0;
-    if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z - bias){
+    float depth = texture(shadowMap, ShadowCoord.xy ).r;
+    if (depth <  ShadowCoord.z - bias){
         visibility = 0.5;
     }
 
     float l = max(dot(normalize(light_dir), normalize(normal)), 0.0);
-    fragColor = color * (0.1 + abs(l) * 0.9) * visibility;
+    fragColor = color * (0.25 + abs(l) * 0.9) * visibility;
 }
 #endif

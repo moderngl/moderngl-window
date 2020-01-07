@@ -9,7 +9,6 @@ from pyrr import Matrix44, matrix44
 import moderngl
 import moderngl_window
 from moderngl_window import geometry
-from moderngl_window.opengl.projection import Projection3D
 
 from base import CameraWindow
 
@@ -20,11 +19,15 @@ class ShadowMapping(CameraWindow):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.camera.projection.update(near=1, far=1000)
+        self.camera.projection.update(near=0.01, far=50)
+        self.wnd.mouse_exclusivity = True
 
         # Offscreen buffer
         offscreen_size = self.wnd.buffer_size  # 1024, 1024
         self.offscreen_depth = self.ctx.depth_texture(offscreen_size)
+        self.offscreen_depth.compare_func = ''
+        self.offscreen_depth.repeat_x = False
+        self.offscreen_depth.repeat_y = False
         self.offscreen_color = self.ctx.texture(offscreen_size, 4)
 
         self.offscreen = self.ctx.framebuffer(
@@ -44,22 +47,23 @@ class ShadowMapping(CameraWindow):
         # Programs
         self.raw_depth_prog = self.load_program('programs/shadow_mapping/raw_depth.glsl')
         self.basic_light = self.load_program('programs/shadow_mapping/directional_light.glsl')
+        self.basic_light['shadowMap'].value = 0
         self.basic_light['color'].value = 1.0, 1.0, 1.0, 1.0
         self.shadowmap_program = self.load_program('programs/shadow_mapping/shadowmap.glsl')
         self.texture_prog = self.load_program('programs/texture.glsl')
         self.texture_prog['texture0'].value = 0
 
-        self.lightpos = 5, 5, 5
+        self.lightpos = 0, 0, 0
 
     def render(self, time, frametime):
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
-        self.lightpos = 5, 5, 5
+        self.lightpos = math.sin(time) * 20, 5, math.cos(time) * 20
 
-        # --- PASS 1:  Render shadow map
+        # --- PASS 1: Render shadow map
         self.offscreen.clear()
         self.offscreen.use()
 
-        depth_projection = Matrix44.orthogonal_projection(-10, 10, -10, 10, -10, 20, dtype='f4')
+        depth_projection = Matrix44.orthogonal_projection(-20, 20, -20, 20, -20, 40, dtype='f4')
         depth_view = Matrix44.look_at(self.lightpos, (0, 0, 0), (0, 1, 0), dtype='f4')
         depth_mvp = depth_projection * depth_view
         self.shadowmap_program['mvp'].write(depth_mvp)
@@ -68,9 +72,7 @@ class ShadowMapping(CameraWindow):
         self.wall.render(self.shadowmap_program)
         self.sphere.render(self.shadowmap_program)
 
-        # --- PASS 2:  Render scene to screen
-        self.offscreen_depth.compare_func = ''
-
+        # --- PASS 2: Render scene to screen
         self.wnd.use()
         self.basic_light['m_proj'].write(self.camera.projection.matrix)
         self.basic_light['m_camera'].write(self.camera.matrix)
@@ -82,8 +84,7 @@ class ShadowMapping(CameraWindow):
              [0.5, 0.5, 0.5, 1.0]],
             dtype='f4',
         )
-        self.basic_light['m_shadow_bias'].write(matrix44.multiply(bias_matrix, depth_mvp))
-        # self.basic_light['lightDir'].value = -self.lightpos[0], -self.lightpos[1], -self.lightpos[2]
+        self.basic_light['m_shadow_bias'].write(matrix44.multiply(depth_mvp, bias_matrix))
         self.basic_light['lightDir'].value = self.lightpos[0], self.lightpos[1], self.lightpos[2]
         self.offscreen_depth.use(location=0)
         self.floor.render(self.basic_light)
@@ -92,7 +93,7 @@ class ShadowMapping(CameraWindow):
 
         # --- PASS 3: Debug ---
         # self.ctx.enable_only(moderngl.NOTHING)
-        self.offscreen_depth.use()
+        self.offscreen_depth.use(location=0)
         self.offscreen_quad.render(self.raw_depth_prog)
         # self.offscreen_color.use(location=0)
         # self.offscreen_quad2.render(self.texture_prog)
