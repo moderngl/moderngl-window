@@ -4,7 +4,7 @@ https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mappin
 """
 import math
 from pathlib import Path
-from pyrr import Matrix44, matrix44
+from pyrr import Matrix44, matrix44, Vector3
 
 import moderngl
 import moderngl_window
@@ -19,11 +19,11 @@ class ShadowMapping(CameraWindow):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.camera.projection.update(near=0.01, far=50)
+        self.camera.projection.update(near=1, far=200)
         self.wnd.mouse_exclusivity = True
 
         # Offscreen buffer
-        offscreen_size = self.wnd.buffer_size  # 1024, 1024
+        offscreen_size = 1024, 1024
         self.offscreen_depth = self.ctx.depth_texture(offscreen_size)
         self.offscreen_depth.compare_func = ''
         self.offscreen_depth.repeat_x = False
@@ -38,7 +38,8 @@ class ShadowMapping(CameraWindow):
         # Scene geometry
         self.floor = geometry.cube(size=(25.0, 1.0, 25.0))
         self.wall = geometry.cube(size=(1.0, 5, 25), center=(-12.5, 2, 0))
-        self.sphere = geometry.sphere(radius=5.0)
+        self.sphere = geometry.sphere(radius=5.0, sectors=64, rings=32)
+        self.sun = geometry.sphere(radius=1.0)
 
         # Debug geometry
         self.offscreen_quad = geometry.quad_2d(size=(0.5, 0.5), pos=(0.75, 0.75))
@@ -52,12 +53,14 @@ class ShadowMapping(CameraWindow):
         self.shadowmap_program = self.load_program('programs/shadow_mapping/shadowmap.glsl')
         self.texture_prog = self.load_program('programs/texture.glsl')
         self.texture_prog['texture0'].value = 0
-
+        self.sun_prog = self.load_program('programs/cube_simple.glsl')
+        self.sun_prog['color'].value = 1, 1, 0, 1
         self.lightpos = 0, 0, 0
 
     def render(self, time, frametime):
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
-        self.lightpos = math.sin(time) * 20, 5, math.cos(time) * 20
+        self.lightpos = Vector3((math.sin(time) * 20, 5, math.cos(time) * 20), dtype='f4')
+        scene_pos = Vector3((0, -5, -32), dtype='f4')
 
         # --- PASS 1: Render shadow map
         self.offscreen.clear()
@@ -76,7 +79,7 @@ class ShadowMapping(CameraWindow):
         self.wnd.use()
         self.basic_light['m_proj'].write(self.camera.projection.matrix)
         self.basic_light['m_camera'].write(self.camera.matrix)
-        self.basic_light['m_model'].write(Matrix44.from_translation((0, -5, -12), dtype='f4'))
+        self.basic_light['m_model'].write(Matrix44.from_translation(scene_pos, dtype='f4'))
         bias_matrix = Matrix44(
             [[0.5, 0.0, 0.0, 0.0],
              [0.0, 0.5, 0.0, 0.0],
@@ -85,11 +88,17 @@ class ShadowMapping(CameraWindow):
             dtype='f4',
         )
         self.basic_light['m_shadow_bias'].write(matrix44.multiply(depth_mvp, bias_matrix))
-        self.basic_light['lightDir'].value = self.lightpos[0], self.lightpos[1], self.lightpos[2]
+        self.basic_light['lightDir'].write(self.lightpos)
         self.offscreen_depth.use(location=0)
         self.floor.render(self.basic_light)
         self.wall.render(self.basic_light)
         self.sphere.render(self.basic_light)
+
+        # Render the sun position
+        self.sun_prog['m_proj'].write(self.camera.projection.matrix)
+        self.sun_prog['m_camera'].write(self.camera.matrix)
+        self.sun_prog['m_model'].write(Matrix44.from_translation(self.lightpos + scene_pos, dtype='f4'))
+        self.sun.render(self.sun_prog)
 
         # --- PASS 3: Debug ---
         # self.ctx.enable_only(moderngl.NOTHING)

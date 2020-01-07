@@ -36,14 +36,24 @@ in vec3 light_dir;
 in vec3 normal;
 in vec4 ShadowCoord;
 
-void main() {
-    float bias = 0.05;
-    float visibility = 1.0;
-    float depth = texture(shadowMap, ShadowCoord.xy ).r;
-    if (depth <  ShadowCoord.z - bias){
-        visibility = 0.5;
-    }
+vec2 poissonDisk[4] = vec2[](
+  vec2( -0.94201624, -0.39906216 ),
+  vec2( 0.94558609, -0.76890725 ),
+  vec2( -0.094184101, -0.92938870 ),
+  vec2( 0.34495938, 0.29387760 )
+);
 
+void main() {
+    float bias = 0.005;
+    float visibility = 1.0;
+    // if (texture(shadowMap, ShadowCoord.xy ).r <  ShadowCoord.z - bias){
+    //     visibility = 0.5;
+    // }
+    for (int i = 0; i < 4 ; i++){
+        if ( texture( shadowMap, ShadowCoord.xy + poissonDisk[i]/800.0 ).r  <  ShadowCoord.z-bias ){
+            visibility -= 0.12;
+        }
+    }
     float l = max(dot(normalize(light_dir), normalize(normal)), 0.0);
     fragColor = color * (0.25 + abs(l) * 0.9) * visibility;
 }
