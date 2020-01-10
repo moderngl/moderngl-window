@@ -14,7 +14,7 @@ class CubeModel(CameraWindow):
     https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0
     """
     title = 'GL Transmission Format (glTF) 2.0 Scene'
-    window_size = 1920, 1080
+    window_size = 1280, 720
     aspect_ratio = None
     resource_dir = Path(__file__, '../../../glTF-Sample-Models/2.0').resolve()
 
