@@ -741,6 +741,16 @@ class WindowConfig:
         # Default value
         window_size = (1280, 720)
     """
+    vsync = True
+    """
+    Enable or disable vsync.
+
+    .. code:: python
+
+        # Default value
+        vsync = True
+
+    """
     resizable = True
     """
     Determines of the window should be resizable

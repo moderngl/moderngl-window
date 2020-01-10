@@ -10,6 +10,7 @@ class WindowEvents(moderngl_window.WindowConfig):
     gl_version = (3, 3)
     title = "Window Events"
     cursor = True
+    vsync = True
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

@@ -180,7 +180,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         resizable=values.resizable if values.resizable is not None else config_cls.resizable,
         gl_version=config_cls.gl_version,
         aspect_ratio=config_cls.aspect_ratio,
-        vsync=values.vsync,
+        vsync=values.vsync if values.vsync is not None else config_cls.vsync,
         samples=values.samples if values.samples is not None else config_cls.samples,
         cursor=show_cursor if show_cursor is not None else True,
     )
@@ -221,7 +221,6 @@ def parse_args(args=None):
     parser.add_argument(
         '-vs', '--vsync',
         type=valid_bool,
-        default='1',
         help="Enable or disable vsync",
     )
     parser.add_argument(
