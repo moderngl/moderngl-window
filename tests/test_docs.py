@@ -12,8 +12,34 @@ import re
 import sys
 import types
 import unittest
+from unittest.mock import MagicMock
 
 from moderngl_window.utils import module_loading
+
+# Mock modules
+class Mock(MagicMock):
+    @classmethod
+    def __getattr__(cls, name):
+        return MagicMock()
+
+
+MOCK_MODULES = [
+    'glfw',
+    'sdl2',
+    'sdl2.ext',
+    'sdl2.video',
+    'pyglet',
+    'pyglet.window',
+    'PyQt5',
+    'PyQt5.QtCore',
+    'QtCore',
+    'QtOpenGL',
+    'QtWidgets',
+    'PySide2',
+    'PySide2.QtCore',
+]
+
+sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 
 class TestCase(unittest.TestCase):
