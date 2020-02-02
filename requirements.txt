@@ -10,6 +10,7 @@ PySide2<6; python_version < '3.8'
 PyQt5<6
 glfw<2
 PySDL2<1
+pygame==2.0.0.dev6
 pyrr>=0.10
 pywavefront>=1.2.0,<2.0
 numpy>=1.16
