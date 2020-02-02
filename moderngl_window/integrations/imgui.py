@@ -1,8 +1,8 @@
 import ctypes
 
 import numpy as np
-import moderngl
 import imgui
+import moderngl
 from imgui.integrations.opengl import BaseOpenGLRenderer
 
 
@@ -78,7 +78,7 @@ class ModernglWindowMixin:
         io.add_input_character(ord(char))
 
 
-class ModernglRenderer(BaseOpenGLRenderer):
+class ModernGLRenderer(BaseOpenGLRenderer):
 
     VERTEX_SHADER_SRC = """
         #version 330
@@ -153,8 +153,6 @@ class ModernglRenderer(BaseOpenGLRenderer):
 
     def render(self, draw_data):
         io = self.io
-        old_scissor = self.ctx.scissor
-
         display_width, display_height = io.display_size
         fb_width = int(display_width * io.display_fb_scale[0])
         fb_height = int(display_height * io.display_fb_scale[1])
@@ -193,7 +191,7 @@ class ModernglRenderer(BaseOpenGLRenderer):
                 self._vao.render(moderngl.TRIANGLES, vertices=command.elem_count, first=idx_pos)
                 idx_pos += command.elem_count
 
-        self.ctx.scissor = old_scissor
+        self.ctx.scissor = None
 
     def _invalidate_device_objects(self):
         if self._font_texture:
@@ -211,7 +209,7 @@ class ModernglRenderer(BaseOpenGLRenderer):
         self._font_texture = None
 
 
-class ModernglWindowRenderer(ModernglRenderer, ModernglWindowMixin):
+class ModernglWindowRenderer(ModernGLRenderer, ModernglWindowMixin):
 
     def __init__(self, window):
         super().__init__(wnd=window)
