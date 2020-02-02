@@ -6,7 +6,7 @@ moderngl<6
 
 # Optional
 pyglet<2
-PySide2<6; python_version < '3.8' 
+PySide2<6
 PyQt5<6
 glfw<2
 PySDL2<1
