@@ -243,7 +243,7 @@ class Loader(BaseLoader):
     def load_node(self, meta, parent=None):
         """Load a single node"""
         # Create the node
-        node = Node()
+        node = Node(name=meta.name)
         self.scene.nodes.append(node)
 
         if meta.matrix is not None:
@@ -639,6 +639,7 @@ class GLTFScene:
 
 class GLTFNode:
     def __init__(self, data):
+        self.name = data.get('name')
         self.children = data.get('children')
         self.matrix = data.get('matrix')
         self.mesh = data.get('mesh')
