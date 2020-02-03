@@ -9,14 +9,16 @@ class Node:
     and/or a container for other nodes. Nodes and their children
     represents the scene tree.
     """
-    def __init__(self, camera=None, mesh=None, matrix=None):
+    def __init__(self, name=None, camera=None, mesh=None, matrix=None):
         """Create a node.
 
         Keyword Args:
+            name: Name of the node
             camera: Camera to store in the node
             mesh: Mesh to store in the node
             matrix: The node's matrix
         """
+        self._name = name
         self.camera = camera
         self.mesh = mesh
         # Local matrix
@@ -26,6 +28,15 @@ class Node:
         self.matrix_global_bytes = None
 
         self._children = []
+
+    @property
+    def name(self) -> str:
+        """str: Get or set the node name"""
+        return self._name
+
+    @name.setter
+    def name(self, value: str):
+        self._name = value
 
     @property
     def children(self):
@@ -121,3 +132,6 @@ class Node:
 
             for child in self._children:
                 child.calc_model_mat(model_matrix)
+
+    def __repr__(self):
+        return "<Node name={}>".format(self.name)
