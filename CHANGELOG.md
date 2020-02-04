@@ -8,19 +8,17 @@ New Features
 
 > Dear ImGui is a bloat-free graphical user interface library for C++. It outputs optimized vertex buffers that you can render anytime in your 3D-pipeline enabled application. It is fast, portable, renderer agnostic and self-contained (no external dependencies).
 
-* We now use an experimental fork of Pyrr, pyrr-optimized for faster
-  matrix calculations : https://github.com/einarf/pyrr-optimized
-* Support for loading texture cubes
 * Compute shader support.
-* Support for passing defines to shaders
 * Shader errors should now report the error line more accurately
 
 Bug fixes
 
+* Fixed several issues with glft2 scenes and object orientation
 * pyglet window: Fixed incorrect mouse position on retina screens and windows
   with pixel ratio > 1.
 * Shader loader did not properly ignore lines with comments
 * Various typo fixes
+* sdl2 mouse press/release events was reversed
 
 ## 2.0.5
 
