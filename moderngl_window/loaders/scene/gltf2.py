@@ -224,7 +224,7 @@ class Loader(BaseLoader):
         # Create material objects
         for meta_mat in self.gltf.materials:
             mat = Material(meta_mat.name)
-            mat.color = meta_mat.baseColorFactor
+            mat.color = meta_mat.baseColorFactor or [1.0, 1.0, 1.0, 1.0]
             mat.double_sided = meta_mat.doubleSided
 
             if meta_mat.baseColorTexture is not None:
