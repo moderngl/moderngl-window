@@ -20,4 +20,5 @@ Methods
 Attributes
 ----------
 
+.. autoattribute:: Node.name
 .. autoattribute:: Node.children
