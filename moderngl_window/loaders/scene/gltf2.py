@@ -248,8 +248,6 @@ class Loader(BaseLoader):
 
         if meta.matrix is not None:
             node.matrix = Matrix44(value=meta.matrix)
-            print("----- Node: {} -----".format(meta.name))
-            print(node.matrix)
 
         if meta.mesh is not None:
             # Since we split up meshes with multiple primitives, this can be a list
