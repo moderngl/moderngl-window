@@ -33,10 +33,33 @@ class CubeModel(CameraWindow):
         # self.scene = self.load_scene('VC/glTF-Binary/VC.glb')
         # self.scene = self.load_scene('DamagedHelmet/glTF-Binary/DamagedHelmet.glb')
         # self.scene = self.load_scene('BoxInterleaved/glTF/BoxInterleaved.gltf')
+        # self.scene = self.load_scene('OrientationTest/glTF/OrientationTest.gltf')
+        # self.scene = self.load_scene('AntiqueCamera/glTF/AntiqueCamera.gltf')
+        # self.scene = self.load_scene('BoomBox/glTF/BoomBox.gltf')
+        # self.scene = self.load_scene('Box/glTF/Box.gltf')
+        # self.scene = self.load_scene('BoxTextured/glTF/BoxTextured.gltf')
+        # self.scene = self.load_scene('BoxTexturedNonPowerOfTwo/glTF/BoxTexturedNonPowerOfTwo.gltf')
+        # self.scene = self.load_scene('BoxVertexColors/glTF/BoxVertexColors.gltf')
+        # self.scene = self.load_scene('BrainStem/glTF/BrainStem.gltf')
+        # self.scene = self.load_scene('Corset/glTF/Corset.gltf')
+        # self.scene = self.load_scene('FlightHelmet/glTF/FlightHelmet.gltf')
+        # self.scene = self.load_scene('Fox/glTF/Fox.gltf')
+        # self.scene = self.load_scene('GearboxAssy/glTF/GearboxAssy.gltf')
+        # self.scene = self.load_scene('ReciprocatingSaw/glTF/ReciprocatingSaw.gltf')
+        # self.scene = self.load_scene('RiggedFigure/glTF/RiggedFigure.gltf')
+        # self.scene = self.load_scene('RiggedSimple/glTF/RiggedSimple.gltf')
+        # self.scene = self.load_scene('SciFiHelmet/glTF/SciFiHelmet.gltf')
+        # self.scene = self.load_scene('SimpleMeshes/glTF/SimpleMeshes.gltf')
+        # self.scene = self.load_scene('SimpleSparseAccessor/glTF/SimpleSparseAccessor.gltf')
+        # self.scene = self.load_scene('Suzanne/glTF/Suzanne.gltf')
+        # self.scene = self.load_scene('TextureCoordinateTest/glTF/TextureCoordinateTest.gltf')
+        # self.scene = self.load_scene('TextureSettingsTest/glTF/TextureSettingsTest.gltf')
+        # self.scene = self.load_scene('VertexColorTest/glTF/VertexColorTest.gltf')
+        # self.scene = self.load_scene('WaterBottle/glTF/WaterBottle.gltf')
 
         self.camera = KeyboardCamera(self.wnd.keys, fov=75.0, aspect_ratio=self.wnd.aspect_ratio, near=0.1, far=1000.0)
-        self.camera.velocity = 7.0
-        self.camera.mouse_sensitivity = 0.3
+        # self.camera.velocity = 7.0
+        # self.camera.mouse_sensitivity = 0.3
 
         # Use this for gltf scenes for better camera controls
         if self.scene.diagonal_size > 0:
