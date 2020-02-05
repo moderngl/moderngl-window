@@ -162,10 +162,10 @@ class Scene:
         # Recursively calculate model matrices
         self.model_matrix = matrix44.create_identity()
 
-    def find_node_by_name(self, name):
-        """Find a node by name.
+    def find_node(self, name: str = None):
+        """Find a node
 
-        Args:
+        Keyword Args:
             name (str): Case sensitive name
         Returns:
             A Node or ``None`` if not found.
@@ -176,10 +176,10 @@ class Scene:
 
         return None
 
-    def find_material_by_name(self, name: str):
-        """Finds a material by name.
+    def find_material(self, name: str = None):
+        """Finds a material
 
-        Args:
+        Keyword Args:
             name (str): Case sensitive material name
         Returns:
             The material or ``None`` if not found.
