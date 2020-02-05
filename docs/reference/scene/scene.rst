@@ -12,8 +12,8 @@ Methods
 .. automethod:: Scene.draw_bbox
 .. automethod:: Scene.apply_mesh_programs
 .. automethod:: Scene.calc_scene_bbox
-.. automethod:: Scene.find_material_by_name
-.. automethod:: Scene.find_node_by_name
+.. automethod:: Scene.find_material
+.. automethod:: Scene.find_node
 .. automethod:: Scene.prepare
 .. automethod:: Scene.destroy
 
