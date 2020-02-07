@@ -27,7 +27,7 @@ class Node:
         self._camera = camera
         self._mesh = mesh
         # Local node matrix
-        self._matrix = matrix
+        self._matrix = matrix.astype('f4') if matrix is not None else None
         # Global matrix
         self._matrix_global = None
 
@@ -102,7 +102,7 @@ class Node:
         if self._mesh:
             self._mesh.draw(
                 projection_matrix=projection_matrix,
-                model_matrix=self.matrix_global,
+                model_matrix=self._matrix_global,
                 camera_matrix=camera_matrix,
                 time=time
             )

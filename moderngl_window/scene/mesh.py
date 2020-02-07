@@ -87,14 +87,14 @@ class Mesh:
             bbox_min, bbox_max: Combined bbox
         """
         # Copy and extend to vec4
-        bb1 = numpy.append(self.bbox_min[:], 1.0)
-        bb2 = numpy.append(self.bbox_max[:], 1.0)
+        bb1 = numpy.append(self.bbox_min[:], 1.0).astype('f4')
+        bb2 = numpy.append(self.bbox_max[:], 1.0).astype('f4')
 
         # Transform the bbox values
         bmin = matrix44.apply_to_vector(view_matrix, bb1),
         bmax = matrix44.apply_to_vector(view_matrix, bb2),
-        bmin = numpy.asarray(bmin)[0]
-        bmax = numpy.asarray(bmax)[0]
+        bmin = numpy.asarray(bmin, dtype='f4')[0]
+        bmax = numpy.asarray(bmax, dtype='f4')[0]
 
         # If a rotation happened there is an axis change and we have to ensure max-min is positive
         for i in range(3):

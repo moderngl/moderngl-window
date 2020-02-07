@@ -50,7 +50,7 @@ class Scene:
         self.bbox_program = programs.load(
             ProgramDescription(path='scene_default/bbox.glsl'),
         )
-        self._model_matrix = matrix44.create_identity()
+        self._matrix = matrix44.create_identity(dtype='f4')
 
     @property
     def ctx(self) -> moderngl.Context:
@@ -58,18 +58,18 @@ class Scene:
         return mglw.ctx()
 
     @property
-    def model_matrix(self) -> numpy.ndarray:
+    def matrix(self) -> numpy.ndarray:
         """numpy.ndarray: The current model matrix
 
         This property is settable.
         """
-        return self._model_matrix
+        return self._matrix
 
-    @model_matrix.setter
-    def model_matrix(self, matrix: numpy.ndarray):
-        self._model_matrix = matrix.astype('f4')
+    @matrix.setter
+    def matrix(self, matrix: numpy.ndarray):
+        self._matrix = matrix.astype('f4')
         for node in self.root_nodes:
-            node.calc_model_mat(self._model_matrix)
+            node.calc_model_mat(self._matrix)
 
     def draw(self, projection_matrix: numpy.ndarray = None, camera_matrix: numpy.ndarray = None, time=0.0) -> None:
         """Draw all the nodes in the scene.
@@ -79,13 +79,10 @@ class Scene:
             camera_matrix (ndarray): camera_matrix (bytes)
             time (float): The current time
         """
-        projection_matrix = projection_matrix.astype('f4').tobytes()
-        camera_matrix = camera_matrix.astype('f4').tobytes()
-
         for node in self.root_nodes:
             node.draw(
-                projection_matrix=projection_matrix,
-                camera_matrix=camera_matrix,
+                projection_matrix=projection_matrix.astype('f4'),
+                camera_matrix=camera_matrix.astype('f4'),
                 time=time,
             )
 
@@ -99,15 +96,15 @@ class Scene:
             camera_matrix (ndarray): mat4 camera matrix
             children (bool): Will draw bounding boxes for meshes as well
         """
-        projection_matrix = projection_matrix.astype('f4').tobytes()
-        camera_matrix = camera_matrix.astype('f4').tobytes()
+        projection_matrix = projection_matrix.astype('f4')
+        camera_matrix = camera_matrix.astype('f4')
 
         # Scene bounding box
         self.bbox_program["m_proj"].write(projection_matrix)
-        self.bbox_program["m_model"].write(self._model_matrix.astype('f4').tobytes())
+        self.bbox_program["m_model"].write(self._matrix)
         self.bbox_program["m_cam"].write(camera_matrix)
-        self.bbox_program["bb_min"].write(self.bbox_min.astype('f4').tobytes())
-        self.bbox_program["bb_max"].write(self.bbox_max.astype('f4').tobytes())
+        self.bbox_program["bb_min"].write(self.bbox_min)
+        self.bbox_program["bb_max"].write(self.bbox_max)
         self.bbox_program["color"].value = (1.0, 0.0, 0.0)
         self.bbox_vao.render(self.bbox_program)
 
@@ -146,7 +143,7 @@ class Scene:
         bbox_min, bbox_max = None, None
         for node in self.root_nodes:
             bbox_min, bbox_max = node.calc_global_bbox(
-                matrix44.create_identity(),
+                matrix44.create_identity(dtype='f4'),
                 bbox_min,
                 bbox_max
             )
@@ -164,7 +161,7 @@ class Scene:
         """
         self.apply_mesh_programs()
         # Recursively calculate model matrices
-        self.model_matrix = matrix44.create_identity()
+        self.matrix = matrix44.create_identity(dtype='f4')
 
     def find_node(self, name: str = None) -> 'Node':
         """Finds a :py:class:`~moderngl_window.scene.Node`

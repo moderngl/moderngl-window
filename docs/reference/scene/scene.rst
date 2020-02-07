@@ -21,4 +21,4 @@ Attributes
 ----------
 
 .. autoattribute:: Scene.ctx
-.. autoattribute:: Scene.model_matrix
+.. autoattribute:: Scene.matrix
