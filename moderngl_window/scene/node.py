@@ -1,8 +1,12 @@
 """
 Wrapper for a loaded mesh / vao with properties
 """
-from typing import List
+from typing import List, TYPE_CHECKING
+import numpy
 from pyrr import matrix44
+
+if TYPE_CHECKING:
+    from moderngl_window.scene import Camera, Mesh
 
 
 class Node:
@@ -20,12 +24,12 @@ class Node:
             matrix: The node's matrix
         """
         self._name = name
-        self.camera = camera
-        self.mesh = mesh
-        # Local matrix
-        self.matrix = matrix
+        self._camera = camera
+        self._mesh = mesh
+        # Local node matrix
+        self._matrix = matrix
         # Global matrix
-        self.matrix_global = None
+        self._matrix_global = None
 
         self._children = []
 
@@ -37,6 +41,42 @@ class Node:
     @name.setter
     def name(self, value: str):
         self._name = value
+
+    @property
+    def mesh(self) -> 'Mesh':
+        """:py:class:`~moderngl_window.scene.Mesh`: The mesh if present"""
+        return self._mesh
+
+    @mesh.setter
+    def mesh(self, value: 'Mesh'):
+        self._mesh = value
+
+    @property
+    def camera(self) -> 'Camera':
+        """:py:class:`~moderngl_window.scene.Camera`: The camera if present"""
+        return self._camera
+
+    @camera.setter
+    def camera(self, value):
+        self._camera = value
+
+    @property
+    def matrix(self) -> numpy.ndarray:
+        """numpy.ndarray: Note matrix (local)"""
+        return self._matrix
+
+    @matrix.setter
+    def matrix(self, value):
+        self._matrix = value
+
+    @property
+    def matrix_global(self) -> numpy.ndarray:
+        """numpy.ndarray: The global node matrix containing transformations from parent nodes"""
+        return self._matrix_global
+
+    @matrix_global.setter
+    def matrix_global(self, value):
+        self._matrix_global = value
 
     @property
     def children(self) -> List['Node']:
@@ -59,8 +99,8 @@ class Node:
             camera_matrix (bytes): camera_matrix
             time (float): The current time
         """
-        if self.mesh:
-            self.mesh.draw(
+        if self._mesh:
+            self._mesh.draw(
                 projection_matrix=projection_matrix,
                 model_matrix=self.matrix_global,
                 camera_matrix=camera_matrix,
@@ -83,10 +123,10 @@ class Node:
             program (moderngl.Program): The program to render the bbox
             vao: The vertex array representing the bounding box
         """
-        if self.mesh:
-            self.mesh.draw_bbox(
+        if self._mesh:
+            self._mesh.draw_bbox(
                 projection_matrix,
-                self.matrix_global,
+                self._matrix_global,
                 camera_matrix,
                 program,
                 vao
@@ -103,11 +143,11 @@ class Node:
             bbox_min: min bbox values
             bbox_max: max bbox values
         """
-        if self.matrix is not None:
-            view_matrix = matrix44.multiply(self.matrix, view_matrix)
+        if self._matrix is not None:
+            view_matrix = matrix44.multiply(self._matrix, view_matrix)
 
-        if self.mesh:
-            bbox_min, bbox_max = self.mesh.calc_global_bbox(view_matrix, bbox_min, bbox_max)
+        if self._mesh:
+            bbox_min, bbox_max = self._mesh.calc_global_bbox(view_matrix, bbox_min, bbox_max)
 
         for child in self._children:
             bbox_min, bbox_max = child.calc_global_bbox(view_matrix, bbox_min, bbox_max)
@@ -120,13 +160,13 @@ class Node:
         Args:
             model_matrix (numpy.ndarray): model matrix
         """
-        if self.matrix is not None:
-            self.matrix_global = matrix44.multiply(self.matrix, model_matrix).astype('f4')
+        if self._matrix is not None:
+            self._matrix_global = matrix44.multiply(self._matrix, model_matrix).astype('f4')
 
             for child in self._children:
-                child.calc_model_mat(self.matrix_global)
+                child.calc_model_mat(self._matrix_global)
         else:
-            self.matrix_global = model_matrix.astype('f4')
+            self._matrix_global = model_matrix.astype('f4')
 
             for child in self._children:
                 child.calc_model_mat(model_matrix)

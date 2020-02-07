@@ -1,6 +1,7 @@
 """
 Wrapper for a loaded scene with properties.
 """
+from typing import TYPE_CHECKING
 import logging
 import numpy
 from pyrr import matrix44, vector3
@@ -19,6 +20,9 @@ from .programs import (
 )
 
 logger = logging.getLogger(__name__)
+
+if TYPE_CHECKING:
+    from moderngl_window.scene import Node, Material
 
 
 class Scene:
@@ -162,13 +166,13 @@ class Scene:
         # Recursively calculate model matrices
         self.model_matrix = matrix44.create_identity()
 
-    def find_node(self, name: str = None):
-        """Find a node
+    def find_node(self, name: str = None) -> 'Node':
+        """Finds a :py:class:`~moderngl_window.scene.Node`
 
         Keyword Args:
             name (str): Case sensitive name
         Returns:
-            A Node or ``None`` if not found.
+            A :py:class:`~moderngl_window.scene.Node` or ``None`` if not found.
         """
         for node in self.nodes:
             if node.name == name:
@@ -176,13 +180,13 @@ class Scene:
 
         return None
 
-    def find_material(self, name: str = None):
-        """Finds a material
+    def find_material(self, name: str = None) -> 'Material':
+        """Finds a :py:class:`~moderngl_window.scene.Material`
 
         Keyword Args:
             name (str): Case sensitive material name
         Returns:
-            The material or ``None`` if not found.
+            A :py:class:`~moderngl_window.scene.Material` or ``None``
         """
         for mat in self.materials:
             if mat.name == name:

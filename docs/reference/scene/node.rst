@@ -21,4 +21,8 @@ Attributes
 ----------
 
 .. autoattribute:: Node.name
+.. autoattribute:: Node.mesh
+.. autoattribute:: Node.camera
+.. autoattribute:: Node.matrix
+.. autoattribute:: Node.matrix_global
 .. autoattribute:: Node.children
