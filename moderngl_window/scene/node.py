@@ -1,6 +1,7 @@
 """
 Wrapper for a loaded mesh / vao with properties
 """
+from typing import List
 from pyrr import matrix44
 
 
@@ -38,7 +39,7 @@ class Node:
         self._name = value
 
     @property
-    def children(self):
+    def children(self) -> List['Node']:
         """list: List of children"""
         return self._children
 
