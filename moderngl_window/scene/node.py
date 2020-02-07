@@ -25,7 +25,6 @@ class Node:
         self.matrix = matrix
         # Global matrix
         self.matrix_global = None
-        self.matrix_global_bytes = None
 
         self._children = []
 
@@ -62,7 +61,7 @@ class Node:
         if self.mesh:
             self.mesh.draw(
                 projection_matrix=projection_matrix,
-                model_matrix=self.matrix_global_bytes,
+                model_matrix=self.matrix_global,
                 camera_matrix=camera_matrix,
                 time=time
             )
@@ -86,7 +85,7 @@ class Node:
         if self.mesh:
             self.mesh.draw_bbox(
                 projection_matrix,
-                self.matrix_global_bytes,
+                self.matrix_global,
                 camera_matrix,
                 program,
                 vao
@@ -122,13 +121,11 @@ class Node:
         """
         if self.matrix is not None:
             self.matrix_global = matrix44.multiply(self.matrix, model_matrix).astype('f4')
-            self.matrix_global_bytes = self.matrix_global.tobytes()
 
             for child in self._children:
                 child.calc_model_mat(self.matrix_global)
         else:
-            self.matrix_global = model_matrix
-            self.matrix_global_bytes = model_matrix.tobytes()
+            self.matrix_global = model_matrix.astype('f4')
 
             for child in self._children:
                 child.calc_model_mat(model_matrix)
