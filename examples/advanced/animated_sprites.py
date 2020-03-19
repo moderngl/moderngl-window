@@ -6,6 +6,7 @@ from pyrr import Matrix44
 
 
 class Test(mglw.WindowConfig):
+    title = "Animated Sprite"
     resource_dir = (Path(__file__) / '../../resources').resolve()
     aspect_ratio = 320 / 256
 
