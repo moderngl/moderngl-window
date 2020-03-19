@@ -45,7 +45,6 @@ class Test(mglw.WindowConfig):
         self.sprite_texture.use(location=0)
         self.sprite_program['projection'].write(self.projection)
         self.sprite_program['layer_id'] = int(time * 15) % self.sprite_texture.layers
-        self.sprite_program['size'] = self.sprite_texture.width, self.sprite_texture.height
         self.sprite_program['position'] = 144, 100
         self.sprite_geometry.render(self.sprite_program)
 
