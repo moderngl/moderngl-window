@@ -5,7 +5,6 @@
 in vec3 in_position;
 in vec2 in_texcoord_0;
 uniform mat4 projection;
-uniform vec2 size;
 uniform vec2 position;
 uniform sampler2DArray texture0;
 out vec2 uv0;
