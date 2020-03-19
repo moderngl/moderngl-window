@@ -9,6 +9,7 @@ class Test(mglw.WindowConfig):
     title = "Animated Sprite"
     resource_dir = (Path(__file__) / '../../resources').resolve()
     aspect_ratio = 320 / 256
+    window_size = 320 * 3, 256 * 3
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -20,7 +21,8 @@ class Test(mglw.WindowConfig):
         self.sprite_texture.filter = moderngl.NEAREST, moderngl.NEAREST
 
         # Geometry
-        self.sprite_geometry = geometry.quad_2d()
+        # One pixel quad 0, 0 -> 1.0, 1.0
+        self.sprite_geometry = geometry.quad_2d(size=(1.0, 1.0), pos=(0.5, 0.5))
         self.quad_fs = geometry.quad_fs()
 
         # Programs
@@ -37,15 +39,17 @@ class Test(mglw.WindowConfig):
     def render(self, time, frame_time):
         # Render sprite of offscreen
         self.offscreen.use()
-        self.ctx.clear(1.0, 1.0, 1.0, 1.0)
+        self.ctx.clear(0.5, 0.5, 0.5, 0.0)
         self.ctx.enable(moderngl.BLEND)
 
         self.sprite_texture.use(location=0)
         self.sprite_program['projection'].write(self.projection)
-        self.sprite_program['layer_id'] = int(time * 10) % 35
+        self.sprite_program['layer_id'] = int(time * 15) % self.sprite_texture.layers
         self.sprite_program['size'] = self.sprite_texture.width, self.sprite_texture.height
-        self.sprite_program['position'] = 150, 120
+        self.sprite_program['position'] = 144, 100
         self.sprite_geometry.render(self.sprite_program)
+
+        self.ctx.disable(moderngl.BLEND)
 
         # Display offscreen
         self.ctx.screen.use()
@@ -54,4 +58,5 @@ class Test(mglw.WindowConfig):
 
 
 if __name__ == '__main__':
-    Test.run()
+    mglw.run_window_config(Test)
+    # Test.run()

@@ -10,7 +10,7 @@ uniform vec2 position;
 out vec2 uv0;
 
 void main() {
-    gl_Position = projection * vec4(in_position.xy * size / 2 + position, 0, 1);
+    gl_Position = projection * vec4(in_position.xy * size + position, 0, 1);
     uv0 = in_texcoord_0;
 }
 
