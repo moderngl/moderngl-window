@@ -4,10 +4,13 @@
 
 in vec3 in_position;
 in vec2 in_texcoord_0;
+uniform mat4 projection;
+uniform vec2 size;
+uniform vec2 position;
 out vec2 uv0;
 
 void main() {
-    gl_Position = vec4(in_position, 1);
+    gl_Position = projection * vec4(in_position.xy * size / 2 + position, 0, 1);
     uv0 = in_texcoord_0;
 }
 
