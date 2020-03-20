@@ -1097,6 +1097,16 @@ class WindowConfig:
             )
         )
 
+    def load_compute_shader(self, path, **kwargs) -> moderngl.ComputeShader:
+        """Loads a compute shader.
+
+        Args:
+            path (str): Path to a single glsl file
+        Returns:
+            moderngl.ComputeShader: The compute shader
+        """
+        return resources.programs.load(ProgramDescription(compute_shader=path, **kwargs))
+
     def load_text(self, path: str, **kwargs) -> str:
         """Load a text file.
 
