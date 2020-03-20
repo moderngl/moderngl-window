@@ -1,13 +1,10 @@
 from pathlib import Path
 from pyrr import Matrix44
-
 import moderngl
-
 import moderngl_window
 from moderngl_window import geometry
-from moderngl_window import resources
-from moderngl_window.meta import TextureDescription
 from base import CameraWindow
+
 
 class Cubemap(CameraWindow):
     """Example loading and rendering a cubemap"""
@@ -19,16 +16,14 @@ class Cubemap(CameraWindow):
         super().__init__(**kwargs)
         self.wnd.mouse_exclusivity = True
         self.cube = geometry.cube(size=(20, 20, 20))
-        self.texture = resources.textures.load(TextureDescription(
+        self.texture = self.load_texture_cube(
             neg_x='textures/cubemaps/yokohama/negx.jpg',
             neg_y='textures/cubemaps/yokohama/negy.jpg',
             neg_z='textures/cubemaps/yokohama/negz.jpg',
             pos_x='textures/cubemaps/yokohama/posx.jpg',
             pos_y='textures/cubemaps/yokohama/posy.jpg',
             pos_z='textures/cubemaps/yokohama/posz.jpg',
-            kind='cube',
-            flip=False,
-        ))
+        )
         self.prog = self.load_program('programs/cubemap.glsl')
 
     def render(self, time, frame_time):

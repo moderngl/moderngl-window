@@ -24,6 +24,7 @@ Methods
 .. automethod:: WindowConfig.unicode_char_entered
 .. automethod:: WindowConfig.load_texture_2d
 .. automethod:: WindowConfig.load_texture_array
+.. automethod:: WindowConfig.load_texture_cube
 .. automethod:: WindowConfig.load_program
 .. automethod:: WindowConfig.load_text
 .. automethod:: WindowConfig.load_json
