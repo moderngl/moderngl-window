@@ -44,6 +44,18 @@ class TextureLoadersTestCase(HeadlessTestCase):
                 TextureDescription(path='textures/array.png', kind="array")
             )
 
+    def test_cubemap(self):
+        texture = resources.textures.load(TextureDescription(
+            pos_x='textures/cubemap/pos_x.png',
+            pos_y='textures/cubemap/pos_y.png',
+            pos_z='textures/cubemap/pos_z.png',
+            neg_x='textures/cubemap/neg_z.png',
+            neg_y='textures/cubemap/neg_y.png',
+            neg_z='textures/cubemap/neg_z.png',
+            kind='cube',
+        ))
+        self.assertIsInstance(texture, moderngl.TextureCube)
+
     def test_texture_mimpamps(self):
         """Load texture with mipmapping and anisotropy"""
         desc = TextureDescription(
