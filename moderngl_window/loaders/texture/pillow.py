@@ -52,12 +52,26 @@ class PillowLoader(BaseLoader):
 
         self.image = self._palette_to_raw(self.image)
 
+    def _load_texture(self, path):
+        """Find and load separate texture. Useful when multiple textue files needs to be loaded"""
+        resolved_path = self.find_texture(path)
+        logger.info("loading %s", resolved_path)
+        if not resolved_path:
+            raise ImproperlyConfigured("Cannot find texture: {}".format(path))
+
+        image = Image.open(resolved_path)
+        if self.meta.flip:
+            image = image.transpose(Image.FLIP_TOP_BOTTOM)
+
+        image = self._palette_to_raw(image)
+        return image
+
     def _palette_to_raw(self, image, mode=None):
         """Converts image to raw if palette is present"""
-        if self.image.palette and self.image.palette.mode.lower() in ['rgb', 'rgba']:
-            mode = mode or self.image.palette.mode
+        if image.palette and image.palette.mode.lower() in ['rgb', 'rgba']:
+            mode = mode or image.palette.mode
             logger.debug("Converting P image to %s using palette", mode)
-            return self.image.convert(mode)
+            return image.convert(mode)
 
         return image
 

@@ -47,6 +47,7 @@ PROGRAM_LOADERS = [
 TEXTURE_LOADERS = [
     'moderngl_window.loaders.texture.t2d.Loader',
     'moderngl_window.loaders.texture.array.Loader',
+    'moderngl_window.loaders.texture.cube.Loader',
 ]
 
 SCENE_LOADERS = [

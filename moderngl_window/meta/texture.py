@@ -24,7 +24,10 @@ class TextureDescription(ResourceDescription):
 
     def __init__(self, path: str = None, kind: str = None, flip=True, mipmap=False,
                  mipmap_levels: Tuple[int, int] = None, anisotropy=1.0,
-                 image=None, layers=None, **kwargs):
+                 image=None, layers=None,
+                 pos_x: str = None, pos_y: str = None, pos_z: str = None,
+                 neg_x: str = None, neg_y: str = None, neg_z: str = None,
+                 **kwargs):
         """Describes a texture resource
 
         Args:
@@ -38,6 +41,12 @@ class TextureDescription(ResourceDescription):
             kind (str): The kind of loader to use
             image: PIL image for when loading embedded resources
             layers: (int): Number of layers for texture arrays
+            neg_x (str): Path to negative x texture in a cube map
+            neg_y (str): Path to negative y texture in a cube map
+            neg_z (str): Path to negative z texture in a cube map
+            pos_x (str): Path to positive x texture in a cube map
+            pop_y (str): Path to positive y texture in a cube map
+            pos_z (str): Path to positive z texture in a cube map
             **kwargs: Any optional/custom attributes
         """
         kwargs.update({
@@ -49,6 +58,12 @@ class TextureDescription(ResourceDescription):
             "anisotropy": anisotropy,
             "layers": layers,
             "image": image,
+            "neg_x": neg_x,
+            "neg_y": neg_y,
+            "neg_z": neg_z,
+            "pos_x": pos_x,
+            "pos_y": pos_y,
+            "pos_z": pos_z,
         })
         super().__init__(**kwargs)
 
@@ -85,3 +100,33 @@ class TextureDescription(ResourceDescription):
     def image(self) -> Image:
         """Image: PIL image when loading embedded resources"""
         return self._kwargs.get('image')
+
+    @property
+    def pos_x(self):
+        """str: Path to positive x in a cubemap texture"""
+        return self._kwargs.get('pos_x')
+
+    @property
+    def pos_y(self):
+        """str: Path to positive y in a cubemap texture"""
+        return self._kwargs.get('pos_y')
+
+    @property
+    def pos_z(self):
+        """str: Path to positive z in a cubemap texture"""
+        return self._kwargs.get('pos_z')
+
+    @property
+    def neg_x(self):
+        """str: Path to negative x in a cubemap texture"""
+        return self._kwargs.get('neg_x')
+
+    @property
+    def neg_y(self):
+        """str: Path to negative y in a cubemap texture"""
+        return self._kwargs.get('neg_y')
+
+    @property
+    def neg_z(self):
+        """str: Path to negative z in a cubemap texture"""
+        return self._kwargs.get('neg_z')
