@@ -4,6 +4,10 @@ import moderngl_window as mglw
 from moderngl_window import geometry
 from pyrr import Matrix44
 
+# from moderngl_window.conf import settings
+# settings.SCREENSHOT_PATH = 'screenshots'
+# from moderngl_window import screenshot
+
 
 class Test(mglw.WindowConfig):
     title = "Animated Sprite"
@@ -15,10 +19,13 @@ class Test(mglw.WindowConfig):
         super().__init__(**kwargs)
         self.buffer_size = 320, 256
         # Textures
-        self.sprite_texture = self.load_texture_array('textures/animated_sprites/player_2.png', layers=35)
-        self.sprite_texture.repeat_x = False
-        self.sprite_texture.repeat_y = False
-        self.sprite_texture.filter = moderngl.NEAREST, moderngl.NEAREST
+        self.background_texture = self.load_texture_array('textures/animated_sprites/giphy.gif')
+        self.background_texture.repeat_x = False
+        self.background_texture.repeat_y = False
+        self.caveman_texture = self.load_texture_array('textures/animated_sprites/player_2.gif', layers=35)
+        self.caveman_texture.repeat_x = False
+        self.caveman_texture.repeat_y = False
+        self.caveman_texture.filter = moderngl.NEAREST, moderngl.NEAREST
 
         # Geometry
         # One pixel quad 0, 0 -> 1.0, 1.0
@@ -35,25 +42,35 @@ class Test(mglw.WindowConfig):
         self.offscreen = self.ctx.framebuffer(color_attachments=[self.offscreen_texture])
 
         self.projection = Matrix44.orthogonal_projection(0, 320, 0, 256, -1.0, 1.0, dtype='f4')
+        self.sprite_program['projection'].write(self.projection)
 
     def render(self, time, frame_time):
         # Render sprite of offscreen
         self.offscreen.use()
         self.ctx.clear(0.5, 0.5, 0.5, 0.0)
-        self.ctx.enable(moderngl.BLEND)
 
-        self.sprite_texture.use(location=0)
-        self.sprite_program['projection'].write(self.projection)
-        self.sprite_program['layer_id'] = int(time * 15) % self.sprite_texture.layers
-        self.sprite_program['position'] = 144, 100
-        self.sprite_geometry.render(self.sprite_program)
-
-        self.ctx.disable(moderngl.BLEND)
+        self.render_sprite(self.background_texture, frame=int(time * 15) % self.background_texture.layers)
+        self.render_sprite(self.caveman_texture, frame=int(time * 15) % self.caveman_texture.layers, blend=True, position=(260, 20))
 
         # Display offscreen
         self.ctx.screen.use()
         self.offscreen_texture.use(location=0)
         self.quad_fs.render(self.texture_program)
+
+        # if self.wnd.frames < 100:
+        #     screenshot.create(self.ctx.screen)
+
+    def render_sprite(self, texture, blend=False, frame=0, position=(0, 0)):
+        if blend:
+            self.ctx.enable(moderngl.BLEND)
+
+        texture.use(location=0)
+        self.sprite_program['layer_id'] = frame
+        self.sprite_program['position'] = position
+        self.sprite_geometry.render(self.sprite_program)
+
+        if blend:
+            self.ctx.disable(moderngl.BLEND)
 
 
 if __name__ == '__main__':

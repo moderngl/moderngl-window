@@ -33,13 +33,13 @@ class PillowLoader(BaseLoader):
                 raise ImproperlyConfigured("Cannot find texture: {}".format(self.meta.path))
 
             self.image = Image.open(self.meta.resolved_path)
-            print('transparency', self.image.info)
 
             # If the image is animated (like a gif anim) we convert it into a vertical strip
             if hasattr(self.image, 'is_animated') and self.image.is_animated:
                 self.layers = self.image.n_frames
                 anim = Image.new(self.image.palette.mode, (self.image.width, self.image.height * self.image.n_frames))
                 anim.putalpha(0)
+
                 for frame_number in range(self.image.n_frames):
                     self.image.seek(frame_number)
                     frame = self._palette_to_raw(self.image, mode='RGBA')
@@ -56,7 +56,7 @@ class PillowLoader(BaseLoader):
         """Converts image to raw if palette is present"""
         if self.image.palette and self.image.palette.mode.lower() in ['rgb', 'rgba']:
             mode = mode or self.image.palette.mode
-            logger.info("Converting P image to %s using palette", mode)
+            logger.debug("Converting P image to %s using palette", mode)
             return self.image.convert(mode)
 
         return image
