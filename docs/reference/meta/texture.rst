@@ -22,6 +22,12 @@ Attributes
 .. autoattribute:: TextureDescription.anisotropy
 .. autoattribute:: TextureDescription.mipmap_levels
 .. autoattribute:: TextureDescription.flip
+.. autoattribute:: TextureDescription.pos_x
+.. autoattribute:: TextureDescription.pos_y
+.. autoattribute:: TextureDescription.pos_z
+.. autoattribute:: TextureDescription.neg_x
+.. autoattribute:: TextureDescription.neg_y
+.. autoattribute:: TextureDescription.neg_z
 
 Inherited Attributes
 --------------------
