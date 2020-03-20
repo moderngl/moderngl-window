@@ -16,11 +16,6 @@ class Loader(PillowLoader):
         """
         self._open_image()
 
-        # Handle images with palettes
-        if self.image.palette and self.image.palette.mode in ['RGB', 'RGBA']:
-            logger.debug("Converting P image to RGB using palette")
-            self.image = self.image.convert(self.image.palette.mode, palette=self.image.palette)
-
         components, data = image_data(self.image)
 
         texture = self.ctx.texture(
