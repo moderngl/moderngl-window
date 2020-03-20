@@ -1034,8 +1034,7 @@ class WindowConfig:
             mipmap=False,
             mipmap_levels: Tuple[int, int] = None,
             anisotropy=1.0,
-            **kwargs
-        ) -> moderngl.TextureCube:
+            **kwargs) -> moderngl.TextureCube:
         """Loads a texture cube.
 
         Keyword Args:
