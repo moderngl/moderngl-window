@@ -1070,7 +1070,7 @@ class WindowConfig:
         ))
 
     def load_program(self, path=None, vertex_shader=None, geometry_shader=None, fragment_shader=None,
-                     tess_control_shader=None, tess_evaluation_shader=None) -> moderngl.Program:
+                     tess_control_shader=None, tess_evaluation_shader=None, defines: dict = None) -> moderngl.Program:
         """Loads a shader program.
 
         Note that `path` should only be used if all shaders are defined
@@ -1083,6 +1083,7 @@ class WindowConfig:
             fragment_shader (str): Path to fragment shader
             tess_control_shader (str): Path to tessellation control shader
             tess_evaluation_shader (str): Path to tessellation eval shader
+            defines (dict): ``#define`` values to replace in the shader source
         Returns:
             moderngl.Program: The program instance
         """
@@ -1094,18 +1095,22 @@ class WindowConfig:
                 fragment_shader=fragment_shader,
                 tess_control_shader=tess_control_shader,
                 tess_evaluation_shader=tess_evaluation_shader,
+                defines=defines,
             )
         )
 
-    def load_compute_shader(self, path, **kwargs) -> moderngl.ComputeShader:
+    def load_compute_shader(self, path, defines: dict = None, **kwargs) -> moderngl.ComputeShader:
         """Loads a compute shader.
 
         Args:
             path (str): Path to a single glsl file
+            defines (dict): ``#define`` values to replace in the shader source
         Returns:
             moderngl.ComputeShader: The compute shader
         """
-        return resources.programs.load(ProgramDescription(compute_shader=path, **kwargs))
+        return resources.programs.load(
+            ProgramDescription(compute_shader=path, defines=defines, **kwargs)
+        )
 
     def load_text(self, path: str, **kwargs) -> str:
         """Load a text file.

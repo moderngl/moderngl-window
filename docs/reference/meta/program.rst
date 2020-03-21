@@ -23,6 +23,7 @@ Attributes
 .. autoattribute:: ProgramDescription.fragment_shader
 .. autoattribute:: ProgramDescription.tess_control_shader
 .. autoattribute:: ProgramDescription.compute_shader
+.. autoattribute:: ProgramDescription.defines
 
 Inherited Attributes
 --------------------

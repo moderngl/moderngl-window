@@ -39,7 +39,8 @@ class ProgramShaders:
         instance.vertex_source = ShaderSource(
             VERTEX_SHADER,
             meta.path or meta.vertex_shader,
-            source
+            source,
+            defines=meta.defines,
         )
 
         if GEOMETRY_SHADER in source:
@@ -47,6 +48,7 @@ class ProgramShaders:
                 GEOMETRY_SHADER,
                 meta.path or meta.geometry_shader,
                 source,
+                defines=meta.defines,
             )
 
         if FRAGMENT_SHADER in source:
@@ -54,6 +56,7 @@ class ProgramShaders:
                 FRAGMENT_SHADER,
                 meta.path or meta.fragment_shader,
                 source,
+                defines=meta.defines,
             )
 
         if TESS_CONTROL_SHADER in source:
@@ -61,6 +64,7 @@ class ProgramShaders:
                 TESS_CONTROL_SHADER,
                 meta.path or meta.tess_control_shader,
                 source,
+                defines=meta.defines,
             )
 
         if TESS_EVALUATION_SHADER in source:
@@ -68,6 +72,7 @@ class ProgramShaders:
                 TESS_EVALUATION_SHADER,
                 meta.path or meta.tess_evaluation_shader,
                 source,
+                defines=meta.defines,
             )
 
         return instance
@@ -81,6 +86,7 @@ class ProgramShaders:
             VERTEX_SHADER,
             meta.path or meta.vertex_shader,
             vertex_source,
+            defines=meta.defines,
         )
 
         if geometry_source:
@@ -88,6 +94,7 @@ class ProgramShaders:
                 GEOMETRY_SHADER,
                 meta.path or meta.geometry_shader,
                 geometry_source,
+                defines=meta.defines,
             )
 
         if fragment_source:
@@ -95,6 +102,7 @@ class ProgramShaders:
                 FRAGMENT_SHADER,
                 meta.path or meta.fragment_shader,
                 fragment_source,
+                defines=meta.defines,
             )
 
         if tess_control_source:
@@ -102,6 +110,7 @@ class ProgramShaders:
                 TESS_CONTROL_SHADER,
                 meta.path or meta.tess_control_shader,
                 tess_control_source,
+                defines=meta.defines,
             )
 
         if tess_evaluation_source:
@@ -109,6 +118,7 @@ class ProgramShaders:
                 TESS_EVALUATION_SHADER,
                 meta.path or meta.tess_control_shader,
                 tess_evaluation_source,
+                defines=meta.defines,
             )
 
         return instance
@@ -119,7 +129,8 @@ class ProgramShaders:
         instance.compute_shader_source = ShaderSource(
             COMPUTE_SHADER,
             meta.compute_shader,
-            compute_shader_source
+            compute_shader_source,
+            defines=meta.defines,
         )
         return instance
 
