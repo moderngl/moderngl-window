@@ -1,4 +1,7 @@
-from typing import Tuple, Union
+"""
+Helper classes for loading shader
+"""
+from typing import List, Tuple, Union
 
 import moderngl
 import moderngl_window
@@ -158,7 +161,7 @@ class ShaderSource:
     """
     Helper class representing a single shader type
     """
-    def __init__(self, shader_type: str, name: str, source: str):
+    def __init__(self, shader_type: str, name: str, source: str, defines: dict = None):
         self.type = shader_type
         self.name = name
         self.source = source.strip()
@@ -171,21 +174,43 @@ class ShaderSource:
                 "Missing #version in {}. A version must be defined in the first line".format(self.name),
             )
 
-        # Add preprocessors to source VERTEX_SHADER, FRAGMENT_SHADER etc.
+        self.apply_defines(defines)
+
+        # Inject source with shade type
         self.lines.insert(1, "#define {} 1".format(self.type))
 
         self.source = '\n'.join(self.lines)
 
-    def find_out_attribs(self):
+    def apply_defines(self, defines: dict):
+        """Apply the configured define values"""
+        if not defines:
+            return
+
+        for nr, line in enumerate(self.lines):
+            line = line.strip()
+            if line.startswith('#define'):
+                try:
+                    name = line.split()[1]
+                    value = defines.get(name)
+                    if not value:
+                        continue
+
+                    self.lines[nr] = "#define {} {}".format(name, str(value))
+                except IndexError:
+                    pass
+
+    def find_out_attribs(self) -> List[str]:
         """
         Get all out attributes in the shader source.
 
-        :return: List of attribute names
+        Returns:
+            List[str]: List of out attribute names
         """
         names = []
         for line in self.lines:
             if line.strip().startswith("out "):
                 names.append(line.split()[2].replace(';', ''))
+
         return names
 
     def print(self):
