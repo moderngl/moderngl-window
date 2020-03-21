@@ -64,6 +64,8 @@ class Window(BaseWindow):
 
         if self.vsync:
             glfw.swap_interval(1)
+        else:
+            glfw.swap_interval(0)
 
         glfw.set_key_callback(self._window, self.glfw_key_event_callback)
         glfw.set_cursor_pos_callback(self._window, self.glfw_mouse_event_callback)
