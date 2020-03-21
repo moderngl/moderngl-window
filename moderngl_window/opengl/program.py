@@ -189,6 +189,7 @@ class ShaderSource:
 
         # Inject source with shade type
         self.lines.insert(1, "#define {} 1".format(self.type))
+        self.lines.insert(2, "#line 2")
 
         self.source = '\n'.join(self.lines)
 
