@@ -26,12 +26,12 @@ class Loader(BaseLoader):
         """
         prog = None
 
-        vs_source = self._load_source("vertex", self.meta.vertex_shader)
-        geo_source = self._load_source("geometry", self.meta.geometry_shader)
-        fs_source = self._load_source("fragment", self.meta.fragment_shader)
-        tc_source = self._load_source("tess_control", self.meta.tess_control_shader)
-        te_source = self._load_source("tess_evaluation", self.meta.tess_evaluation_shader)
-        cs_source = self._load_source("compute", self.meta.compute_shader)
+        vs_source = self._load_shader("vertex", self.meta.vertex_shader)
+        geo_source = self._load_shader("geometry", self.meta.geometry_shader)
+        fs_source = self._load_shader("fragment", self.meta.fragment_shader)
+        tc_source = self._load_shader("tess_control", self.meta.tess_control_shader)
+        te_source = self._load_shader("tess_evaluation", self.meta.tess_evaluation_shader)
+        cs_source = self._load_shader("compute", self.meta.compute_shader)
 
         if vs_source:
             shaders = program.ProgramShaders.from_separate(
@@ -42,6 +42,7 @@ class Loader(BaseLoader):
                 tess_control_source=tc_source,
                 tess_evaluation_source=te_source,
             )
+            shaders.handle_includes(self._load_source)
             prog = shaders.create()
 
             # Wrap the program if reloadable is set
@@ -52,13 +53,14 @@ class Loader(BaseLoader):
                 prog = program.ReloadableProgram(self.meta, prog)
         elif cs_source:
             shaders = program.ProgramShaders.compute_shader(self.meta, cs_source)
+            shaders.handle_includes(self._load_source)
             prog = shaders.create_compute_shader()
         else:
             raise ImproperlyConfigured("Cannot find a shader source to load")
 
         return prog
 
-    def _load_source(self, shader_type: str, path: str):
+    def _load_shader(self, shader_type: str, path: str):
         """Load a single shader source"""
         if path:
             resolved_path = self.find_program(path)
@@ -69,3 +71,20 @@ class Loader(BaseLoader):
 
             with open(str(resolved_path), 'r') as fd:
                 return fd.read()
+
+    def _load_source(self, path):
+        """Finds and loads a single source file.
+
+        Args:
+            path: Path to resource
+        Returns:
+            Tuple[resolved_path, source]: The resolved path and the source
+        """
+        resolved_path = self.find_program(path)
+        if not resolved_path:
+            raise ImproperlyConfigured("Cannot find program '{}'".format(path))
+
+        logger.info("Loading: %s", path)
+
+        with open(str(resolved_path), 'r') as fd:
+            return resolved_path, fd.read()

@@ -55,6 +55,7 @@ class Loader(BaseLoader):
         """
         self.meta.resolved_path, source = self._load_source(self.meta.path)
         shaders = program.ProgramShaders.from_single(self.meta, source)
+        shaders.handle_includes(self._load_source)
         prog = shaders.create()
 
         # Wrap the program if reloadable is set

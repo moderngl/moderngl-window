@@ -167,38 +167,142 @@ class ProgramShaders:
         program.extra = {'meta': self.meta}
         return program
 
+    def handle_includes(self, load_source_func):
+        """Resolves ``#include`` preprocessors
+
+        Args:
+            load_source_func (func): A function for finding and loading a source
+        """
+        if self.vertex_source:
+            self.vertex_source.handle_includes(load_source_func)
+        if self.geometry_source:
+            self.geometry_source.handle_includes(load_source_func)
+        if self.fragment_source:
+            self.fragment_source.handle_includes(load_source_func)
+        if self.tess_control_source:
+            self.tess_control_source.handle_includes(load_source_func)
+        if self.tess_evaluation_source:
+            self.tess_evaluation_source.handle_includes(load_source_func)
+        if self.compute_shader_source:
+            self.compute_shader_source.handle_includes(load_source_func)
+
 
 class ShaderSource:
     """
-    Helper class representing a single shader type
-    """
-    def __init__(self, shader_type: str, name: str, source: str, defines: dict = None):
-        self.type = shader_type
-        self.name = name
-        self.source = source.strip()
-        self.lines = self.source.split('\n')
+    Helper class representing a single shader type.
 
-        # Make sure version is present
-        if not self.lines[0].startswith("#version"):
+    It ensures the source has the right format, injects ``#define`` preprocessors,
+    resolves ``#include`` preprocessors etc.
+
+    A ``ShaderSource`` can be the base/root shader or a source referenced in an ``#include``.
+    """
+    def __init__(self, shader_type: str, name: str, source: str, defines: dict = None, id=0, root=True):
+        """Create shader source.
+
+        Args:
+            shader_type (str): A preprocessor name for setting the shader type
+            name (str): A string (usually the path) so we can give useful error messages to the user
+            source (str): The raw source for the shader
+        Keyword Args:
+            id (int): The source number. Used when shader consists of multiple sources through includes
+            root (bool): If this shader source is the root shader (Not an include)
+        """
+        self._id = id
+        self._root = root
+        self._source_list = [self]  # List of sources this shader consists of (original source + includes)
+        self._type = shader_type
+        self._name = name
+        self._defines = defines or {}
+        if root:
+            source = source.strip()
+        self._lines = source.split('\n')
+
+        # Make sure version is present (only if root shader)
+        if self._root and not self._lines[0].startswith("#version"):
             self.print()
             raise ShaderError(
-                "Missing #version in {}. A version must be defined in the first line".format(self.name),
+                "Missing #version in {}. A version must be defined in the first line".format(self._name),
             )
 
         self.apply_defines(defines)
 
         # Inject source with shade type
-        self.lines.insert(1, "#define {} 1".format(self.type))
-        self.lines.insert(2, "#line 2")
+        if self._root:
+            self._lines.insert(1, "#define {} 1".format(self._type))
+            self._lines.insert(2, "#line 2")
 
-        self.source = '\n'.join(self.lines)
+    @property
+    def id(self) -> int:
+        """int: The shader number/id"""
+        return self._id
+
+    @property
+    def source(self) -> str:
+        """str: The source lines as a string"""
+        return '\n'.join(self._lines)
+
+    @property
+    def source_list(self) -> List['ShaderSource']:
+        """List[ShaderSource]: List of all shader sources"""
+        return self._source_list
+
+    @property
+    def name(self) -> str:
+        """str: a path or name for this shader"""
+        return self._name
+
+    @property
+    def lines(self) -> List[str]:
+        """List[str]: The lines in this shader"""
+        return self._lines
+
+    @property
+    def line_count(self) -> int:
+        """int: Number of lines in this source (stripped)"""
+        return len(self._lines)
+
+    @property
+    def defines(self) -> dict:
+        """dict: Defines configured for this shader"""
+        return self._defines
+
+    def handle_includes(self, load_source_func, depth=0):
+        """Inject includes into the shader source.
+        This happens recursively up to a max level in case the users has circular includes.
+        We also build up a list of all the included sources in the root shader.
+
+        Args:
+            load_source_func (func): A function for finding and loading a source
+            depth (int): The current include depth (incease by 1 for every call)
+        """
+        if depth > 100:
+            raise ShaderError("Reaching an include depth of 100. You probably have circular includes")
+
+        current_id = 0
+        while True:
+            for nr, line in enumerate(self._lines):
+                line = line.strip()
+                if line.startswith('#include'):
+                    path = line[9:]
+                    current_id += 1
+                    source = ShaderSource(
+                        None, path, load_source_func(path)[1],
+                        defines=self._defines, id=current_id, root=False,
+                    )
+                    source.handle_includes(load_source_func, depth=depth + 1)
+                    self._lines = self.lines[:nr] + source.lines + self.lines[nr + 1:]
+                    self._source_list += source.source_list
+                    current_id = self._source_list[-1].id
+                    break
+            else:
+                break
 
     def apply_defines(self, defines: dict):
         """Apply the configured define values"""
         if not defines:
             return
 
-        for nr, line in enumerate(self.lines):
+        for nr, line in enumerate(self._lines):
             line = line.strip()
             if line.startswith('#define'):
                 try:

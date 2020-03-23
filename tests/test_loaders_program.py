@@ -111,3 +111,7 @@ class ProgramLoadersTestCase(HeadlessTestCase):
         self.assertEqual(descr.compute_shader, path)
         program = resources.programs.load(descr)
         self.assertIsInstance(program, moderngl.ComputeShader)
+
+    def test_include(self):
+        program = resources.programs.load(ProgramDescription(path='programs/include_test.glsl'))
+        self.assertIsInstance(program, moderngl.Program)

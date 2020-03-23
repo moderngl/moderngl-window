@@ -1,8 +1,14 @@
+from pathlib import Path
 from unittest import TestCase
 from moderngl_window.opengl import program
+from moderngl_window import resources
+from moderngl_window.meta import DataDescription
+
+resources.register_dir((Path(__file__).parent / 'fixtures/resources').resolve())
 
 
 class ShaderSourceTestCase(TestCase):
+    maxDiff = None
 
     def test_no_version(self):
         """Missing #version statement should raise a shader error"""
@@ -70,3 +76,58 @@ class ShaderSourceTestCase(TestCase):
         )
         self.assertTrue("#define NUM_THINGS 100" in shader.source)
         self.assertTrue("#define SCALE 2.0" in shader.source)
+
+    def test_include(self):
+        """Test include"""
+        def load_source(path):
+            return path, resources.data.load(DataDescription(path, kind='text'))
+
+        path = 'programs/include_test.glsl'
+        source = load_source(path)[1]
+        source_vs = program.ShaderSource(program.VERTEX_SHADER, path, source, defines={'TEST': '100'})
+        source_vs.handle_includes(load_source)
+
+        # print(source_vs.source)
+        self.assertEqual(source_vs.source, INCLUDE_RESULT)
+
+
+INCLUDE_RESULT = """#version 330
+#define VERTEX_SHADER 1
+#line 2
+
+vec3 blendMultiply(vec3 base, vec3 blend) {
+	return base * blend;
+}
+
+vec3 blendMultiply(vec3 base, vec3 blend, float opacity) {
+	return (blendMultiply(base, blend) * opacity + base * (1.0 - opacity));
+}
+
+// Utils 1
+#define TEST 100
+
+// Utils 2
+#define TEST 100
+
+
+
+#define TEST 100
+
+#if defined VERTEX_SHADER
+
+in vec3 in_position;
+
+void main() {
+    gl_Position = vec4(in_position, 1.0);
+}
+
+
+#elif defined FRAGMENT_SHADER
+
+out vec4 fragColor;
+
+void main() {
+    fragColor = vec4(1.0);
+}
+
+#endif"""
