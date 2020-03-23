@@ -53,15 +53,8 @@ class Loader(BaseLoader):
         Returns:
             moderngl.Program: The Program instance
         """
-        self.meta.resolved_path = self.find_program(self.meta.path)
-        if not self.meta.resolved_path:
-            raise ImproperlyConfigured("Cannot find program '{}'".format(self.meta.path))
-
-        logger.info("Loading: %s", self.meta.path)
-
-        with open(str(self.meta.resolved_path), 'r') as fd:
-            shaders = program.ProgramShaders.from_single(self.meta, fd.read())
-
+        self.meta.resolved_path, source = self._load_source(self.meta.path)
+        shaders = program.ProgramShaders.from_single(self.meta, source)
         prog = shaders.create()
 
         # Wrap the program if reloadable is set
@@ -72,3 +65,20 @@ class Loader(BaseLoader):
             prog = program.ReloadableProgram(self.meta, prog)
 
         return prog
+
+    def _load_source(self, path):
+        """Finds and loads a single source file.
+
+        Args:
+            path: Path to resource
+        Returns:
+            Tuple[resolved_path, source]: The resolved path and the source
+        """
+        resolved_path = self.find_program(path)
+        if not resolved_path:
+            raise ImproperlyConfigured("Cannot find program '{}'".format(path))
+
+        logger.info("Loading: %s", path)
+
+        with open(str(resolved_path), 'r') as fd:
+            return resolved_path, fd.read()
