@@ -266,7 +266,7 @@ class ShaderSource:
         """dict: Defines configured for this shader"""
         return self._defines
 
-    def handle_includes(self, load_source_func, depth=0):
+    def handle_includes(self, load_source_func, depth=0, source_id=0):
         """Inject includes into the shader source.
         This happens recursively up to a max level in case the users has circular includes.
         We also build up a list of all the included sources in the root shader.
@@ -278,7 +278,7 @@ class ShaderSource:
         if depth > 100:
             raise ShaderError("Reaching an include depth of 100. You probably have circular includes")
 
-        current_id = 0
+        current_id = source_id
         while True:
             for nr, line in enumerate(self._lines):
                 line = line.strip()
@@ -289,7 +289,7 @@ class ShaderSource:
                         None, path, load_source_func(path)[1],
                         defines=self._defines, id=current_id, root=False,
                     )
-                    source.handle_includes(load_source_func, depth=depth + 1)
+                    source.handle_includes(load_source_func, depth=depth + 1, source_id=current_id)
                     self._lines = self.lines[:nr] + source.lines + self.lines[nr + 1:]
                     self._source_list += source.source_list
                     current_id = self._source_list[-1].id
@@ -337,6 +337,10 @@ class ShaderSource:
             print("{}: {}".format(str(i).zfill(3), line))
 
         print("---[ END {} ]---".format(self.name))
+
+    def __repr__(self):
+        return '<ShaderSource: {} id={}>'.format(self.name, self.id)
+
 
 
 class ShaderError(Exception):

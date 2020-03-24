@@ -87,8 +87,19 @@ class ShaderSourceTestCase(TestCase):
         source_vs = program.ShaderSource(program.VERTEX_SHADER, path, source, defines={'TEST': '100'})
         source_vs.handle_includes(load_source)
 
-        # print(source_vs.source)
+        print(source_vs.source_list)
+
         self.assertEqual(source_vs.source, INCLUDE_RESULT)
+        self.assertEqual(source_vs.source_list[0].name, 'programs/include_test.glsl')
+        self.assertEqual(source_vs.source_list[0].id, 0)
+        self.assertEqual(source_vs.source_list[1].name, 'programs/includes/blend_functions.glsl')
+        self.assertEqual(source_vs.source_list[1].id, 1)
+        self.assertEqual(source_vs.source_list[2].name, 'programs/includes/utils.glsl')
+        self.assertEqual(source_vs.source_list[2].id, 2)
+        self.assertEqual(source_vs.source_list[3].name, 'programs/includes/utils_1.glsl')
+        self.assertEqual(source_vs.source_list[3].id, 3)
+        self.assertEqual(source_vs.source_list[4].name, 'programs/includes/utils_2.glsl')
+        self.assertEqual(source_vs.source_list[4].id, 4)
 
 
 INCLUDE_RESULT = """#version 330
