@@ -78,7 +78,7 @@ class ShaderSourceTestCase(TestCase):
         self.assertTrue("#define SCALE 2.0" in shader.source)
 
     def test_include(self):
-        """Test include"""
+        """Test #include preprocessors (recursive)"""
         def load_source(path):
             return path, resources.data.load(DataDescription(path, kind='text'))
 
@@ -86,8 +86,6 @@ class ShaderSourceTestCase(TestCase):
         source = load_source(path)[1]
         source_vs = program.ShaderSource(program.VERTEX_SHADER, path, source, defines={'TEST': '100'})
         source_vs.handle_includes(load_source)
-
-        print(source_vs.source_list)
 
         self.assertEqual(source_vs.source, INCLUDE_RESULT)
         self.assertEqual(source_vs.source_list[0].name, 'programs/include_test.glsl')
@@ -100,6 +98,17 @@ class ShaderSourceTestCase(TestCase):
         self.assertEqual(source_vs.source_list[3].id, 3)
         self.assertEqual(source_vs.source_list[4].name, 'programs/includes/utils_2.glsl')
         self.assertEqual(source_vs.source_list[4].id, 4)
+
+    def test_include_circular(self):
+        """Ensure circular includes are detected"""
+        def load_source(path):
+            return path, resources.data.load(DataDescription(path, kind='text'))
+
+        path = 'programs/include_test_circular.glsl'
+        _, source = load_source(path)
+        source = program.ShaderSource(program.VERTEX_SHADER, path, source)
+        with self.assertRaises(program.ShaderError):
+            source.handle_includes(load_source)
 
 
 INCLUDE_RESULT = """#version 330

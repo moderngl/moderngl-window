@@ -285,8 +285,9 @@ class ShaderSource:
                 if line.startswith('#include'):
                     path = line[9:]
                     current_id += 1
+                    _, source = load_source_func(path)
                     source = ShaderSource(
-                        None, path, load_source_func(path)[1],
+                        None, path, source,
                         defines=self._defines, id=current_id, root=False,
                     )
                     source.handle_includes(load_source_func, depth=depth + 1, source_id=current_id)
@@ -340,7 +341,6 @@ class ShaderSource:
 
     def __repr__(self):
         return '<ShaderSource: {} id={}>'.format(self.name, self.id)
-
 
 
 class ShaderError(Exception):
