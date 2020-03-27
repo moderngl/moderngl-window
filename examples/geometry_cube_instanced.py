@@ -26,7 +26,6 @@ class CubeSimpleInstanced(CameraWindow):
         self.camera.projection.update(near=1, far=1000)
         self.cube = geometry.cube(size=(2, 2, 2))
         self.prog = self.load_program('programs/cube_simple_instanced.glsl')
-        self.prog['m_proj'].write(self.camera.projection.matrix)
         self.prog['m_model'].write(Matrix44.identity(dtype='f4'))
 
         # Generate per instance data represeting a grid of cubes
@@ -50,6 +49,7 @@ class CubeSimpleInstanced(CameraWindow):
     def render(self, time: float, frametime: float):
         self.ctx.enable_only(moderngl.CULL_FACE | moderngl.DEPTH_TEST)
 
+        self.prog['m_proj'].write(self.camera.projection.matrix)
         self.prog['m_camera'].write(self.camera.matrix)
         self.prog['time'].value = time
 
