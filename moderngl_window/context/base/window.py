@@ -67,7 +67,7 @@ class BaseWindow:
     mouse = MouseButtons
 
     def __init__(self, title="ModernGL", gl_version=(3, 3), size=(1280, 720), resizable=True,
-                 fullscreen=False, vsync=True, aspect_ratio: float = None, samples=4, cursor=True,
+                 fullscreen=False, vsync=True, aspect_ratio: float = None, samples=0, cursor=True,
                  **kwargs):
         """Initialize a window instance.
 
@@ -800,7 +800,7 @@ class WindowConfig:
         # Default value
         cursor = True
     """
-    samples = 4
+    samples = 0
     """
     Number of samples to use in multisampling.
 
