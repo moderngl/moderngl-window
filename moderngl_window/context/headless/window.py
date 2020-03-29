@@ -32,7 +32,7 @@ class Window(BaseWindow):
         self._ctx = moderngl.create_standalone_context(require=self.gl_version_code)
         self._fbo = self.ctx.framebuffer(
             color_attachments=self.ctx.texture(self.size, 4, samples=self._samples),
-            depth_attachment=self.ctx.depth_texture(self.size, samples=self.samples),
+            # depth_attachment=self.ctx.depth_texture(self.size, samples=self._samples),
         )
         self.use()
 
