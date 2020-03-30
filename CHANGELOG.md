@@ -1,24 +1,40 @@
 # Changelog
 
-## 2.1.0 (Unreleased)
+## 2.1.0
 
 New Features
 
 * moderngl and moderngl-window integration for imgui thought the pyimgui project.
+  This is fairly experimental and the rendered should probably be moved to the pyimgui project soon
 
-> Dear ImGui is a bloat-free graphical user interface library for C++. It outputs optimized vertex buffers that you can render anytime in your 3D-pipeline enabled application. It is fast, portable, renderer agnostic and self-contained (no external dependencies).
+> Dear ImGui is a bloat-free graphical user interface library for C++. It outputs optimized vertex buffers that you can render anytime in your 3D-pipeline enabled application. It is fast, portable, renderer agnostic and self-contained (no external dependencies)
 
-* Compute shader support.
-* Shader errors should now report the error line more accurately
+* Compute shader support. `WindowConfig.load_compute_shader` and added `compute_shader` parameter for `ProgramDescription`.
+* Shaders now support `#include` up to a maximum of 100 levels
+* Added support for gif anim. This can be loaded as a `Texture` or `TextureArray`
+* Added support for loading cube maps
+* `WindowConfig.run()` shortcut
+* Each window backend now has a `name` property so the user can easily detect what window type they are given
+* `WindowConfig` now as a `vsync` property so the user can easily control this from python code
+* Scene: New methods to find materials and node by name
+
+Slightly Breaking Changes
+
+* All windows now use 0 samples (MSAA) by default. The default `samples = 4` caused way too much issues
+  for people with older integrated gpus and when doing headless rendering when multisampling is not supported.
 
 Bug fixes
 
 * Fixed several issues with glft2 scenes and object orientation
 * pyglet window: Fixed incorrect mouse position on retina screens and windows
   with pixel ratio > 1.
-* Shader loader did not properly ignore lines with comments
+* sdl2: mouse press/release events was reversed
+* pygame2: Fix broken mouse wheel reading
+* glfw: Incorrect mapping of BACKSPACE key
+* glfw: Fixed an issue not setting vsync properly¨
+* headless: We now call `ctx.finish()` in `swap_buffers`
+* Shader errors should now report the error line more accurately
 * Various typo fixes
-* sdl2 mouse press/release events was reversed
 
 ## 2.0.5
 
