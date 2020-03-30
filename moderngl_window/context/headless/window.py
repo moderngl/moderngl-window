@@ -60,9 +60,10 @@ class Window(BaseWindow):
         Placeholder. We currently don't do double buffering in headless mode.
         This may change in the future.
         """
-        # TODO: No double buffering currently
+        # NOTE: No double buffering currently 
         self._frames += 1
+        self._ctx.finish()
 
     def destroy(self) -> None:
-        # TODO: A context can currently not be invalidated in ModernGL
-        pass
+        """Destroy the context"""
+        self._ctx.release()
