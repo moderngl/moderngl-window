@@ -60,7 +60,7 @@ class Window(BaseWindow):
         Placeholder. We currently don't do double buffering in headless mode.
         This may change in the future.
         """
-        # NOTE: No double buffering currently 
+        # NOTE: No double buffering currently
         self._frames += 1
         self._ctx.finish()
 
