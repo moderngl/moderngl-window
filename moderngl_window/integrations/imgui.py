@@ -1,6 +1,5 @@
 import ctypes
 
-import numpy as np
 import imgui
 import moderngl
 from imgui.integrations.opengl import BaseOpenGLRenderer
@@ -176,13 +175,13 @@ class ModernGLRenderer(BaseOpenGLRenderer):
         self._font_texture.use()
 
         for commands in draw_data.commands_lists:
-            # Create a numpy array mapping the vertex and index buffer data without copying it
-            vtx_ptr = ctypes.cast(commands.vtx_buffer_data, ctypes.POINTER(ctypes.c_byte))
-            idx_ptr = ctypes.cast(commands.idx_buffer_data, ctypes.POINTER(ctypes.c_byte))
-            vtx_data = np.ctypeslib.as_array(vtx_ptr, (commands.vtx_buffer_size * imgui.VERTEX_SIZE,))
-            idx_data = np.ctypeslib.as_array(idx_ptr, (commands.idx_buffer_size * imgui.INDEX_SIZE,))
-            self._vertex_buffer.write(vtx_data)
-            self._index_buffer.write(idx_data)
+            # Write the vertex and index buffer data without copying it
+            vtx_type = ctypes.c_byte * commands.vtx_buffer_size * imgui.VERTEX_SIZE
+            idx_type = ctypes.c_byte * commands.idx_buffer_size * imgui.INDEX_SIZE
+            vtx_arr = (vtx_type).from_address(commands.vtx_buffer_data)
+            idx_arr = (idx_type).from_address(commands.idx_buffer_data)
+            self._vertex_buffer.write(vtx_arr)
+            self._index_buffer.write(idx_arr)
 
             idx_pos = 0
             for command in commands.commands:
