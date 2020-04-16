@@ -202,8 +202,9 @@ class Window(BaseWindow):
 
     def _handle_modifiers(self, mods) -> None:
         """Update modifiers"""
-        self._modifiers.shift = mods & QtCore.Qt.ShiftModifier
-        self._modifiers.ctrl = mods & QtCore.Qt.ControlModifier
+        self._modifiers.shift = bool(mods & QtCore.Qt.ShiftModifier)
+        self._modifiers.ctrl = bool(mods & QtCore.Qt.ControlModifier)
+        self._modifiers.alt = bool(mods & QtCore.Qt.AltModifier)
 
     def key_pressed_event(self, event) -> None:
         """Process Qt key press events forwarding them to standard methods

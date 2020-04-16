@@ -177,6 +177,7 @@ class Window(BaseWindow):
         """Update key modifier states"""
         self._modifiers.shift = mods & 1 == 1
         self._modifiers.ctrl = mods & 2 == 2
+        self._modifiers.alt = mods & 4 == 4
 
     def on_key_press(self, symbol, modifiers):
         """Pyglet specific key press callback.

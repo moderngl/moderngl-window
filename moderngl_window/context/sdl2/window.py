@@ -192,6 +192,7 @@ class Window(BaseWindow):
         mods = sdl2.SDL_GetModState()
         self._modifiers.shift = mods & sdl2.KMOD_SHIFT
         self._modifiers.ctrl = mods & sdl2.KMOD_CTRL
+        self._modifiers.alt = mods & sdl2.KMOD_ALT
 
     def process_events(self) -> None:
         """Handle all queued events in sdl2 dispatching events to standard methods"""

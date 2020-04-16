@@ -214,6 +214,8 @@ class Window(BaseWindow):
             self._modifiers.shift = press
         elif event.keysym in ['Control_L', 'Control_R']:
             self._modifiers.ctrl = press
+        elif event.keysym in ['Alt_L', 'Alt_R']:
+            self._modifiers.alt = press
 
     def tk_resize(self, event) -> None:
         """tkinter specific window resize event.

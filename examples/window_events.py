@@ -56,6 +56,9 @@ class WindowEvents(moderngl_window.WindowConfig):
             if key == keys.Z and modifiers.ctrl:
                 print("ctrl + Z was pressed")
 
+            if key == keys.Z and modifiers.alt:
+                print("alt + Z was pressed")
+
         # Key releases
         elif action == self.wnd.keys.ACTION_RELEASE:
             if key == keys.SPACE:

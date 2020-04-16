@@ -905,7 +905,7 @@ class WindowConfig:
         Args:
             key: The key that was press. Compare with self.wnd.keys.
             action: self.wnd.keys.ACTION_PRESS or ACTION_RELEASE
-            modifiers: Modifier state for shift and ctrl
+            modifiers: Modifier state for shift, ctrl and alt
         """
 
     def mouse_position_event(self, x: int, y: int, dx: int, dy: int):

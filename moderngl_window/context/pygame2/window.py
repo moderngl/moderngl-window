@@ -184,12 +184,14 @@ class Window(BaseWindow):
         mods = pygame.key.get_mods()
         self._modifiers.shift = mods & pygame.KMOD_SHIFT
         self._modifiers.ctrl = mods & pygame.KMOD_CTRL
+        self._modifiers.alt = mods & pygame.KMOD_ALT
 
     def process_events(self) -> None:
         """Handle all queued events in pygame2 dispatching events to standard methods"""
 
         for event in pygame.event.get():
             if event.type == pygame.MOUSEMOTION:
+                self._handle_mods()
                 if self.mouse_states.any:
                     self._mouse_drag_event_func(
                         event.pos[0], event.pos[1],
