@@ -10,7 +10,8 @@ class Keys(BaseKeys):
     """
     ESCAPE = Qt.Key_Escape
     SPACE = Qt.Key_Space
-    ENTER = Qt.Key_Enter
+    ENTER = Qt.Key_Return
+    #ENTER = Qt.Key_Enter #This is numpad enter
     PAGE_UP = Qt.Key_PageUp
     PAGE_DOWN = Qt.Key_PageDown
     LEFT = Qt.Key_Left
