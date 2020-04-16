@@ -204,6 +204,7 @@ class Window(BaseWindow):
                     )
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                self._handle_mods()
                 button = self._mouse_button_map.get(event.button, None)
                 if button is not None:
                     self._handle_mouse_button_state_change(button, True)
@@ -213,6 +214,7 @@ class Window(BaseWindow):
                     )
 
             elif event.type == pygame.MOUSEBUTTONUP:
+                self._handle_mods()
                 button = self._mouse_button_map.get(event.button, None)
                 if button is not None:
                     self._handle_mouse_button_state_change(button, False)
@@ -235,9 +237,11 @@ class Window(BaseWindow):
                 self._key_event_func(event.key, event.type, self._modifiers)
 
             elif event.type == pygame.TEXTINPUT:
+                self._handle_mods()
                 self._unicode_char_entered_func(event.text)
 
             elif event.type == pygame.MOUSEWHEEL:
+                self._handle_mods()
                 self._mouse_scroll_event_func(float(event.x), float(event.y))
 
             elif event.type == pygame.QUIT:

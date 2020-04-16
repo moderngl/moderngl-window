@@ -244,6 +244,7 @@ class Window(BaseWindow):
             action: Button action (press or release)
             mods: They modifiers such as ctrl or shift
         """
+        self._handle_modifiers(mods)
         button = self._mouse_button_map.get(button, None)
         if button is None:
             return

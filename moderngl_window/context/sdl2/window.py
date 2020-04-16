@@ -210,6 +210,7 @@ class Window(BaseWindow):
                     )
 
             elif event.type == sdl2.SDL_MOUSEBUTTONDOWN:
+                self._handle_mods()
                 button = self._mouse_button_map.get(event.button.button, None)
                 if button is not None:
                     self._handle_mouse_button_state_change(button, True)
@@ -219,6 +220,7 @@ class Window(BaseWindow):
                     )
 
             elif event.type == sdl2.SDL_MOUSEBUTTONUP:
+                self._handle_mods()
                 button = self._mouse_button_map.get(event.button.button, None)
                 if button is not None:
                     self._handle_mouse_button_state_change(button, False)
@@ -244,6 +246,7 @@ class Window(BaseWindow):
                 self._unicode_char_entered_func(event.text.text.decode())
 
             elif event.type == sdl2.SDL_MOUSEWHEEL:
+                self._handle_mods()
                 self._mouse_scroll_event_func(float(event.wheel.x), float(event.wheel.y))
 
             elif event.type == sdl2.SDL_QUIT:

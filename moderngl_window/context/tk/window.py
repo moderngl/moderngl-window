@@ -136,10 +136,9 @@ class Window(BaseWindow):
         """Handle all queued key press events in tkinter dispatching events to standard methods"""
         self._key_event_func(event.keysym, self.keys.ACTION_PRESS, self._modifiers)
 
+        self._handle_modifiers(event, True)
         if event.char:
             self._unicode_char_entered_func(event.char)
-        else:
-            self._handle_modifiers(event, True)
 
         if self._exit_key is not None and event.keysym == self._exit_key:
             self.close()
@@ -150,10 +149,9 @@ class Window(BaseWindow):
         Args:
             event (tkinter.Event): The key release event
         """
+        self._handle_modifiers(event, False)
         self._key_event_func(event.keysym, self.keys.ACTION_RELEASE, self._modifiers)
 
-        if not event.char:
-            self._handle_modifiers(event, False)
 
     def tk_mouse_motion(self, event: tkinter.Event) -> None:
         """Handle and translate tkinter mouse position events
@@ -175,6 +173,7 @@ class Window(BaseWindow):
         Args:
             event (tkinter.Event): The mouse button press event
         """
+        self._handle_modifiers(event, True)
         button = self._mouse_button_map.get(event.num)
         if not button:
             return
@@ -188,6 +187,7 @@ class Window(BaseWindow):
         Args:
             event (tkinter.Event): The mouse button release event
         """
+        self._handle_modifiers(event, True)
         button = self._mouse_button_map.get(event.num)
         if not button:
             return
@@ -201,6 +201,7 @@ class Window(BaseWindow):
         Args:
             event (tkinter.Event): The mouse wheel event
         """
+        self._handle_modifiers(event, True)
         self._mouse_scroll_event_func(0, event.delta / 120.0)
 
     def _handle_modifiers(self, event: tkinter.Event, press: bool) -> None:

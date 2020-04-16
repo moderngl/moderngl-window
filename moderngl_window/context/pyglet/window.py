@@ -242,6 +242,7 @@ class Window(BaseWindow):
         When a mouse button is pressed this is the only way
         to capture mouse position events
         """
+        self._handle_modifiers(modifiers)
         self._mouse_drag_event_func(x, self._height - y, dx, -dy)
 
     def on_mouse_press(self, x: int, y: int, button, mods):
@@ -253,6 +254,7 @@ class Window(BaseWindow):
             button: The pressed button
             mods: Modifiers
         """
+        self._handle_modifiers(mods)
         button = self._mouse_button_map.get(button, None)
         if button is not None:
             self._handle_mouse_button_state_change(button, True)
@@ -285,6 +287,7 @@ class Window(BaseWindow):
             x_offset (float): X scroll offset
             y_offset (float): Y scroll offset
         """
+        self._handle_modifiers(0) #No modifiers available
         self.mouse_scroll_event_func(x_offset, y_offset)
 
     def on_resize(self, width: int, height: int):

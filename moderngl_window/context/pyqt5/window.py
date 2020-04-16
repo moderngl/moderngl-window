@@ -253,6 +253,7 @@ class Window(BaseWindow):
         Args:
             event: The qtevent instance
         """
+        self._handle_modifiers(event.modifiers())
         button = self._mouse_button_map.get(event.button())
         if button is None:
             return
@@ -266,6 +267,7 @@ class Window(BaseWindow):
         Args:
             event: The qtevent instance
         """
+        self._handle_modifiers(event.modifiers())
         button = self._mouse_button_map.get(event.button())
         if button is None:
             return
@@ -294,6 +296,7 @@ class Window(BaseWindow):
         Args:
             event (QWheelEvent): Mouse wheel event
         """
+        self._handle_modifiers(event.modifiers())
         point = event.angleDelta()
         self._mouse_scroll_event_func(point.x() / 120.0, point.y() / 120.0)
 
