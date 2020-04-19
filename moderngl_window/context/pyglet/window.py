@@ -48,11 +48,11 @@ class Window(BaseWindow):
             self._width, self._height = screen.width, screen.height
 
         self._window = PygletWrapper(
-            width=self.width, height=self.height,
-            caption=self.title,
-            resizable=self.resizable,
-            vsync=self.vsync,
-            fullscreen=self.fullscreen,
+            width=self._width, height=self._height,
+            caption=self._title,
+            resizable=self._resizable,
+            vsync=self._vsync,
+            fullscreen=self._fullscreen,
             config=config,
         )
 
