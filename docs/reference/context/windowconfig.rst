@@ -38,6 +38,8 @@ Attributes
    :annotation:
 .. autoattribute:: WindowConfig.vsync
    :annotation:
+.. autoattribute:: WindowConfig.fullscreen
+   :annotation:
 .. autoattribute:: WindowConfig.resizable
    :annotation:
 .. autoattribute:: WindowConfig.gl_version

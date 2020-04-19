@@ -176,7 +176,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     window = window_cls(
         title=config_cls.title,
         size=size,
-        fullscreen=values.fullscreen,
+        fullscreen=config_cls.fullscreen or values.fullscreen,
         resizable=values.resizable if values.resizable is not None else config_cls.resizable,
         gl_version=config_cls.gl_version,
         aspect_ratio=config_cls.aspect_ratio,

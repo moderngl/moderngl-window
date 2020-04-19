@@ -751,6 +751,15 @@ class WindowConfig:
         vsync = True
 
     """
+    fullscreen = False
+    """
+    Open the window in fullscreen mode.
+
+    .. code:: python
+
+        # Default value
+        fullscreen = False
+    """
     resizable = True
     """
     Determines of the window should be resizable
