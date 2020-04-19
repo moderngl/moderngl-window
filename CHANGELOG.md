@@ -1,5 +1,15 @@
 # Changelog
 
+# 2.1.1
+
+## Improvements:
+
+* Optimized the imgui renderer using `ctypes` instead of `numpy` for handling vertex data (@aforren1)
+* Added support for ALT key modifier in all window backends and other improvements to key handling (@OKaluza)
+* `WindowConfig` now supports a `fullscreen` attribute
+
+Thanks to Alex Forrence (@aforren1) and Owen Kaluza (@OKaluza) for the contributions to this release.
+
 ## 2.1.0
 
 New Features
