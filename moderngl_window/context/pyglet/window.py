@@ -287,7 +287,7 @@ class Window(BaseWindow):
             x_offset (float): X scroll offset
             y_offset (float): Y scroll offset
         """
-        self._handle_modifiers(0) #No modifiers available
+        self._handle_modifiers(0)  # No modifiers available
         self.mouse_scroll_event_func(x_offset, y_offset)
 
     def on_resize(self, width: int, height: int):

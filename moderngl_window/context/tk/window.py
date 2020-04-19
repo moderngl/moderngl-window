@@ -152,7 +152,6 @@ class Window(BaseWindow):
         self._handle_modifiers(event, False)
         self._key_event_func(event.keysym, self.keys.ACTION_RELEASE, self._modifiers)
 
-
     def tk_mouse_motion(self, event: tkinter.Event) -> None:
         """Handle and translate tkinter mouse position events
 
