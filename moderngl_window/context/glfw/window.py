@@ -191,6 +191,7 @@ class Window(BaseWindow):
         """Checks key modifiers"""
         self._modifiers.shift = mods & 1 == 1
         self._modifiers.ctrl = mods & 2 == 2
+        self._modifiers.alt = mods & 4 == 4
 
     def glfw_key_event_callback(self, window, key, scancode, action, mods):
         """Key event callback for glfw.
@@ -243,6 +244,7 @@ class Window(BaseWindow):
             action: Button action (press or release)
             mods: They modifiers such as ctrl or shift
         """
+        self._handle_modifiers(mods)
         button = self._mouse_button_map.get(button, None)
         if button is None:
             return

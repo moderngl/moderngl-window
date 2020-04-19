@@ -4,12 +4,13 @@ class KeyModifiers:
     """Namespace for storing key modifiers"""
     shift = False
     ctrl = False
+    alt = False
 
     def __repr__(self):
         return str(self)
 
     def __str__(self):
-        return "<KeyModifiers shift={} ctrl={}".format(self.shift, self.ctrl)
+        return "<KeyModifiers shift={} ctrl={} alt={}".format(self.shift, self.ctrl, self.alt)
 
 
 class BaseKeys:

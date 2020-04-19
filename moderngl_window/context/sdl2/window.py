@@ -192,6 +192,7 @@ class Window(BaseWindow):
         mods = sdl2.SDL_GetModState()
         self._modifiers.shift = mods & sdl2.KMOD_SHIFT
         self._modifiers.ctrl = mods & sdl2.KMOD_CTRL
+        self._modifiers.alt = mods & sdl2.KMOD_ALT
 
     def process_events(self) -> None:
         """Handle all queued events in sdl2 dispatching events to standard methods"""
@@ -209,6 +210,7 @@ class Window(BaseWindow):
                     )
 
             elif event.type == sdl2.SDL_MOUSEBUTTONDOWN:
+                self._handle_mods()
                 button = self._mouse_button_map.get(event.button.button, None)
                 if button is not None:
                     self._handle_mouse_button_state_change(button, True)
@@ -218,6 +220,7 @@ class Window(BaseWindow):
                     )
 
             elif event.type == sdl2.SDL_MOUSEBUTTONUP:
+                self._handle_mods()
                 button = self._mouse_button_map.get(event.button.button, None)
                 if button is not None:
                     self._handle_mouse_button_state_change(button, False)
@@ -243,6 +246,7 @@ class Window(BaseWindow):
                 self._unicode_char_entered_func(event.text.text.decode())
 
             elif event.type == sdl2.SDL_MOUSEWHEEL:
+                self._handle_mods()
                 self._mouse_scroll_event_func(float(event.wheel.x), float(event.wheel.y))
 
             elif event.type == sdl2.SDL_QUIT:

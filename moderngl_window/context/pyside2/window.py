@@ -202,8 +202,9 @@ class Window(BaseWindow):
 
     def _handle_modifiers(self, mods):
         """Update modifiers"""
-        self._modifiers.shift = mods & QtCore.Qt.ShiftModifier
-        self._modifiers.ctrl = mods & QtCore.Qt.ControlModifier
+        self._modifiers.shift = bool(mods & QtCore.Qt.ShiftModifier)
+        self._modifiers.ctrl = bool(mods & QtCore.Qt.ControlModifier)
+        self._modifiers.alt = bool(mods & QtCore.Qt.AltModifier)
 
     def key_pressed_event(self, event):
         """Process Qt key press events forwarding them to standard methods
@@ -252,6 +253,7 @@ class Window(BaseWindow):
         Args:
             event: The qtevent instance
         """
+        self._handle_modifiers(event.modifiers())
         button = self._mouse_button_map.get(event.button())
         if button is None:
             return
@@ -265,6 +267,7 @@ class Window(BaseWindow):
         Args:
             event: The qtevent instance
         """
+        self._handle_modifiers(event.modifiers())
         button = self._mouse_button_map.get(event.button())
         if button is None:
             return
@@ -293,6 +296,7 @@ class Window(BaseWindow):
         Args:
             event (QWheelEvent): Mouse wheel event
         """
+        self._handle_modifiers(event.modifiers())
         point = event.angleDelta()
         self._mouse_scroll_event_func(point.x() / 120.0, point.y() / 120.0)
 
