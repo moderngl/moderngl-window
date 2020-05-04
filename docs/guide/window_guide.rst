@@ -39,7 +39,7 @@ through convenient methods in the :py:class:`~moderngl_window.conf.Settings`
 class.
 
 Window classes can of course also be instantiated manually if
-preferred, but this can generated a bit of extra work.
+preferred, but this can generate a bit of extra work.
 
 .. code:: python
 
@@ -59,7 +59,9 @@ You could also simply import the class directory and instantiate it,
 but that defeats the purpose of trying to be independent of a specific
 window library.
 
-The rendering loop for build in windows are simple::
+The rendering loop for built in windows is simple:
+
+.. code:: python
 
     while not window.is_closing:
         window.clear()
@@ -83,7 +85,7 @@ Old Guide
 =========
 
 When not using a :py:class:`~moderngl_window.context.base.window.WindowConfig`
-instance there are a few simple steps to get started.
+instance, there are a few simple steps to get started.
 
 Register the moderngl.Context
 -----------------------------
@@ -103,8 +105,8 @@ moderngl_window what your ``moderngl.Context`` is.
     # Make sure you activate this context
     moderngl_window.activate_context(ctx=ctx)
 
-If there are no context activated the library will raise an exception
-when doing operations that requires one such as texture and scene
+If there is no context activated the library will raise an exception
+when doing operations that requires one, such as texture and scene
 loading.
 
 When using the built in window types the context activation
@@ -113,8 +115,8 @@ is normally done for you on creation.
 Register resource directories
 -----------------------------
 
-The resource loading system are using relative paths. These paths
-are relative one or multiple directories we registered in the
+The resource loading system uses relative paths. These paths
+are relative to one or multiple directories we registered in the
 resource system.
 
 The :py:mod:`moderngl_window.resources` module has methods for this.
@@ -129,7 +131,7 @@ The :py:mod:`moderngl_window.resources` module has methods for this.
     # .. but strings also works
     resources.register_dir('absolute/path/to/resource/dir')
 
-These needs to be absolute paths or an exception is raised.
+These need to be absolute paths or an exception is raised.
 You can register as many paths as you want. The resource
 system will simply look for the file in every registered
 directory in the order they were added until it finds a match.
