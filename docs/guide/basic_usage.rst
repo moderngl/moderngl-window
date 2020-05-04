@@ -4,7 +4,7 @@ Basic usage (WindowConfig)
 
 .. note:: This section is only relevant when using
    :py:class:`~moderngl_window.context.base.window.WindowConfig`.
-   Go to the Custom Usage section if your provide your own window
+   Go to the Custom Usage section if you provide your own window
    and context or want more control.
 
 Using the :py:class:`~moderngl_window.context.base.window.WindowConfig`
@@ -82,7 +82,7 @@ provided in the :py:class:`~moderngl_window.context.base.window.WindowConfig`.
         resource_dir = (Path(__file__).parent / 'resources').resolve()
 
 If you need more than one search path for your resources, the
-:py:mod:`moderngl_window.resources` module have methods for this.
+:py:mod:`moderngl_window.resources` module has methods for this.
 
 Generic events and window types
 -------------------------------
@@ -91,13 +91,13 @@ The :py:class:`~moderngl_window.context.base.window.WindowConfig`
 interface depends on the built in window types or a self-provided
 window implementation of
 :py:class:`~moderngl_window.context.base.window.BaseWindow`.
-These window implementations converts window, key and mouse events
+These window implementations convert window, key and mouse events
 into a unified system so the user can switch between different window
 types without altering the code.
 
 Window libraries are not perfect and may at times work sub-optimally
 on some platforms. They might also have different performance profiles.
-The ability switch between window types by just changing a config
+The ability to switch between window types by just changing a config
 value can be an advantage.
 
 You can change what window class is used by passing in the
