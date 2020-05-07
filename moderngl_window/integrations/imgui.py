@@ -55,10 +55,10 @@ class ModernglWindowMixin:
             self.io.mouse_down[0] = 1
 
         if button == self.wnd.mouse.middle:
-            self.io.mouse_down[1] = 1
+            self.io.mouse_down[2] = 1
 
         if button == self.wnd.mouse.right:
-            self.io.mouse_down[2] = 1
+            self.io.mouse_down[1] = 1
 
     def mouse_release_event(self, x: int, y: int, button: int):
         self.io.mouse_pos = self._mouse_pos_viewport(x, y)
@@ -67,10 +67,10 @@ class ModernglWindowMixin:
             self.io.mouse_down[0] = 0
 
         if button == self.wnd.mouse.middle:
-            self.io.mouse_down[1] = 0
+            self.io.mouse_down[2] = 0
 
         if button == self.wnd.mouse.right:
-            self.io.mouse_down[2] = 0
+            self.io.mouse_down[1] = 0
 
     def unicode_char_entered(self, char):
         io = imgui.get_io()
