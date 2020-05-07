@@ -194,7 +194,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     while not window.is_closing:
         current_time, delta = timer.next_frame()
 
-        window.clear()
+        window.clear(*window.config.clear_color)
         window.render(current_time, delta)
         window.swap_buffers()
 
