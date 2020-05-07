@@ -41,6 +41,7 @@ class WindowConfigTestCase(WindowConfigTestCase):
         self.assertEqual(self.config.cursor, True)  # Disabled in headless
         self.assertEqual(self.config.samples, self.window.samples)
         self.assertIsInstance(self.config.resource_dir, Path)
+        self.assertEqual(self.config.clear_color, (0, 0, 0, 0))
 
         # Ensure callback funcs are actual callable
         self.assertTrue(callable(self.window.resize_func))

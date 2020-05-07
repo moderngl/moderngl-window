@@ -50,6 +50,8 @@ Attributes
    :annotation:
 .. autoattribute:: WindowConfig.cursor
    :annotation:
+.. autoattribute:: WindowConfig.clear_color
+   :annotation:
 .. autoattribute:: WindowConfig.samples
    :annotation:
 .. autoattribute:: WindowConfig.resource_dir

@@ -799,14 +799,15 @@ class WindowConfig:
         # Default value
         aspect_ratio = 16 / 9
     """
-    clear_color = (0., 0., 0., 0.)
+    clear_color = (0.0, 0.0, 0.0, 0.0)
     """
     The color the active framebuffer is cleared with.
-    This attribute is expected to be in the form of (r, g, b, a) in the range [0, 1]
-    
+    This attribute is expected to be in the form of ``(r, g, b, a)`` in the range ``[0.0, 1.0]``
+
     .. code:: python
+
         # Default value
-        clear_color = (0., 0., 0., 0.)
+        clear_color = (0.0, 0.0, 0.0, 0.0)
     """
     cursor = True
     """
