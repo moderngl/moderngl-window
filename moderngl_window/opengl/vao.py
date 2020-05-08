@@ -283,8 +283,17 @@ class VAO:
 
             # Do we have a buffer mapping to this attribute?
             if not sum(buffer.has_attribute(attrib_name) for buffer in self._buffers):
-                raise VAOError("VAO {} doesn't have attribute {} for program {}".format(
-                    self.name, attrib_name, program))
+                raise VAOError((
+                    "VAO {} doesn't have attribute {} for program {}.\n"
+                    "Program attributes: {}.\n"
+                    "VAO attributes: {}"
+                ).format(
+                    self.name,
+                    attrib_name,
+                    program,
+                    program_attributes,
+                    [attr for buff in self._buffers for attr in buff.attributes]
+                ))
 
         vao_content = []
 
