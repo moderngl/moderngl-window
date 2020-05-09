@@ -26,6 +26,7 @@ Methods
 .. automethod:: WindowConfig.load_texture_array
 .. automethod:: WindowConfig.load_texture_cube
 .. automethod:: WindowConfig.load_program
+.. automethod:: WindowConfig.load_compute_shader
 .. automethod:: WindowConfig.load_text
 .. automethod:: WindowConfig.load_json
 .. automethod:: WindowConfig.load_binary
