@@ -121,6 +121,9 @@ class ModernGLRenderer(BaseOpenGLRenderer):
 
         super().__init__()
 
+        if 'display_size' in kwargs:
+            self.io.display_size = kwargs.get('display_size')
+
     def refresh_font_texture(self):
         width, height, pixels = self.io.fonts.get_tex_data_as_rgba32()
 
