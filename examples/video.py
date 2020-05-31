@@ -10,9 +10,8 @@ class Decoder:
 
     def __init__(self, path: str):
         self.container = av.open(path)
-
         self.video = self.container.streams[0]
-        self.packets = list(self.container.demux(self.video))
+        self.video.thread_type = 'AUTO'
 
     @property
     def duration(self) -> float:
@@ -39,10 +38,13 @@ class Decoder:
         """Tuple[int, int]: The width and height of the video in pixels"""
         return self.video.width, self.video.height
 
-    def get_frame(self, frame_id):
-        """Returns an rgb encoded plane"""
-        return self.packets[frame_id].decode()[-1].to_rgb().planes[0]
+    def seek(self):
+        pass
 
+    def gen_frames(self):
+        for packet in self.container.demux(video=0):
+            for frame in packet.decode():
+                yield frame.to_rgb().planes[0]
 
 class VideoTest(moderngl_window.WindowConfig):
     gl_version = (3, 3)
@@ -62,8 +64,11 @@ class VideoTest(moderngl_window.WindowConfig):
         self.program = self.load_program('programs/texture_flipped.glsl')
         self.texture = self.ctx.texture(self.decoder.video_size, 3)
 
+        self.frames = self.decoder.gen_frames()
+
     def render(self, time, frametime):
-        self.texture.write(self.decoder.get_frame(self.wnd.frames))
+        data = next(self.frames)
+        self.texture.write(data)
         self.texture.use(0)
         self.quad.render(self.program)
 
