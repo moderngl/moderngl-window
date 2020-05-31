@@ -112,15 +112,17 @@ class ModernGLRenderer(BaseOpenGLRenderer):
         self._index_buffer = None
         self._vao = None
         self.wnd = kwargs.get('wnd')
-        self.ctx = self.wnd.ctx
-
-        if not self.wnd:
-            raise ValueError('Missing window reference')
+        self.ctx = self.wnd.ctx if self.wnd and self.wnd.ctx else kwargs.get('ctx')
 
         if not self.ctx:
-            raise ValueError('Missing moderngl contex')
+            raise ValueError('Missing moderngl context')
+
+        assert isinstance(self.ctx, moderngl.context.Context)
 
         super().__init__()
+
+        if 'display_size' in kwargs:
+            self.io.display_size = kwargs.get('display_size')
 
     def refresh_font_texture(self):
         width, height, pixels = self.io.fonts.get_tex_data_as_rgba32()
