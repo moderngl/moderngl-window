@@ -2,7 +2,7 @@
 
 # moderngl-window
 
-A cross platform helper library for [ModernGL](https://github.com/moderngl/moderngl) making window
+A cross platform utility library for [ModernGL](https://github.com/moderngl/moderngl) making window
 creation and resource loading simple. It can also be used with PyOpenGL for
 rendering with the programmable pipeline.
 
