@@ -32,9 +32,9 @@ class Pygame(moderngl_window.WindowConfig):
 
         self.pg_res = (160, 160)
         # Create a 24bit (rgb) offscreen surface pygame can render to
-        self.pg_screen = pygame.Surface(self.pg_res).convert((255, 65280, 16711680, 0))
+        self.pg_screen = pygame.Surface(self.pg_res, flags=pygame.SRCALPHA)
         # 24 bit (rgb) moderngl texture
-        self.pg_texture = self.ctx.texture(self.pg_res, 3)
+        self.pg_texture = self.ctx.texture(self.pg_res, 4)
         self.pg_texture.filter = moderngl.NEAREST, moderngl.NEAREST
 
         # Simple geometry and shader to render
