@@ -14,7 +14,8 @@ class Decoder:
         self.video = self.container.streams[0]
         self.video.thread_type = 'AUTO'
         self._last_packet = None
-        self._pos_step = int(self.video.time_base.denominator / self.average_rate)
+        time_base = self.video.time_base
+        self._pos_step = int(time_base.denominator / time_base.numerator / self.average_rate)
 
     @property
     def duration(self) -> float:
@@ -57,7 +58,8 @@ class Decoder:
 
     def time_to_pos(self, time: float) -> int:
         """Converts time to stream position"""
-        return int(time * self.video.time_base.denominator)
+        time_base = self.video.time_base
+        return int(time * time_base.denominator / time_base.numerator)
 
     def seek(self, position: int):
         """Seek to a position in the stream"""
@@ -67,7 +69,7 @@ class Decoder:
         for packet in self.container.demux(video=0):
             if packet.pts is not None:
                 self._last_packet = packet
-            for frame in packet.decode():
+            for i, frame in enumerate(packet.decode()):
                 yield frame.to_rgb().planes[0]
 
 
@@ -149,7 +151,8 @@ class VideoTest(moderngl_window.WindowConfig):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        path = "C:\\Users\\efors\\Videos\\No Man's Sky\\No Man's Sky 2020.01.30 - 08.37.59.01.mp4"
+        path = "/Users/einarforselv/Downloads/test.avi"
+        # path = "C:\\Users\\efors\\Videos\\No Man's Sky\\No Man's Sky 2020.01.30 - 08.37.59.01.mp4"
         # path = "C:\\Users\\efors\\Downloads\\DemoNoir.ivf"
         # path = "C:\\Users\\efors\\Videos\\Beat Saber\\Beat Saber 2020.04.04 - 02.40.22.05.mp4"
         self.player = Player(self.ctx, path)
@@ -158,6 +161,7 @@ class VideoTest(moderngl_window.WindowConfig):
         print("fps        :", self.player.fps)
         print("video_size :", self.player.video_size)
         print("frames     :", self.player.frames)
+        print("step       :", self.player._decoder.frame_step)
 
         self.quad = geometry.quad_fs()
         self.program = self.load_program('programs/texture_flipped.glsl')
