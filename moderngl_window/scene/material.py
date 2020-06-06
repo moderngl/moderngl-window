@@ -37,13 +37,13 @@ class MaterialTexture:
 
 class Material:
     """Generic material"""
-    def __init__(self, name):
+    def __init__(self, name: str = None):
         """Initialize material.
 
         Args:
             name (str): Name of the material
         """
-        self._name = name
+        self._name = name or "default"
         self._color = (1.0, 1.0, 1.0, 1.0)
         self._mat_texture = None
         self._double_sided = True
