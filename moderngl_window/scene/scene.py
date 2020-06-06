@@ -95,13 +95,16 @@ class Scene:
 
         self.ctx.clear_samplers(0, 4)
 
-    def draw_bbox(self, projection_matrix=None, camera_matrix=None, children=True) -> None:
+    def draw_bbox(
+        self, projection_matrix=None, camera_matrix=None, children=True,
+        color=(0.75, 0.75, 0.75)) -> None:
         """Draw scene and mesh bounding boxes.
 
         Args:
             projection_matrix (ndarray): mat4 projection
             camera_matrix (ndarray): mat4 camera matrix
             children (bool): Will draw bounding boxes for meshes as well
+            color (tuple): Color of the bounding boxes
         """
         projection_matrix = projection_matrix.astype('f4')
         camera_matrix = camera_matrix.astype('f4')
@@ -112,7 +115,7 @@ class Scene:
         self.bbox_program["m_cam"].write(camera_matrix)
         self.bbox_program["bb_min"].write(self.bbox_min)
         self.bbox_program["bb_max"].write(self.bbox_max)
-        self.bbox_program["color"].value = (1.0, 0.0, 0.0)
+        self.bbox_program["color"].value = color
         self.bbox_vao.render(self.bbox_program)
 
         if not children:

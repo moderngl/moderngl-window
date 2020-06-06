@@ -84,6 +84,7 @@ class CubeModel(CameraWindow):
             projection_matrix=self.camera.projection.matrix,
             camera_matrix=camera_matrix,
             children=True,
+            color=(0.75, 0.75, 0.75),
         )
 
 

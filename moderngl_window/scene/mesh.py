@@ -64,7 +64,6 @@ class Mesh:
         program["m_cam"].write(cam_matrix)
         program["bb_min"].write(self.bbox_min.astype('f4').tobytes())
         program["bb_max"].write(self.bbox_max.astype('f4').tobytes())
-        program["color"].value = (0.75, 0.75, 0.75)
         vao.render(program)
 
     def add_attribute(self, attr_type, name, components):
