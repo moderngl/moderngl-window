@@ -24,6 +24,9 @@ logger = logging.getLogger(__name__)
 if TYPE_CHECKING:
     from moderngl_window.scene import Node, Material
 
+DEFAULT_PROGRAMS = None
+DEFAULT_BBOX_PROGRAM = None
+
 
 class Scene:
     """Generic scene"""
@@ -47,9 +50,13 @@ class Scene:
         self.diagonal_size = 1.0
 
         self.bbox_vao = geometry.bbox()
-        self.bbox_program = programs.load(
-            ProgramDescription(path='scene_default/bbox.glsl'),
-        )
+
+        global DEFAULT_BBOX_PROGRAM
+        if DEFAULT_BBOX_PROGRAM is None:
+            DEFAULT_BBOX_PROGRAM = programs.load(
+                ProgramDescription(path='scene_default/bbox.glsl'),
+            )
+        self.bbox_program = DEFAULT_BBOX_PROGRAM
         self._matrix = matrix44.create_identity(dtype='f4')
 
     @property
@@ -115,15 +122,24 @@ class Scene:
         for node in self.root_nodes:
             node.draw_bbox(projection_matrix, camera_matrix, self.bbox_program, self.bbox_vao)
 
-    def apply_mesh_programs(self, mesh_programs=None) -> None:
+    def apply_mesh_programs(self, mesh_programs = None, clear: bool = True) -> None:
         """Applies mesh programs to meshes.
         If not mesh programs are passed in we assign default ones.
 
         Args:
             mesh_programs (list): List of mesh programs to assign
+            clear (bool): Clear all assigned mesh programs
         """
+        global DEFAULT_PROGRAMS
+
+        if clear:
+            for mesh in self.meshes:
+                mesh.mesh_program = None
+
         if not mesh_programs:
-            mesh_programs = [ColorProgram(), TextureProgram(), FallbackProgram()]
+            if DEFAULT_PROGRAMS is None:
+                DEFAULT_PROGRAMS = [ColorProgram(), TextureProgram(), FallbackProgram()]
+            mesh_programs = DEFAULT_PROGRAMS
 
         for mesh in self.meshes:
             for mesh_prog in mesh_programs:
@@ -199,8 +215,8 @@ class Scene:
         """Destroys the scene data and vertex buffers"""
         for mesh in self.meshes:
             mesh.vao.release()
-            if mesh.mesh_program:
-                mesh.mesh_program.program.release()
+            # if mesh.mesh_program:
+            #     mesh.mesh_program.program.release()
 
         for mat in self.materials:
             mat.release()
