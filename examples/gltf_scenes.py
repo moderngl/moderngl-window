@@ -87,6 +87,12 @@ class CubeModel(CameraWindow):
             color=(0.75, 0.75, 0.75),
         )
 
+        # self.scene.draw_wireframe(
+        #     projection_matrix=self.camera.projection.matrix,
+        #     camera_matrix=camera_matrix,
+        #     color=(1, 1, 1, 1),
+        # )
+
 
 if __name__ == '__main__':
     mglw.run_window_config(CubeModel)
