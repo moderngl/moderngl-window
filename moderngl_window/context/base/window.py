@@ -1106,7 +1106,8 @@ class WindowConfig:
             fragment_shader (str): Path to fragment shader
             tess_control_shader (str): Path to tessellation control shader
             tess_evaluation_shader (str): Path to tessellation eval shader
-            defines (dict): ``#define`` values to replace in the shader source. Example: ``{'VALUE1': 10, 'VALUE2': '3.1415'}``.
+            defines (dict): ``#define`` values to replace in the shader source.
+                            Example: ``{'VALUE1': 10, 'VALUE2': '3.1415'}``.
         Returns:
             moderngl.Program: The program instance
         """
@@ -1127,7 +1128,8 @@ class WindowConfig:
 
         Args:
             path (str): Path to a single glsl file
-            defines (dict): ``#define`` values to replace in the shader source. Example: ``{'VALUE1': 10, 'VALUE2': '3.1415'}``.
+            defines (dict): ``#define`` values to replace in the shader source.
+                            Example: ``{'VALUE1': 10, 'VALUE2': '3.1415'}``.
         Returns:
             moderngl.ComputeShader: The compute shader
         """
