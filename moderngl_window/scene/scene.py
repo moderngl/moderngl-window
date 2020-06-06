@@ -26,6 +26,7 @@ if TYPE_CHECKING:
 
 DEFAULT_PROGRAMS = None
 DEFAULT_BBOX_PROGRAM = None
+DEFAULT_WIREFRAME_PROGRAM = None
 
 
 class Scene:
@@ -57,6 +58,13 @@ class Scene:
                 ProgramDescription(path='scene_default/bbox.glsl'),
             )
         self.bbox_program = DEFAULT_BBOX_PROGRAM
+        global DEFAULT_WIREFRAME_PROGRAM
+        if DEFAULT_WIREFRAME_PROGRAM is None:
+            DEFAULT_WIREFRAME_PROGRAM = programs.load(
+                ProgramDescription(path='scene_default/color.glsl'),
+            )
+        self.wireframe_program = DEFAULT_WIREFRAME_PROGRAM
+
         self._matrix = matrix44.create_identity(dtype='f4')
 
     @property
@@ -95,9 +103,7 @@ class Scene:
 
         self.ctx.clear_samplers(0, 4)
 
-    def draw_bbox(
-        self, projection_matrix=None, camera_matrix=None, children=True,
-        color=(0.75, 0.75, 0.75)) -> None:
+    def draw_bbox(self, projection_matrix=None, camera_matrix=None, children=True, color=(0.75, 0.75, 0.75)) -> None:
         """Draw scene and mesh bounding boxes.
 
         Args:
@@ -124,6 +130,28 @@ class Scene:
         # Draw bounding box for children
         for node in self.root_nodes:
             node.draw_bbox(projection_matrix, camera_matrix, self.bbox_program, self.bbox_vao)
+
+    def draw_wireframe(self, projection_matrix=None, camera_matrix=None, children=True, color=(0.75, 0.75, 0.75, 1.0)):
+        """Render the scene in wireframe mode.
+
+        Args:
+            projection_matrix (ndarray): mat4 projection
+            camera_matrix (ndarray): mat4 camera matrix
+            children (bool): Will draw bounding boxes for meshes as well
+            color (tuple): Color of the wireframes
+        """
+        self.wireframe_program["m_proj"].write(projection_matrix)
+        self.wireframe_program["m_model"].write(self._matrix)
+        self.wireframe_program["m_cam"].write(camera_matrix)
+        self.wireframe_program["color"] = color
+
+        # Draw bounding box for children
+        self.ctx.wireframe = True
+
+        for node in self.root_nodes:
+            node.draw_wireframe(projection_matrix, camera_matrix, self.wireframe_program)
+
+        self.ctx.wireframe = False
 
     def apply_mesh_programs(self, mesh_programs=None, clear: bool = True) -> None:
         """Applies mesh programs to meshes.

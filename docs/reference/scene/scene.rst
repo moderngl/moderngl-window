@@ -10,6 +10,7 @@ Methods
 .. automethod:: Scene.__init__
 .. automethod:: Scene.draw
 .. automethod:: Scene.draw_bbox
+.. automethod:: Scene.draw_wireframe
 .. automethod:: Scene.apply_mesh_programs
 .. automethod:: Scene.calc_scene_bbox
 .. automethod:: Scene.find_material

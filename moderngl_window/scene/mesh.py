@@ -66,6 +66,17 @@ class Mesh:
         program["bb_max"].write(self.bbox_max.astype('f4').tobytes())
         vao.render(program)
 
+    def draw_wireframe(self, proj_matrix, model_matrix, program):
+        """Render the mesh as wireframe.
+
+            proj_matrix: Projection matrix
+            model_matrix: View/model matrix
+            program: The moderngl.Program rendering the wireframe
+        """
+        program["m_proj"].write(proj_matrix)
+        program["m_model"].write(model_matrix)
+        self.vao.render(program)
+
     def add_attribute(self, attr_type, name, components):
         """
         Add metadata about the mesh

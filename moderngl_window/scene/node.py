@@ -135,6 +135,20 @@ class Node:
         for child in self.children:
             child.draw_bbox(projection_matrix, camera_matrix, program, vao)
 
+    def draw_wireframe(self, projection_matrix, camera_matrix, program):
+        """Render the node as wireframe.
+
+        Keyword Args:
+            projection_matrix (bytes): projection matrix
+            camera_matrix (bytes): camera_matrix
+            program (moderngl.Program): The program to render wireframe
+        """
+        if self._mesh:
+            self._mesh.draw_wireframe(projection_matrix, self._matrix_global, program)
+
+        for child in self.children:
+            child.draw_wireframe(projection_matrix, self._matrix_global, program)
+
     def calc_global_bbox(self, view_matrix, bbox_min, bbox_max):
         """Recursive calculation of scene bbox.
 
