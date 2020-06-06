@@ -1,4 +1,5 @@
-from typing import Tuple
+import math
+from typing import Tuple, Union
 from pathlib import Path
 
 import moderngl
@@ -9,20 +10,19 @@ import av
 
 class Decoder:
 
-    def __init__(self, path: str):
-        self.container = av.open(path)
+    def __init__(self, path: Union[str, Path]):
+        self.container = av.open(str(path))
         self.video = self.container.streams[0]
         self.video.thread_type = 'AUTO'
         self._last_packet = None
-        time_base = self.video.time_base
-        self._pos_step = int(time_base.denominator / time_base.numerator / self.average_rate)
+        self._frame_step = float(self.video.time_base)
 
     @property
     def duration(self) -> float:
         """float: Number of frames in the video"""
         if self.video.duration is None:
             return -1
-        return self.video.duration * self.video.time_base.numerator / self.video.time_base.denominator
+        return self.video.duration * self.video.time_base
 
     @property
     def end_time(self):
@@ -54,12 +54,11 @@ class Decoder:
     @property
     def frame_step(self):
         """Position step for each frame"""
-        return self._pos_step
+        return self._frame_step
 
     def time_to_pos(self, time: float) -> int:
         """Converts time to stream position"""
-        time_base = self.video.time_base
-        return int(time * time_base.denominator / time_base.numerator)
+        return time * self.average_rate
 
     def seek(self, position: int):
         """Seek to a position in the stream"""
@@ -75,7 +74,7 @@ class Decoder:
 
 class Player:
 
-    def __init__(self, ctx: moderngl.Context, path: str):
+    def __init__(self, ctx: moderngl.Context, path: Union[str, Path]):
         self._ctx = ctx
         self._path = path
         self._decoder = Decoder(self._path)
@@ -113,22 +112,24 @@ class Player:
         next_pos = self._decoder.time_to_pos(time)
         delta = next_pos - self._decoder.current_pos
 
+        print((
+            f"frame_step={self._decoder.frame_step}, "
+            f"delta={delta}, "
+            f"next_pos={next_pos}, "
+            f"current_pos={self._decoder.current_pos}, "
+            f"time={time}"
+        ))
+
         # Seek we are more than 3 frames off
         if abs(delta) > self._decoder.frame_step * 3:
-            # print("SEEK", next_pos)
-            self._decoder.seek(next_pos)
-        else:
-            if delta < self._decoder.frame_step:
-                # print("SKIP")
-                return
+            seek_pos = int(next_pos)
+            print("SEEK", delta, seek_pos)
+            self._decoder.seek(seek_pos)
+        # else:
+        # if delta < self._decoder.frame_step:
+        #     print("SKIP")
+        #     return
 
-        # print((
-        #     f"frame_step={self._decoder.frame_step}, "
-        #     f"delta={delta}, "
-        #     f"next_pos={next_pos}, "
-        #     f"current_pos={self._decoder.current_pos}, "
-        #     f"time={time}"
-        # ))
         try:
             data = next(self._frames)
         except StopIteration:
@@ -151,12 +152,7 @@ class VideoTest(moderngl_window.WindowConfig):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        path = "/Users/einarforselv/Downloads/test.avi"
-        # path = "C:\\Users\\efors\\Videos\\No Man's Sky\\No Man's Sky 2020.01.30 - 08.37.59.01.mp4"
-        # path = "C:\\Users\\efors\\Downloads\\DemoNoir.ivf"
-        # path = "C:\\Users\\efors\\Videos\\Beat Saber\\Beat Saber 2020.04.04 - 02.40.22.05.mp4"
-        self.player = Player(self.ctx, path)
-
+        self.player = Player(self.ctx, self.resource_dir / 'videos/Lightning - 33049.mp4')
         print("duration   :", self.player.duration)
         print("fps        :", self.player.fps)
         print("video_size :", self.player.video_size)
@@ -167,7 +163,7 @@ class VideoTest(moderngl_window.WindowConfig):
         self.program = self.load_program('programs/texture_flipped.glsl')
 
     def render(self, time, frametime):
-        self.player.update(time)
+        self.player.update(math.fmod(time, 5))
         self.player.texture.use(0)
         self.quad.render(self.program)
 
