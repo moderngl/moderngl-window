@@ -11,6 +11,7 @@ Methods
 -------
 
 .. automethod:: Material.__init__
+.. automethod:: Material.release
 
 Attributes
 ----------

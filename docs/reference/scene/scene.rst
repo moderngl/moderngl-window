@@ -16,6 +16,7 @@ Methods
 .. automethod:: Scene.find_node
 .. automethod:: Scene.prepare
 .. automethod:: Scene.destroy
+.. automethod:: Scene.release
 
 Attributes
 ----------
