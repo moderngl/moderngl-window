@@ -328,12 +328,16 @@ class VAO:
         for _, vao in self.vaos.items():
             vao.release()
 
+        self.vaos = {}
+
         if buffer:
             for buff in self._buffers:
                 buff.buffer.release()
 
             if self._index_buffer:
                 self._index_buffer.release()
+
+        self._buffers = []
 
     def get_buffer_by_name(self, name: str) -> BufferInfo:
         """Get the BufferInfo associated with a specific attribute name

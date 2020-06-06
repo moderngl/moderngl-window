@@ -191,10 +191,22 @@ class Scene:
 
         return None
 
+    def release(self):
+        """Destroys the scene data and vertex buffers"""
+        self.destroy()
+
     def destroy(self) -> None:
         """Destroys the scene data and vertex buffers"""
         for mesh in self.meshes:
             mesh.vao.release()
+            if mesh.mesh_program:
+                mesh.mesh_program.program.release()
+
+        for mat in self.materials:
+            mat.release()
+
+        self.meshes = []
+        self.root_nodes = []
 
     def __str__(self) -> str:
         return "<Scene: {}>".format(self.name)

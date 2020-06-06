@@ -84,6 +84,11 @@ class Material:
     def double_sided(self, value):
         self._double_sided = value
 
+    def release(self):
+        if self._mat_texture:
+            if self._mat_texture.texture:
+                self._mat_texture.texture.release()
+
     def __str__(self) -> str:
         return "<Material {}>".format(self.name)
 
