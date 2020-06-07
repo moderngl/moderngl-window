@@ -143,6 +143,9 @@ class Scene:
             children (bool): Will draw bounding boxes for meshes as well
             color (tuple): Color of the wireframes
         """
+        projection_matrix = projection_matrix.astype('f4')
+        camera_matrix = camera_matrix.astype('f4')
+
         self.wireframe_program["m_proj"].write(projection_matrix)
         self.wireframe_program["m_model"].write(self._matrix)
         self.wireframe_program["m_cam"].write(camera_matrix)
