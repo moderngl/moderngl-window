@@ -161,7 +161,10 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         args: Override sys.args
     """
     setup_basic_logging(config_cls.log_level)
-    values = parse_args(args)
+    parser = create_parser()
+    config_cls.add_arguments(parser)
+    values = parse_args(args=args, parser=parser)
+    config_cls.argv = values
     window_cls = get_local_window_cls(values.window)
 
     # Calculate window size
@@ -207,8 +210,8 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         logger.info("Duration: {0:.2f}s @ {1:.2f} FPS".format(duration, window.frames / duration))
 
 
-def parse_args(args=None):
-    """Parse arguments from sys.argv"""
+def create_parser():
+    """Create an argparser parsing the standard arguments for WindowConfig"""
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
@@ -253,7 +256,19 @@ def parse_args(args=None):
         default=1.0,
         help="Multiplier for the window size making it easy scale the window",
     )
+    return parser
 
+
+def parse_args(args=None, parser=None):
+    """Parse arguments from sys.argv
+    
+    Passing in your own argparser can be user to extend the parser.
+
+    Keyword Args:
+        args: override for sys.argv
+        parser: Supply your own argparser instance
+    """
+    parser = parser or create_parser()
     return parser.parse_args(args or sys.argv[1:])
 
 

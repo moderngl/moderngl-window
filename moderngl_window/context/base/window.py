@@ -1,3 +1,4 @@
+from argparse import ArgumentParser, Namespace
 from functools import wraps
 from pathlib import Path
 import logging
@@ -853,6 +854,10 @@ class WindowConfig:
         # Default value
         log_level = logging.INFO
     """
+    argv = None  # type: Namespace
+    """
+    The parsed command line arguments.
+    """
     def __init__(self, ctx: moderngl.Context = None, wnd: BaseWindow = None, timer: BaseTimer = None, **kwargs):
         """Initialize the window config
 
@@ -885,6 +890,16 @@ class WindowConfig:
         """
         import moderngl_window
         moderngl_window.run_window_config(cls)
+
+    @classmethod
+    def add_arguments(cls, parser: ArgumentParser):
+        """Add arguments to default argument parser.
+        Add arguments using ``add_argument(..)``.
+        
+        Args:
+            parser (ArgumentParser): The default argument parser.
+        """
+        pass
 
     def render(self, time: float, frame_time: float):
         """Renders the assigned effect
