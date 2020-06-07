@@ -895,7 +895,7 @@ class WindowConfig:
     def add_arguments(cls, parser: ArgumentParser):
         """Add arguments to default argument parser.
         Add arguments using ``add_argument(..)``.
-        
+
         Args:
             parser (ArgumentParser): The default argument parser.
         """
