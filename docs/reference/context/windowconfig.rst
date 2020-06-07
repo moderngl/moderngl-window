@@ -59,3 +59,5 @@ Attributes
    :annotation:
 .. autoattribute:: WindowConfig.log_level
    :annotation:
+.. autoattribute:: WindowConfig.argv
+   :annotation:

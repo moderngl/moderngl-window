@@ -17,4 +17,5 @@ General helper functions aiding in the boostrapping of this library.
 .. autofunction:: find_window_classes
 .. autofunction:: create_window_from_settings
 .. autofunction:: run_window_config
+.. autofunction:: create_parser
 .. autofunction:: parse_args
