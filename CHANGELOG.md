@@ -1,5 +1,31 @@
 # Changelog
 
+# 2.2.0
+
+* `WindowConfig` now supports overriding the default arugment parser.
+  A classmethod `add_arguments` can be implemented to add additional
+  arguments. The parsed arguments are available in `self.argv`
+* Added in `Scene.draw_wireframe` rendering a scene in wire frame mode
+* `Scene.draw_bbox` now support passing in a `color`
+* `Scene` should now have better support for all the vertex formats
+  wavefront/obj files may have.
+* Addded `WindowConfig.clear_color` attribute so uses can control the
+  clear color of the screen. The value can be set to `None` to
+  disable screen clearing (@Leterax)
+* Added `OrbitCamera` (@Leterax)
+* Allow setting camera rotation (@Leterax)
+* `VAO` should now give better feedback if the buffers and program
+  attributes are not compatible
+* `ModernGLRenderer` (imgui renderer) should not rely on moderngl-window (@minuJeong)
+* `Scene` should now cache default shaders internally so they are not loaded
+  for every scene
+* Several typos in docs (@dawid-januszkiewicz)
+* `WindowConfig.load_compute_shader` missing in docs
+* Bumped pygame to `2.0.0.dev10`
+
+Thanks to @Leterax, @minuJeong and @dawid-januszkiewicz for the contributions to this release
+and @mtbouchard for input on `WindowConfig` and `Scene` changes.
+
 # 2.1.1
 
 ## Improvements:
