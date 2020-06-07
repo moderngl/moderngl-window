@@ -50,8 +50,8 @@ class Camera:
         self.right = Vector3([1.0, 0.0, 0.0])
         self.dir = Vector3([0.0, 0.0, -1.0])
         # Yaw and Pitch
-        self.yaw = -90.0
-        self.pitch = 0.0
+        self._yaw = -90.0
+        self._pitch = 0.0
 
         # World up vector
         self._up = Vector3([0.0, 1.0, 0.0])
@@ -72,7 +72,38 @@ class Camera:
             y (float): y position
             z (float): z position
         """
-        self.position = Vector3([x, y, z])
+        self.position = Vector3([float(x), float(y), float(z)])
+
+    def set_rotation(self, yaw, pitch) -> None:
+        """Set the rotation of the camera.
+
+        Args:
+            yaw (float): yaw rotation
+            pitch (float): pitch rotation
+        """
+        self._pitch = float(pitch)
+        self._yaw = float(yaw)
+        self._update_yaw_and_pitch()
+
+    @property
+    def yaw(self) -> float:
+        """float: The current yaw angle."""
+        return self._yaw
+
+    @yaw.setter
+    def yaw(self, value) -> None:
+        self._yaw = float(value)
+        self._update_yaw_and_pitch()
+
+    @property
+    def pitch(self) -> float:
+        """float: The current pitch angle."""
+        return self._pitch
+
+    @pitch.setter
+    def pitch(self, value) -> None:
+        self._pitch = float(value)
+        self._update_yaw_and_pitch()
 
     @property
     def matrix(self) -> numpy.ndarray:
@@ -366,8 +397,8 @@ class KeyboardCamera(Camera):
         dx *= self._mouse_sensitivity
         dy *= self._mouse_sensitivity
 
-        self.yaw -= dx
-        self.pitch += dy
+        self._yaw -= dx
+        self._pitch += dy
 
         if self.pitch > 85.0:
             self.pitch = 85.0
