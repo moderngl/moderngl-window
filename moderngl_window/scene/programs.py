@@ -57,13 +57,38 @@ class MeshProgram:
         raise NotImplementedError("apply is not implemented. Please override the MeshProgram method")
 
 
-class ColorProgram(MeshProgram):
-    """
-    Simple color program
-    """
+class VertexColorProgram(MeshProgram):
+    """Vertex color program"""
+
     def __init__(self, program=None, **kwargs):
         super().__init__(program=None)
-        self.program = programs.load(ProgramDescription(path="scene_default/color.glsl"))
+        self.program = programs.load(ProgramDescription(path="scene_default/vertex_color.glsl"))
+
+    def draw(self, mesh, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0):
+        self.program["m_proj"].write(projection_matrix)
+        self.program["m_model"].write(model_matrix)
+        self.program["m_cam"].write(camera_matrix)
+        mesh.vao.render(self.program)
+
+    def apply(self, mesh):
+        if not mesh.material:
+            return None
+
+        if mesh.attributes.get("TEXCOORD_0"):
+            return None
+
+        if mesh.attributes.get("COLOR_0"):
+            return self
+
+        return None
+
+
+class ColorLightProgram(MeshProgram):
+    """Simple color program with light"""
+
+    def __init__(self, program=None, **kwargs):
+        super().__init__(program=None)
+        self.program = programs.load(ProgramDescription(path="scene_default/color_light.glsl"))
 
     def draw(self, mesh, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0):
 
@@ -90,19 +115,85 @@ class ColorProgram(MeshProgram):
         if not mesh.attributes.get("NORMAL"):
             return None
 
-        if mesh.material.mat_texture is None:
+        if not mesh.attributes.get("TEXCOORD_0"):
             return self
 
         return None
 
 
 class TextureProgram(MeshProgram):
+    """Plan textured"""
+
+    def __init__(self, program=None, **kwargs):
+        super().__init__(program=None)
+        self.program = programs.load(ProgramDescription(path="scene_default/texture.glsl"))
+
+    def draw(self, mesh, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0):
+        mesh.material.mat_texture.texture.use()
+        self.program["m_proj"].write(projection_matrix)
+        self.program["m_model"].write(model_matrix)
+        self.program["m_cam"].write(camera_matrix)
+        mesh.vao.render(self.program)
+
+    def apply(self, mesh):
+        if not mesh.material:
+            return None
+
+        if mesh.attributes.get("NORMAL"):
+            return None
+
+        if not mesh.attributes.get("TEXCOORD_0"):
+            return None
+
+        if mesh.attributes.get("COLOR_0"):
+            return None
+
+        if mesh.material.mat_texture is not None:
+            return self
+
+        return None
+
+
+class TextureVertexColorProgram(MeshProgram):
+    """textred object with vertex color"""
+
+    def __init__(self, program=None, **kwargs):
+        super().__init__(program=None)
+        self.program = programs.load(ProgramDescription(path="scene_default/vertex_color_texture.glsl"))
+
+    def draw(self, mesh, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0):
+        mesh.material.mat_texture.texture.use()
+        self.program["m_proj"].write(projection_matrix)
+        self.program["m_model"].write(model_matrix)
+        self.program["m_cam"].write(camera_matrix)
+        mesh.vao.render(self.program)
+
+    def apply(self, mesh):
+        if not mesh.material:
+            return None
+
+        if mesh.attributes.get("NORMAL"):
+            return None
+
+        if not mesh.attributes.get("TEXCOORD_0"):
+            return None
+
+        if not mesh.attributes.get("COLOR_0"):
+            return None
+
+        if mesh.material.mat_texture is not None:
+            return self
+
+        return None
+
+
+class TextureLightProgram(MeshProgram):
     """
     Simple texture program
     """
     def __init__(self, program=None, **kwargs):
         super().__init__(program=None)
-        self.program = programs.load(ProgramDescription(path="scene_default/texture.glsl"))
+        self.program = programs.load(ProgramDescription(path="scene_default/texture_light.glsl"))
 
     def draw(self, mesh, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0):
         # if mesh.material.double_sided:
@@ -124,10 +215,17 @@ class TextureProgram(MeshProgram):
         if not mesh.attributes.get("NORMAL"):
             return None
 
+        if not mesh.attributes.get("TEXCOORD_0"):
+            return None
+
         if mesh.material.mat_texture is not None:
             return self
 
         return None
+
+
+class TextureLightColorProgram:
+    pass
 
 
 class FallbackProgram(MeshProgram):

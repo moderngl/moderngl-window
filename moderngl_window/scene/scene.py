@@ -13,10 +13,13 @@ from moderngl_window.meta import ProgramDescription
 from moderngl_window import geometry
 
 from .programs import (
-    ColorProgram,
     FallbackProgram,
+    VertexColorProgram,
+    ColorLightProgram,
     MeshProgram,
     TextureProgram,
+    TextureVertexColorProgram,
+    TextureLightProgram,
 )
 
 logger = logging.getLogger(__name__)
@@ -61,7 +64,7 @@ class Scene:
         global DEFAULT_WIREFRAME_PROGRAM
         if DEFAULT_WIREFRAME_PROGRAM is None:
             DEFAULT_WIREFRAME_PROGRAM = programs.load(
-                ProgramDescription(path='scene_default/color.glsl'),
+                ProgramDescription(path='scene_default/wireframe.glsl'),
             )
         self.wireframe_program = DEFAULT_WIREFRAME_PROGRAM
 
@@ -131,7 +134,7 @@ class Scene:
         for node in self.root_nodes:
             node.draw_bbox(projection_matrix, camera_matrix, self.bbox_program, self.bbox_vao)
 
-    def draw_wireframe(self, projection_matrix=None, camera_matrix=None, children=True, color=(0.75, 0.75, 0.75, 1.0)):
+    def draw_wireframe(self, projection_matrix=None, camera_matrix=None, color=(0.75, 0.75, 0.75, 1.0)):
         """Render the scene in wireframe mode.
 
         Args:
@@ -169,7 +172,14 @@ class Scene:
 
         if not mesh_programs:
             if DEFAULT_PROGRAMS is None:
-                DEFAULT_PROGRAMS = [ColorProgram(), TextureProgram(), FallbackProgram()]
+                DEFAULT_PROGRAMS = [
+                    TextureLightProgram(),
+                    TextureProgram(),
+                    VertexColorProgram(),
+                    TextureVertexColorProgram(),
+                    ColorLightProgram(),
+                    FallbackProgram(),
+                ]
             mesh_programs = DEFAULT_PROGRAMS
 
         for mesh in self.meshes:
