@@ -118,7 +118,7 @@ class ColorLightProgram(MeshProgram):
         if not mesh.attributes.get("TEXCOORD_0"):
             return self
 
-        return None
+        return self
 
 
 class TextureProgram(MeshProgram):
