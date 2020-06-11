@@ -468,12 +468,13 @@ class OrbitCamera(Camera):
         # Get projection matrix in bytes (f4)
         camera.projection.tobytes()
     """
-    def __init__(self, target=(0., 0., 0.), radius=2.0, **kwargs):
+    def __init__(self, target=(0., 0., 0.), radius=2.0, angles=(1., -1.), **kwargs):
         """Initialize the camera
 
         Keyword Args:
             target (float, float, float): Target point
             radius (float): Radius
+            angles (float, float): angle_x and angle_y in radians
             fov (float): Field of view
             aspect_ratio (float): Aspect ratio
             near (float): near plane
@@ -481,8 +482,8 @@ class OrbitCamera(Camera):
         """
         # values for orbit camera
         self.radius = radius  # radius in base units
-        self.angle_x = 1.0  # angle in radians
-        self.angle_y = -1.0  # angle in radians
+        self.angle_x = angles[0]  # angle in radians
+        self.angle_y = angles[1]  # angle in radians
         self.target = target  # camera target in base units
         self.up = (0.0, 1.0, 0.0)  # camera up vector
 
@@ -496,9 +497,9 @@ class OrbitCamera(Camera):
         """numpy.ndarray: The current view matrix for the camera"""
         return Matrix44.look_at(
             (
-                cos(self.angle_x) * sin(self.angle_y) * self.radius,
-                cos(self.angle_y) * self.radius,
-                sin(self.angle_x) * sin(self.angle_y) * self.radius,
+                cos(self.angle_x) * sin(self.angle_y) * self.radius + self.target[0],
+                cos(self.angle_y) * self.radius + self.target[1],
+                sin(self.angle_x) * sin(self.angle_y) * self.radius + self.target[2],
             ),  # camera (eye) position, calculated from angles and radius
             self.target,  # what to look at
             self.up,  # camera up direction (change for rolling the camera)
