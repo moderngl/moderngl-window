@@ -1,5 +1,16 @@
 # Changelog
 
+# 2.2.1
+
+* imgui renderer now supports moderngl textures. This opens up for both
+  displaying images and animated framebuffer textures into imgui.
+* Scene: Fixed several issues related to shader assigning based on material properties.
+  This especially affected wavefront/obj files.
+* OrbitCamera: Fixed translation issue (@Leterax)
+* OrbitCamera: Now using degrees instead of radians (@Leterax)
+* Bumped pyglet version to minimum 1.5.6. This version
+  solve several issue with window events for MacBooks with Touch Bar
+
 # 2.2.0
 
 * `WindowConfig` now supports overriding the default arugment parser.
