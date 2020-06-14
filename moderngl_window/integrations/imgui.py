@@ -111,6 +111,7 @@ class ModernGLRenderer(BaseOpenGLRenderer):
         self._vertex_buffer = None
         self._index_buffer = None
         self._vao = None
+        self._textures = {}
         self.wnd = kwargs.get('wnd')
         self.ctx = self.wnd.ctx if self.wnd and self.wnd.ctx else kwargs.get('ctx')
 
@@ -124,13 +125,23 @@ class ModernGLRenderer(BaseOpenGLRenderer):
         if 'display_size' in kwargs:
             self.io.display_size = kwargs.get('display_size')
 
+    def register_texture(self, texture: moderngl.Texture):
+        """Make the imgui renderer aware of the texture"""
+        self._textures[texture.glo] = texture
+
+    def remove_texture(self, texture: moderngl.Texture):
+        """Remove the texture from the imgui renderer"""
+        del self._textures[texture.glo]
+
     def refresh_font_texture(self):
         width, height, pixels = self.io.fonts.get_tex_data_as_rgba32()
 
         if self._font_texture:
+            self.remove_texture(self._font_texture)
             self._font_texture.release()
 
         self._font_texture = self.ctx.texture((width, height), 4, data=pixels)
+        self.register_texture(self._font_texture)
         self.io.fonts.texture_id = self._font_texture.glo
         self.io.fonts.clear_tex_data()
 
@@ -187,6 +198,16 @@ class ModernGLRenderer(BaseOpenGLRenderer):
 
             idx_pos = 0
             for command in commands.commands:
+                texture = self._textures.get(command.texture_id)
+                if texture is None:
+                    raise ValueError((
+                        "Texture {} is not registered. Please add to renderer using "
+                        "register_texture(..). "
+                        "Current textures: {}".format(command.texture_id, list(self._textures))
+                    ))
+
+                texture.use(0)
+
                 x, y, z, w = command.clip_rect
                 self.ctx.scissor = int(x), int(fb_height - w), int(z - x), int(w - y)
                 self._vao.render(moderngl.TRIANGLES, vertices=command.elem_count, first=idx_pos)
