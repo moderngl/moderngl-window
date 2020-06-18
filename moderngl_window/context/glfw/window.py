@@ -41,14 +41,7 @@ class Window(BaseWindow):
 
         monitor = None
         if self.fullscreen:
-            monitor = glfw.get_primary_monitor()
-            mode = glfw.get_video_mode(monitor)
-            self._width, self._height = mode.size.width, mode.size.height
-
-            glfw.window_hint(glfw.RED_BITS, mode.bits.red)
-            glfw.window_hint(glfw.GREEN_BITS, mode.bits.green)
-            glfw.window_hint(glfw.BLUE_BITS, mode.bits.blue)
-            glfw.window_hint(glfw.REFRESH_RATE, mode.refresh_rate)
+            self._set_fullscreen(True)
 
         self._window = glfw.create_window(self.width, self.height, self.title, monitor, None)
         self._has_focus = True
@@ -79,6 +72,46 @@ class Window(BaseWindow):
 
         self.init_mgl_context()
         self.set_default_viewport()
+
+    def _set_fullscreen(self, value: bool) -> None:
+        monitor = glfw.get_primary_monitor()
+        mode = glfw.get_video_mode(monitor)
+        refresh_rate = mode.refresh_rate if self.vsync else glfw.DONT_CARE
+        self.resizable = not value
+        glfw.window_hint(glfw.RESIZABLE, self.resizable)
+
+        if value:
+            # enable fullscreen
+            self._non_fullscreen_size = self.width, self.height
+            self._non_fullscreen_position = self.position
+            glfw.set_window_monitor(
+                self._window, monitor,
+                0, 0,
+                mode.size.width, mode.size.height,
+                refresh_rate
+            )
+
+            glfw.window_hint(glfw.RED_BITS, mode.bits.red)
+            glfw.window_hint(glfw.GREEN_BITS, mode.bits.green)
+            glfw.window_hint(glfw.BLUE_BITS, mode.bits.blue)
+            glfw.window_hint(glfw.REFRESH_RATE, mode.refresh_rate)
+
+        else:
+            # disable fullscreen
+            glfw.set_window_monitor(
+                self._window,
+                None,
+                *self._non_fullscreen_position,
+                *self._non_fullscreen_size,
+                refresh_rate
+            )
+
+        if self.vsync:
+            glfw.swap_interval(1)
+        else:
+            glfw.swap_interval(0)
+
+        self._fullscreen = value
 
     @property
     def size(self) -> Tuple[int, int]:

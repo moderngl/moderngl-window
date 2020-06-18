@@ -295,10 +295,18 @@ class BaseWindow:
         """bool: Window is resizable"""
         return self._resizable
 
+    @resizable.setter
+    def resizable(self, value: bool) -> None:
+        self._resizable = value
+
     @property
     def fullscreen(self) -> bool:
         """bool: Window is in fullscreen mode"""
         return self._fullscreen
+
+    @fullscreen.setter
+    def fullscreen(self, value: bool) -> None:
+        self._set_fullscreen(value)
 
     @property
     def config(self) -> 'WindowConfig':
@@ -612,6 +620,12 @@ class BaseWindow:
         """
         if self._resize_func:
             self._resize_func(width, height)
+
+    def _set_fullscreen(self, value: bool) -> None:
+        """
+        A library specific destroy method is required
+        """
+        raise NotImplementedError()
 
     def destroy(self) -> None:
         """
