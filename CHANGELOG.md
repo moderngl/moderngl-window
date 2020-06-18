@@ -9,7 +9,7 @@
 * OrbitCamera: Fixed translation issue (@Leterax)
 * OrbitCamera: Now using degrees instead of radians (@Leterax)
 * Bumped pyglet version to minimum 1.5.6. This version
-  solve several issue with window events for MacBooks with Touch Bar
+  solves several issue with window events for MacBooks with Touch Bar
 
 # 2.2.0
 
