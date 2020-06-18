@@ -435,7 +435,7 @@ class BaseWindow:
     @property
     def close_func(self):
         """callable: Get or set the close callable"""
-        return self._resize_func
+        return self._close_func
 
     @close_func.setter
     @require_callable
@@ -569,6 +569,7 @@ class BaseWindow:
     def close(self) -> None:
         """Signal for the window to close"""
         self._close = True
+        self.close_func()
 
     def use(self):
         """Bind the window's framebuffer"""
