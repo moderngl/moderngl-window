@@ -111,8 +111,6 @@ class Window(BaseWindow):
         else:
             glfw.swap_interval(0)
 
-        self._fullscreen = value
-
     @property
     def size(self) -> Tuple[int, int]:
         """Tuple[int, int]: current window size.

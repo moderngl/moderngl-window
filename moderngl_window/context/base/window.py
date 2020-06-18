@@ -307,6 +307,7 @@ class BaseWindow:
     @fullscreen.setter
     def fullscreen(self, value: bool) -> None:
         self._set_fullscreen(value)
+        self._fullscreen = value
 
     @property
     def config(self) -> 'WindowConfig':
