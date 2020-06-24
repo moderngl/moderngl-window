@@ -114,7 +114,7 @@ class Window(BaseWindow):
             self._widget.showFullScreen()
         else:
             self._widget.showNormal()
-            
+
     @property
     def size(self) -> Tuple[int, int]:
         """Tuple[int, int]: current window size.
