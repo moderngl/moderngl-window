@@ -1,5 +1,10 @@
 # Changelog
 
+# 2.2.2
+
+* Fixed several issues causing the window close callback not being called
+* Fixed incorrect mouse button mapping in mouse drag events
+
 # 2.2.1
 
 * imgui renderer now supports moderngl textures. This opens up for both
