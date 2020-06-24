@@ -40,10 +40,10 @@ class ModernglWindowMixin:
             self.io.mouse_down[0] = 1
 
         if self.wnd.mouse_states.middle:
-            self.io.mouse_down[1] = 1
+            self.io.mouse_down[2] = 1
 
         if self.wnd.mouse_states.right:
-            self.io.mouse_down[2] = 1
+            self.io.mouse_down[1] = 1
 
     def mouse_scroll_event(self, x_offset, y_offset):
         self.io.mouse_wheel = y_offset
