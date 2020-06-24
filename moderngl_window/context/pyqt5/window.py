@@ -42,7 +42,7 @@ class Window(BaseWindow):
         # Configure multisampling if needed
         if self.samples > 1:
             gl.setSampleBuffers(True)
-            gl.setSamples(self.samples)
+            gl.setSamples(int(self.samples))
 
         # We need an application object, but we are bypassing the library's
         # internal event loop to avoid unnecessary work
@@ -73,7 +73,8 @@ class Window(BaseWindow):
 
         # Center the window on the screen if in window mode
         if not self.fullscreen:
-            self._widget.move(QtWidgets.QDesktopWidget().rect().center() - self._widget.rect().center())
+            center_window_position = self.position[0] - self.width/2, self.position[1] - self.height/2
+            self._widget.move(*center_window_position)
 
         # Needs to be set before show()
         self._widget.resizeGL = self.resize
