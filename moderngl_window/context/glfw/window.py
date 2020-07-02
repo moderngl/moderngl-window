@@ -196,15 +196,7 @@ class Window(BaseWindow):
         self._modifiers.alt = mods & 4 == 4
 
     def set_icon(self, icon_path) -> None:
-        # load the image
-        if icon_path == '':
-            image = Image.new(mode='RGBA', size=(1, 1), color=(1, 1, 1, 1))
-        else:
-            image = Image.open(icon_path)
-        # create _GLFWimage
-        # icon = glfw._GLFWimage()
-        # icon.wrap(image)
-        # set the icon
+        image = Image.open(icon_path)
         glfw.set_window_icon(self._window, 1, image)
 
     def glfw_key_event_callback(self, window, key, scancode, action, mods):
