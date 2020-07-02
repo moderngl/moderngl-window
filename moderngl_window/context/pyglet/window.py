@@ -179,6 +179,10 @@ class Window(BaseWindow):
         self._modifiers.ctrl = mods & 2 == 2
         self._modifiers.alt = mods & 4 == 4
 
+    def set_icon(self, icon_path: str) -> None:
+        icon = pyglet.image.load(icon_path)
+        self._window.set_icon(icon)
+
     def on_key_press(self, symbol, modifiers):
         """Pyglet specific key press callback.
 
