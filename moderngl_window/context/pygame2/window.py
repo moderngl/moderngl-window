@@ -160,6 +160,10 @@ class Window(BaseWindow):
         self.process_events()
         self._frames += 1
 
+    def set_icon(self, icon_path: str) -> None:
+        icon = pygame.image.load(icon_path)
+        pygame.display.set_icon(icon)
+
     def resize(self, width, height) -> None:
         """Resize callback
 

@@ -614,6 +614,12 @@ class BaseWindow:
         if self._resize_func:
             self._resize_func(width, height)
 
+    def set_icon(self, icon_path: str) -> None:
+        """
+        A library specific destroy method is required
+        """
+        raise NotImplementedError(f"Setting an icon is currently not supported by Window-type: {self.name}")
+
     def destroy(self) -> None:
         """
         A library specific destroy method is required
