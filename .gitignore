@@ -61,3 +61,6 @@ venv.bak/
 .mypy_cache
 /random_fun/
 imgui.ini
+
+# PyCharm
+.idea/
