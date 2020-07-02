@@ -63,4 +63,4 @@ venv.bak/
 imgui.ini
 
 # PyCharm
-.idea
+.idea/
