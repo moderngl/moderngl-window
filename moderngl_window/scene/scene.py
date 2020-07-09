@@ -27,10 +27,6 @@ logger = logging.getLogger(__name__)
 if TYPE_CHECKING:
     from moderngl_window.scene import Node, Material
 
-DEFAULT_PROGRAMS = None
-DEFAULT_BBOX_PROGRAM = None
-DEFAULT_WIREFRAME_PROGRAM = None
-
 
 class Scene:
     """Generic scene"""
@@ -56,16 +52,14 @@ class Scene:
         self.bbox_vao = geometry.bbox()
 
         global DEFAULT_BBOX_PROGRAM
-        if DEFAULT_BBOX_PROGRAM is None:
-            DEFAULT_BBOX_PROGRAM = programs.load(
-                ProgramDescription(path='scene_default/bbox.glsl'),
-            )
+        DEFAULT_BBOX_PROGRAM = programs.load(
+            ProgramDescription(path='scene_default/bbox.glsl'),
+        )
         self.bbox_program = DEFAULT_BBOX_PROGRAM
         global DEFAULT_WIREFRAME_PROGRAM
-        if DEFAULT_WIREFRAME_PROGRAM is None:
-            DEFAULT_WIREFRAME_PROGRAM = programs.load(
-                ProgramDescription(path='scene_default/wireframe.glsl'),
-            )
+        DEFAULT_WIREFRAME_PROGRAM = programs.load(
+            ProgramDescription(path='scene_default/wireframe.glsl'),
+        )
         self.wireframe_program = DEFAULT_WIREFRAME_PROGRAM
 
         self._matrix = matrix44.create_identity(dtype='f4')
@@ -174,15 +168,14 @@ class Scene:
                 mesh.mesh_program = None
 
         if not mesh_programs:
-            if DEFAULT_PROGRAMS is None:
-                DEFAULT_PROGRAMS = [
-                    TextureLightProgram(),
-                    TextureProgram(),
-                    VertexColorProgram(),
-                    TextureVertexColorProgram(),
-                    ColorLightProgram(),
-                    FallbackProgram(),
-                ]
+            DEFAULT_PROGRAMS = [
+                TextureLightProgram(),
+                TextureProgram(),
+                VertexColorProgram(),
+                TextureVertexColorProgram(),
+                ColorLightProgram(),
+                FallbackProgram(),
+            ]
             mesh_programs = DEFAULT_PROGRAMS
 
         for mesh in self.meshes:
