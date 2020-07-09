@@ -496,9 +496,9 @@ class OrbitCamera(Camera):
         """numpy.ndarray: The current view matrix for the camera"""
         return Matrix44.look_at(
             (
-                cos(self.angle_x) * sin(self.angle_y) * self.radius + self.target[0],
-                cos(self.angle_y) * self.radius + self.target[1],
-                sin(self.angle_x) * sin(self.angle_y) * self.radius + self.target[2],
+                cos(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius + self.target[0],
+                cos(radians(self.angle_y)) * self.radius + self.target[1],
+                sin(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius + self.target[2],
             ),  # camera (eye) position, calculated from angles and radius
             self.target,  # what to look at
             self.up,  # camera up direction (change for rolling the camera)
@@ -517,7 +517,7 @@ class OrbitCamera(Camera):
     @angle_x.setter
     def angle_x(self, value: float):
         """Set camera rotation_x in degrees."""
-        self._angle_x = radians(value)
+        self._angle_x = value
 
     @property
     def angle_y(self) -> float:
@@ -531,7 +531,7 @@ class OrbitCamera(Camera):
     @angle_y.setter
     def angle_y(self, value: float):
         """Set camera rotation_y in degrees."""
-        self._angle_y = radians(value)
+        self._angle_y = value
 
     @property
     def mouse_sensitivity(self) -> float:
@@ -568,11 +568,11 @@ class OrbitCamera(Camera):
             dx: Relative mouse position change on x axis
             dy: Relative mouse position change on y axis
         """
-        self._angle_x += dx * self.mouse_sensitivity / 100.
-        self._angle_y += dy * self.mouse_sensitivity / 100.
+        self.angle_x += dx * self.mouse_sensitivity / 10.
+        self.angle_y += dy * self.mouse_sensitivity / 10.
 
         # clamp the y angle to avoid weird rotations
-        self._angle_y = max(min(self.angle_y, -0.1), -3.04)
+        self.angle_y = max(min(self.angle_y, -5.), -175.)
 
     def zoom_state(self, y_offset: float) -> None:
         # allow zooming in/out
