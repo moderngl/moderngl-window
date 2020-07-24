@@ -2,6 +2,7 @@
 Helper classes for loading shader
 """
 from typing import List, Tuple, Union
+import re
 
 import moderngl
 import moderngl_window
@@ -325,8 +326,9 @@ class ShaderSource:
         """
         names = []
         for line in self.lines:
-            if line.strip().startswith("out "):
-                names.append(line.split()[2].replace(';', ''))
+            res = re.match(r'(layout(.+)\))?(\s+)?(out)(\s+)(\w+)(\s+)(\w+)', line.strip())
+            if res:
+                names.append(res.groups()[-1])
 
         return names
 
