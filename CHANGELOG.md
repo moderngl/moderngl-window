@@ -2,6 +2,7 @@
 
 ## 2.2.3
 
+* imgui integration no longer relies on pyopengl
 * Bug: Properly parse `out` attributes with layout qualifiers
 * Bug: Do not cache system shaders at module level.
   We now cache them in the context to better support multiple windows.
