@@ -2,7 +2,7 @@ import ctypes
 
 import imgui
 import moderngl
-from imgui.integrations.opengl import BaseOpenGLRenderer
+from imgui.integrations.base import BaseOpenGLRenderer
 
 
 class ModernglWindowMixin:
