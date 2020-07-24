@@ -51,16 +51,24 @@ class Scene:
 
         self.bbox_vao = geometry.bbox()
 
-        global DEFAULT_BBOX_PROGRAM
-        DEFAULT_BBOX_PROGRAM = programs.load(
-            ProgramDescription(path='scene_default/bbox.glsl'),
-        )
-        self.bbox_program = DEFAULT_BBOX_PROGRAM
-        global DEFAULT_WIREFRAME_PROGRAM
-        DEFAULT_WIREFRAME_PROGRAM = programs.load(
-            ProgramDescription(path='scene_default/wireframe.glsl'),
-        )
-        self.wireframe_program = DEFAULT_WIREFRAME_PROGRAM
+        if self.ctx.extra is None:
+            self.ctx.extra = {}
+
+        # Load bbox program and cache in the context
+        self.bbox_program = self.ctx.extra.get('DEFAULT_BBOX_PROGRAM')
+        if not self.bbox_program:
+            self.bbox_program = programs.load(
+                ProgramDescription(path='scene_default/bbox.glsl'),
+            )
+            self.ctx.extra['DEFAULT_BBOX_PROGRAM'] = self.bbox_program
+
+        # Load wireframe program and cache in the context
+        self.wireframe_program = self.ctx.extra.get('DEFAULT_WIREFRAME_PROGRAM')
+        if not self.wireframe_program:
+            self.wireframe_program = programs.load(
+                ProgramDescription(path='scene_default/wireframe.glsl'),
+            )
+            self.ctx.extra['DEFAULT_WIREFRAME_PROGRAM'] = self.wireframe_program
 
         self._matrix = matrix44.create_identity(dtype='f4')
 
@@ -168,15 +176,17 @@ class Scene:
                 mesh.mesh_program = None
 
         if not mesh_programs:
-            DEFAULT_PROGRAMS = [
-                TextureLightProgram(),
-                TextureProgram(),
-                VertexColorProgram(),
-                TextureVertexColorProgram(),
-                ColorLightProgram(),
-                FallbackProgram(),
-            ]
-            mesh_programs = DEFAULT_PROGRAMS
+            mesh_programs = self.ctx.extra.get('DEFAULT_PROGRAMS')
+            if not mesh_programs:
+                mesh_programs = [
+                    TextureLightProgram(),
+                    TextureProgram(),
+                    VertexColorProgram(),
+                    TextureVertexColorProgram(),
+                    ColorLightProgram(),
+                    FallbackProgram(),
+                ]
+                self.ctx.extra['DEFAULT_PROGRAMS'] = mesh_programs
 
         for mesh in self.meshes:
             for mesh_prog in mesh_programs:
