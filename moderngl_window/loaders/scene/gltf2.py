@@ -518,7 +518,7 @@ class VBOInfo:
 
     def __str__(self):
         return "VBOInfo<buffer={}, buffer_view={},\n" \
-               "        length={}, offset={}, \n" \
+               "        length={}, offset={}, target={}\n" \
                "        component_type={}, components={}, count={}, \n" \
                "        attribs={}".format(self.buffer.id, self.buffer_view.id, self.target,
                                            self.byte_length, self.byte_offset,
