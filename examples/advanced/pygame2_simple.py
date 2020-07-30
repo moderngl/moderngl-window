@@ -8,7 +8,6 @@ import pygame
 import moderngl
 import moderngl_window
 from moderngl_window import geometry
-from pyrr import matrix44
 
 
 class Pygame(moderngl_window.WindowConfig):
