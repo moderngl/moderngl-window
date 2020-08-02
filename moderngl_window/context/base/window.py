@@ -3,6 +3,7 @@ from functools import wraps
 from pathlib import Path
 import logging
 import sys
+import weakref
 from typing import Any, Tuple, Type
 
 import moderngl
@@ -310,7 +311,10 @@ class BaseWindow:
 
             window.config = window_config_instance
         """
-        return self._config
+        if self._config is not None:
+            return self._config()
+
+        return None
 
     @property
     def vsync(self) -> bool:
@@ -407,7 +411,7 @@ class BaseWindow:
         self.mouse_scroll_event_func = getattr(config, 'mouse_scroll_event', dummy_func)
         self.unicode_char_entered_func = getattr(config, 'unicode_char_entered', dummy_func)
 
-        self._config = config
+        self._config = weakref.ref(config)
 
     @property
     def render_func(self):
