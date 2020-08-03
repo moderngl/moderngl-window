@@ -1,6 +1,9 @@
 """
 Based on BlubberQuark's blog:
 https://blubberquark.tumblr.com/post/185013752945/using-moderngl-for-post-processing-shaders-with
+
+Clears the screen using opengl with a constantly changing
+color value and alpha blend a pygame surface on top.
 """
 import math
 from pathlib import Path
@@ -37,12 +40,21 @@ class Pygame(moderngl_window.WindowConfig):
 
     def render(self, time, frametime):
         self.render_pygame(time)
+
+        self.ctx.clear(
+            (math.sin(time) + 1.0) / 2,
+            (math.sin(time + 2) + 1.0) / 2,
+            (math.sin(time + 3) + 1.0) / 2,
+        )
+    
+        self.ctx.enable(moderngl.BLEND)
         self.pg_texture.use()
         self.quad_fs.render(self.texture_program)
+        self.ctx.disable(moderngl.BLEND)
 
     def render_pygame(self, time):
         """Render to offscreen surface and copy result into moderngl texture"""
-        self.pg_screen.fill((255, 255, 255))
+        self.pg_screen.fill((0, 0, 0, 0))  # Make sure we clear with alpha 0!
         N = 8
         for i in range(N):
             time_offset = 6.28 / N * i
