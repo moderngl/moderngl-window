@@ -16,6 +16,7 @@ from moderngl_window.meta import (
     SceneDescription,
     DataDescription,
 )
+from moderngl_window.loaders.texture.icon import IconLoader
 from moderngl_window.scene import Scene
 
 logger = logging.getLogger(__name__)
@@ -618,6 +619,11 @@ class BaseWindow:
         """
         A library specific destroy method is required
         """
+        loader = IconLoader(TextureDescription(path=icon_path))
+        resolved_path = loader.find_icon()
+        self._set_icon(resolved_path)
+
+    def _set_icon(self, icon_path: str) -> None:
         raise NotImplementedError(f"Setting an icon is currently not supported by Window-type: {self.name}")
 
     def destroy(self) -> None:

@@ -132,7 +132,7 @@ class Window(BaseWindow):
         self._gl_widget.tkSwapBuffers()
         self._frames += 1
 
-    def set_icon(self, icon_path: str) -> None:
+    def _set_icon(self, icon_path: str) -> None:
         self._tk.iconphoto(False, tkinter.PhotoImage(file=icon_path))
 
     def tk_key_press(self, event: tkinter.Event) -> None:

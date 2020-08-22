@@ -194,7 +194,7 @@ class Window(BaseWindow):
         self._modifiers.ctrl = mods & sdl2.KMOD_CTRL
         self._modifiers.alt = mods & sdl2.KMOD_ALT
 
-    def set_icon(self, icon_path: str) -> None:
+    def _set_icon(self, icon_path: str) -> None:
         sdl2.SDL_SetWindowIcon(self._window, sdl2.ext.load_image(icon_path))
 
     def process_events(self) -> None:

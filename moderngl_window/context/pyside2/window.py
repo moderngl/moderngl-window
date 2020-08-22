@@ -206,7 +206,7 @@ class Window(BaseWindow):
         self._modifiers.ctrl = bool(mods & QtCore.Qt.ControlModifier)
         self._modifiers.alt = bool(mods & QtCore.Qt.AltModifier)
 
-    def set_icon(self, icon_path: str) -> None:
+    def _set_icon(self, icon_path: str) -> None:
         self._widget.setWindowIcon(QtGui.QIcon(icon_path))
 
     def key_pressed_event(self, event):

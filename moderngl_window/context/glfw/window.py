@@ -195,7 +195,7 @@ class Window(BaseWindow):
         self._modifiers.ctrl = mods & 2 == 2
         self._modifiers.alt = mods & 4 == 4
 
-    def set_icon(self, icon_path) -> None:
+    def _set_icon(self, icon_path) -> None:
         image = Image.open(icon_path)
         glfw.set_window_icon(self._window, 1, image)
 
