@@ -25,8 +25,9 @@ class DataDescription(ResourceDescription):
         # Describe a binary file. Specify a binary loader should be used.
         DataDescription(path='data/data.bin', kind='binary')
     """
+
     default_kind = None
-    resource_type = 'data'
+    resource_type = "data"
 
     def __init__(self, path=None, kind=None, **kwargs):
         """Initialize the resource description.
@@ -36,8 +37,7 @@ class DataDescription(ResourceDescription):
             kind (str): The resource kind deciding loader class
             **kwargs: Additional custom attributes
         """
-        kwargs.update({
-            "path": path,
-            "kind": kind,
-        })
+        kwargs.update(
+            {"path": path, "kind": kind,}
+        )
         super().__init__(**kwargs)

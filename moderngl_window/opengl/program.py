@@ -8,12 +8,12 @@ import moderngl
 import moderngl_window
 from moderngl_window.meta import ProgramDescription
 
-VERTEX_SHADER = 'VERTEX_SHADER'
-GEOMETRY_SHADER = 'GEOMETRY_SHADER'
-FRAGMENT_SHADER = 'FRAGMENT_SHADER'
-TESS_CONTROL_SHADER = 'TESS_CONTROL_SHADER'
-TESS_EVALUATION_SHADER = 'TESS_EVALUATION_SHADER'
-COMPUTE_SHADER = 'COMPUTE_SHADER'
+VERTEX_SHADER = "VERTEX_SHADER"
+GEOMETRY_SHADER = "GEOMETRY_SHADER"
+FRAGMENT_SHADER = "FRAGMENT_SHADER"
+TESS_CONTROL_SHADER = "TESS_CONTROL_SHADER"
+TESS_EVALUATION_SHADER = "TESS_EVALUATION_SHADER"
+COMPUTE_SHADER = "COMPUTE_SHADER"
 
 
 class ProgramShaders:
@@ -79,8 +79,15 @@ class ProgramShaders:
         return instance
 
     @classmethod
-    def from_separate(cls, meta: ProgramDescription, vertex_source, geometry_source=None, fragment_source=None,
-                      tess_control_source=None, tess_evaluation_source=None):
+    def from_separate(
+        cls,
+        meta: ProgramDescription,
+        vertex_source,
+        geometry_source=None,
+        fragment_source=None,
+        tess_control_source=None,
+        tess_evaluation_source=None,
+    ):
         """Initialize multiple shader strings"""
         instance = cls(meta)
         instance.vertex_source = ShaderSource(
@@ -125,7 +132,9 @@ class ProgramShaders:
         return instance
 
     @classmethod
-    def compute_shader(cls, meta: ProgramDescription, compute_shader_source: str = None):
+    def compute_shader(
+        cls, meta: ProgramDescription, compute_shader_source: str = None
+    ):
         instance = cls(meta)
         instance.compute_shader_source = ShaderSource(
             COMPUTE_SHADER,
@@ -159,13 +168,21 @@ class ProgramShaders:
 
         program = self.ctx.program(
             vertex_shader=self.vertex_source.source,
-            geometry_shader=self.geometry_source.source if self.geometry_source else None,
-            fragment_shader=self.fragment_source.source if self.fragment_source else None,
-            tess_control_shader=self.tess_control_source.source if self.tess_control_source else None,
-            tess_evaluation_shader=self.tess_evaluation_source.source if self.tess_evaluation_source else None,
+            geometry_shader=self.geometry_source.source
+            if self.geometry_source
+            else None,
+            fragment_shader=self.fragment_source.source
+            if self.fragment_source
+            else None,
+            tess_control_shader=self.tess_control_source.source
+            if self.tess_control_source
+            else None,
+            tess_evaluation_shader=self.tess_evaluation_source.source
+            if self.tess_evaluation_source
+            else None,
             varyings=out_attribs,
         )
-        program.extra = {'meta': self.meta}
+        program.extra = {"meta": self.meta}
         return program
 
     def handle_includes(self, load_source_func):
@@ -197,7 +214,16 @@ class ShaderSource:
 
     A ``ShaderSource`` can be the base/root shader or a source referenced in an ``#include``.
     """
-    def __init__(self, shader_type: str, name: str, source: str, defines: dict = None, id=0, root=True):
+
+    def __init__(
+        self,
+        shader_type: str,
+        name: str,
+        source: str,
+        defines: dict = None,
+        id=0,
+        root=True,
+    ):
         """Create shader source.
 
         Args:
@@ -210,19 +236,23 @@ class ShaderSource:
         """
         self._id = id
         self._root = root
-        self._source_list = [self]  # List of sources this shader consists of (original source + includes)
+        self._source_list = [
+            self
+        ]  # List of sources this shader consists of (original source + includes)
         self._type = shader_type
         self._name = name
         self._defines = defines or {}
         if root:
             source = source.strip()
-        self._lines = source.split('\n')
+        self._lines = source.split("\n")
 
         # Make sure version is present (only if root shader)
         if self._root and not self._lines[0].startswith("#version"):
             self.print()
             raise ShaderError(
-                "Missing #version in {}. A version must be defined in the first line".format(self._name),
+                "Missing #version in {}. A version must be defined in the first line".format(
+                    self._name
+                ),
             )
 
         self.apply_defines(defines)
@@ -240,10 +270,10 @@ class ShaderSource:
     @property
     def source(self) -> str:
         """str: The source lines as a string"""
-        return '\n'.join(self._lines)
+        return "\n".join(self._lines)
 
     @property
-    def source_list(self) -> List['ShaderSource']:
+    def source_list(self) -> List["ShaderSource"]:
         """List[ShaderSource]: List of all shader sources"""
         return self._source_list
 
@@ -277,22 +307,30 @@ class ShaderSource:
             depth (int): The current include depth (incease by 1 for every call)
         """
         if depth > 100:
-            raise ShaderError("Reaching an include depth of 100. You probably have circular includes")
+            raise ShaderError(
+                "Reaching an include depth of 100. You probably have circular includes"
+            )
 
         current_id = source_id
         while True:
             for nr, line in enumerate(self._lines):
                 line = line.strip()
-                if line.startswith('#include'):
+                if line.startswith("#include"):
                     path = line[9:]
                     current_id += 1
                     _, source = load_source_func(path)
                     source = ShaderSource(
-                        None, path, source,
-                        defines=self._defines, id=current_id, root=False,
+                        None,
+                        path,
+                        source,
+                        defines=self._defines,
+                        id=current_id,
+                        root=False,
                     )
-                    source.handle_includes(load_source_func, depth=depth + 1, source_id=current_id)
-                    self._lines = self.lines[:nr] + source.lines + self.lines[nr + 1:]
+                    source.handle_includes(
+                        load_source_func, depth=depth + 1, source_id=current_id
+                    )
+                    self._lines = self.lines[:nr] + source.lines + self.lines[nr + 1 :]
                     self._source_list += source.source_list
                     current_id = self._source_list[-1].id
                     break
@@ -306,7 +344,7 @@ class ShaderSource:
 
         for nr, line in enumerate(self._lines):
             line = line.strip()
-            if line.startswith('#define'):
+            if line.startswith("#define"):
                 try:
                     name = line.split()[1]
                     value = defines.get(name)
@@ -326,7 +364,9 @@ class ShaderSource:
         """
         names = []
         for line in self.lines:
-            res = re.match(r'(layout(.+)\))?(\s+)?(out)(\s+)(\w+)(\s+)(\w+)', line.strip())
+            res = re.match(
+                r"(layout(.+)\))?(\s+)?(out)(\s+)(\w+)(\s+)(\w+)", line.strip()
+            )
             if res:
                 names.append(res.groups()[-1])
 
@@ -342,7 +382,7 @@ class ShaderSource:
         print("---[ END {} ]---".format(self.name))
 
     def __repr__(self):
-        return '<ShaderSource: {} id={}>'.format(self.name, self.id)
+        return "<ShaderSource: {} id={}>".format(self.name, self.id)
 
 
 class ShaderError(Exception):
@@ -353,6 +393,7 @@ class ReloadableProgram:
     """
     Programs we want to be reloadable must be created with this wrapper.
     """
+
     def __init__(self, meta: ProgramDescription, program: moderngl.Program):
         """
         Create a shader using either a file path or a name.
@@ -376,8 +417,15 @@ class ReloadableProgram:
     def ctx(self) -> moderngl.Context:
         return self.program.ctx
 
-    def __getitem__(self, key) -> Union[moderngl.Uniform, moderngl.UniformBlock, moderngl.Subroutine,
-                                        moderngl.Attribute, moderngl.Varying]:
+    def __getitem__(
+        self, key
+    ) -> Union[
+        moderngl.Uniform,
+        moderngl.UniformBlock,
+        moderngl.Subroutine,
+        moderngl.Attribute,
+        moderngl.Varying,
+    ]:
         return self.program[key]
 
     def get(self, key, default):
@@ -402,9 +450,9 @@ class ReloadableProgram:
 
     @property
     def subroutines(self) -> Tuple[str, ...]:
-        '''
+        """
             tuple: The subroutine uniforms.
-        '''
+        """
         return self.program.subroutines
 
     @property
@@ -433,4 +481,4 @@ class ReloadableProgram:
         return self.program.geometry_vertices
 
     def __repr__(self):
-        return '<ReloadableProgram: {} id={}>'.format(self.name, self.glo)
+        return "<ReloadableProgram: {} id={}>".format(self.name, self.glo)

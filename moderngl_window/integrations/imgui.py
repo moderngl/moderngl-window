@@ -6,7 +6,6 @@ from imgui.integrations.base import BaseOpenGLRenderer
 
 
 class ModernglWindowMixin:
-
     def resize(self, width: int, height: int):
         self.io.display_size = (
             self.wnd.viewport_width / self.wnd.pixel_ratio,
@@ -26,8 +25,15 @@ class ModernglWindowMixin:
     def _mouse_pos_viewport(self, x, y):
         """Make sure mouse coordinates are correct with black borders"""
         return (
-            int(x - (self.wnd.width - self.wnd.viewport_width / self.wnd.pixel_ratio) / 2),
-            int(y - (self.wnd.height - self.wnd.viewport_height / self.wnd.pixel_ratio) / 2),
+            int(
+                x
+                - (self.wnd.width - self.wnd.viewport_width / self.wnd.pixel_ratio) / 2
+            ),
+            int(
+                y
+                - (self.wnd.height - self.wnd.viewport_height / self.wnd.pixel_ratio)
+                / 2
+            ),
         )
 
     def mouse_position_event(self, x, y, dx, dy):
@@ -112,18 +118,18 @@ class ModernGLRenderer(BaseOpenGLRenderer):
         self._index_buffer = None
         self._vao = None
         self._textures = {}
-        self.wnd = kwargs.get('wnd')
-        self.ctx = self.wnd.ctx if self.wnd and self.wnd.ctx else kwargs.get('ctx')
+        self.wnd = kwargs.get("wnd")
+        self.ctx = self.wnd.ctx if self.wnd and self.wnd.ctx else kwargs.get("ctx")
 
         if not self.ctx:
-            raise ValueError('Missing moderngl context')
+            raise ValueError("Missing moderngl context")
 
         assert isinstance(self.ctx, moderngl.context.Context)
 
         super().__init__()
 
-        if 'display_size' in kwargs:
-            self.io.display_size = kwargs.get('display_size')
+        if "display_size" in kwargs:
+            self.io.display_size = kwargs.get("display_size")
 
     def register_texture(self, texture: moderngl.Texture):
         """Make the imgui renderer aware of the texture"""
@@ -150,15 +156,13 @@ class ModernGLRenderer(BaseOpenGLRenderer):
             vertex_shader=self.VERTEX_SHADER_SRC,
             fragment_shader=self.FRAGMENT_SHADER_SRC,
         )
-        self.projMat = self._prog['ProjMtx']
-        self._prog['Texture'].value = 0
+        self.projMat = self._prog["ProjMtx"]
+        self._prog["Texture"].value = 0
         self._vertex_buffer = self.ctx.buffer(reserve=imgui.VERTEX_SIZE * 65536)
         self._index_buffer = self.ctx.buffer(reserve=imgui.INDEX_SIZE * 65536)
         self._vao = self.ctx.vertex_array(
             self._prog,
-            [
-                (self._vertex_buffer, '2f 2f 4f1', 'Position', 'UV', 'Color'),
-            ],
+            [(self._vertex_buffer, "2f 2f 4f1", "Position", "UV", "Color"),],
             index_buffer=self._index_buffer,
             index_element_size=imgui.INDEX_SIZE,
         )
@@ -173,10 +177,22 @@ class ModernGLRenderer(BaseOpenGLRenderer):
             return
 
         self.projMat.value = (
-            2.0 / display_width, 0.0, 0.0, 0.0,
-            0.0, 2.0 / -display_height, 0.0, 0.0,
-            0.0, 0.0, -1.0, 0.0,
-            -1.0, 1.0, 0.0, 1.0,
+            2.0 / display_width,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            2.0 / -display_height,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            -1.0,
+            0.0,
+            -1.0,
+            1.0,
+            0.0,
+            1.0,
         )
 
         draw_data.scale_clip_rects(*io.display_fb_scale)
@@ -200,17 +216,23 @@ class ModernGLRenderer(BaseOpenGLRenderer):
             for command in commands.commands:
                 texture = self._textures.get(command.texture_id)
                 if texture is None:
-                    raise ValueError((
-                        "Texture {} is not registered. Please add to renderer using "
-                        "register_texture(..). "
-                        "Current textures: {}".format(command.texture_id, list(self._textures))
-                    ))
+                    raise ValueError(
+                        (
+                            "Texture {} is not registered. Please add to renderer using "
+                            "register_texture(..). "
+                            "Current textures: {}".format(
+                                command.texture_id, list(self._textures)
+                            )
+                        )
+                    )
 
                 texture.use(0)
 
                 x, y, z, w = command.clip_rect
                 self.ctx.scissor = int(x), int(fb_height - w), int(z - x), int(w - y)
-                self._vao.render(moderngl.TRIANGLES, vertices=command.elem_count, first=idx_pos)
+                self._vao.render(
+                    moderngl.TRIANGLES, vertices=command.elem_count, first=idx_pos
+                )
                 idx_pos += command.elem_count
 
         self.ctx.scissor = None
@@ -232,7 +254,6 @@ class ModernGLRenderer(BaseOpenGLRenderer):
 
 
 class ModernglWindowRenderer(ModernGLRenderer, ModernglWindowMixin):
-
     def __init__(self, window):
         super().__init__(wnd=window)
         self.wnd = window

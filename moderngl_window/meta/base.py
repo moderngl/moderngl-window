@@ -7,6 +7,7 @@ class ResourceDescription:
     Resource descriptions are required to load a resource.
     This class can be extended to add more specific properties.
     """
+
     default_kind = None  # The default kind of loader
     """str: The default kind for this resource type"""
     resource_type = None  # What resource type is described
@@ -23,7 +24,7 @@ class ResourceDescription:
     @property
     def path(self) -> str:
         """str: The path to a resource when a single file is specified"""
-        return self._kwargs.get('path')
+        return self._kwargs.get("path")
 
     @property
     def label(self) -> str:
@@ -34,7 +35,7 @@ class ResourceDescription:
         all needed resources and fetch them later by the label.
         This can he a lot less chaotic in larger applications.
         """
-        return self._kwargs.get('label')
+        return self._kwargs.get("label")
 
     @property
     def kind(self) -> str:
@@ -51,11 +52,11 @@ class ResourceDescription:
 
             description.kind = 'something'
         """
-        return self._kwargs.get('kind') or self.default_kind
+        return self._kwargs.get("kind") or self.default_kind
 
     @kind.setter
     def kind(self, value) -> str:
-        self._kwargs['kind'] = value
+        self._kwargs["kind"] = value
 
     @property
     def loader_cls(self) -> Type:
@@ -65,11 +66,11 @@ class ResourceDescription:
         stage were a loader class is assigned based on
         the `kind`.
         """
-        return self._kwargs.get('loader_cls')
+        return self._kwargs.get("loader_cls")
 
     @loader_cls.setter
     def loader_cls(self, value: Type):
-        self._kwargs['loader_cls'] = value
+        self._kwargs["loader_cls"] = value
 
     @property
     def resolved_path(self) -> Path:
@@ -78,11 +79,11 @@ class ResourceDescription:
         The absolute path to the resource can optionally
         be assigned by a loader class.
         """
-        return self._kwargs.get('resolved_path')
+        return self._kwargs.get("resolved_path")
 
     @resolved_path.setter
     def resolved_path(self, value: Path):
-        self._kwargs['resolved_path'] = value
+        self._kwargs["resolved_path"] = value
 
     @property
     def attrs(self) -> Dict[str, str]:

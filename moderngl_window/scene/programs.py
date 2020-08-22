@@ -9,7 +9,7 @@ from moderngl_window.resources import programs
 from moderngl_window.meta import ProgramDescription
 
 
-settings.PROGRAM_DIRS.append(os.path.join(os.path.dirname(__file__), 'programs'))
+settings.PROGRAM_DIRS.append(os.path.join(os.path.dirname(__file__), "programs"))
 
 
 class MeshProgram:
@@ -30,8 +30,14 @@ class MeshProgram:
         """moderngl.Context: The current context"""
         return moderngl_window.ctx()
 
-    def draw(self, mesh, projection_matrix: numpy.ndarray = None,
-             model_matrix: numpy.ndarray = None, camera_matrix: numpy.ndarray = None, time=0.0):
+    def draw(
+        self,
+        mesh,
+        projection_matrix: numpy.ndarray = None,
+        model_matrix: numpy.ndarray = None,
+        camera_matrix: numpy.ndarray = None,
+        time=0.0,
+    ):
         """Draw code for the mesh
 
         Args:
@@ -54,7 +60,9 @@ class MeshProgram:
         Args:
             mesh: The mesh to inspect
         """
-        raise NotImplementedError("apply is not implemented. Please override the MeshProgram method")
+        raise NotImplementedError(
+            "apply is not implemented. Please override the MeshProgram method"
+        )
 
 
 class VertexColorProgram(MeshProgram):
@@ -62,9 +70,18 @@ class VertexColorProgram(MeshProgram):
 
     def __init__(self, program=None, **kwargs):
         super().__init__(program=None)
-        self.program = programs.load(ProgramDescription(path="scene_default/vertex_color.glsl"))
+        self.program = programs.load(
+            ProgramDescription(path="scene_default/vertex_color.glsl")
+        )
 
-    def draw(self, mesh, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0):
+    def draw(
+        self,
+        mesh,
+        projection_matrix=None,
+        model_matrix=None,
+        camera_matrix=None,
+        time=0,
+    ):
         self.program["m_proj"].write(projection_matrix)
         self.program["m_model"].write(model_matrix)
         self.program["m_cam"].write(camera_matrix)
@@ -88,9 +105,18 @@ class ColorLightProgram(MeshProgram):
 
     def __init__(self, program=None, **kwargs):
         super().__init__(program=None)
-        self.program = programs.load(ProgramDescription(path="scene_default/color_light.glsl"))
+        self.program = programs.load(
+            ProgramDescription(path="scene_default/color_light.glsl")
+        )
 
-    def draw(self, mesh, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0):
+    def draw(
+        self,
+        mesh,
+        projection_matrix=None,
+        model_matrix=None,
+        camera_matrix=None,
+        time=0,
+    ):
 
         if mesh.material:
             # if mesh.material.double_sided:
@@ -123,9 +149,18 @@ class TextureProgram(MeshProgram):
 
     def __init__(self, program=None, **kwargs):
         super().__init__(program=None)
-        self.program = programs.load(ProgramDescription(path="scene_default/texture.glsl"))
+        self.program = programs.load(
+            ProgramDescription(path="scene_default/texture.glsl")
+        )
 
-    def draw(self, mesh, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0):
+    def draw(
+        self,
+        mesh,
+        projection_matrix=None,
+        model_matrix=None,
+        camera_matrix=None,
+        time=0,
+    ):
         mesh.material.mat_texture.texture.use()
         self.program["m_proj"].write(projection_matrix)
         self.program["m_model"].write(model_matrix)
@@ -156,9 +191,18 @@ class TextureVertexColorProgram(MeshProgram):
 
     def __init__(self, program=None, **kwargs):
         super().__init__(program=None)
-        self.program = programs.load(ProgramDescription(path="scene_default/vertex_color_texture.glsl"))
+        self.program = programs.load(
+            ProgramDescription(path="scene_default/vertex_color_texture.glsl")
+        )
 
-    def draw(self, mesh, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0):
+    def draw(
+        self,
+        mesh,
+        projection_matrix=None,
+        model_matrix=None,
+        camera_matrix=None,
+        time=0,
+    ):
         mesh.material.mat_texture.texture.use()
         self.program["m_proj"].write(projection_matrix)
         self.program["m_model"].write(model_matrix)
@@ -188,11 +232,21 @@ class TextureLightProgram(MeshProgram):
     """
     Simple texture program
     """
+
     def __init__(self, program=None, **kwargs):
         super().__init__(program=None)
-        self.program = programs.load(ProgramDescription(path="scene_default/texture_light.glsl"))
+        self.program = programs.load(
+            ProgramDescription(path="scene_default/texture_light.glsl")
+        )
 
-    def draw(self, mesh, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0):
+    def draw(
+        self,
+        mesh,
+        projection_matrix=None,
+        model_matrix=None,
+        camera_matrix=None,
+        time=0,
+    ):
         # if mesh.material.double_sided:
         #     self.ctx.disable(moderngl.CULL_FACE)
         # else:
@@ -229,11 +283,21 @@ class FallbackProgram(MeshProgram):
     """
     Fallback program only rendering positions in white
     """
+
     def __init__(self, program=None, **kwargs):
         super().__init__(program=None)
-        self.program = programs.load(ProgramDescription(path="scene_default/fallback.glsl"))
+        self.program = programs.load(
+            ProgramDescription(path="scene_default/fallback.glsl")
+        )
 
-    def draw(self, mesh, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0):
+    def draw(
+        self,
+        mesh,
+        projection_matrix=None,
+        model_matrix=None,
+        camera_matrix=None,
+        time=0,
+    ):
 
         self.program["m_proj"].write(projection_matrix)
         self.program["m_model"].write(model_matrix)

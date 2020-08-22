@@ -27,10 +27,13 @@ class SceneDescription(ResourceDescription):
     supports converting the file into a different format
     on the fly to speed up loading.
     """
-    default_kind = None
-    resource_type = 'scenes'
 
-    def __init__(self, path=None, kind=None, cache=False, attr_names=AttributeNames, **kwargs):
+    default_kind = None
+    resource_type = "scenes"
+
+    def __init__(
+        self, path=None, kind=None, cache=False, attr_names=AttributeNames, **kwargs
+    ):
         """Create a scene description.
 
         Keyword Args:
@@ -43,20 +46,17 @@ class SceneDescription(ResourceDescription):
         if attr_names is None:
             attr_names = AttributeNames
 
-        kwargs.update({
-            "path": path,
-            "kind": kind,
-            "cache": cache,
-            "attr_names": attr_names,
-        })
+        kwargs.update(
+            {"path": path, "kind": kind, "cache": cache, "attr_names": attr_names,}
+        )
         super().__init__(**kwargs)
 
     @property
     def cache(self) -> bool:
         """bool: Use cache feature in scene loader"""
-        return self._kwargs['cache']
+        return self._kwargs["cache"]
 
     @property
     def attr_names(self) -> AttributeNames:
         """AttributeNames: Attribute name config"""
-        return self._kwargs['attr_names']
+        return self._kwargs["attr_names"]
