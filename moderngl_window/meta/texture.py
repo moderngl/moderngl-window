@@ -32,7 +32,7 @@ class TextureDescription(ResourceDescription):
 
         Args:
             path (str): path to resource relative to search directories
-            flip (boolean): Flip the image horizontally
+            flip (boolean): Flip the image vertically (top <-> bottom)
             mipmap (bool): Generate mipmaps. Will generate max possible levels unless
                            `mipmap_levels` is defined.
             mipmap_levels (tuple): (base, max_level) controlling mipmap generation.
