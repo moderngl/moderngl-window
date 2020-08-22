@@ -631,7 +631,7 @@ class BaseWindow:
         """
         A library specific destroy method is required
         """
-        raise NotImplementedError(f"Toggling fullscreen is currently not supported by Window-type: {self.name}")
+        raise NotImplementedError("Toggling fullscreen is currently not supported by Window-type: {}".format(self.name))
 
     def destroy(self) -> None:
         """
