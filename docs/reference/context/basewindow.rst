@@ -11,6 +11,7 @@ Methods
 .. automethod:: BaseWindow.__init__
 .. automethod:: BaseWindow.init_mgl_context
 .. automethod:: BaseWindow.is_key_pressed
+.. automethod:: BaseWindow.set_icon
 .. automethod:: BaseWindow.close
 .. automethod:: BaseWindow.use
 .. automethod:: BaseWindow.clear

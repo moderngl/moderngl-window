@@ -11,6 +11,7 @@ Methods
 .. automethod:: Window.__init__
 .. automethod:: Window.init_mgl_context
 .. automethod:: Window.is_key_pressed
+.. automethod:: Window.set_icon
 .. automethod:: Window.close
 .. automethod:: Window.use
 .. automethod:: Window.clear
