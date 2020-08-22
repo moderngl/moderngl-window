@@ -28,6 +28,8 @@ class TextureDescription(ResourceDescription):
         path: str = None,
         kind: str = None,
         flip=True,
+        flip_x=False,
+        flip_y=False,
         mipmap=False,
         mipmap_levels: Tuple[int, int] = None,
         anisotropy=1.0,
@@ -45,13 +47,15 @@ class TextureDescription(ResourceDescription):
 
         Args:
             path (str): path to resource relative to search directories
-            flip (boolean): Flip the image vertically (top <-> bottom)
+            kind (str): The kind of loader to use
+            flip (boolean): (use flip_y) Flip the image vertically (top to bottom)
+            flip_x (boolean): Flip the image horizontally (left to right)
+            flip_y (boolean): Flip the image vertically (top top bottom)
             mipmap (bool): Generate mipmaps. Will generate max possible levels unless
                            `mipmap_levels` is defined.
             mipmap_levels (tuple): (base, max_level) controlling mipmap generation.
                                    When defined the `mipmap` parameter is automatically `True`.
             anisotropy (float): Number of samples for anisotropic filtering
-            kind (str): The kind of loader to use
             image: PIL image for when loading embedded resources
             layers: (int): Number of layers for texture arrays
             neg_x (str): Path to negative x texture in a cube map
@@ -67,6 +71,8 @@ class TextureDescription(ResourceDescription):
                 "path": path,
                 "kind": kind,
                 "flip": flip,
+                "flip_x": flip_x,
+                "flip_y": flip_y,
                 "mipmap": mipmap,
                 "mipmap_levels": mipmap_levels,
                 "anisotropy": anisotropy,
@@ -84,8 +90,18 @@ class TextureDescription(ResourceDescription):
 
     @property
     def flip(self) -> bool:
-        """bool: If the image should be flipped horizontally"""
+        """bool: (Use ``flip_y``) If the image should be flipped vertically (top to bottom)"""
         return self._kwargs.get("flip")
+
+    @property
+    def flip_x(self) -> bool:
+        """bool: If the image should be flipped horizontally (left to right)"""
+        return self._kwargs.get("flip_x")
+
+    @property
+    def flip_y(self) -> bool:
+        """bool: If the image should be flipped vertically (top to bottom)"""
+        return self._kwargs.get("flip_y")
 
     @property
     def mipmap(self) -> bool:
