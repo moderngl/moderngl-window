@@ -42,6 +42,7 @@ docs/_build/
 
 # IDEs
 .vscode
+.idea
 
 # Environments
 .env
