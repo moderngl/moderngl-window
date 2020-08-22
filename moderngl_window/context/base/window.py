@@ -643,13 +643,17 @@ class BaseWindow:
         """
         A library specific destroy method is required.
         """
-        raise NotImplementedError(f"Setting an icon is currently not supported by Window-type: {self.name}")
+        raise NotImplementedError(
+            "Setting an icon is currently not supported by Window-type: {}".format(self.name)
+        )
 
     def _set_fullscreen(self, value: bool) -> None:
         """
         A library specific destroy method is required
         """
-        raise NotImplementedError("Toggling fullscreen is currently not supported by Window-type: {}".format(self.name))
+        raise NotImplementedError(
+            "Toggling fullscreen is currently not supported by Window-type: {}".format(self.name)
+        )
 
     def destroy(self) -> None:
         """
