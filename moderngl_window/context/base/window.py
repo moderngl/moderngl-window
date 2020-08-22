@@ -630,13 +630,19 @@ class BaseWindow:
 
     def set_icon(self, icon_path: str) -> None:
         """
-        A library specific destroy method is required
+        Sets the window icon to the given path
+
+        Args:
+            icon_path (str): path to the icon
         """
         loader = IconLoader(TextureDescription(path=icon_path))
         resolved_path = loader.find_icon()
         self._set_icon(resolved_path)
 
     def _set_icon(self, icon_path: str) -> None:
+        """
+        A library specific destroy method is required.
+        """
         raise NotImplementedError(f"Setting an icon is currently not supported by Window-type: {self.name}")
 
     def _set_fullscreen(self, value: bool) -> None:
