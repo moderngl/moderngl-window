@@ -135,6 +135,9 @@ class Window(BaseWindow):
         self._gl_widget.tkSwapBuffers()
         self._frames += 1
 
+    def _set_icon(self, icon_path: str) -> None:
+        self._tk.iconphoto(False, tkinter.PhotoImage(file=icon_path))
+
     def tk_key_press(self, event: tkinter.Event) -> None:
         """Handle all queued key press events in tkinter dispatching events to standard methods"""
         self._key_event_func(event.keysym, self.keys.ACTION_PRESS, self._modifiers)

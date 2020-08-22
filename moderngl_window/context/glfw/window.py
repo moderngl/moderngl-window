@@ -1,6 +1,8 @@
 from typing import Tuple
 import glfw
 
+from PIL import Image
+
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.glfw.keys import Keys
 
@@ -223,6 +225,10 @@ class Window(BaseWindow):
         self._modifiers.shift = mods & 1 == 1
         self._modifiers.ctrl = mods & 2 == 2
         self._modifiers.alt = mods & 4 == 4
+
+    def _set_icon(self, icon_path) -> None:
+        image = Image.open(icon_path)
+        glfw.set_window_icon(self._window, 1, image)
 
     def glfw_key_event_callback(self, window, key, scancode, action, mods):
         """Key event callback for glfw.
