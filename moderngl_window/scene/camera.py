@@ -35,6 +35,7 @@ class Camera:
         # Get projection matrix as numpy array
         print(camera.projection.matrix)
     """
+
     def __init__(self, fov=60.0, aspect_ratio=1.0, near=1.0, far=100.0):
         """Initialize camera using a specific projection
 
@@ -155,12 +156,12 @@ class Camera:
         x = vector.normalise(vector3.cross(vector.normalise(up), z))
         y = vector3.cross(z, x)
 
-        translate = Matrix44.identity(dtype='f4')
+        translate = Matrix44.identity(dtype="f4")
         translate[3][0] = -pos.x
         translate[3][1] = -pos.y
         translate[3][2] = -pos.z
 
-        rotate = Matrix44.identity(dtype='f4')
+        rotate = Matrix44.identity(dtype="f4")
         rotate[0][0] = x[0]  # -- X
         rotate[1][0] = x[1]
         rotate[2][0] = x[2]
@@ -202,6 +203,7 @@ class KeyboardCamera(Camera):
         # Get projection matrix in bytes (f4)
         camera.projection.tobytes()
     """
+
     def __init__(self, keys: BaseKeys, fov=60.0, aspect_ratio=1.0, near=1.0, far=100.0):
         """Initialize the camera
 
@@ -468,7 +470,10 @@ class OrbitCamera(Camera):
         # Get projection matrix in bytes (f4)
         camera.projection.tobytes()
     """
-    def __init__(self, target=(0., 0., 0.), radius=2.0, angles=(45., -45.), **kwargs):
+
+    def __init__(
+        self, target=(0.0, 0.0, 0.0), radius=2.0, angles=(45.0, -45.0), **kwargs
+    ):
         """Initialize the camera
 
         Keyword Args:
@@ -496,9 +501,11 @@ class OrbitCamera(Camera):
         """numpy.ndarray: The current view matrix for the camera"""
         return Matrix44.look_at(
             (
-                cos(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius + self.target[0],
+                cos(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius
+                + self.target[0],
                 cos(radians(self.angle_y)) * self.radius + self.target[1],
-                sin(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius + self.target[2],
+                sin(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius
+                + self.target[2],
             ),  # camera (eye) position, calculated from angles and radius
             self.target,  # what to look at
             self.up,  # camera up direction (change for rolling the camera)
@@ -568,11 +575,11 @@ class OrbitCamera(Camera):
             dx: Relative mouse position change on x axis
             dy: Relative mouse position change on y axis
         """
-        self.angle_x += dx * self.mouse_sensitivity / 10.
-        self.angle_y += dy * self.mouse_sensitivity / 10.
+        self.angle_x += dx * self.mouse_sensitivity / 10.0
+        self.angle_y += dy * self.mouse_sensitivity / 10.0
 
         # clamp the y angle to avoid weird rotations
-        self.angle_y = max(min(self.angle_y, -5.), -175.)
+        self.angle_y = max(min(self.angle_y, -5.0), -175.0)
 
     def zoom_state(self, y_offset: float) -> None:
         # allow zooming in/out

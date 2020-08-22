@@ -53,6 +53,9 @@ class Window(BaseWindow):
 
         self.set_default_viewport()
 
+    def _set_fullscreen(self, value: bool) -> None:
+        self._tk.attributes('-fullscreen', value)
+
     @property
     def size(self) -> Tuple[int, int]:
         """Tuple[int, int]: current window size.

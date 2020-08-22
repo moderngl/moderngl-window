@@ -22,13 +22,24 @@ class ProgramDescription(ResourceDescription):
             geometry_shader='programs/myprogram_gs.glsl'.
         )
     """
-    default_kind = None
-    resource_type = 'programs'
 
-    def __init__(self, path: str = None, kind: str = None, reloadable=False,
-                 vertex_shader: str = None, geometry_shader: str = None, fragment_shader: str = None,
-                 tess_control_shader: str = None, tess_evaluation_shader: str = None,
-                 compute_shader: str = None, defines: dict = None, **kwargs):
+    default_kind = None
+    resource_type = "programs"
+
+    def __init__(
+        self,
+        path: str = None,
+        kind: str = None,
+        reloadable=False,
+        vertex_shader: str = None,
+        geometry_shader: str = None,
+        fragment_shader: str = None,
+        tess_control_shader: str = None,
+        tess_evaluation_shader: str = None,
+        compute_shader: str = None,
+        defines: dict = None,
+        **kwargs
+    ):
         """Create a program description
 
         Keyword Args:
@@ -44,60 +55,62 @@ class ProgramDescription(ResourceDescription):
             defines (dict): Dictionary with define values to replace in the source
             **kwargs: Optional custom attributes
         """
-        kwargs.update({
-            "path": path,
-            "kind": kind,
-            "reloadable": reloadable,
-            "vertex_shader": vertex_shader,
-            "geometry_shader": geometry_shader,
-            "fragment_shader": fragment_shader,
-            "tess_control_shader": tess_control_shader,
-            "tess_evaluation_shader": tess_evaluation_shader,
-            "compute_shader": compute_shader,
-            "defines": defines,
-        })
+        kwargs.update(
+            {
+                "path": path,
+                "kind": kind,
+                "reloadable": reloadable,
+                "vertex_shader": vertex_shader,
+                "geometry_shader": geometry_shader,
+                "fragment_shader": fragment_shader,
+                "tess_control_shader": tess_control_shader,
+                "tess_evaluation_shader": tess_evaluation_shader,
+                "compute_shader": compute_shader,
+                "defines": defines,
+            }
+        )
         super().__init__(**kwargs)
 
     @property
     def reloadable(self) -> bool:
         """bool: if this program is reloadable"""
-        return self._kwargs.get('reloadable')
+        return self._kwargs.get("reloadable")
 
     @reloadable.setter
     def reloadable(self, value):
-        self._kwargs['reloadable'] = value
+        self._kwargs["reloadable"] = value
 
     @property
     def vertex_shader(self) -> str:
         """str: Relative path to vertex shader"""
-        return self._kwargs.get('vertex_shader')
+        return self._kwargs.get("vertex_shader")
 
     @property
     def geometry_shader(self) -> str:
         """str: Relative path to geometry shader"""
-        return self._kwargs.get('geometry_shader')
+        return self._kwargs.get("geometry_shader")
 
     @property
     def fragment_shader(self) -> str:
         """str: Relative path to fragment shader"""
-        return self._kwargs.get('fragment_shader')
+        return self._kwargs.get("fragment_shader")
 
     @property
     def tess_control_shader(self) -> str:
         """str: Relative path to tess control shader"""
-        return self._kwargs.get('tess_control_shader')
+        return self._kwargs.get("tess_control_shader")
 
     @property
     def tess_evaluation_shader(self) -> str:
         """str: Relative path to tessellation evaluation shader"""
-        return self._kwargs.get('tess_evaluation_shader')
+        return self._kwargs.get("tess_evaluation_shader")
 
     @property
     def compute_shader(self) -> str:
         """str: Relative path to compute shader"""
-        return self._kwargs.get('compute_shader')
+        return self._kwargs.get("compute_shader")
 
     @property
     def defines(self) -> dict:
         """dict: Dictionary with define values to replace in the source"""
-        return self._kwargs.get('defines', {})
+        return self._kwargs.get("defines", {})

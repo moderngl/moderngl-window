@@ -40,14 +40,14 @@ DATA_DIRS = []
 
 # Loaders
 PROGRAM_LOADERS = [
-    'moderngl_window.loaders.program.single.Loader',
-    'moderngl_window.loaders.program.separate.Loader',
+    "moderngl_window.loaders.program.single.Loader",
+    "moderngl_window.loaders.program.separate.Loader",
 ]
 
 TEXTURE_LOADERS = [
-    'moderngl_window.loaders.texture.t2d.Loader',
-    'moderngl_window.loaders.texture.array.Loader',
-    'moderngl_window.loaders.texture.cube.Loader',
+    "moderngl_window.loaders.texture.t2d.Loader",
+    "moderngl_window.loaders.texture.array.Loader",
+    "moderngl_window.loaders.texture.cube.Loader",
 ]
 
 SCENE_LOADERS = [
@@ -57,7 +57,7 @@ SCENE_LOADERS = [
 ]
 
 DATA_LOADERS = [
-    'moderngl_window.loaders.data.binary.Loader',
-    'moderngl_window.loaders.data.text.Loader',
-    'moderngl_window.loaders.data.json.Loader',
+    "moderngl_window.loaders.data.binary.Loader",
+    "moderngl_window.loaders.data.text.Loader",
+    "moderngl_window.loaders.data.json.Loader",
 ]

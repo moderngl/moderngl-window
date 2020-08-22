@@ -4,7 +4,8 @@ from moderngl_window.conf import settings
 
 class FilesystemFinder(base.BaseFilesystemFinder):
     """Find textures in ``settings.TEXTURE_DIRS``"""
-    settings_attr = 'TEXTURE_DIRS'
+
+    settings_attr = "TEXTURE_DIRS"
 
 
 def get_finders():

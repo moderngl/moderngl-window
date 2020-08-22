@@ -27,13 +27,10 @@ logger = logging.getLogger(__name__)
 if TYPE_CHECKING:
     from moderngl_window.scene import Node, Material
 
-DEFAULT_PROGRAMS = None
-DEFAULT_BBOX_PROGRAM = None
-DEFAULT_WIREFRAME_PROGRAM = None
-
 
 class Scene:
     """Generic scene"""
+
     def __init__(self, name, **kwargs):
         """Create a scene with a name.
 
@@ -55,20 +52,26 @@ class Scene:
 
         self.bbox_vao = geometry.bbox()
 
-        global DEFAULT_BBOX_PROGRAM
-        if DEFAULT_BBOX_PROGRAM is None:
-            DEFAULT_BBOX_PROGRAM = programs.load(
-                ProgramDescription(path='scene_default/bbox.glsl'),
-            )
-        self.bbox_program = DEFAULT_BBOX_PROGRAM
-        global DEFAULT_WIREFRAME_PROGRAM
-        if DEFAULT_WIREFRAME_PROGRAM is None:
-            DEFAULT_WIREFRAME_PROGRAM = programs.load(
-                ProgramDescription(path='scene_default/wireframe.glsl'),
-            )
-        self.wireframe_program = DEFAULT_WIREFRAME_PROGRAM
+        if self.ctx.extra is None:
+            self.ctx.extra = {}
 
-        self._matrix = matrix44.create_identity(dtype='f4')
+        # Load bbox program and cache in the context
+        self.bbox_program = self.ctx.extra.get("DEFAULT_BBOX_PROGRAM")
+        if not self.bbox_program:
+            self.bbox_program = programs.load(
+                ProgramDescription(path="scene_default/bbox.glsl"),
+            )
+            self.ctx.extra["DEFAULT_BBOX_PROGRAM"] = self.bbox_program
+
+        # Load wireframe program and cache in the context
+        self.wireframe_program = self.ctx.extra.get("DEFAULT_WIREFRAME_PROGRAM")
+        if not self.wireframe_program:
+            self.wireframe_program = programs.load(
+                ProgramDescription(path="scene_default/wireframe.glsl"),
+            )
+            self.ctx.extra["DEFAULT_WIREFRAME_PROGRAM"] = self.wireframe_program
+
+        self._matrix = matrix44.create_identity(dtype="f4")
 
     @property
     def ctx(self) -> moderngl.Context:
@@ -85,11 +88,16 @@ class Scene:
 
     @matrix.setter
     def matrix(self, matrix: numpy.ndarray):
-        self._matrix = matrix.astype('f4')
+        self._matrix = matrix.astype("f4")
         for node in self.root_nodes:
             node.calc_model_mat(self._matrix)
 
-    def draw(self, projection_matrix: numpy.ndarray = None, camera_matrix: numpy.ndarray = None, time=0.0) -> None:
+    def draw(
+        self,
+        projection_matrix: numpy.ndarray = None,
+        camera_matrix: numpy.ndarray = None,
+        time=0.0,
+    ) -> None:
         """Draw all the nodes in the scene.
 
         Args:
@@ -99,14 +107,20 @@ class Scene:
         """
         for node in self.root_nodes:
             node.draw(
-                projection_matrix=projection_matrix.astype('f4'),
-                camera_matrix=camera_matrix.astype('f4'),
+                projection_matrix=projection_matrix.astype("f4"),
+                camera_matrix=camera_matrix.astype("f4"),
                 time=time,
             )
 
         self.ctx.clear_samplers(0, 4)
 
-    def draw_bbox(self, projection_matrix=None, camera_matrix=None, children=True, color=(0.75, 0.75, 0.75)) -> None:
+    def draw_bbox(
+        self,
+        projection_matrix=None,
+        camera_matrix=None,
+        children=True,
+        color=(0.75, 0.75, 0.75),
+    ) -> None:
         """Draw scene and mesh bounding boxes.
 
         Args:
@@ -115,8 +129,8 @@ class Scene:
             children (bool): Will draw bounding boxes for meshes as well
             color (tuple): Color of the bounding boxes
         """
-        projection_matrix = projection_matrix.astype('f4')
-        camera_matrix = camera_matrix.astype('f4')
+        projection_matrix = projection_matrix.astype("f4")
+        camera_matrix = camera_matrix.astype("f4")
 
         # Scene bounding box
         self.bbox_program["m_proj"].write(projection_matrix)
@@ -132,9 +146,13 @@ class Scene:
 
         # Draw bounding box for children
         for node in self.root_nodes:
-            node.draw_bbox(projection_matrix, camera_matrix, self.bbox_program, self.bbox_vao)
+            node.draw_bbox(
+                projection_matrix, camera_matrix, self.bbox_program, self.bbox_vao
+            )
 
-    def draw_wireframe(self, projection_matrix=None, camera_matrix=None, color=(0.75, 0.75, 0.75, 1.0)):
+    def draw_wireframe(
+        self, projection_matrix=None, camera_matrix=None, color=(0.75, 0.75, 0.75, 1.0)
+    ):
         """Render the scene in wireframe mode.
 
         Args:
@@ -143,8 +161,8 @@ class Scene:
             children (bool): Will draw bounding boxes for meshes as well
             color (tuple): Color of the wireframes
         """
-        projection_matrix = projection_matrix.astype('f4')
-        camera_matrix = camera_matrix.astype('f4')
+        projection_matrix = projection_matrix.astype("f4")
+        camera_matrix = camera_matrix.astype("f4")
 
         self.wireframe_program["m_proj"].write(projection_matrix)
         self.wireframe_program["m_model"].write(self._matrix)
@@ -155,7 +173,9 @@ class Scene:
         self.ctx.wireframe = True
 
         for node in self.root_nodes:
-            node.draw_wireframe(projection_matrix, camera_matrix, self.wireframe_program)
+            node.draw_wireframe(
+                projection_matrix, camera_matrix, self.wireframe_program
+            )
 
         self.ctx.wireframe = False
 
@@ -174,8 +194,9 @@ class Scene:
                 mesh.mesh_program = None
 
         if not mesh_programs:
-            if DEFAULT_PROGRAMS is None:
-                DEFAULT_PROGRAMS = [
+            mesh_programs = self.ctx.extra.get("DEFAULT_PROGRAMS")
+            if not mesh_programs:
+                mesh_programs = [
                     TextureLightProgram(),
                     TextureProgram(),
                     VertexColorProgram(),
@@ -183,7 +204,7 @@ class Scene:
                     ColorLightProgram(),
                     FallbackProgram(),
                 ]
-            mesh_programs = DEFAULT_PROGRAMS
+                self.ctx.extra["DEFAULT_PROGRAMS"] = mesh_programs
 
         for mesh in self.meshes:
             for mesh_prog in mesh_programs:
@@ -193,7 +214,11 @@ class Scene:
                         mesh.mesh_program = mesh_prog
                         break
                     else:
-                        raise ValueError("apply() must return a MeshProgram instance, not {}".format(type(instance)))
+                        raise ValueError(
+                            "apply() must return a MeshProgram instance, not {}".format(
+                                type(instance)
+                            )
+                        )
 
             if not mesh.mesh_program:
                 logger.warning("WARING: No mesh program applied to '%s'", mesh.name)
@@ -203,9 +228,7 @@ class Scene:
         bbox_min, bbox_max = None, None
         for node in self.root_nodes:
             bbox_min, bbox_max = node.calc_global_bbox(
-                matrix44.create_identity(dtype='f4'),
-                bbox_min,
-                bbox_max
+                matrix44.create_identity(dtype="f4"), bbox_min, bbox_max
             )
 
         self.bbox_min = bbox_min
@@ -221,9 +244,9 @@ class Scene:
         """
         self.apply_mesh_programs()
         # Recursively calculate model matrices
-        self.matrix = matrix44.create_identity(dtype='f4')
+        self.matrix = matrix44.create_identity(dtype="f4")
 
-    def find_node(self, name: str = None) -> 'Node':
+    def find_node(self, name: str = None) -> "Node":
         """Finds a :py:class:`~moderngl_window.scene.Node`
 
         Keyword Args:
@@ -237,7 +260,7 @@ class Scene:
 
         return None
 
-    def find_material(self, name: str = None) -> 'Material':
+    def find_material(self, name: str = None) -> "Material":
         """Finds a :py:class:`~moderngl_window.scene.Material`
 
         Keyword Args:

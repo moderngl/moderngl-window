@@ -16,7 +16,7 @@ from moderngl_window.timers.clock import Timer
 from moderngl_window.conf import settings
 from moderngl_window.utils.module_loading import import_string
 
-__version__ = '2.2.2'
+__version__ = '2.2.3'
 
 IGNORE_DIRS = [
     '__pycache__',
@@ -158,6 +158,8 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
 
     Args:
         config_cls: The WindowConfig class to render
+    Keyword Args:
+        timer: A custom timer instance
         args: Override sys.args
     """
     setup_basic_logging(config_cls.log_level)
@@ -189,7 +191,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     )
     window.print_context_info()
     activate_context(window=window)
-    timer = Timer()
+    timer = timer or Timer()
     window.config = config_cls(ctx=window.ctx, wnd=window, timer=timer)
 
     timer.start()

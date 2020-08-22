@@ -6,7 +6,10 @@ class MaterialTexture:
     """Wrapper for textures used in materials.
     Contains a texture and a sampler object.
     """
-    def __init__(self, texture: moderngl.Texture = None, sampler: moderngl.Sampler = None):
+
+    def __init__(
+        self, texture: moderngl.Texture = None, sampler: moderngl.Sampler = None
+    ):
         """Initialize instance.
 
         Args:
@@ -37,6 +40,7 @@ class MaterialTexture:
 
 class Material:
     """Generic material"""
+
     def __init__(self, name: str = None):
         """Initialize material.
 

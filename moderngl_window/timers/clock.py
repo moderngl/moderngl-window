@@ -6,6 +6,7 @@ from moderngl_window.timers.base import BaseTimer
 
 class Timer(BaseTimer):
     """Timer based on python ``time``."""
+
     def __init__(self, **kwargs):
         self._start_time = None
         self._stop_time = None
@@ -88,4 +89,7 @@ class Timer(BaseTimer):
             Tuple[float, float]: Current position in the timer, actual running duration
         """
         self._stop_time = time.time()
-        return self._stop_time - self._start_time - self._offset, self._stop_time - self._start_time
+        return (
+            self._stop_time - self._start_time - self._offset,
+            self._stop_time - self._start_time,
+        )

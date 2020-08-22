@@ -73,7 +73,8 @@ class Window(BaseWindow):
 
         # Center the window on the screen if in window mode
         if not self.fullscreen:
-            self._widget.move(QtWidgets.QDesktopWidget().rect().center() - self._widget.rect().center())
+            center_window_position = self.position[0] - self.width/2, self.position[1] - self.height/2
+            self._widget.move(*center_window_position)
 
         # Needs to be set before show()
         self._widget.resizeGL = self.resize
@@ -107,6 +108,12 @@ class Window(BaseWindow):
         self._buffer_height = self._height * self._widget.devicePixelRatio()
 
         self.set_default_viewport()
+
+    def _set_fullscreen(self, value: bool) -> None:
+        if value:
+            self._widget.showFullScreen()
+        else:
+            self._widget.showNormal()
 
     @property
     def size(self) -> Tuple[int, int]:

@@ -1,11 +1,20 @@
 # Changelog
 
-# 2.2.2
+## 2.2.3
+
+* imgui integration no longer relies on pyopengl
+* Bug: Properly parse `out` attributes with layout qualifiers
+* Bug: Do not cache system shaders at module level.
+  We now cache them in the context to better support multiple windows.
+* Bug: OrbitCameraWindow - Fixed radians/degree issue
+* Bug: A window can now be closed from inside `render()`
+
+## 2.2.2
 
 * Fixed several issues causing the window close callback not being called
 * Fixed incorrect mouse button mapping in mouse drag events
 
-# 2.2.1
+## 2.2.1
 
 * imgui renderer now supports moderngl textures. This opens up for both
   displaying images and animated framebuffer textures into imgui.
@@ -16,7 +25,7 @@
 * Bumped pyglet version to minimum 1.5.6. This version
   solves several issue with window events for MacBooks with Touch Bar
 
-# 2.2.0
+## 2.2.0
 
 * `WindowConfig` now supports overriding the default arugment parser.
   A classmethod `add_arguments` can be implemented to add additional
@@ -42,9 +51,9 @@
 Thanks to @Leterax, @minuJeong and @dawid-januszkiewicz for the contributions to this release
 and @mtbouchard for input on `WindowConfig` and `Scene` changes.
 
-# 2.1.1
+## 2.1.1
 
-## Improvements:
+### Improvements
 
 * Optimized the imgui renderer using `ctypes` instead of `numpy` for handling vertex data (@aforren1)
 * Added support for ALT key modifier in all window backends and other improvements to key handling (@OKaluza)
@@ -127,12 +136,12 @@ Resolved an issue with version constraints causing some dependencies to install 
 
 Bug fixes
 
-- SDL2 window now allows highdpi framebuffers when available
-- pygame2 window should only initialize the display module
+* SDL2 window now allows highdpi framebuffers when available
+* pygame2 window should only initialize the display module
 
 ## 2.0.0
 
-Breaking Changes
+### Breaking Changes
 
 * `mouse_position_event` signature has changed from `(x, y)` to `(x, y, dx, dy)`.
   This means you will also be getting the relative position change.
@@ -140,7 +149,7 @@ Breaking Changes
   This means you will also be getting the relative position change.
 * `KeyboardCamera.rot_state` now takes dx and dy instead of x and y
 
-Improvements
+### Improvements
 
 * Python 3.8 support (PySide2 will take a few more months. SDL2 has issues on windows)
 * Added pygame2 window

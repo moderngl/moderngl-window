@@ -1,6 +1,9 @@
 """
 Based on BlubberQuark's blog:
 https://blubberquark.tumblr.com/post/185013752945/using-moderngl-for-post-processing-shaders-with
+
+Clears the screen using opengl with a constantly changing
+color value and alpha blend a pygame surface on top.
 """
 import math
 from pathlib import Path
@@ -8,11 +11,6 @@ import pygame
 import moderngl
 import moderngl_window
 from moderngl_window import geometry
-from pyrr import matrix44
-
-# from moderngl_window.conf import settings
-# settings.SCREENSHOT_PATH = 'capture'
-# from moderngl_window import screenshot
 
 
 class Pygame(moderngl_window.WindowConfig):
@@ -30,38 +28,33 @@ class Pygame(moderngl_window.WindowConfig):
         if self.wnd.name != 'pygame2':
             raise RuntimeError('This example only works with --window pygame2 option')
 
-        self.pg_res = (160, 160)
+        self.pg_res = (320, 180)
         # Create a 24bit (rgba) offscreen surface pygame can render to
         self.pg_screen = pygame.Surface(self.pg_res, flags=pygame.SRCALPHA)
         # 24 bit (rgba) moderngl texture
         self.pg_texture = self.ctx.texture(self.pg_res, 4)
         self.pg_texture.filter = moderngl.NEAREST, moderngl.NEAREST
 
-        # Simple geometry and shader to render
-        self.cube = geometry.cube(size=(2.0, 2.0, 2.0))
-        self.texture_prog = self.load_program('programs/cube_simple_texture.glsl')
-        self.texture_prog['m_proj'].write(matrix44.create_perspective_projection(60, self.wnd.aspect_ratio, 1, 100, dtype='f4'))
-        self.texture_prog['m_model'].write(matrix44.create_identity(dtype='f4'))
+        self.texture_program = self.load_program('programs/texture.glsl')
+        self.quad_fs = geometry.quad_fs()
 
     def render(self, time, frametime):
-        # time = self.wnd.frames / 30
-
-        self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
         self.render_pygame(time)
 
-        rotate = matrix44.create_from_eulers((time, time * 1.2, time * 1.3), dtype='f4')
-        translate = matrix44.create_from_translation((0, 0, -3.5), dtype='f4')
-        camera = matrix44.multiply(rotate, translate)
-
-        self.texture_prog['m_camera'].write(camera)
+        self.ctx.clear(
+            (math.sin(time) + 1.0) / 2,
+            (math.sin(time + 2) + 1.0) / 2,
+            (math.sin(time + 3) + 1.0) / 2,
+        )
+    
+        self.ctx.enable(moderngl.BLEND)
         self.pg_texture.use()
-        self.cube.render(self.texture_prog)
-
-        # screenshot.create(self.wnd.fbo, name='frame_{}.png'.format(str(self.wnd.frames).zfill(4)))
+        self.quad_fs.render(self.texture_program)
+        self.ctx.disable(moderngl.BLEND)
 
     def render_pygame(self, time):
         """Render to offscreen surface and copy result into moderngl texture"""
-        self.pg_screen.fill((255, 255, 255))
+        self.pg_screen.fill((0, 0, 0, 0))  # Make sure we clear with alpha 0!
         N = 8
         for i in range(N):
             time_offset = 6.28 / N * i

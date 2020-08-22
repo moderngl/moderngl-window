@@ -3,6 +3,7 @@ from functools import wraps
 from pathlib import Path
 import logging
 import sys
+import weakref
 from typing import Any, Tuple, Type
 
 import moderngl
@@ -296,10 +297,19 @@ class BaseWindow:
         """bool: Window is resizable"""
         return self._resizable
 
+    @resizable.setter
+    def resizable(self, value: bool) -> None:
+        self._resizable = value
+
     @property
     def fullscreen(self) -> bool:
         """bool: Window is in fullscreen mode"""
         return self._fullscreen
+
+    @fullscreen.setter
+    def fullscreen(self, value: bool) -> None:
+        self._set_fullscreen(value)
+        self._fullscreen = value
 
     @property
     def config(self) -> 'WindowConfig':
@@ -311,7 +321,10 @@ class BaseWindow:
 
             window.config = window_config_instance
         """
-        return self._config
+        if self._config is not None:
+            return self._config()
+
+        return None
 
     @property
     def vsync(self) -> bool:
@@ -408,7 +421,7 @@ class BaseWindow:
         self.mouse_scroll_event_func = getattr(config, 'mouse_scroll_event', dummy_func)
         self.unicode_char_entered_func = getattr(config, 'unicode_char_entered', dummy_func)
 
-        self._config = config
+        self._config = weakref.ref(config)
 
     @property
     def render_func(self):
@@ -625,6 +638,12 @@ class BaseWindow:
 
     def _set_icon(self, icon_path: str) -> None:
         raise NotImplementedError(f"Setting an icon is currently not supported by Window-type: {self.name}")
+
+    def _set_fullscreen(self, value: bool) -> None:
+        """
+        A library specific destroy method is required
+        """
+        raise NotImplementedError("Toggling fullscreen is currently not supported by Window-type: {}".format(self.name))
 
     def destroy(self) -> None:
         """

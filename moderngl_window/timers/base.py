@@ -9,6 +9,7 @@ class BaseTimer:
 
     All methods must be implemented.
     """
+
     @property
     def is_paused(self) -> bool:
         """bool: The pause state of the timer"""

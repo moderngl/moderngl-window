@@ -14,6 +14,7 @@ class Node:
     and/or a container for other nodes. Nodes and their children
     represents the scene tree.
     """
+
     def __init__(self, name=None, camera=None, mesh=None, matrix=None):
         """Create a node.
 
@@ -27,7 +28,7 @@ class Node:
         self._camera = camera
         self._mesh = mesh
         # Local node matrix
-        self._matrix = matrix.astype('f4') if matrix is not None else None
+        self._matrix = matrix.astype("f4") if matrix is not None else None
         # Global matrix
         self._matrix_global = None
 
@@ -43,16 +44,16 @@ class Node:
         self._name = value
 
     @property
-    def mesh(self) -> 'Mesh':
+    def mesh(self) -> "Mesh":
         """:py:class:`~moderngl_window.scene.Mesh`: The mesh if present"""
         return self._mesh
 
     @mesh.setter
-    def mesh(self, value: 'Mesh'):
+    def mesh(self, value: "Mesh"):
         self._mesh = value
 
     @property
-    def camera(self) -> 'Camera':
+    def camera(self) -> "Camera":
         """:py:class:`~moderngl_window.scene.Camera`: The camera if present"""
         return self._camera
 
@@ -79,7 +80,7 @@ class Node:
         self._matrix_global = value
 
     @property
-    def children(self) -> List['Node']:
+    def children(self) -> List["Node"]:
         """list: List of children"""
         return self._children
 
@@ -104,14 +105,14 @@ class Node:
                 projection_matrix=projection_matrix,
                 model_matrix=self._matrix_global,
                 camera_matrix=camera_matrix,
-                time=time
+                time=time,
             )
 
         for child in self._children:
             child.draw(
                 projection_matrix=projection_matrix,
                 camera_matrix=camera_matrix,
-                time=time
+                time=time,
             )
 
     def draw_bbox(self, projection_matrix, camera_matrix, program, vao):
@@ -125,11 +126,7 @@ class Node:
         """
         if self._mesh:
             self._mesh.draw_bbox(
-                projection_matrix,
-                self._matrix_global,
-                camera_matrix,
-                program,
-                vao
+                projection_matrix, self._matrix_global, camera_matrix, program, vao
             )
 
         for child in self.children:
@@ -161,7 +158,9 @@ class Node:
             view_matrix = matrix44.multiply(self._matrix, view_matrix)
 
         if self._mesh:
-            bbox_min, bbox_max = self._mesh.calc_global_bbox(view_matrix, bbox_min, bbox_max)
+            bbox_min, bbox_max = self._mesh.calc_global_bbox(
+                view_matrix, bbox_min, bbox_max
+            )
 
         for child in self._children:
             bbox_min, bbox_max = child.calc_global_bbox(view_matrix, bbox_min, bbox_max)
@@ -175,12 +174,14 @@ class Node:
             model_matrix (numpy.ndarray): model matrix
         """
         if self._matrix is not None:
-            self._matrix_global = matrix44.multiply(self._matrix, model_matrix).astype('f4')
+            self._matrix_global = matrix44.multiply(self._matrix, model_matrix).astype(
+                "f4"
+            )
 
             for child in self._children:
                 child.calc_model_mat(self._matrix_global)
         else:
-            self._matrix_global = model_matrix.astype('f4')
+            self._matrix_global = model_matrix.astype("f4")
 
             for child in self._children:
                 child.calc_model_mat(model_matrix)

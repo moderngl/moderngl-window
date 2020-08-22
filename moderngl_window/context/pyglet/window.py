@@ -75,6 +75,9 @@ class Window(BaseWindow):
         self._buffer_width, self._buffer_height = self._window.get_framebuffer_size()
         self.set_default_viewport()
 
+    def _set_fullscreen(self, value: bool) -> None:
+        self._window.set_fullscreen(value)
+
     @property
     def size(self) -> Tuple[int, int]:
         """Tuple[int, int]: current window size.

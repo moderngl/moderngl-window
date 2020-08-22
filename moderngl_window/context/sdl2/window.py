@@ -68,6 +68,9 @@ class Window(BaseWindow):
         self.init_mgl_context()
         self.set_default_viewport()
 
+    def _set_fullscreen(self, value: bool) -> None:
+        sdl2.SDL_SetWindowFullscreen(self._window, sdl2.SDL_WINDOW_FULLSCREEN_DESKTOP if value else 0)
+
     def _get_drawable_size(self):
         x = c_int()
         y = c_int()

@@ -6,6 +6,7 @@ from pyrr import Matrix44
 
 class Projection3D:
     """3D Projection"""
+
     def __init__(self, aspect_ratio=16 / 9, fov=75.0, near=1.0, far=100.0):
         """Create a 3D projection
 
@@ -48,8 +49,13 @@ class Projection3D:
         """np.ndarray: Current numpy projection matrix"""
         return self._matrix
 
-    def update(self, aspect_ratio: float = None, fov: float = None,
-               near: float = None, far: float = None) -> None:
+    def update(
+        self,
+        aspect_ratio: float = None,
+        fov: float = None,
+        near: float = None,
+        far: float = None,
+    ) -> None:
         """Update the projection matrix
 
         Keyword Args:
@@ -64,9 +70,7 @@ class Projection3D:
         self._far = far or self._far
 
         self._matrix = Matrix44.perspective_projection(
-            self._fov, self._aspect_ratio,
-            self._near, self._far,
-            dtype='f4',
+            self._fov, self._aspect_ratio, self._near, self._far, dtype="f4",
         )
         self._matrix_bytes = self._matrix.tobytes()
 
@@ -85,4 +89,7 @@ class Projection3D:
         This is for example useful when reconstructing a view position
         of a fragment from a linearized depth value.
         """
-        return self._far / (self._far - self._near), (self._far * self._near) / (self._near - self._far)
+        return (
+            self._far / (self._far - self._near),
+            (self._far * self._near) / (self._near - self._far),
+        )
