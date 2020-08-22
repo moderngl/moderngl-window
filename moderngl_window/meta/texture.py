@@ -50,7 +50,7 @@ class TextureDescription(ResourceDescription):
             kind (str): The kind of loader to use
             flip (boolean): (use flip_y) Flip the image vertically (top to bottom)
             flip_x (boolean): Flip the image horizontally (left to right)
-            flip_y (boolean): Flip the image vertically (top top bottom)
+            flip_y (boolean): Flip the image vertically (top to bottom)
             mipmap (bool): Generate mipmaps. Will generate max possible levels unless
                            `mipmap_levels` is defined.
             mipmap_levels (tuple): (base, max_level) controlling mipmap generation.
