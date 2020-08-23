@@ -67,6 +67,14 @@ class Window(BaseWindow):
         self._frames += 1
         self._ctx.finish()
 
+    def _set_icon(self, icon_path: str) -> None:
+        """Do nothing when icon is set"""
+        pass
+
+    def _set_fullscreen(self, value: bool) -> None:
+        """Do nothing when fullscreen is toggled"""
+        pass
+
     def destroy(self) -> None:
         """Destroy the context"""
         self._ctx.release()
