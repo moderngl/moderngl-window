@@ -4,8 +4,14 @@ from moderngl_window.opengl.vao import VAO
 from moderngl_window.geometry import AttributeNames
 
 
-def cube(size=(1.0, 1.0, 1.0), center=(0.0, 0.0, 0.0), normals=True, uvs=True,
-         name=None, attr_names=AttributeNames) -> VAO:
+def cube(
+    size=(1.0, 1.0, 1.0),
+    center=(0.0, 0.0, 0.0),
+    normals=True,
+    uvs=True,
+    name=None,
+    attr_names=AttributeNames,
+) -> VAO:
     """Creates a cube VAO with normals and texture coordinates
 
     Keyword Args:
@@ -23,6 +29,7 @@ def cube(size=(1.0, 1.0, 1.0), center=(0.0, 0.0, 0.0), normals=True, uvs=True,
     width, height, depth = size
     width, height, depth = width / 2.0, height / 2.0, depth / 2.0
 
+    # fmt: off
     pos = numpy.array([
         center[0] + width, center[1] - height, center[2] + depth,
         center[0] + width, center[1] + height, center[2] + depth,
@@ -141,14 +148,15 @@ def cube(size=(1.0, 1.0, 1.0), center=(0.0, 0.0, 0.0), normals=True, uvs=True,
             0, 0,
             1, 0
         ], dtype=numpy.float32)
+    # fmt: on
 
     vao = VAO(name or "geometry:cube")
 
     # Add buffers
-    vao.buffer(pos, '3f', [attr_names.POSITION])
+    vao.buffer(pos, "3f", [attr_names.POSITION])
     if normals:
-        vao.buffer(normal_data, '3f', [attr_names.NORMAL])
+        vao.buffer(normal_data, "3f", [attr_names.NORMAL])
     if uvs:
-        vao.buffer(uvs_data, '2f', [attr_names.TEXCOORD_0])
+        vao.buffer(uvs_data, "2f", [attr_names.TEXCOORD_0])
 
     return vao
