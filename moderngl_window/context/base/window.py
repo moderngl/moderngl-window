@@ -1044,14 +1044,16 @@ class WindowConfig:
             char (str): The character entered
         """
 
-    def load_texture_2d(self, path: str, flip=True, mipmap=False, mipmap_levels: Tuple[int, int] = None,
+    def load_texture_2d(self, path: str, flip=True, flip_x=False, flip_y=True, mipmap=False, mipmap_levels: Tuple[int, int] = None,
                         anisotropy=1.0, **kwargs) -> moderngl.Texture:
         """Loads a 2D texture
 
         Args:
             path (str): Path to the texture relative to search directories
         Keyword Args:
-            flip (boolean): Flip the image horizontally
+            flip (boolean): (Use ```flip_y``) Flip the image vertically (top to bottom)
+            flip_x (boolean): Flip the image horizontally (left to right)
+            flip_y (boolean): Flip the image vertically (top to bottom)
             mipmap (bool): Generate mipmaps. Will generate max possible levels unless
                            `mipmap_levels` is defined.
             mipmap_levels (tuple): (base, max_level) controlling mipmap generation.
@@ -1064,6 +1066,8 @@ class WindowConfig:
         return resources.textures.load(TextureDescription(
             path=path,
             flip=flip,
+            flip_x=flip_x,
+            flip_y=flip_y,
             mipmap=mipmap,
             mipmap_levels=mipmap_levels,
             anisotropy=anisotropy,

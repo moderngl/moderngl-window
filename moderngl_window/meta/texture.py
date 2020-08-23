@@ -29,7 +29,7 @@ class TextureDescription(ResourceDescription):
         kind: str = None,
         flip=True,
         flip_x=False,
-        flip_y=False,
+        flip_y=True,
         mipmap=False,
         mipmap_levels: Tuple[int, int] = None,
         anisotropy=1.0,
@@ -70,9 +70,8 @@ class TextureDescription(ResourceDescription):
             {
                 "path": path,
                 "kind": kind,
-                "flip": flip,
                 "flip_x": flip_x,
-                "flip_y": flip_y,
+                "flip_y": flip and flip_y,
                 "mipmap": mipmap,
                 "mipmap_levels": mipmap_levels,
                 "anisotropy": anisotropy,
@@ -87,11 +86,6 @@ class TextureDescription(ResourceDescription):
             }
         )
         super().__init__(**kwargs)
-
-    @property
-    def flip(self) -> bool:
-        """bool: (Use ``flip_y``) If the image should be flipped vertically (top to bottom)"""
-        return self._kwargs.get("flip")
 
     @property
     def flip_x(self) -> bool:

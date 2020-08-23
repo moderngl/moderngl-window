@@ -47,10 +47,8 @@ class PillowLoader(BaseLoader):
 
                 self.image = anim
 
-        if self.meta.flip:
-            self.image = self.image.transpose(Image.FLIP_TOP_BOTTOM)
-
-        self.image = self._palette_to_raw(self.image)
+        self.image = self._apply_modifiers(self.image)
+        return self.image
 
     def _load_texture(self, path):
         """Find and load separate texture. Useful when multiple textue files needs to be loaded"""
@@ -60,11 +58,16 @@ class PillowLoader(BaseLoader):
             raise ImproperlyConfigured("Cannot find texture: {}".format(path))
 
         image = Image.open(resolved_path)
-        if self.meta.flip:
+        return self._apply_modifiers(image)
+
+    def _apply_modifiers(self, image):
+        if self.meta.flip_x:
+            image = image.transpose(Image.FLIP_LEFT_RIGHT)
+
+        if self.meta.flip_y:
             image = image.transpose(Image.FLIP_TOP_BOTTOM)
 
-        image = self._palette_to_raw(image)
-        return image
+        return self._palette_to_raw(image)
 
     def _palette_to_raw(self, image, mode=None):
         """Converts image to raw if palette is present"""
