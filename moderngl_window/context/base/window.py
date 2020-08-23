@@ -1115,6 +1115,8 @@ class WindowConfig:
             pos_x: str = None, pos_y: str = None, pos_z: str = None,
             neg_x: str = None, neg_y: str = None, neg_z: str = None,
             flip=False,
+            flip_x=False,
+            flip_y=False,
             mipmap=False,
             mipmap_levels: Tuple[int, int] = None,
             anisotropy=1.0,
@@ -1128,7 +1130,9 @@ class WindowConfig:
             neg_x (str): Path to texture representing negative x face
             neg_y (str): Path to texture representing negative y face
             neg_z (str): Path to texture representing negative z face
-            flip (boolean): Flip the image horizontally
+            flip (boolean): (Use ``flip_y``)Flip the image vertically (top to bottom)
+            flip_x (boolean): Flip the image horizontally (left to right)
+            flip_y (boolean): Flip the image vertically (top to bottom)
             mipmap (bool): Generate mipmaps. Will generate max possible levels unless
                            `mipmap_levels` is defined.
             mipmap_levels (tuple): (base, max_level) controlling mipmap generation.
@@ -1146,6 +1150,8 @@ class WindowConfig:
             neg_y=neg_y,
             neg_z=neg_z,
             flip=flip,
+            flip_x=flip_x,
+            flip_y=flip_y,
             mipmap=mipmap,
             mipmap_levels=mipmap_levels,
             anisotropy=anisotropy,

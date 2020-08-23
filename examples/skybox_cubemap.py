@@ -17,12 +17,13 @@ class Cubemap(CameraWindow):
         self.wnd.mouse_exclusivity = True
         self.cube = geometry.cube(size=(20, 20, 20))
         self.texture = self.load_texture_cube(
-            neg_x='textures/cubemaps/yokohama/negx.jpg',
+            neg_x='textures/cubemaps/yokohama/posx.jpg',
             neg_y='textures/cubemaps/yokohama/negy.jpg',
             neg_z='textures/cubemaps/yokohama/negz.jpg',
-            pos_x='textures/cubemaps/yokohama/posx.jpg',
+            pos_x='textures/cubemaps/yokohama/negx.jpg',
             pos_y='textures/cubemaps/yokohama/posy.jpg',
             pos_z='textures/cubemaps/yokohama/posz.jpg',
+            flip_x=True,
         )
         self.prog = self.load_program('programs/cubemap.glsl')
 
