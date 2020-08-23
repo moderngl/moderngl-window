@@ -63,6 +63,17 @@ class Keys(BaseKeys):
     NUMBER_8 = sdl2.SDLK_8
     NUMBER_9 = sdl2.SDLK_9
 
+    NUMPAD_0 = sdl2.SDLK_KP_0
+    NUMPAD_1 = sdl2.SDLK_KP_1
+    NUMPAD_2 = sdl2.SDLK_KP_2
+    NUMPAD_3 = sdl2.SDLK_KP_3
+    NUMPAD_4 = sdl2.SDLK_KP_4
+    NUMPAD_5 = sdl2.SDLK_KP_5
+    NUMPAD_6 = sdl2.SDLK_KP_6
+    NUMPAD_7 = sdl2.SDLK_KP_7
+    NUMPAD_8 = sdl2.SDLK_KP_8
+    NUMPAD_9 = sdl2.SDLK_KP_9
+
     A = sdl2.SDLK_a
     B = sdl2.SDLK_b
     C = sdl2.SDLK_c

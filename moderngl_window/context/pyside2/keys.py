@@ -60,6 +60,18 @@ class Keys(BaseKeys):
     NUMBER_8 = Qt.Key_8
     NUMBER_9 = Qt.Key_9
 
+    # Uses a modifier for numpad. We just repeat the numbers for compatibility
+    NUMPAD_0 = Qt.Key_0
+    NUMPAD_1 = Qt.Key_1
+    NUMPAD_2 = Qt.Key_2
+    NUMPAD_3 = Qt.Key_3
+    NUMPAD_4 = Qt.Key_4
+    NUMPAD_5 = Qt.Key_5
+    NUMPAD_6 = Qt.Key_6
+    NUMPAD_7 = Qt.Key_7
+    NUMPAD_8 = Qt.Key_8
+    NUMPAD_9 = Qt.Key_9
+
     A = Qt.Key_A
     B = Qt.Key_B
     C = Qt.Key_C

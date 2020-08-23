@@ -59,16 +59,27 @@ class Keys(BaseKeys):
     F11 = key.F11
     F12 = key.F12
 
-    NUMBER_0 = key.NUM_0
-    NUMBER_1 = key.NUM_1
-    NUMBER_2 = key.NUM_2
-    NUMBER_3 = key.NUM_3
-    NUMBER_4 = key.NUM_4
-    NUMBER_5 = key.NUM_5
-    NUMBER_6 = key.NUM_6
-    NUMBER_7 = key.NUM_7
-    NUMBER_8 = key.NUM_8
-    NUMBER_9 = key.NUM_9
+    NUMBER_0 = key._0
+    NUMBER_1 = key._1
+    NUMBER_2 = key._2
+    NUMBER_3 = key._3
+    NUMBER_4 = key._4
+    NUMBER_5 = key._5
+    NUMBER_6 = key._6
+    NUMBER_7 = key._7
+    NUMBER_8 = key._8
+    NUMBER_9 = key._9
+
+    NUMPAD_0 = key.NUM_0
+    NUMPAD_1 = key.NUM_1
+    NUMPAD_2 = key.NUM_2
+    NUMPAD_3 = key.NUM_3
+    NUMPAD_4 = key.NUM_4
+    NUMPAD_5 = key.NUM_5
+    NUMPAD_6 = key.NUM_6
+    NUMPAD_7 = key.NUM_7
+    NUMPAD_8 = key.NUM_8
+    NUMPAD_9 = key.NUM_9
 
     A = key.A
     B = key.B

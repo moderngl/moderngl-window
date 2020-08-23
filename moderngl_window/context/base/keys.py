@@ -78,6 +78,17 @@ class BaseKeys:
     NUMBER_8 = None
     NUMBER_9 = None
 
+    NUMPAD_0 = None
+    NUMPAD_1 = None
+    NUMPAD_2 = None
+    NUMPAD_3 = None
+    NUMPAD_4 = None
+    NUMPAD_5 = None
+    NUMPAD_6 = None
+    NUMPAD_7 = None
+    NUMPAD_8 = None
+    NUMPAD_9 = None
+
     A = None
     B = None
     C = None

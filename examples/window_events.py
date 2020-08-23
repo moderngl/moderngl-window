@@ -99,6 +99,13 @@ class WindowEvents(moderngl_window.WindowConfig):
             if key == keys.M:
                 self.wnd.mouse_exclusivity = not self.wnd.mouse_exclusivity
 
+            # Check number vs. numpad
+            if key == keys.NUMBER_0:
+                print('NUMBER 0')
+
+            if key == keys.NUMPAD_0:
+                print('NUMPAD 0')
+
     def mouse_position_event(self, x, y, dx, dy):
         print("Mouse position pos={} {} delta={} {}".format(x, y, dx, dy))
 
