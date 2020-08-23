@@ -14,7 +14,8 @@ logger = logging.getLogger(__name__)
 
 class PillowLoader(BaseLoader):
     """Base loader using PIL/Pillow"""
-    kind = '__unknown__'
+
+    kind = "__unknown__"
 
     def __init__(self, meta):
         super().__init__(meta)
@@ -30,19 +31,24 @@ class PillowLoader(BaseLoader):
             self.meta.resolved_path = self.find_texture(self.meta.path)
             logger.info("loading %s", self.meta.resolved_path)
             if not self.meta.resolved_path:
-                raise ImproperlyConfigured("Cannot find texture: {}".format(self.meta.path))
+                raise ImproperlyConfigured(
+                    "Cannot find texture: {}".format(self.meta.path)
+                )
 
             self.image = Image.open(self.meta.resolved_path)
 
             # If the image is animated (like a gif anim) we convert it into a vertical strip
-            if hasattr(self.image, 'is_animated') and self.image.is_animated:
+            if hasattr(self.image, "is_animated") and self.image.is_animated:
                 self.layers = self.image.n_frames
-                anim = Image.new(self.image.palette.mode, (self.image.width, self.image.height * self.image.n_frames))
+                anim = Image.new(
+                    self.image.palette.mode,
+                    (self.image.width, self.image.height * self.image.n_frames),
+                )
                 anim.putalpha(0)
 
                 for frame_number in range(self.image.n_frames):
                     self.image.seek(frame_number)
-                    frame = self._palette_to_raw(self.image, mode='RGBA')
+                    frame = self._palette_to_raw(self.image, mode="RGBA")
                     anim.paste(frame, (0, frame_number * self.image.height))
 
                 self.image = anim
@@ -71,7 +77,7 @@ class PillowLoader(BaseLoader):
 
     def _palette_to_raw(self, image, mode=None):
         """Converts image to raw if palette is present"""
-        if image.palette and image.palette.mode.lower() in ['rgb', 'rgba']:
+        if image.palette and image.palette.mode.lower() in ["rgb", "rgba"]:
             mode = mode or image.palette.mode
             logger.debug("Converting P image to %s using palette", mode)
             return image.convert(mode)
@@ -95,5 +101,11 @@ def image_data(image: Image) -> Tuple[int, bytes]:
     #       At the moment we load the data as is.
     data = image.tobytes()
     components = len(data) // (image.size[0] * image.size[1])
-    logger.debug("image_data size=[%s, %s] components=%s bytes=%s", image.size[0], image.size[1], components, len(data))
+    logger.debug(
+        "image_data size=[%s, %s] components=%s bytes=%s",
+        image.size[0],
+        image.size[1],
+        components,
+        len(data),
+    )
     return components, data

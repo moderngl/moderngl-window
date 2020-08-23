@@ -7,9 +7,9 @@ logger = logging.getLogger(__name__)
 
 
 class Loader(BaseLoader):
-    kind = 'text'
+    kind = "text"
     file_extensions = [
-        ['.txt'],
+        [".txt"],
     ]
 
     def load(self) -> str:
@@ -21,9 +21,11 @@ class Loader(BaseLoader):
         self.meta.resolved_path = self.find_data(self.meta.path)
 
         if not self.meta.resolved_path:
-            raise ImproperlyConfigured("Data file '{}' not found".format(self.meta.path))
+            raise ImproperlyConfigured(
+                "Data file '{}' not found".format(self.meta.path)
+            )
 
         logger.info("Loading: %s", self.meta.path)
 
-        with open(str(self.meta.resolved_path), 'r') as fd:
+        with open(str(self.meta.resolved_path), "r") as fd:
             return fd.read()
