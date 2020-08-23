@@ -5,7 +5,8 @@ from moderngl_window.meta import ProgramDescription
 
 class Programs(BaseRegistry):
     """Handle program loading"""
-    settings_attr = 'PROGRAM_LOADERS'
+
+    settings_attr = "PROGRAM_LOADERS"
 
     def resolve_loader(self, meta: ProgramDescription) -> None:
         """Resolve program loader.
@@ -17,7 +18,7 @@ class Programs(BaseRegistry):
             meta (ProgramDescription): The resource description
         """
         if not meta.kind:
-            meta.kind = 'single' if meta.path else 'separate'
+            meta.kind = "single" if meta.path else "separate"
 
         super().resolve_loader(meta)
 

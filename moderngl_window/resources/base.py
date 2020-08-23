@@ -13,10 +13,12 @@ from moderngl_window.meta.base import ResourceDescription
 
 class BaseRegistry:
     """Base class for all resource pools"""
+
     settings_attr = None
     """str: The name of the attribute in :py:class:`~moderngl_window.conf.Settings`
     containting a list of loader classes.
     """
+
     def __init__(self):
         """Initialize internal attributes"""
         self._resources = []
@@ -93,7 +95,9 @@ class BaseRegistry:
 
             raise ImproperlyConfigured(
                 "Resource has invalid loader kind '{}': {}\nAvailable loaders: {}".format(
-                    meta.kind, meta, [loader.kind for loader in self.loaders]))
+                    meta.kind, meta, [loader.kind for loader in self.loaders]
+                )
+            )
 
         # Get loader based on file extension
         for loader_cls in self.loaders:
@@ -112,4 +116,6 @@ class BaseRegistry:
             if issubclass(meta.__class__, ResourceDescription):
                 return
 
-        raise ImproperlyConfigured("Resource loader got type {}, not a resource description".format(type(meta)))
+        raise ImproperlyConfigured(
+            "Resource loader got type {}, not a resource description".format(type(meta))
+        )

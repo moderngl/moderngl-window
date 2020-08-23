@@ -8,7 +8,8 @@ from moderngl_window.meta import SceneDescription
 
 class Scenes(BaseRegistry):
     """Handles scene loading"""
-    settings_attr = 'SCENE_LOADERS'
+
+    settings_attr = "SCENE_LOADERS"
 
     def load(self, meta: SceneDescription) -> Scene:
         """Load a scene with the configured loaders.
