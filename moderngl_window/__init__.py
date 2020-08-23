@@ -16,15 +16,15 @@ from moderngl_window.timers.clock import Timer
 from moderngl_window.conf import settings
 from moderngl_window.utils.module_loading import import_string
 
-__version__ = '2.2.3'
+__version__ = "2.2.3"
 
 IGNORE_DIRS = [
-    '__pycache__',
-    'base',
+    "__pycache__",
+    "base",
 ]
 
-OPTIONS_TRUE = ['yes', 'on', 'true', 't', 'y', '1']
-OPTIONS_FALSE = ['no', 'off', 'false', 'f', 'n', '0']
+OPTIONS_TRUE = ["yes", "on", "true", "t", "y", "1"]
+OPTIONS_FALSE = ["no", "off", "false", "f", "n", "0"]
 OPTIONS_ALL = OPTIONS_TRUE + OPTIONS_FALSE
 
 # Quick and dirty debug logging setup by default
@@ -47,12 +47,15 @@ def setup_basic_logging(level: int):
         logger.setLevel(level)
         ch = logging.StreamHandler()
         ch.setLevel(logging.DEBUG)
-        ch.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+        ch.setFormatter(
+            logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+        )
         logger.addHandler(ch)
 
 
 class ContextRefs:
     """Namespace for window/context references"""
+
     WINDOW = None
     CONTEXT = None
 
@@ -116,11 +119,11 @@ def get_local_window_cls(window: str = None) -> Type[BaseWindow]:
     Returns:
         A reference to the requested window class. Raises exception if not found.
     """
-    window = os.environ.get('MODERNGL_WINDOW') or window
+    window = os.environ.get("MODERNGL_WINDOW") or window
     if not window:
-        window = 'pyglet'
+        window = "pyglet"
 
-    return get_window_cls('moderngl_window.context.{}.Window'.format(window))
+    return get_window_cls("moderngl_window.context.{}.Window".format(window))
 
 
 def find_window_classes() -> List[str]:
@@ -131,7 +134,8 @@ def find_window_classes() -> List[str]:
         A list of available window packages
     """
     return [
-        path.parts[-1] for path in Path(__file__).parent.joinpath('context').iterdir()
+        path.parts[-1]
+        for path in Path(__file__).parent.joinpath("context").iterdir()
         if path.is_dir() and path.parts[-1] not in IGNORE_DIRS
     ]
 
@@ -144,13 +148,14 @@ def create_window_from_settings() -> BaseWindow:
     Returns:
         The Window instance
     """
-    window_cls = import_string(settings.WINDOW['class'])
+    window_cls = import_string(settings.WINDOW["class"])
     window = window_cls(**settings.WINDOW)
     activate_context(window=window)
     return window
 
 
 # --- The simple window config system ---
+
 
 def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     """
@@ -182,7 +187,9 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         title=config_cls.title,
         size=size,
         fullscreen=config_cls.fullscreen or values.fullscreen,
-        resizable=values.resizable if values.resizable is not None else config_cls.resizable,
+        resizable=values.resizable
+        if values.resizable is not None
+        else config_cls.resizable,
         gl_version=config_cls.gl_version,
         aspect_ratio=config_cls.aspect_ratio,
         vsync=values.vsync if values.vsync is not None else config_cls.vsync,
@@ -210,7 +217,11 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     _, duration = timer.stop()
     window.destroy()
     if duration > 0:
-        logger.info("Duration: {0:.2f}s @ {1:.2f} FPS".format(duration, window.frames / duration))
+        logger.info(
+            "Duration: {0:.2f}s @ {1:.2f} FPS".format(
+                duration, window.frames / duration
+            )
+        )
 
 
 def create_parser():
@@ -218,43 +229,44 @@ def create_parser():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        '-wnd', '--window',
+        "-wnd",
+        "--window",
         choices=find_window_classes(),
-        help='Name for the window type to use',
+        help="Name for the window type to use",
     )
     parser.add_argument(
-        '-fs', '--fullscreen',
+        "-fs",
+        "--fullscreen",
         action="store_true",
-        help='Open the window in fullscreen mode',
+        help="Open the window in fullscreen mode",
     )
     parser.add_argument(
-        '-vs', '--vsync',
-        type=valid_bool,
-        help="Enable or disable vsync",
+        "-vs", "--vsync", type=valid_bool, help="Enable or disable vsync",
     )
     parser.add_argument(
-        '-r', '--resizable',
+        "-r",
+        "--resizable",
         type=valid_bool,
         default=None,
         help="Enable/disable window resize",
     )
     parser.add_argument(
-        '-s', '--samples',
+        "-s",
+        "--samples",
         type=int,
         help="Specify the desired number of samples to use for multisampling",
     )
     parser.add_argument(
-        '-c', '--cursor',
+        "-c",
+        "--cursor",
         type=valid_bool,
         help="Enable or disable displaying the mouse cursor",
     )
     parser.add_argument(
-        '--size',
-        type=valid_window_size,
-        help="Window size",
+        "--size", type=valid_window_size, help="Window size",
     )
     parser.add_argument(
-        '--size_mult',
+        "--size_mult",
         type=valid_window_size_multiplier,
         default=1.0,
         help="Multiplier for the window size making it easy scale the window",
@@ -277,6 +289,7 @@ def parse_args(args=None, parser=None):
 
 # --- Validators ---
 
+
 def valid_bool(value):
     """Validator for bool values"""
     value = value.lower()
@@ -289,7 +302,9 @@ def valid_bool(value):
     if value in OPTIONS_FALSE:
         return False
 
-    raise argparse.ArgumentTypeError('Boolean value expected. Options: {}'.format(OPTIONS_ALL))
+    raise argparse.ArgumentTypeError(
+        "Boolean value expected. Options: {}".format(OPTIONS_ALL)
+    )
 
 
 def valid_window_size(value):
@@ -299,7 +314,7 @@ def valid_window_size(value):
     Valid format is "[int]x[int]". For example "1920x1080".
     """
     try:
-        width, height = value.split('x')
+        width, height = value.split("x")
         return int(width), int(height)
     except ValueError:
         pass
@@ -321,6 +336,4 @@ def valid_window_size_multiplier(value):
     except ValueError:
         pass
 
-    raise argparse.ArgumentTypeError(
-        "Must be a positive int or float",
-    )
+    raise argparse.ArgumentTypeError("Must be a positive int or float",)
