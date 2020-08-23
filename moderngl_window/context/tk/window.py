@@ -8,7 +8,7 @@ from pyopengltk import OpenGLFrame
 
 class Window(BaseWindow):
     #: Name of the window
-    name = 'tk'
+    name = "tk"
     #: tkinter specific key constants
     keys = Keys
 
@@ -22,25 +22,27 @@ class Window(BaseWindow):
         super().__init__(**kwargs)
 
         self._tk = tkinter.Tk()
-        self._gl_widget = ModernglTkWindow(self._tk, width=self.width, height=self.height)
+        self._gl_widget = ModernglTkWindow(
+            self._tk, width=self.width, height=self.height
+        )
         self._gl_widget.pack(fill=tkinter.BOTH, expand=tkinter.YES)
         self._tk.resizable(self._resizable, self._resizable)
 
         if self._fullscreen:
-            self._tk.attributes('-fullscreen', True)
+            self._tk.attributes("-fullscreen", True)
 
         self.cursor = self._cursor
 
         # Set up events
-        self._gl_widget.bind('<Configure>', self.tk_resize)
-        self._tk.bind('<KeyPress>', self.tk_key_press)
-        self._tk.bind('<KeyRelease>', self.tk_key_release)
-        self._tk.bind('<Motion>', self.tk_mouse_motion)
-        self._tk.bind('<Button>', self.tk_mouse_button_press)
-        self._tk.bind('<ButtonRelease>', self.tk_mouse_button_release)
-        self._tk.bind('<MouseWheel>', self.tk_mouse_wheel)
-        self._tk.bind('<Map>', self.tk_map)
-        self._tk.bind('<Unmap>', self.tk_unmap)
+        self._gl_widget.bind("<Configure>", self.tk_resize)
+        self._tk.bind("<KeyPress>", self.tk_key_press)
+        self._tk.bind("<KeyRelease>", self.tk_key_release)
+        self._tk.bind("<Motion>", self.tk_mouse_motion)
+        self._tk.bind("<Button>", self.tk_mouse_button_press)
+        self._tk.bind("<ButtonRelease>", self.tk_mouse_button_release)
+        self._tk.bind("<MouseWheel>", self.tk_mouse_wheel)
+        self._tk.bind("<Map>", self.tk_map)
+        self._tk.bind("<Unmap>", self.tk_unmap)
 
         self._tk.protocol("WM_DELETE_WINDOW", self.tk_close_window)
 
@@ -54,7 +56,7 @@ class Window(BaseWindow):
         self.set_default_viewport()
 
     def _set_fullscreen(self, value: bool) -> None:
-        self._tk.attributes('-fullscreen', value)
+        self._tk.attributes("-fullscreen", value)
 
     @property
     def size(self) -> Tuple[int, int]:
@@ -69,7 +71,7 @@ class Window(BaseWindow):
 
     @size.setter
     def size(self, value: Tuple[int, int]):
-        self._tk.geometry('{}x{}'.format(value[0], value[1]))
+        self._tk.geometry("{}x{}".format(value[0], value[1]))
 
     @property
     def position(self) -> Tuple[int, int]:
@@ -80,12 +82,12 @@ class Window(BaseWindow):
             # Move window to 100, 100
             window.position = 100, 100
         """
-        _, x, y = self._tk.geometry().split('+')
+        _, x, y = self._tk.geometry().split("+")
         return int(x), int(y)
 
     @position.setter
     def position(self, value: Tuple[int, int]):
-        self._tk.geometry('+{}+{}'.format(value[0], value[1]))
+        self._tk.geometry("+{}+{}".format(value[0], value[1]))
 
     @property
     def cursor(self) -> bool:
@@ -125,7 +127,7 @@ class Window(BaseWindow):
     def swap_buffers(self) -> None:
         """Swap buffers, set viewport, trigger events and increment frame counter"""
         err = self._ctx.error
-        if err != 'GL_NO_ERROR':
+        if err != "GL_NO_ERROR":
             print(err)
 
         # Ensure we process events or tkinter will eventually stall.
@@ -216,11 +218,11 @@ class Window(BaseWindow):
             event (tkinter.Event): The key event
             press (bool): Press or release event
         """
-        if event.keysym in ['Shift_L', 'Shift_R']:
+        if event.keysym in ["Shift_L", "Shift_R"]:
             self._modifiers.shift = press
-        elif event.keysym in ['Control_L', 'Control_R']:
+        elif event.keysym in ["Control_L", "Control_R"]:
             self._modifiers.ctrl = press
-        elif event.keysym in ['Alt_L', 'Alt_R']:
+        elif event.keysym in ["Alt_L", "Alt_R"]:
             self._modifiers.alt = press
 
     def tk_resize(self, event) -> None:
@@ -259,7 +261,6 @@ class Window(BaseWindow):
 
 
 class ModernglTkWindow(OpenGLFrame):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -280,5 +281,5 @@ class ModernglTkWindow(OpenGLFrame):
         # Only create context once
         # In a window like this we are not likely to lose the context
         # even when window is minimized.
-        if not getattr(self, '_wid', None):
+        if not getattr(self, "_wid", None):
             super().tkMap(event)

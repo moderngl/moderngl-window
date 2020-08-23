@@ -8,6 +8,7 @@ class Keys(BaseKeys):
     """
     Namespace mapping pygame2 specific key constants
     """
+
     ACTION_PRESS = pygame.KEYDOWN
     ACTION_RELEASE = pygame.KEYUP
 

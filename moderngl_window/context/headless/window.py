@@ -9,8 +9,9 @@ class Window(BaseWindow):
 
     Do not currently support any form window events or key input.
     """
+
     #: Name of the window
-    name = 'headless'
+    name = "headless"
     keys = Keys
 
     def __init__(self, **kwargs):
@@ -53,7 +54,9 @@ class Window(BaseWindow):
             viewport (tuple): The viewport
         """
         self.use()
-        self._ctx.clear(red=red, green=green, blue=blue, alpha=alpha, depth=depth, viewport=viewport)
+        self._ctx.clear(
+            red=red, green=green, blue=blue, alpha=alpha, depth=depth, viewport=viewport
+        )
 
     def swap_buffers(self) -> None:
         """

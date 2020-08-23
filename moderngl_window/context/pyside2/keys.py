@@ -8,6 +8,7 @@ class Keys(BaseKeys):
     """
     Namespace mapping pyside2 specific key constants
     """
+
     ESCAPE = Qt.Key_Escape
     SPACE = Qt.Key_Space
     ENTER = Qt.Key_Enter

@@ -11,8 +11,9 @@ class Window(BaseWindow):
     """
     Basic window implementation using pygame2.
     """
+
     #: Name of the window
-    name = 'pygame2'
+    name = "pygame2"
     #: pygame specific key constants
     keys = Keys
 
@@ -27,9 +28,15 @@ class Window(BaseWindow):
 
         pygame.display.init()
 
-        pygame.display.gl_set_attribute(pygame.GL_CONTEXT_MAJOR_VERSION, self.gl_version[0])
-        pygame.display.gl_set_attribute(pygame.GL_CONTEXT_MINOR_VERSION, self.gl_version[1])
-        pygame.display.gl_set_attribute(pygame.GL_CONTEXT_PROFILE_MASK, pygame.GL_CONTEXT_PROFILE_CORE)
+        pygame.display.gl_set_attribute(
+            pygame.GL_CONTEXT_MAJOR_VERSION, self.gl_version[0]
+        )
+        pygame.display.gl_set_attribute(
+            pygame.GL_CONTEXT_MINOR_VERSION, self.gl_version[1]
+        )
+        pygame.display.gl_set_attribute(
+            pygame.GL_CONTEXT_PROFILE_MASK, pygame.GL_CONTEXT_PROFILE_CORE
+        )
         pygame.display.gl_set_attribute(pygame.GL_CONTEXT_FORWARD_COMPATIBLE_FLAG, 1)
         pygame.display.gl_set_attribute(pygame.GL_DOUBLEBUFFER, 1)
         pygame.display.gl_set_attribute(pygame.GL_DEPTH_SIZE, 24)
@@ -59,9 +66,7 @@ class Window(BaseWindow):
 
     def _set_mode(self):
         self._surface = pygame.display.set_mode(
-            size=(self._width, self._height),
-            flags=self._flags,
-            depth=self._depth,
+            size=(self._width, self._height), flags=self._flags, depth=self._depth,
         )
 
     @property
@@ -198,13 +203,11 @@ class Window(BaseWindow):
                 self._handle_mods()
                 if self.mouse_states.any:
                     self._mouse_drag_event_func(
-                        event.pos[0], event.pos[1],
-                        event.rel[0], event.rel[1],
+                        event.pos[0], event.pos[1], event.rel[0], event.rel[1],
                     )
                 else:
                     self._mouse_position_event_func(
-                        event.pos[0], event.pos[1],
-                        event.rel[0], event.rel[1],
+                        event.pos[0], event.pos[1], event.rel[0], event.rel[1],
                     )
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -213,8 +216,7 @@ class Window(BaseWindow):
                 if button is not None:
                     self._handle_mouse_button_state_change(button, True)
                     self._mouse_press_event_func(
-                        event.pos[0], event.pos[1],
-                        button,
+                        event.pos[0], event.pos[1], button,
                     )
 
             elif event.type == pygame.MOUSEBUTTONUP:
@@ -223,8 +225,7 @@ class Window(BaseWindow):
                 if button is not None:
                     self._handle_mouse_button_state_change(button, False)
                     self._mouse_release_event_func(
-                        event.pos[0], event.pos[1],
-                        button,
+                        event.pos[0], event.pos[1], button,
                     )
 
             elif event.type in [pygame.KEYDOWN, pygame.KEYUP]:

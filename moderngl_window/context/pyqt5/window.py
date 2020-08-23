@@ -16,8 +16,9 @@ class Window(BaseWindow):
     in Qt as well, this example can still be useful as a reference
     when creating your own window.
     """
+
     #: Name of the window
-    name = 'pyqt5'
+    name = "pyqt5"
     #: PyQt5 specific key constants
     keys = Keys
 
@@ -63,8 +64,7 @@ class Window(BaseWindow):
         if self.resizable:
             # Ensure a valid resize policy when window is resizable
             size_policy = QtWidgets.QSizePolicy(
-                QtWidgets.QSizePolicy.Expanding,
-                QtWidgets.QSizePolicy.Expanding,
+                QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding,
             )
             self._widget.setSizePolicy(size_policy)
             self._widget.resize(self.width, self.height)
@@ -73,7 +73,10 @@ class Window(BaseWindow):
 
         # Center the window on the screen if in window mode
         if not self.fullscreen:
-            center_window_position = self.position[0] - self.width/2, self.position[1] - self.height/2
+            center_window_position = (
+                self.position[0] - self.width / 2,
+                self.position[1] - self.height / 2,
+            )
             self._widget.move(*center_window_position)
 
         # Needs to be set before show()

@@ -8,6 +8,7 @@ class Keys(BaseKeys):
     """
     Namespace mapping SDL2 specific key constants
     """
+
     ACTION_PRESS = sdl2.SDL_KEYDOWN
     ACTION_RELEASE = sdl2.SDL_KEYUP
 

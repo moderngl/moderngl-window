@@ -4,10 +4,10 @@ import pyglet
 
 # On OS X we need to disable the shadow context
 # because the 2.1 shadow context cannot be upgrade to a 3.3+ core
-if platform.system() == 'Darwin':
-    pyglet.options['shadow_window'] = False
+if platform.system() == "Darwin":
+    pyglet.options["shadow_window"] = False
 
-pyglet.options['debug_gl'] = False
+pyglet.options["debug_gl"] = False
 
 from moderngl_window.context.pyglet.keys import Keys  # noqa: E402
 from moderngl_window.context.base import BaseWindow  # noqa: E402
@@ -17,8 +17,9 @@ class Window(BaseWindow):
     """
     Window based on Pyglet 1.4.x
     """
+
     #: Name of the window
-    name = 'pyglet'
+    name = "pyglet"
     #: Pyglet specific key constants
     keys = Keys
 
@@ -48,7 +49,8 @@ class Window(BaseWindow):
             self._width, self._height = screen.width, screen.height
 
         self._window = PygletWrapper(
-            width=self._width, height=self._height,
+            width=self._width,
+            height=self._height,
             caption=self._title,
             resizable=self._resizable,
             vsync=self._vsync,
@@ -266,8 +268,7 @@ class Window(BaseWindow):
         if button is not None:
             self._handle_mouse_button_state_change(button, True)
             self._mouse_press_event_func(
-                x, self._height - y,
-                button,
+                x, self._height - y, button,
             )
 
     def on_mouse_release(self, x: int, y: int, button, mods):
@@ -283,8 +284,7 @@ class Window(BaseWindow):
         if button is not None:
             self._handle_mouse_button_state_change(button, False)
             self._mouse_release_event_func(
-                x, self._height - y,
-                button,
+                x, self._height - y, button,
             )
 
     def on_mouse_scroll(self, x, y, x_offset: float, y_offset: float):

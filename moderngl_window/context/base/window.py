@@ -25,16 +25,19 @@ logger = logging.getLogger(__name__)
 
 def require_callable(func):
     """Decorator ensuring assigned callbacks are valid callables"""
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         if not callable(args[1]):
             raise ValueError("{} is not a callable".format(args[1]))
         return func(*args, **kwargs)
+
     return wrapper
 
 
 class MouseButtons:
     """Maps what button id to a name"""
+
     left = 1
     right = 2
     middle = 3
@@ -42,6 +45,7 @@ class MouseButtons:
 
 class MouseButtonStates:
     """Namespace for storing the current mouse button states"""
+
     left = False
     right = False
     middle = False
@@ -55,13 +59,16 @@ class MouseButtonStates:
         return str(self)
 
     def __str__(self) -> str:
-        return "<MouseButtonStates left={} right={} middle={}".format(self.left, self.right, self.middle)
+        return "<MouseButtonStates left={} right={} middle={}".format(
+            self.left, self.right, self.middle
+        )
 
 
 class BaseWindow:
     """
     Helper base class for a generic window implementation
     """
+
     #: Name of the window. For example ``pyglet``, ``glfw``
     name = None
     #: Window specific key constants
@@ -69,9 +76,19 @@ class BaseWindow:
     #: Mouse button enum
     mouse = MouseButtons
 
-    def __init__(self, title="ModernGL", gl_version=(3, 3), size=(1280, 720), resizable=True,
-                 fullscreen=False, vsync=True, aspect_ratio: float = None, samples=0, cursor=True,
-                 **kwargs):
+    def __init__(
+        self,
+        title="ModernGL",
+        gl_version=(3, 3),
+        size=(1280, 720),
+        resizable=True,
+        fullscreen=False,
+        vsync=True,
+        aspect_ratio: float = None,
+        samples=0,
+        cursor=True,
+        **kwargs
+    ):
         """Initialize a window instance.
 
         Args:
@@ -131,7 +148,9 @@ class BaseWindow:
             self._resizable = False
 
         if not self.keys:
-            raise ValueError("Window class {} missing keys attribute".format(self.__class__))
+            raise ValueError(
+                "Window class {} missing keys attribute".format(self.__class__)
+            )
 
     def init_mgl_context(self) -> None:
         """
@@ -312,7 +331,7 @@ class BaseWindow:
         self._fullscreen = value
 
     @property
-    def config(self) -> 'WindowConfig':
+    def config(self) -> "WindowConfig":
         """Get the current WindowConfig instance
 
         This property can also be set.
@@ -409,17 +428,23 @@ class BaseWindow:
 
     @config.setter
     def config(self, config):
-        self.render_func = getattr(config, 'render', dummy_func)
-        self.resize_func = getattr(config, 'resize', dummy_func)
-        self.close_func = getattr(config, 'close', dummy_func)
-        self.iconify_func = getattr(config, 'iconify', dummy_func)
-        self.key_event_func = getattr(config, 'key_event', dummy_func)
-        self.mouse_position_event_func = getattr(config, 'mouse_position_event', dummy_func)
-        self.mouse_press_event_func = getattr(config, 'mouse_press_event', dummy_func)
-        self.mouse_release_event_func = getattr(config, 'mouse_release_event', dummy_func)
-        self.mouse_drag_event_func = getattr(config, 'mouse_drag_event', dummy_func)
-        self.mouse_scroll_event_func = getattr(config, 'mouse_scroll_event', dummy_func)
-        self.unicode_char_entered_func = getattr(config, 'unicode_char_entered', dummy_func)
+        self.render_func = getattr(config, "render", dummy_func)
+        self.resize_func = getattr(config, "resize", dummy_func)
+        self.close_func = getattr(config, "close", dummy_func)
+        self.iconify_func = getattr(config, "iconify", dummy_func)
+        self.key_event_func = getattr(config, "key_event", dummy_func)
+        self.mouse_position_event_func = getattr(
+            config, "mouse_position_event", dummy_func
+        )
+        self.mouse_press_event_func = getattr(config, "mouse_press_event", dummy_func)
+        self.mouse_release_event_func = getattr(
+            config, "mouse_release_event", dummy_func
+        )
+        self.mouse_drag_event_func = getattr(config, "mouse_drag_event", dummy_func)
+        self.mouse_scroll_event_func = getattr(config, "mouse_scroll_event", dummy_func)
+        self.unicode_char_entered_func = getattr(
+            config, "unicode_char_entered", dummy_func
+        )
 
         self._config = weakref.ref(config)
 
@@ -602,7 +627,9 @@ class BaseWindow:
             viewport (tuple): The viewport
         """
         self.use()
-        self._ctx.clear(red=red, green=green, blue=blue, alpha=alpha, depth=depth, viewport=viewport)
+        self._ctx.clear(
+            red=red, green=green, blue=blue, alpha=alpha, depth=depth, viewport=viewport
+        )
 
     def render(self, time=0.0, frame_time=0.0) -> None:
         """
@@ -644,7 +671,9 @@ class BaseWindow:
         A library specific destroy method is required.
         """
         raise NotImplementedError(
-            "Setting an icon is currently not supported by Window-type: {}".format(self.name)
+            "Setting an icon is currently not supported by Window-type: {}".format(
+                self.name
+            )
         )
 
     def _set_fullscreen(self, value: bool) -> None:
@@ -652,7 +681,9 @@ class BaseWindow:
         A library specific destroy method is required
         """
         raise NotImplementedError(
-            "Toggling fullscreen is currently not supported by Window-type: {}".format(self.name)
+            "Toggling fullscreen is currently not supported by Window-type: {}".format(
+                self.name
+            )
         )
 
     def destroy(self) -> None:
@@ -705,18 +736,18 @@ class BaseWindow:
     def print_context_info(self):
         """Prints moderngl context info."""
         logger.info("Context Version:")
-        logger.info('ModernGL: %s', moderngl.__version__)
-        logger.info('vendor: %s', self._ctx.info['GL_VENDOR'])
-        logger.info('renderer: %s', self._ctx.info['GL_RENDERER'])
-        logger.info('version: %s', self._ctx.info['GL_VERSION'])
-        logger.info('python: %s', sys.version)
-        logger.info('platform: %s', sys.platform)
-        logger.info('code: %s', self._ctx.version_code)
+        logger.info("ModernGL: %s", moderngl.__version__)
+        logger.info("vendor: %s", self._ctx.info["GL_VENDOR"])
+        logger.info("renderer: %s", self._ctx.info["GL_RENDERER"])
+        logger.info("version: %s", self._ctx.info["GL_VERSION"])
+        logger.info("python: %s", sys.version)
+        logger.info("platform: %s", sys.platform)
+        logger.info("code: %s", self._ctx.version_code)
 
         # Consume potential glerror from querying info
         err = self._ctx.error
-        if err != 'GL_NO_ERROR':
-            logger.warning('glerror consumed after getting context info: %s', err)
+        if err != "GL_NO_ERROR":
+            logger.warning("glerror consumed after getting context info: %s", err)
 
     def _calc_mouse_delta(self, xpos: int, ypos: int) -> Tuple[int, int]:
         """Calculates the mouse position delta for events not support this.
@@ -775,6 +806,7 @@ class WindowConfig:
             def key_event(self, key, action, modifiers):
                 print(key, action, modifiers)
     """
+
     window_size = (1280, 720)
     """
     Size of the window.
@@ -900,7 +932,14 @@ class WindowConfig:
     """
     The parsed command line arguments.
     """
-    def __init__(self, ctx: moderngl.Context = None, wnd: BaseWindow = None, timer: BaseTimer = None, **kwargs):
+
+    def __init__(
+        self,
+        ctx: moderngl.Context = None,
+        wnd: BaseWindow = None,
+        timer: BaseTimer = None,
+        **kwargs
+    ):
         """Initialize the window config
 
         Keyword Args:
@@ -916,7 +955,9 @@ class WindowConfig:
             resources.register_dir(Path(self.resource_dir).resolve())
 
         if not self.ctx or not isinstance(self.ctx, moderngl.Context):
-            raise ValueError("WindowConfig requires a moderngl context. ctx={}".format(self.ctx))
+            raise ValueError(
+                "WindowConfig requires a moderngl context. ctx={}".format(self.ctx)
+            )
 
         if not self.wnd or not isinstance(self.wnd, BaseWindow):
             raise ValueError("WindowConfig requires a window. wnd={}".format(self.wnd))
@@ -931,6 +972,7 @@ class WindowConfig:
             moderngl_window.run_window_config(cls)
         """
         import moderngl_window
+
         moderngl_window.run_window_config(cls)
 
     @classmethod
@@ -1044,8 +1086,17 @@ class WindowConfig:
             char (str): The character entered
         """
 
-    def load_texture_2d(self, path: str, flip=True, flip_x=False, flip_y=True, mipmap=False, mipmap_levels: Tuple[int, int] = None,
-                        anisotropy=1.0, **kwargs) -> moderngl.Texture:
+    def load_texture_2d(
+        self,
+        path: str,
+        flip=True,
+        flip_x=False,
+        flip_y=True,
+        mipmap=False,
+        mipmap_levels: Tuple[int, int] = None,
+        anisotropy=1.0,
+        **kwargs
+    ) -> moderngl.Texture:
         """Loads a 2D texture
 
         Args:
@@ -1063,20 +1114,29 @@ class WindowConfig:
         Returns:
             moderngl.Texture: Texture instance
         """
-        return resources.textures.load(TextureDescription(
-            path=path,
-            flip=flip,
-            flip_x=flip_x,
-            flip_y=flip_y,
-            mipmap=mipmap,
-            mipmap_levels=mipmap_levels,
-            anisotropy=anisotropy,
-            **kwargs,
-        ))
+        return resources.textures.load(
+            TextureDescription(
+                path=path,
+                flip=flip,
+                flip_x=flip_x,
+                flip_y=flip_y,
+                mipmap=mipmap,
+                mipmap_levels=mipmap_levels,
+                anisotropy=anisotropy,
+                **kwargs,
+            )
+        )
 
-    def load_texture_array(self, path: str, layers: int = 0, flip=True,
-                           mipmap=False, mipmap_levels: Tuple[int, int] = None,
-                           anisotropy=1.0, **kwargs) -> moderngl.TextureArray:
+    def load_texture_array(
+        self,
+        path: str,
+        layers: int = 0,
+        flip=True,
+        mipmap=False,
+        mipmap_levels: Tuple[int, int] = None,
+        anisotropy=1.0,
+        **kwargs
+    ) -> moderngl.TextureArray:
         """Loads a texture array.
 
         Args:
@@ -1097,30 +1157,37 @@ class WindowConfig:
         if not kwargs:
             kwargs = {}
 
-        if 'kind' not in kwargs:
-            kwargs['kind'] = "array"
+        if "kind" not in kwargs:
+            kwargs["kind"] = "array"
 
-        return resources.textures.load(TextureDescription(
-            path=path,
-            layers=layers,
-            flip=flip,
-            mipmap=mipmap,
-            mipmap_levels=mipmap_levels,
-            anisotropy=anisotropy,
-            **kwargs
-        ))
+        return resources.textures.load(
+            TextureDescription(
+                path=path,
+                layers=layers,
+                flip=flip,
+                mipmap=mipmap,
+                mipmap_levels=mipmap_levels,
+                anisotropy=anisotropy,
+                **kwargs,
+            )
+        )
 
     def load_texture_cube(
-            self,
-            pos_x: str = None, pos_y: str = None, pos_z: str = None,
-            neg_x: str = None, neg_y: str = None, neg_z: str = None,
-            flip=False,
-            flip_x=False,
-            flip_y=False,
-            mipmap=False,
-            mipmap_levels: Tuple[int, int] = None,
-            anisotropy=1.0,
-            **kwargs) -> moderngl.TextureCube:
+        self,
+        pos_x: str = None,
+        pos_y: str = None,
+        pos_z: str = None,
+        neg_x: str = None,
+        neg_y: str = None,
+        neg_z: str = None,
+        flip=False,
+        flip_x=False,
+        flip_y=False,
+        mipmap=False,
+        mipmap_levels: Tuple[int, int] = None,
+        anisotropy=1.0,
+        **kwargs
+    ) -> moderngl.TextureCube:
         """Loads a texture cube.
 
         Keyword Args:
@@ -1142,25 +1209,35 @@ class WindowConfig:
         Returns:
             moderngl.TextureCube: Texture instance
         """
-        return resources.textures.load(TextureDescription(
-            pos_x=pos_x,
-            pos_y=pos_y,
-            pos_z=pos_z,
-            neg_x=neg_x,
-            neg_y=neg_y,
-            neg_z=neg_z,
-            flip=flip,
-            flip_x=flip_x,
-            flip_y=flip_y,
-            mipmap=mipmap,
-            mipmap_levels=mipmap_levels,
-            anisotropy=anisotropy,
-            kind='cube',
-            **kwargs,
-        ))
+        return resources.textures.load(
+            TextureDescription(
+                pos_x=pos_x,
+                pos_y=pos_y,
+                pos_z=pos_z,
+                neg_x=neg_x,
+                neg_y=neg_y,
+                neg_z=neg_z,
+                flip=flip,
+                flip_x=flip_x,
+                flip_y=flip_y,
+                mipmap=mipmap,
+                mipmap_levels=mipmap_levels,
+                anisotropy=anisotropy,
+                kind="cube",
+                **kwargs,
+            )
+        )
 
-    def load_program(self, path=None, vertex_shader=None, geometry_shader=None, fragment_shader=None,
-                     tess_control_shader=None, tess_evaluation_shader=None, defines: dict = None) -> moderngl.Program:
+    def load_program(
+        self,
+        path=None,
+        vertex_shader=None,
+        geometry_shader=None,
+        fragment_shader=None,
+        tess_control_shader=None,
+        tess_evaluation_shader=None,
+        defines: dict = None,
+    ) -> moderngl.Program:
         """Loads a shader program.
 
         Note that `path` should only be used if all shaders are defined
@@ -1190,7 +1267,9 @@ class WindowConfig:
             )
         )
 
-    def load_compute_shader(self, path, defines: dict = None, **kwargs) -> moderngl.ComputeShader:
+    def load_compute_shader(
+        self, path, defines: dict = None, **kwargs
+    ) -> moderngl.ComputeShader:
         """Loads a compute shader.
 
         Args:
@@ -1216,8 +1295,8 @@ class WindowConfig:
         if not kwargs:
             kwargs = {}
 
-        if 'kind' not in kwargs:
-            kwargs['kind'] = 'text'
+        if "kind" not in kwargs:
+            kwargs["kind"] = "text"
 
         return resources.data.load(DataDescription(path=path, **kwargs))
 
@@ -1233,8 +1312,8 @@ class WindowConfig:
         if not kwargs:
             kwargs = {}
 
-        if 'kind' not in kwargs:
-            kwargs['kind'] = 'json'
+        if "kind" not in kwargs:
+            kwargs["kind"] = "json"
 
         return resources.data.load(DataDescription(path=path, **kwargs))
 
@@ -1250,13 +1329,14 @@ class WindowConfig:
         if not kwargs:
             kwargs = {}
 
-        if 'kind' not in kwargs:
-            kwargs['kind'] = 'binary'
+        if "kind" not in kwargs:
+            kwargs["kind"] = "binary"
 
         return resources.data.load(DataDescription(path=path, kind="binary"))
 
-    def load_scene(self, path: str, cache=False, attr_names=AttributeNames,
-                   kind=None, **kwargs) -> Scene:
+    def load_scene(
+        self, path: str, cache=False, attr_names=AttributeNames, kind=None, **kwargs
+    ) -> Scene:
         """Loads a scene.
 
         Keyword Args:
@@ -1268,13 +1348,11 @@ class WindowConfig:
         Returns:
             Scene: The scene instance
         """
-        return resources.scenes.load(SceneDescription(
-            path=path,
-            cache=cache,
-            attr_names=attr_names,
-            kind=kind,
-            **kwargs,
-        ))
+        return resources.scenes.load(
+            SceneDescription(
+                path=path, cache=cache, attr_names=attr_names, kind=kind, **kwargs,
+            )
+        )
 
 
 def dummy_func(*args, **kwargs) -> None:
