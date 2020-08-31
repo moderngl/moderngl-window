@@ -1,6 +1,6 @@
 import moderngl_window
 import random
-from moderngl_window.timers.schedule import Scheduler
+from moderngl_window.utils.schedule import Scheduler
 
 
 class CubeSimpleInstanced(moderngl_window.WindowConfig):
