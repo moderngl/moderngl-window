@@ -1,14 +1,21 @@
 import sched
 import time
+from moderngl_window.timers.base import BaseTimer
 
 
 class Scheduler:
-    def __init__(self, timefunc=None):
-        if timefunc is None:
-            # try getting the timer for our window or use time.time
-            pass
+    def __init__(self, timer=time.time):
+        if isinstance(timer, BaseTimer):
+            # the timer might not be started, so check before getting the time
+            timefunc = lambda: timer.time if timer._start_time else 0
+        elif callable(timer):
+            timefunc = timer
         else:
-            timefunc = time.time
+            raise ValueError(
+                "timer, {}, has to be a instance of BaseTimer or a callable!".format(
+                    timer
+                )
+            )
 
         self._events = dict()
         self._event_id = 0
