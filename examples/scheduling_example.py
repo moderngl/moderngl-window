@@ -1,9 +1,9 @@
 import moderngl_window
 import random
-from moderngl_window.utils.schedule import Scheduler
+from moderngl_window.utils.scheduler import Scheduler
 
 
-class CubeSimpleInstanced(moderngl_window.WindowConfig):
+class CubeSimpleInstancedScheduler(moderngl_window.WindowConfig):
     """Schedule one-off and recurring events"""
 
     title = "Scheduling example"
@@ -40,4 +40,4 @@ class CubeSimpleInstanced(moderngl_window.WindowConfig):
 
 
 if __name__ == "__main__":
-    moderngl_window.run_window_config(CubeSimpleInstanced)
+    moderngl_window.run_window_config(CubeSimpleInstancedScheduler)
