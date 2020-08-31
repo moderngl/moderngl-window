@@ -26,6 +26,12 @@ class CubeSimpleInstanced(moderngl_window.WindowConfig):
             self.change_color, 1 / 2, initial_delay=4
         )
 
+        # after 5 seconds change the window title
+        self.scheduler.run_once(self.change_title, 5, arguments=("Changed title",))
+
+    def change_title(self, new_title):
+        self.wnd.title = new_title
+
     def change_color(self):
         self.clear_color = (random.random(), random.random(), random.random(), 0)
 

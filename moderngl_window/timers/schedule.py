@@ -22,7 +22,7 @@ class Scheduler:
 
         self._scheduler = sched.scheduler(timefunc, time.sleep)
 
-    def run_once(self, action, delay, *, priority=1, argument=(), kwargs=dict()) -> int:
+    def run_once(self, action, delay, *, priority=1, arguments=(), kwargs=dict()) -> int:
         """Schedule a function for execution after a delay.
 
         :param action: function to be called
@@ -31,19 +31,19 @@ class Scheduler:
         :type delay: float
         :param priority: priority for this event, lower is more important, defaults to 1
         :type priority: int, optional
-        :param argument: arguments for the action, defaults to ()
-        :type argument: tuple, optional
+        :param arguments: arguments for the action, defaults to ()
+        :type arguments: tuple, optional
         :param kwargs: keyword arguments for the action, defaults to dict()
         :type kwargs: dict, optional
         :return: returns a event id that can be canceled
         :rtype: int
         """
-        event = self._scheduler.enter(delay, priority, action, argument, kwargs)
+        event = self._scheduler.enter(delay, priority, action, arguments, kwargs)
         self._events[self._event_id] = event
         self._event_id += 1
         return self._event_id - 1
 
-    def run_at(self, action, time, *, priority=1, argument=(), kwargs=dict()) -> int:
+    def run_at(self, action, time, *, priority=1, arguments=(), kwargs=dict()) -> int:
         """Schedule a function to be executed at a certain time.
 
         :param action: function to be called
@@ -52,20 +52,20 @@ class Scheduler:
         :type time: float
         :param priority: priority for this event, lower is more important, defaults to 1
         :type priority: int, optional
-        :param argument: arguments for the action, defaults to ()
-        :type argument: tuple, optional
+        :param arguments: arguments for the action, defaults to ()
+        :type arguments: tuple, optional
         :param kwargs: keyword arguments for the action, defaults to dict()
         :type kwargs: dict, optional
         :return: returns a event id that can be canceled
         :rtype: int
         """
-        event = self._scheduler.enterabs(time, priority, action, argument, kwargs)
+        event = self._scheduler.enterabs(time, priority, action, arguments, kwargs)
         self._events[self._event_id] = event
         self._event_id += 1
         return self._event_id - 1
 
     def run_every(
-        self, action, delay, *, priority=1, initial_delay=0, argument=(), kwargs=dict()
+        self, action, delay, *, priority=1, initial_delay=0, arguments=(), kwargs=dict()
     ) -> int:
         """Schedule a recurring function to be called every `delay` seconds after a initial delay.
 
@@ -75,15 +75,15 @@ class Scheduler:
         :type delay: float
         :param priority: priority for this event, lower is more important, defaults to 1
         :type priority: int, optional
-        :param argument: arguments for the action, defaults to ()
-        :type argument: tuple, optional
+        :param arguments: arguments for the action, defaults to ()
+        :type arguments: tuple, optional
         :param kwargs: keyword arguments for the action, defaults to dict()
         :type kwargs: dict, optional
         :return: returns a event id that can be canceled
         :rtype: int
         """
         recurring_event = self._recurring_event_factory(
-            action, argument, kwargs, (delay, priority), self._event_id
+            action, arguments, kwargs, (delay, priority), self._event_id
         )
         event = self._scheduler.enter(initial_delay, priority, recurring_event)
         self._events[self._event_id] = event
@@ -133,7 +133,7 @@ class Scheduler:
         if delay == 0:
             self._cancel(event_id)
         else:
-            self.run_once(self._cancel, delay, priority=0, argument=(event_id,))
+            self.run_once(self._cancel, delay, priority=0, arguments=(event_id,))
 
     def _cancel(self, event_id: int):
         if event_id not in self._events:
