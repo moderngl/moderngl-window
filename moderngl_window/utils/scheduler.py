@@ -5,6 +5,12 @@ from moderngl_window.timers.base import BaseTimer
 
 class Scheduler:
     def __init__(self, timer=time.time):
+        """Create a Scheduler object to handle events.
+
+        :param timer: timer class or time function to use, defaults to time.time.
+        :type timer: callable, optional
+        :raises ValueError: when timer is not a valid argument
+        """
         if isinstance(timer, BaseTimer):
             # the timer might not be started, so check before getting the time
             timefunc = lambda: timer.time if timer._start_time else 0
