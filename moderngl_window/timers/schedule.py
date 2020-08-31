@@ -22,7 +22,7 @@ class Scheduler:
 
         self._scheduler = sched.scheduler(timefunc, time.sleep)
 
-    def run_once(self, action, delay, priority=1, argument=(), kwargs=dict()) -> int:
+    def run_once(self, action, delay, *, priority=1, argument=(), kwargs=dict()) -> int:
         """Schedule a function for execution after a delay.
 
         :param action: function to be called
@@ -43,7 +43,7 @@ class Scheduler:
         self._event_id += 1
         return self._event_id - 1
 
-    def run_at(self, action, time, priority=1, argument=(), kwargs=dict()) -> int:
+    def run_at(self, action, time, *, priority=1, argument=(), kwargs=dict()) -> int:
         """Schedule a function to be executed at a certain time.
 
         :param action: function to be called
@@ -64,8 +64,10 @@ class Scheduler:
         self._event_id += 1
         return self._event_id - 1
 
-    def run_every(self, action, delay, priority=1, argument=(), kwargs=dict()) -> int:
-        """Schedule a recurring function to be called after a delay.
+    def run_every(
+        self, action, delay, *, priority=1, initial_delay=0, argument=(), kwargs=dict()
+    ) -> int:
+        """Schedule a recurring function to be called every `delay` seconds after a initial delay.
 
         :param action: function to be called
         :type action: callable
@@ -83,8 +85,7 @@ class Scheduler:
         recurring_event = self._recurring_event_factory(
             action, argument, kwargs, (delay, priority), self._event_id
         )
-
-        event = self.run_once(recurring_event, delay, priority)
+        event = self._scheduler.enter(initial_delay, priority, recurring_event)
         self._events[self._event_id] = event
         self._event_id += 1
         return self._event_id - 1
@@ -110,7 +111,7 @@ class Scheduler:
 
         def _f():
             function(*arguments, **kwargs)
-            event = self.run_once(_f, *scheduling_info)
+            event = self._scheduler.enter(*scheduling_info, _f)
             self._events[id] = event
 
         return _f
@@ -120,17 +121,24 @@ class Scheduler:
         """
         self._scheduler.run(blocking=False)
 
-    def cancel(self, event: int) -> None:
+    def cancel(self, event_id: int, delay: float = 0) -> None:
         """cancel a scheduled event.
 
-        :param event: the event to be canceled
-        :type event: int
+        :param event_id: the event_id to be canceled
+        :type event_id: int
+        :param delay: a delay before canceling a event
+        :type delay: float
         :raises ValueError: when the event can't be found
         """
-        if type(event) is not sched.Event:
-            if event not in self._events:
-                raise ValueError(
-                    "Recurring event with id {} does not exist".format(event)
-                )
-            event = self._events.pop(event)
+        if delay == 0:
+            self._cancel(event_id)
+        else:
+            self.run_once(self._cancel, delay, priority=0, argument=(event_id,))
+
+    def _cancel(self, event_id: int):
+        if event_id not in self._events:
+            raise ValueError(
+                "Recurring event with id {} does not exist".format(event_id)
+            )
+        event = self._events.pop(event_id)
         self._scheduler.cancel(event)
