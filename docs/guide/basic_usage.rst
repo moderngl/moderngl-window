@@ -9,7 +9,7 @@ Basic usage (WindowConfig)
 
 Using the :py:class:`~moderngl_window.context.base.window.WindowConfig`
 interface is the simplest way to start with moderngl-window.
-This can work for projects smaller projects and implies that this library
+This can work for smaller projects and implies that this library
 provides the window and moderngl context.
 
 The API docs for this class alone should cover a lot of ground,
