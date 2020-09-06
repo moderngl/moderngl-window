@@ -7,9 +7,11 @@ class Scheduler:
     def __init__(self, timer=time.time):
         """Create a Scheduler object to handle events.
 
-        :param timer: timer class or time function to use, defaults to time.time.
-        :type timer: callable, optional
-        :raises ValueError: when timer is not a valid argument
+        Args:
+            timer (callable, optional): timer class or time function to use. Defaults to time.time.
+
+        Raises:
+            ValueError: timer is not a valid argument.
         """
         if isinstance(timer, BaseTimer):
             # the timer might not be started, so check before getting the time
@@ -28,21 +30,20 @@ class Scheduler:
 
         self._scheduler = sched.scheduler(timefunc, time.sleep)
 
-    def run_once(self, action, delay, *, priority=1, arguments=(), kwargs=dict()) -> int:
+    def run_once(
+        self, action, delay, *, priority=1, arguments=(), kwargs=dict()
+    ) -> int:
         """Schedule a function for execution after a delay.
 
-        :param action: function to be called
-        :type action: callable
-        :param delay: delay in seconds
-        :type delay: float
-        :param priority: priority for this event, lower is more important, defaults to 1
-        :type priority: int, optional
-        :param arguments: arguments for the action, defaults to ()
-        :type arguments: tuple, optional
-        :param kwargs: keyword arguments for the action, defaults to dict()
-        :type kwargs: dict, optional
-        :return: returns a event id that can be canceled
-        :rtype: int
+        Args:
+            action (callable): function to be called.
+            delay (float): delay in seconds.
+            priority (int, optional): priority for this event, lower is more important. Defaults to 1.
+            arguments (tuple, optional): arguments for the action. Defaults to ().
+            kwargs (dict, optional): keyword arguments for the action. Defaults to dict().
+
+        Returns:
+            int: event id that can be canceled.
         """
         event = self._scheduler.enter(delay, priority, action, arguments, kwargs)
         self._events[self._event_id] = event
@@ -52,18 +53,15 @@ class Scheduler:
     def run_at(self, action, time, *, priority=1, arguments=(), kwargs=dict()) -> int:
         """Schedule a function to be executed at a certain time.
 
-        :param action: function to be called
-        :type action: callable
-        :param time: epochtime in seconds
-        :type time: float
-        :param priority: priority for this event, lower is more important, defaults to 1
-        :type priority: int, optional
-        :param arguments: arguments for the action, defaults to ()
-        :type arguments: tuple, optional
-        :param kwargs: keyword arguments for the action, defaults to dict()
-        :type kwargs: dict, optional
-        :return: returns a event id that can be canceled
-        :rtype: int
+        Args:
+            action (callable): function to be called.
+            time (float): epoch time at which the function should be called.
+            priority (int, optional): priority for this event, lower is more important. Defaults to 1.
+            arguments (tuple, optional): arguments for the action. Defaults to ().
+            kwargs (dict, optional): keyword arguments for the action. Defaults to dict().
+
+        Returns:
+            int: event id that can be canceled.
         """
         event = self._scheduler.enterabs(time, priority, action, arguments, kwargs)
         self._events[self._event_id] = event
@@ -75,18 +73,16 @@ class Scheduler:
     ) -> int:
         """Schedule a recurring function to be called every `delay` seconds after a initial delay.
 
-        :param action: function to be called
-        :type action: callable
-        :param delay: delay in seconds
-        :type delay: float
-        :param priority: priority for this event, lower is more important, defaults to 1
-        :type priority: int, optional
-        :param arguments: arguments for the action, defaults to ()
-        :type arguments: tuple, optional
-        :param kwargs: keyword arguments for the action, defaults to dict()
-        :type kwargs: dict, optional
-        :return: returns a event id that can be canceled
-        :rtype: int
+        Args:
+            action (callable): function to be called.
+            delay (float): delay in seconds.
+            priority (int, optional): priority for this event, lower is more important. Defaults to 1.
+            initial_delay (float, optional): initial delay in seconds before executing for the first time. Defaults to 0.
+            arguments (tuple, optional): arguments for the action. Defaults to ().
+            kwargs (dict, optional): keyword arguments for the action. Defaults to dict().
+
+        Returns:
+            int: event id that can be canceled.
         """
         recurring_event = self._recurring_event_factory(
             action, arguments, kwargs, (delay, priority), self._event_id
@@ -99,20 +95,14 @@ class Scheduler:
     def _recurring_event_factory(
         self, function, arguments, kwargs, scheduling_info, id
     ):
-        """factory for creating recurring events that will reschedule themselves.
+        """Factory for creating recurring events that will reschedule themselves.
 
-        :param function: function to be called
-        :type function: callable
-        :param arguments: arguments for the function
-        :type arguments: tuple
-        :param kwargs: keyword arguments for the function
-        :type kwargs: dict
-        :param scheduling_info: tuple of information for scheduling the event
-        :type scheduling_info: tuple
-        :param id: the id the event will get
-        :type id: int
-        :return: returns a callable that will reschedule itself
-        :rtype: callable
+        Args:
+            function (callable): function to be called.
+            arguments (tuple): arguments for the function.
+            kwargs (dict): keyword arguments for the function.
+            scheduling_info (tuple): tuple of information for scheduling the task.
+            id (int): event id this event should be assigned to.
         """
 
         def _f():
@@ -123,18 +113,16 @@ class Scheduler:
         return _f
 
     def execute(self) -> None:
-        """runs the scheduler without blocking and executes any expired events.
+        """Run the scheduler without blocking and execute any expired events.
         """
         self._scheduler.run(blocking=False)
 
     def cancel(self, event_id: int, delay: float = 0) -> None:
-        """cancel a scheduled event.
+        """Cancel a previously scheduled event.
 
-        :param event_id: the event_id to be canceled
-        :type event_id: int
-        :param delay: a delay before canceling a event
-        :type delay: float
-        :raises ValueError: when the event can't be found
+        Args:
+            event_id (int): event to be canceled
+            delay (float, optional): delay before canceling the event. Defaults to 0.
         """
         if delay == 0:
             self._cancel(event_id)
