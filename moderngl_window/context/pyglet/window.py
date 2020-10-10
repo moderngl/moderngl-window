@@ -56,6 +56,7 @@ class Window(BaseWindow):
             vsync=self._vsync,
             fullscreen=self._fullscreen,
             config=config,
+            file_drops=True
         )
 
         self.cursor = self._cursor
@@ -72,6 +73,7 @@ class Window(BaseWindow):
         self._window.event(self.on_text)
         self._window.event(self.on_show)
         self._window.event(self.on_hide)
+        self._window.event(self.on_file_drop)
 
         self.init_mgl_context()
         self._buffer_width, self._buffer_height = self._window.get_framebuffer_size()
@@ -321,6 +323,20 @@ class Window(BaseWindow):
     def on_hide(self):
         """Called when window is minimized"""
         self._iconify_func(True)
+
+    def on_file_drop(self, x, y, paths):
+        """Called when files dropped onto the window
+
+            Args:
+                x (int): X location in window where file was dropped
+                y (int): Y location in window where file was dropped
+                paths (list): List of file paths dropped
+        """
+        # pyglet coordinate origin is in the bottom left corner of the window
+        # mglw coordinate origin is in the top left corner of the window
+        # convert pyglet coordinates to mglw coordinates:
+        (x, y) = self._convert_window_coordinates(x, y, y_flipped=True)
+        self._files_dropped_event_func(x, y, paths)
 
     def destroy(self):
         """Destroy the pyglet window"""
