@@ -4,7 +4,7 @@ from pathlib import Path
 import logging
 import sys
 import weakref
-from typing import Any, Tuple, Type
+from typing import Any, Tuple, Type, List
 
 import moderngl
 from moderngl_window.context.base import KeyModifiers, BaseKeys
@@ -128,6 +128,7 @@ class BaseWindow:
         self._mouse_drag_event_func = dummy_func
         self._mouse_scroll_event_func = dummy_func
         self._unicode_char_entered_func = dummy_func
+        self._files_dropped_event_func = dummy_func
 
         # Internal states
         self._ctx = None  # type: moderngl.Context
@@ -445,6 +446,7 @@ class BaseWindow:
         self.unicode_char_entered_func = getattr(
             config, "unicode_char_entered", dummy_func
         )
+        self.files_dropped_event_func = getattr(config, "files_dropped_event", dummy_func)
 
         self._config = weakref.ref(config)
 
@@ -476,10 +478,20 @@ class BaseWindow:
         """callable: Get or set the close callable"""
         return self._close_func
 
+    @property
+    def files_dropped_event_func(self):
+        """callable: Get or set the files_dropped callable"""
+        return self._files_dropped_event_func
+
     @close_func.setter
     @require_callable
     def close_func(self, func):
         self._close_func = func
+
+    @files_dropped_event_func.setter
+    @require_callable
+    def files_dropped_event_func(self, func):
+        self._files_dropped_event_func = func
 
     @property
     def iconify_func(self):
@@ -595,6 +607,27 @@ class BaseWindow:
             self._mouse_buttons.middle = pressed
         else:
             raise ValueError("Incompatible mouse button number: {}".format(button))
+
+    def _convert_window_coordinates(self, x, y, x_flipped=False, y_flipped=False):
+        """
+        Convert window coordinates to top-left coordinate space.
+        The default origin is the top left corner of the window.
+
+        Args :
+            x_flipped (bool) - if the input x origin is flipped
+            y_flipped (bool) - if the input y origin is flipped
+        Returns:
+            tuple (x, y) of converted window coordinates
+
+        If you are converting from bottom origin coordinates use x_flipped=True
+        If you are converting from right origin coordinates use y_flipped=True
+        """
+        if not y_flipped and not x_flipped:
+            return (x, y)
+        elif y_flipped and not x_flipped:
+            return (x, self.height - y)
+        else:
+            return(self.width - x, self.height - y)
 
     def is_key_pressed(self, key) -> bool:
         """Returns: The press state of a key"""
@@ -1006,6 +1039,16 @@ class WindowConfig:
 
     def close(self):
         """Called when the window is closed"""
+
+    def files_dropped(self, x:int , y:int, paths:List[str]):
+        """
+        Called when files dropped onto the window
+
+        Args:
+            x (int): X location in window where file was dropped
+            y (int): Y location in window where file was dropped
+            paths (list): List of file paths dropped
+        """
 
     def iconify(self, iconified: bool):
         """
