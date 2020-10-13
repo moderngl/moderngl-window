@@ -33,7 +33,7 @@ class Timer(BaseTimer):
             The current time in seconds
         """
         if self._start_time is None:
-            raise ValueError("Timer not started")
+            return 0.0
 
         if self.is_paused:
             return self._pause_time - self._offset - self._start_time
