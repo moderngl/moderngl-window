@@ -66,6 +66,7 @@ Attributes
 .. autoattribute:: BaseWindow.mouse_drag_event_func
 .. autoattribute:: BaseWindow.mouse_scroll_event_func
 .. autoattribute:: BaseWindow.unicode_char_entered_func
+.. autoattribute:: BaseWindow.files_dropped_event_func
 .. autoattribute:: BaseWindow.is_closing
 .. autoattribute:: BaseWindow.mouse
 .. autoattribute:: BaseWindow.mouse_states
