@@ -4,21 +4,16 @@ from moderngl_window.timers.base import BaseTimer
 
 
 class Scheduler:
-    def __init__(self, timer=time.time):
+    def __init__(self, timer: BaseTimer):
         """Create a Scheduler object to handle events.
 
         Args:
-            timer (callable, optional): timer class or time function to use. Defaults to time.time.
+            timer (BaseTimer): timer to use, subclass of BaseTimer.
 
         Raises:
             ValueError: timer is not a valid argument.
         """
-        if isinstance(timer, BaseTimer):
-            # the timer might not be started, so check before getting the time
-            timefunc = lambda: timer.time if timer._start_time else 0
-        elif callable(timer):
-            timefunc = timer
-        else:
+        if not isinstance(timer, BaseTimer):
             raise ValueError(
                 "timer, {}, has to be a instance of BaseTimer or a callable!".format(
                     timer
@@ -28,10 +23,10 @@ class Scheduler:
         self._events = dict()
         self._event_id = 0
 
-        self._scheduler = sched.scheduler(timefunc, time.sleep)
+        self._scheduler = sched.scheduler(lambda: timer.time, time.sleep)
 
     def run_once(
-        self, action, delay, *, priority=1, arguments=(), kwargs=dict()
+        self, action, delay: float, *, priority: int = 1, arguments=(), kwargs=dict()
     ) -> int:
         """Schedule a function for execution after a delay.
 
@@ -50,7 +45,9 @@ class Scheduler:
         self._event_id += 1
         return self._event_id - 1
 
-    def run_at(self, action, time, *, priority=1, arguments=(), kwargs=dict()) -> int:
+    def run_at(
+        self, action, time: float, *, priority: int = 1, arguments=(), kwargs=dict()
+    ) -> int:
         """Schedule a function to be executed at a certain time.
 
         Args:
@@ -69,7 +66,14 @@ class Scheduler:
         return self._event_id - 1
 
     def run_every(
-        self, action, delay, *, priority=1, initial_delay=0, arguments=(), kwargs=dict()
+        self,
+        action,
+        delay: float,
+        *,
+        priority: int = 1,
+        initial_delay: float = 0.0,
+        arguments=(),
+        kwargs=dict()
     ) -> int:
         """Schedule a recurring function to be called every `delay` seconds after a initial delay.
 
