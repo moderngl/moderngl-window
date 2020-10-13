@@ -37,6 +37,7 @@ Window Specific Methods
 .. automethod:: Window.on_show
 .. automethod:: Window.on_hide
 .. automethod:: Window.on_close
+.. automethod:: Window.on_file_drop
 
 Attributes
 ----------
