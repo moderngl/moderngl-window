@@ -56,7 +56,7 @@ class Window(BaseWindow):
             vsync=self._vsync,
             fullscreen=self._fullscreen,
             config=config,
-            file_drops=True
+            file_drops=True and platform.system() != "Darwin"
         )
 
         self.cursor = self._cursor
