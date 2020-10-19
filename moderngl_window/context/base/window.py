@@ -608,7 +608,7 @@ class BaseWindow:
         else:
             raise ValueError("Incompatible mouse button number: {}".format(button))
 
-    def _convert_window_coordinates(self, x, y, x_flipped=False, y_flipped=False):
+    def convert_window_coordinates(self, x, y, x_flipped=False, y_flipped=False):
         """
         Convert window coordinates to top-left coordinate space.
         The default origin is the top left corner of the window.

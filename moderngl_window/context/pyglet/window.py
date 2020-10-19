@@ -335,7 +335,7 @@ class Window(BaseWindow):
         # pyglet coordinate origin is in the bottom left corner of the window
         # mglw coordinate origin is in the top left corner of the window
         # convert pyglet coordinates to mglw coordinates:
-        (x, y) = self._convert_window_coordinates(x, y, y_flipped=True)
+        (x, y) = self.convert_window_coordinates(x, y, y_flipped=True)
         self._files_dropped_event_func(x, y, paths)
 
     def destroy(self):
