@@ -20,6 +20,7 @@ Methods
 .. automethod:: BaseWindow.resize
 .. automethod:: BaseWindow.destroy
 .. automethod:: BaseWindow.set_default_viewport
+.. automethod:: BaseWindow.convert_window_coordinates
 .. automethod:: BaseWindow.print_context_info
 
 Attributes

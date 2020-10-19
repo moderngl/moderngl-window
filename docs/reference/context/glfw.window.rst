@@ -21,6 +21,7 @@ Methods
 .. automethod:: Window.destroy
 .. automethod:: Window.set_default_viewport
 .. automethod:: Window.print_context_info
+.. automethod:: Window.convert_window_coordinates
 
 Attributes
 ----------
