@@ -41,6 +41,7 @@ class Window(BaseWindow):
         glfw.window_hint(glfw.DOUBLEBUFFER, True)
         glfw.window_hint(glfw.DEPTH_BITS, 24)
         glfw.window_hint(glfw.SAMPLES, self.samples)
+        glfw.window_hint(glfw.SCALE_TO_MONITOR, glfw.TRUE)
 
         monitor = None
         if self.fullscreen:
@@ -76,6 +77,7 @@ class Window(BaseWindow):
         glfw.set_window_focus_callback(self._window, self.glfw_window_focus)
         glfw.set_cursor_enter_callback(self._window, self.glfw_cursor_enter)
         glfw.set_window_iconify_callback(self._window, self.glfw_window_iconify)
+        glfw.set_window_close_callback(self._window, self.glfw_window_close)
 
         self.init_mgl_context()
         self.set_default_viewport()
@@ -365,6 +367,10 @@ class Window(BaseWindow):
             iconified (int): 1 = minimized, 0 = restored.
         """
         self._iconify_func(True if iconified == 1 else False)
+
+    def glfw_window_close(self, window):
+        """Called when the window is closed"""
+        self.close()
 
     def destroy(self):
         """Gracefully terminate GLFW"""

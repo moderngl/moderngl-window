@@ -20,6 +20,7 @@ Methods
 .. automethod:: Window.resize
 .. automethod:: Window.destroy
 .. automethod:: Window.set_default_viewport
+.. automethod:: Window.convert_window_coordinates
 .. automethod:: Window.print_context_info
 
 Window Specific Methods
@@ -37,6 +38,7 @@ Window Specific Methods
 .. automethod:: Window.on_show
 .. automethod:: Window.on_hide
 .. automethod:: Window.on_close
+.. automethod:: Window.on_file_drop
 
 Attributes
 ----------
@@ -82,6 +84,7 @@ Attributes
 .. autoattribute:: Window.mouse_drag_event_func
 .. autoattribute:: Window.unicode_char_entered_func
 .. autoattribute:: Window.mouse_scroll_event_func
+.. autoattribute:: Window.files_dropped_event_func
 .. autoattribute:: Window.is_closing
 .. autoattribute:: Window.mouse
 .. autoattribute:: Window.mouse_states

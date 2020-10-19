@@ -20,6 +20,7 @@ Methods
 .. automethod:: BaseWindow.resize
 .. automethod:: BaseWindow.destroy
 .. automethod:: BaseWindow.set_default_viewport
+.. automethod:: BaseWindow.convert_window_coordinates
 .. automethod:: BaseWindow.print_context_info
 
 Attributes
@@ -66,6 +67,7 @@ Attributes
 .. autoattribute:: BaseWindow.mouse_drag_event_func
 .. autoattribute:: BaseWindow.mouse_scroll_event_func
 .. autoattribute:: BaseWindow.unicode_char_entered_func
+.. autoattribute:: BaseWindow.files_dropped_event_func
 .. autoattribute:: BaseWindow.is_closing
 .. autoattribute:: BaseWindow.mouse
 .. autoattribute:: BaseWindow.mouse_states
