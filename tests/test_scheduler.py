@@ -1,6 +1,7 @@
 import time
 from unittest import TestCase
 from moderngl_window.utils.scheduler import Scheduler
+from moderngl_window.timers.clock import Timer
 
 
 class SchedulingTestCase(TestCase):
@@ -12,7 +13,10 @@ class SchedulingTestCase(TestCase):
 
     def test_clock_timer(self):
         """Quick and dirty scheduling test"""
-        scheduler = Scheduler()
+        timer = Timer()
+        timer.start()
+
+        scheduler = Scheduler(timer)
         self.test_value = False
         scheduler.run_once(self.set_value, 0.1, arguments=(True,))
         time.sleep(0.11)
