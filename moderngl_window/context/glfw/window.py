@@ -41,6 +41,7 @@ class Window(BaseWindow):
         glfw.window_hint(glfw.DOUBLEBUFFER, True)
         glfw.window_hint(glfw.DEPTH_BITS, 24)
         glfw.window_hint(glfw.SAMPLES, self.samples)
+        glfw.window_hint(glfw.SCALE_TO_MONITOR, glfw.TRUE)
 
         monitor = None
         if self.fullscreen:
