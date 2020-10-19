@@ -85,3 +85,4 @@ Window Specific Methods
 .. automethod:: Window.glfw_cursor_enter
 .. automethod:: Window.glfw_window_focus
 .. automethod:: Window.glfw_window_iconify
+.. automethod:: Window.glfw_window_close
