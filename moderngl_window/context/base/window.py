@@ -446,6 +446,7 @@ class BaseWindow:
         self.unicode_char_entered_func = getattr(
             config, "unicode_char_entered", dummy_func
         )
+
         self.files_dropped_event_func = getattr(config, "files_dropped_event", dummy_func)
 
         self._config = weakref.ref(config)
