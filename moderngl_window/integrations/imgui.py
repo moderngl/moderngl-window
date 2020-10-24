@@ -162,7 +162,7 @@ class ModernGLRenderer(BaseOpenGLRenderer):
         self._index_buffer = self.ctx.buffer(reserve=imgui.INDEX_SIZE * 65536)
         self._vao = self.ctx.vertex_array(
             self._prog,
-            [(self._vertex_buffer, "2f 2f 4f1", "Position", "UV", "Color"),],
+            [(self._vertex_buffer, "2f 2f 4f1", "Position", "UV", "Color")],
             index_buffer=self._index_buffer,
             index_element_size=imgui.INDEX_SIZE,
         )

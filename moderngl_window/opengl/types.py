@@ -91,7 +91,7 @@ def attribute_format(attr_format: str) -> BufferFormat:
     components = 1
     if parts[0].isalnum():
         components = int(parts[0])
-        bformat = fmt[len(parts[0]) :]
+        bformat = fmt[len(parts[0]):]
     else:
         bformat = fmt
 

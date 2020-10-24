@@ -330,7 +330,7 @@ class ShaderSource:
                     source.handle_includes(
                         load_source_func, depth=depth + 1, source_id=current_id
                     )
-                    self._lines = self.lines[:nr] + source.lines + self.lines[nr + 1 :]
+                    self._lines = self.lines[:nr] + source.lines + self.lines[nr + 1:]
                     self._source_list += source.source_list
                     current_id = self._source_list[-1].id
                     break

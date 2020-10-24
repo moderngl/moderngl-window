@@ -47,7 +47,7 @@ class SceneDescription(ResourceDescription):
             attr_names = AttributeNames
 
         kwargs.update(
-            {"path": path, "kind": kind, "cache": cache, "attr_names": attr_names,}
+            {"path": path, "kind": kind, "cache": cache, "attr_names": attr_names}
         )
         super().__init__(**kwargs)
 

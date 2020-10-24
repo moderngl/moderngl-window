@@ -38,6 +38,6 @@ class DataDescription(ResourceDescription):
             **kwargs: Additional custom attributes
         """
         kwargs.update(
-            {"path": path, "kind": kind,}
+            {"path": path, "kind": kind}
         )
         super().__init__(**kwargs)

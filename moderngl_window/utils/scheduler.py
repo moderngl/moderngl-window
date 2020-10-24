@@ -81,8 +81,8 @@ class Scheduler:
             action (callable): function to be called.
             delay (float): delay in seconds.
             priority (int, optional): priority for this event, lower is more important. Defaults to 1.
-            initial_delay (float, optional): initial delay in seconds before executing for the first time. Defaults to 0.
-            arguments (tuple, optional): arguments for the action. Defaults to ().
+            initial_delay (float, optional): initial delay in seconds before executing for the first time.
+            Defaults to 0. arguments (tuple, optional): arguments for the action. Defaults to ().
             kwargs (dict, optional): keyword arguments for the action. Defaults to dict().
 
         Returns:

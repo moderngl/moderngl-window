@@ -714,7 +714,7 @@ class GLTFBuffer:
             return
 
         if self.has_data_uri:
-            self.data = base64.b64decode(self.uri[self.uri.find(",") + 1 :])
+            self.data = base64.b64decode(self.uri[self.uri.find(",") + 1:])
             return
 
         with open(str(self.path / self.uri), "rb") as fd:
@@ -722,7 +722,7 @@ class GLTFBuffer:
 
     def read(self, byte_offset=0, byte_length=0):
         self.open()
-        return self.data[byte_offset : byte_offset + byte_length]
+        return self.data[byte_offset:byte_offset + byte_length]
 
 
 class GLTFScene:
@@ -805,7 +805,7 @@ class GLTFImage:
             image = Image.open(io.BytesIO(self.bufferView.read_raw()))
         # Image is embedded
         elif self.uri and self.uri.startswith("data:"):
-            data = self.uri[self.uri.find(",") + 1 :]
+            data = self.uri[self.uri.find(",") + 1:]
             image = Image.open(io.BytesIO(base64.b64decode(data)))
             logger.info("Loading embedded image")
         else:
