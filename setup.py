@@ -2,7 +2,7 @@ from setuptools import setup, find_namespace_packages
 
 setup(
     name="moderngl-window",
-    version="2.2.3",
+    version="2.3.0",
     description="A cross platform helper library for ModernGL making window creation and resource loading simple",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
@@ -30,7 +30,7 @@ setup(
     ],
     install_requires=[
         'moderngl<6',
-        'pyglet>=1.5.6,<2',
+        'pyglet>=1.5.8,<2',
         'numpy>=1.16,<2',
         'pyrr>=0.10.3,<1',
         'Pillow>=5',
