@@ -1,5 +1,28 @@
 # Changelog
 
+## 3.4.0
+
+New Features
+
+* Added a simple Scheduler (Thanks to @Leterax)
+* Added support for toggling fullscreen
+* Added support for setting window icon
+* `TextureDescription` now supports flipping the texture on x and y
+* The pyglet window now supports dragging in files
+* Added `BaseWindow.convert_window_coordinates` for converting mouse coordinates
+* Added more examples0
+
+Bug Fixes
+
+* BaseWindow now references WindowConfig using a weakref
+* Overriding the timer in `run_window_config` had no effect
+* Numpad keys was not mapped correctly in some instances
+* Timers should return 0 when not started
+* glfw window close callback did now work
+* glfw now respects content scaling on windows and X11
+* Added some missing methods in docs
+* Fixed various doc typos
+
 ## 2.2.3
 
 * imgui integration no longer relies on pyopengl
