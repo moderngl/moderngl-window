@@ -2,6 +2,7 @@ from typing import Tuple
 import pygame
 import pygame.display
 import pygame.event
+import pygame._sdl2
 
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.pygame2.keys import Keys
@@ -61,6 +62,9 @@ class Window(BaseWindow):
         self._set_mode()
         self.title = self._title
         self.cursor = self._cursor
+        # Get the reference for the internal sdl2 window
+        # Makes us able to control window position and other properties.
+        self._sdl_window = pygame._sdl2.video.Window.from_display_module()
         self.init_mgl_context()
         self.set_default_viewport()
 
@@ -95,13 +99,11 @@ class Window(BaseWindow):
             # Move window to 100, 100
             window.position = 100, 100
         """
-        # FIXME: pygame don't seem to support this
-        return (0, 0)
+        return self._sdl_window.position
 
     @position.setter
     def position(self, value: Tuple[int, int]):
-        # FIXME: pygame don't seem to support this
-        pass
+        self._sdl_window.position = value
 
     @property
     def cursor(self) -> bool:
