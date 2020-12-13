@@ -43,7 +43,7 @@ setup(
         "pywavefront": ["pywavefront>=1.2.0,<2"],
         "trimesh": ["trimesh>=3.2.6,<4", "scipy>=1.3.2"],
         "tk": ["pyopengltk>=0.0.3"],
-        "pygame": ["pygame==2.0.0.dev10"],
+        "pygame": ["pygame~=2.0.0"],
     },
     project_urls={
         'Documentation': 'https://moderngl-window.readthedocs.io',
