@@ -74,4 +74,4 @@ class Pygame(moderngl_window.WindowConfig):
 
 
 if __name__ == '__main__':
-    Pygame.run()
+    moderngl_window.run_window_config(Pygame, args=('--window', 'pygame2'))
