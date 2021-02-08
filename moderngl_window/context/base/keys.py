@@ -12,7 +12,7 @@ class KeyModifiers:
         return str(self)
 
     def __str__(self):
-        return "<KeyModifiers shift={} ctrl={} alt={}".format(
+        return "<KeyModifiers shift={} ctrl={} alt={}>".format(
             self.shift, self.ctrl, self.alt
         )
 
