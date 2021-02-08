@@ -166,4 +166,4 @@ class VolumetricTetrahedralMesh(CameraWindow):
 
 
 if __name__ == '__main__':
-    moderngl_window.run_window_config(VolumetricTetrahedralMesh)
+    VolumetricTetrahedralMesh.run()
