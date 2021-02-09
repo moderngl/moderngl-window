@@ -30,7 +30,7 @@ float lookup_3d(ivec3 p) {
 
 void main() {
     ivec3 p = ivec3(gl_in[0].gl_Position.xyz);
-    float active = lookup_3d(p);
+    float alive = lookup_3d(p);
 
     // Read all the neighbor cubes
     int neighbours = 0;
@@ -41,7 +41,7 @@ void main() {
     if(lookup_3d(p + ivec3(0, 0, 1)) > 0) neighbours++;
     if(lookup_3d(p + ivec3(0, 0, -1)) > 0) neighbours++;
 
-    if (active > 0) {
+    if (alive > 0) {
         // If we're at the voxel edge we should always render the cube
         if (p.x == 0 || p.x == 99) neighbours = 0;
         if (p.y == 0 || p.y == 99) neighbours = 0;
