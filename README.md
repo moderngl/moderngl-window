@@ -61,7 +61,7 @@ class Test(mglw.WindowConfig):
     def render(self, time, frametime):
         self.ctx.clear(1.0, 0.0, 0.0, 0.0)
 
-mglw.run_window_config(Test)
+Test.run()
 ```
 
 Run the example with different window backends:
