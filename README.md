@@ -68,7 +68,7 @@ Run the example with different window backends:
 
 ```bash
 python test.py --window pyglet
-python test.py --window pygame
+python test.py --window pygame2
 python test.py --window glfw
 python test.py --window sdl2
 python test.py --window pyside2
