@@ -58,10 +58,9 @@ class Window(BaseWindow):
         # Get the reference for the internal sdl2 window
         # Makes us able to control window position and other properties.
         self._sdl_window = pygame._sdl2.video.Window.from_display_module()
-        
+
         if self.fullscreen:
             self._set_fullscreen(True)
-
 
         self.init_mgl_context()
         self.set_default_viewport()
