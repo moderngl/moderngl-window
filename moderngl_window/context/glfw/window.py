@@ -254,6 +254,9 @@ class Window(BaseWindow):
         if self.exit_key is not None and key == self._exit_key:
             self.close()
 
+        if action == self.keys.ACTION_PRESS and self._fs_key is not None and key == self._fs_key:
+            self.fullscreen = not self.fullscreen
+
         self._handle_modifiers(mods)
 
         if action == self.keys.ACTION_PRESS:

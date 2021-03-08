@@ -151,6 +151,9 @@ class Window(BaseWindow):
         if self._exit_key is not None and event.keysym == self._exit_key:
             self.close()
 
+        if self._fs_key is not None and event.keysym == self._fs_key:
+            self.fullscreen = not self.fullscreen
+
     def tk_key_release(self, event: tkinter.Event) -> None:
         """Handle all queued key release events in tkinter dispatching events to standard methods
 
