@@ -202,7 +202,8 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         else:
             window.use()
         window.render(current_time, delta)
-        window.swap_buffers()
+        if not window.is_closing:
+            window.swap_buffers()
 
     _, duration = timer.stop()
     window.destroy()

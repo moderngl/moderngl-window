@@ -468,12 +468,13 @@ class OrbitCamera(Camera):
         # Get projection matrix in bytes (f4)
         camera.projection.tobytes()
     """
-    def __init__(self, target=(0., 0., 0.), radius=2.0, **kwargs):
+    def __init__(self, target=(0., 0., 0.), radius=2.0, angles=(45., -45.), **kwargs):
         """Initialize the camera
 
         Keyword Args:
             target (float, float, float): Target point
             radius (float): Radius
+            angles (float, float): angle_x and angle_y in degrees
             fov (float): Field of view
             aspect_ratio (float): Aspect ratio
             near (float): near plane
@@ -481,8 +482,7 @@ class OrbitCamera(Camera):
         """
         # values for orbit camera
         self.radius = radius  # radius in base units
-        self.angle_x = 1.0  # angle in radians
-        self.angle_y = -1.0  # angle in radians
+        self.angle_x, self.angle_y = angles  # angles in degrees
         self.target = target  # camera target in base units
         self.up = (0.0, 1.0, 0.0)  # camera up vector
 
@@ -496,14 +496,42 @@ class OrbitCamera(Camera):
         """numpy.ndarray: The current view matrix for the camera"""
         return Matrix44.look_at(
             (
-                cos(self.angle_x) * sin(self.angle_y) * self.radius,
-                cos(self.angle_y) * self.radius,
-                sin(self.angle_x) * sin(self.angle_y) * self.radius,
+                cos(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius + self.target[0],
+                cos(radians(self.angle_y)) * self.radius + self.target[1],
+                sin(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius + self.target[2],
             ),  # camera (eye) position, calculated from angles and radius
             self.target,  # what to look at
             self.up,  # camera up direction (change for rolling the camera)
             dtype="f4",
         )
+
+    @property
+    def angle_x(self) -> float:
+        """float: camera angle x in degrees.
+
+        This property can also be set::
+            camera.angle_x = 45.
+        """
+        return self._angle_x
+
+    @angle_x.setter
+    def angle_x(self, value: float):
+        """Set camera rotation_x in degrees."""
+        self._angle_x = value
+
+    @property
+    def angle_y(self) -> float:
+        """float: camera angle y in degrees.
+
+        This property can also be set::
+            camera.angle_y = 45.
+        """
+        return self._angle_y
+
+    @angle_y.setter
+    def angle_y(self, value: float):
+        """Set camera rotation_y in degrees."""
+        self._angle_y = value
 
     @property
     def mouse_sensitivity(self) -> float:
@@ -540,11 +568,11 @@ class OrbitCamera(Camera):
             dx: Relative mouse position change on x axis
             dy: Relative mouse position change on y axis
         """
-        self.angle_x += dx * self.mouse_sensitivity / 100
-        self.angle_y += dy * self.mouse_sensitivity / 100
+        self.angle_x += dx * self.mouse_sensitivity / 10.
+        self.angle_y += dy * self.mouse_sensitivity / 10.
 
         # clamp the y angle to avoid weird rotations
-        self.angle_y = max(min(self.angle_y, -0.1), -3.04)
+        self.angle_y = max(min(self.angle_y, -5.), -175.)
 
     def zoom_state(self, y_offset: float) -> None:
         # allow zooming in/out
