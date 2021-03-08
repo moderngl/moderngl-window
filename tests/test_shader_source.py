@@ -107,6 +107,38 @@ class ShaderSourceTestCase(TestCase):
         self.assertTrue("#define TEST 12" in shader.source)
         self.assertTrue("#define THING 23" in shader.source)
 
+    def test_out_attributes(self):
+        """Ensure out attributes are proprely parsed"""
+        shader = program.ShaderSource(
+            program.VERTEX_SHADER,
+            "test.glsl",
+            """
+            #version 330
+            out vec2 out_pos;
+            out vec2 out_vel;
+            void main() {
+                out_pos = vec2(1.0);
+                out_vel = vec2(1.0);
+            }
+            """,
+        )
+        assert shader.find_out_attribs() == ['out_pos', 'out_vel']
+        # With layout qualifiers
+        shader = program.ShaderSource(
+            program.VERTEX_SHADER,
+            "test.glsl",
+            """
+            #version 330
+            layout(location = 0) out vec2 out_pos;
+            layout(location = 1) out vec2 out_vel;
+            void main() {
+                out_pos = vec2(1.0);
+                out_vel = vec2(1.0);
+            }
+            """,
+        )
+        assert shader.find_out_attribs() == ['out_pos', 'out_vel']
+
     def test_include(self):
         """Test #include preprocessors (recursive)"""
         def load_source(path):

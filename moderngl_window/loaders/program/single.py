@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class Loader(BaseLoader):
-    kind = 'single'
+    kind = "single"
 
     def load(self) -> moderngl.Program:
         """Loads a shader program from a single glsl file.
@@ -81,5 +81,5 @@ class Loader(BaseLoader):
 
         logger.info("Loading: %s", path)
 
-        with open(str(resolved_path), 'r') as fd:
+        with open(str(resolved_path), "r") as fd:
             return resolved_path, fd.read()

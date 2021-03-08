@@ -1,6 +1,8 @@
 from typing import Tuple
 import glfw
 
+from PIL import Image
+
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.glfw.keys import Keys
 
@@ -9,8 +11,9 @@ class Window(BaseWindow):
     """
     Window based on GLFW
     """
+
     #: Name of the window
-    name = 'glfw'
+    name = "glfw"
     #: GLFW specific key constants
     keys = Keys
 
@@ -38,12 +41,15 @@ class Window(BaseWindow):
         glfw.window_hint(glfw.DOUBLEBUFFER, True)
         glfw.window_hint(glfw.DEPTH_BITS, 24)
         glfw.window_hint(glfw.SAMPLES, self.samples)
+        glfw.window_hint(glfw.SCALE_TO_MONITOR, glfw.TRUE)
 
         monitor = None
         if self.fullscreen:
             self._set_fullscreen(True)
 
-        self._window = glfw.create_window(self.width, self.height, self.title, monitor, None)
+        self._window = glfw.create_window(
+            self.width, self.height, self.title, monitor, None
+        )
         self._has_focus = True
 
         if not self._window:
@@ -52,7 +58,9 @@ class Window(BaseWindow):
 
         self.cursor = self._cursor
 
-        self._buffer_width, self._buffer_height = glfw.get_framebuffer_size(self._window)
+        self._buffer_width, self._buffer_height = glfw.get_framebuffer_size(
+            self._window
+        )
         glfw.make_context_current(self._window)
 
         if self.vsync:
@@ -69,6 +77,7 @@ class Window(BaseWindow):
         glfw.set_window_focus_callback(self._window, self.glfw_window_focus)
         glfw.set_cursor_enter_callback(self._window, self.glfw_cursor_enter)
         glfw.set_window_iconify_callback(self._window, self.glfw_window_iconify)
+        glfw.set_window_close_callback(self._window, self.glfw_window_close)
 
         self.init_mgl_context()
         self.set_default_viewport()
@@ -85,10 +94,13 @@ class Window(BaseWindow):
             self._non_fullscreen_size = self.width, self.height
             self._non_fullscreen_position = self.position
             glfw.set_window_monitor(
-                self._window, monitor,
-                0, 0,
-                mode.size.width, mode.size.height,
-                refresh_rate
+                self._window,
+                monitor,
+                0,
+                0,
+                mode.size.width,
+                mode.size.height,
+                refresh_rate,
             )
 
             glfw.window_hint(glfw.RED_BITS, mode.bits.red)
@@ -224,6 +236,10 @@ class Window(BaseWindow):
         self._modifiers.ctrl = mods & 2 == 2
         self._modifiers.alt = mods & 4 == 4
 
+    def _set_icon(self, icon_path) -> None:
+        image = Image.open(icon_path)
+        glfw.set_window_icon(self._window, 1, image)
+
     def glfw_key_event_callback(self, window, key, scancode, action, mods):
         """Key event callback for glfw.
         Translates and forwards keyboard event to :py:func:`keyboard_event`
@@ -318,7 +334,9 @@ class Window(BaseWindow):
             height: New height
         """
         self._width, self._height = width, height
-        self._buffer_width, self._buffer_height = glfw.get_framebuffer_size(self._window)
+        self._buffer_width, self._buffer_height = glfw.get_framebuffer_size(
+            self._window
+        )
         self.set_default_viewport()
 
         super().resize(self._buffer_width, self._buffer_height)
@@ -349,6 +367,10 @@ class Window(BaseWindow):
             iconified (int): 1 = minimized, 0 = restored.
         """
         self._iconify_func(True if iconified == 1 else False)
+
+    def glfw_window_close(self, window):
+        """Called when the window is closed"""
+        self.close()
 
     def destroy(self):
         """Gracefully terminate GLFW"""

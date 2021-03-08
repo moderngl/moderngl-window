@@ -18,6 +18,7 @@ def bbox(size=(1.0, 1.0, 1.0), name=None, attr_names=AttributeNames):
         A :py:class:`moderngl_window.opengl.vao.VAO` instance
     """
     width, height, depth = size[0] / 2.0, size[1] / 2.0, size[2] / 2.0
+    # fmt: off
     pos = numpy.array([
         width, -height, depth,
         width, height, depth,
@@ -56,8 +57,9 @@ def bbox(size=(1.0, 1.0, 1.0), name=None, attr_names=AttributeNames):
         -width, height, depth,
         width, height, depth,
     ], dtype=numpy.float32)
+    # fmt: on
 
     vao = VAO(name or "geometry:cube", mode=moderngl.LINE_STRIP)
-    vao.buffer(pos, '3f', [attr_names.POSITION])
+    vao.buffer(pos, "3f", [attr_names.POSITION])
 
     return vao

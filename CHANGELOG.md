@@ -1,6 +1,54 @@
 # Changelog
 
-# 2.2.0
+## 3.4.0
+
+New Features
+
+* Added a simple Scheduler (Thanks to @Leterax)
+* Added support for toggling fullscreen
+* Added support for setting window icon
+* `TextureDescription` now supports flipping the texture on x and y
+* The pyglet window now supports dragging in files
+* Added `BaseWindow.convert_window_coordinates` for converting mouse coordinates
+* Added more examples0
+
+Bug Fixes
+
+* BaseWindow now references WindowConfig using a weakref
+* Overriding the timer in `run_window_config` had no effect
+* Numpad keys was not mapped correctly in some instances
+* Timers should return 0 when not started
+* glfw window close callback did now work
+* glfw now respects content scaling on windows and X11
+* Added some missing methods in docs
+* Fixed various doc typos
+
+## 2.2.3
+
+* imgui integration no longer relies on pyopengl
+* Bug: Properly parse `out` attributes with layout qualifiers
+* Bug: Do not cache system shaders at module level.
+  We now cache them in the context to better support multiple windows.
+* Bug: OrbitCameraWindow - Fixed radians/degree issue
+* Bug: A window can now be closed from inside `render()`
+
+## 2.2.2
+
+* Fixed several issues causing the window close callback not being called
+* Fixed incorrect mouse button mapping in mouse drag events
+
+## 2.2.1
+
+* imgui renderer now supports moderngl textures. This opens up for both
+  displaying images and animated framebuffer textures into imgui.
+* Scene: Fixed several issues related to shader assigning based on material properties.
+  This especially affected wavefront/obj files.
+* OrbitCamera: Fixed translation issue (@Leterax)
+* OrbitCamera: Now using degrees instead of radians (@Leterax)
+* Bumped pyglet version to minimum 1.5.6. This version
+  solves several issue with window events for MacBooks with Touch Bar
+
+## 2.2.0
 
 * `WindowConfig` now supports overriding the default arugment parser.
   A classmethod `add_arguments` can be implemented to add additional
@@ -26,9 +74,9 @@
 Thanks to @Leterax, @minuJeong and @dawid-januszkiewicz for the contributions to this release
 and @mtbouchard for input on `WindowConfig` and `Scene` changes.
 
-# 2.1.1
+## 2.1.1
 
-## Improvements:
+### Improvements
 
 * Optimized the imgui renderer using `ctypes` instead of `numpy` for handling vertex data (@aforren1)
 * Added support for ALT key modifier in all window backends and other improvements to key handling (@OKaluza)
@@ -111,12 +159,12 @@ Resolved an issue with version constraints causing some dependencies to install 
 
 Bug fixes
 
-- SDL2 window now allows highdpi framebuffers when available
-- pygame2 window should only initialize the display module
+* SDL2 window now allows highdpi framebuffers when available
+* pygame2 window should only initialize the display module
 
 ## 2.0.0
 
-Breaking Changes
+### Breaking Changes
 
 * `mouse_position_event` signature has changed from `(x, y)` to `(x, y, dx, dy)`.
   This means you will also be getting the relative position change.
@@ -124,7 +172,7 @@ Breaking Changes
   This means you will also be getting the relative position change.
 * `KeyboardCamera.rot_state` now takes dx and dy instead of x and y
 
-Improvements
+### Improvements
 
 * Python 3.8 support (PySide2 will take a few more months. SDL2 has issues on windows)
 * Added pygame2 window

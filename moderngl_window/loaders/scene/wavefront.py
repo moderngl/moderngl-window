@@ -51,19 +51,21 @@ def translate_buffer_format(vertex_format: str, attr_names: AttributeNames):
 
 class VAOCacheLoader(cache.CacheLoader):
     """Load geometry data directly into vaos"""
+
     attr_names = None
 
     def load_vertex_buffer(self, fd, material, length):
-        buffer_format, attributes, mesh_attributes = translate_buffer_format(material.vertex_format,
-                                                                             self.attr_names)
+        buffer_format, attributes, mesh_attributes = translate_buffer_format(
+            material.vertex_format, self.attr_names
+        )
 
         vao = VAO(material.name, mode=moderngl.TRIANGLES)
         vao.buffer(fd.read(length), buffer_format, attributes)
 
-        setattr(material, 'vao', vao)
-        setattr(material, 'buffer_format', buffer_format)
-        setattr(material, 'attributes', attributes)
-        setattr(material, 'mesh_attributes', mesh_attributes)
+        setattr(material, "vao", vao)
+        setattr(material, "buffer_format", buffer_format)
+        setattr(material, "attributes", attributes)
+        setattr(material, "mesh_attributes", mesh_attributes)
 
 
 ObjParser.cache_loader_cls = VAOCacheLoader
@@ -71,11 +73,12 @@ ObjParser.cache_loader_cls = VAOCacheLoader
 
 class Loader(BaseLoader):
     """Loade wavefront/obj files"""
-    kind = 'wavefront'
+
+    kind = "wavefront"
     file_extensions = [
-        ['.obj'],
-        ['.obj', '.gz'],
-        ['.bin'],
+        [".obj"],
+        [".obj", ".gz"],
+        [".bin"],
     ]
 
     def __init__(self, meta: SceneDescription):
@@ -93,12 +96,14 @@ class Loader(BaseLoader):
         if not path:
             raise ImproperlyConfigured("Scene '{}' not found".format(self.meta.path))
 
-        if path.suffix == '.bin':
+        if path.suffix == ".bin":
             path = path.parent / path.stem
 
         VAOCacheLoader.attr_names = self.meta.attr_names
 
-        data = pywavefront.Wavefront(str(path), create_materials=True, cache=self.meta.cache)
+        data = pywavefront.Wavefront(
+            str(path), create_materials=True, cache=self.meta.cache
+        )
         scene = Scene(self.meta.resolved_path)
         texture_cache = {}
 
@@ -107,9 +112,10 @@ class Loader(BaseLoader):
 
             # Traditional loader
             if mat.vertices:
-                buffer_format, attributes, mesh_attributes = translate_buffer_format(mat.vertex_format,
-                                                                                     self.meta.attr_names)
-                vbo = numpy.array(mat.vertices, dtype='f4')
+                buffer_format, attributes, mesh_attributes = translate_buffer_format(
+                    mat.vertex_format, self.meta.attr_names
+                )
+                vbo = numpy.array(mat.vertices, dtype="f4")
 
                 vao = VAO(mat.name, mode=moderngl.TRIANGLES)
                 vao.buffer(vbo, buffer_format, attributes)
@@ -119,7 +125,7 @@ class Loader(BaseLoader):
                     mesh.add_attribute(*attrs)
 
             # Binary cache loader
-            elif hasattr(mat, 'vao'):
+            elif hasattr(mat, "vao"):
                 mesh = Mesh(mat.name)
                 mesh.vao = mat.vao
                 for attrs in mat.mesh_attributes:
@@ -142,17 +148,18 @@ class Loader(BaseLoader):
                     rel_path = os.path.relpath(mat.texture.find(), str(path.parent))
                     logger.info("Loading: %s", rel_path)
                     with texture_dirs([path.parent]):
-                        texture = resources.textures.load(TextureDescription(
-                            label=rel_path,
-                            path=rel_path,
-                            mipmap=True,
-                            anisotropy=16.0,
-                        ))
+                        texture = resources.textures.load(
+                            TextureDescription(
+                                label=rel_path,
+                                path=rel_path,
+                                mipmap=True,
+                                anisotropy=16.0,
+                            )
+                        )
                     texture_cache[rel_path] = texture
 
                 mesh.material.mat_texture = MaterialTexture(
-                    texture=texture,
-                    sampler=None,
+                    texture=texture, sampler=None,
                 )
 
             node = Node(mesh=mesh)

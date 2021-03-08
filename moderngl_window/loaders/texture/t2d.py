@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 
 class Loader(PillowLoader):
-    kind = '2d'
+    kind = "2d"
 
     def load(self):
         """Load a 2d texture as configured in the supplied ``TextureDescription``
@@ -18,12 +18,8 @@ class Loader(PillowLoader):
 
         components, data = image_data(self.image)
 
-        texture = self.ctx.texture(
-            self.image.size,
-            components,
-            data,
-        )
-        texture.extra = {'meta': self.meta}
+        texture = self.ctx.texture(self.image.size, components, data,)
+        texture.extra = {"meta": self.meta}
 
         if self.meta.mipmap_levels is not None:
             self.meta.mipmap = True

@@ -9,7 +9,7 @@ Basic usage (WindowConfig)
 
 Using the :py:class:`~moderngl_window.context.base.window.WindowConfig`
 interface is the simplest way to start with moderngl-window.
-This can work for projects smaller projects and implies that this library
+This can work for smaller projects and implies that this library
 provides the window and moderngl context.
 
 The API docs for this class alone should cover a lot of ground,
@@ -175,7 +175,7 @@ Implement the ``mouse_*`` methods to handle mouse input.
         print("Mouse drag:", x, y, dx, dy)
 
     def mouse_scroll_event(self, x_offset: float, y_offset: float):
-        prtin("Mouse wheel:', x_offset, y_offset)
+        print("Mouse wheel:", x_offset, y_offset)
 
     def mouse_press_event(self, x, y, button):
         print("Mouse button {} pressed at {}, {}".format(button, x, y))

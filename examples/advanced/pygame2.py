@@ -18,7 +18,7 @@ from pyrr import matrix44
 class Pygame(moderngl_window.WindowConfig):
     """
     Example using pygame with moderngl.
-    Needs to run with ``--window pygame`` option.
+    Needs to run with ``--window pygame2`` option.
     """
     title = "Pygame"
     window_size = 1280, 720
@@ -31,9 +31,9 @@ class Pygame(moderngl_window.WindowConfig):
             raise RuntimeError('This example only works with --window pygame2 option')
 
         self.pg_res = (160, 160)
-        # Create a 24bit (rgb) offscreen surface pygame can render to
+        # Create a 24bit (rgba) offscreen surface pygame can render to
         self.pg_screen = pygame.Surface(self.pg_res, flags=pygame.SRCALPHA)
-        # 24 bit (rgb) moderngl texture
+        # 24 bit (rgba) moderngl texture
         self.pg_texture = self.ctx.texture(self.pg_res, 4)
         self.pg_texture.filter = moderngl.NEAREST, moderngl.NEAREST
 
@@ -81,4 +81,4 @@ class Pygame(moderngl_window.WindowConfig):
 
 
 if __name__ == '__main__':
-    Pygame.run()
+    moderngl_window.run_window_config(Pygame, args=('--window', 'pygame2'))

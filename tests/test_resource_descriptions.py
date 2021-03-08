@@ -85,7 +85,8 @@ class ResourceDescriptionTestCase(TestCase):
             label=self.label,
         )
         self.inspect_base_properties(instance)
-        self.assertEqual(instance.flip, True)
+        self.assertEqual(instance.flip_x, False)
+        self.assertEqual(instance.flip_y, True)
         self.assertEqual(instance.mipmap, False)
         self.assertEqual(instance.mipmap_levels, None)
         self.assertEqual(instance.anisotropy, 1.0)

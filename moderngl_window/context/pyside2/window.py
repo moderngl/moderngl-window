@@ -1,5 +1,5 @@
 from typing import Tuple
-from PySide2 import QtCore, QtOpenGL, QtWidgets
+from PySide2 import QtCore, QtOpenGL, QtWidgets, QtGui
 
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.pyside2.keys import Keys
@@ -16,8 +16,9 @@ class Window(BaseWindow):
     in Qt as well, this example can still be useful as a reference
     when creating your own window.
     """
+
     #: Name of the window
-    name = 'pyside2'
+    name = "pyside2"
     #: PySide2 specific key constants
     keys = Keys
 
@@ -63,8 +64,7 @@ class Window(BaseWindow):
         if self.resizable:
             # Ensure a valid resize policy when window is resizable
             size_policy = QtWidgets.QSizePolicy(
-                QtWidgets.QSizePolicy.Expanding,
-                QtWidgets.QSizePolicy.Expanding,
+                QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding,
             )
             self._widget.setSizePolicy(size_policy)
             self._widget.resize(self.width, self.height)
@@ -73,7 +73,10 @@ class Window(BaseWindow):
 
         # Center the window on the screen if in window mode
         if not self.fullscreen:
-            center_window_position = self.position[0] - self.width/2, self.position[1] - self.height/2
+            center_window_position = (
+                self.position[0] - self.width / 2,
+                self.position[1] - self.height / 2,
+            )
             self._widget.move(*center_window_position)
 
         # Needs to be set before show()
@@ -212,6 +215,9 @@ class Window(BaseWindow):
         self._modifiers.shift = bool(mods & QtCore.Qt.ShiftModifier)
         self._modifiers.ctrl = bool(mods & QtCore.Qt.ControlModifier)
         self._modifiers.alt = bool(mods & QtCore.Qt.AltModifier)
+
+    def _set_icon(self, icon_path: str) -> None:
+        self._widget.setWindowIcon(QtGui.QIcon(icon_path))
 
     def key_pressed_event(self, event):
         """Process Qt key press events forwarding them to standard methods

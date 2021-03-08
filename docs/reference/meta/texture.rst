@@ -21,7 +21,8 @@ Attributes
 .. autoattribute:: TextureDescription.layers
 .. autoattribute:: TextureDescription.anisotropy
 .. autoattribute:: TextureDescription.mipmap_levels
-.. autoattribute:: TextureDescription.flip
+.. autoattribute:: TextureDescription.flip_x
+.. autoattribute:: TextureDescription.flip_y
 .. autoattribute:: TextureDescription.pos_x
 .. autoattribute:: TextureDescription.pos_y
 .. autoattribute:: TextureDescription.pos_z

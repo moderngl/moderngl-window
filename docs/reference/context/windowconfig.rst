@@ -15,6 +15,7 @@ Methods
 .. automethod:: WindowConfig.render
 .. automethod:: WindowConfig.resize
 .. automethod:: WindowConfig.close
+.. automethod:: WindowConfig.add_arguments
 .. automethod:: WindowConfig.key_event
 .. automethod:: WindowConfig.mouse_position_event
 .. automethod:: WindowConfig.mouse_press_event

@@ -42,7 +42,8 @@ docs/_build/
 
 # IDEs
 .vscode
-.idea
+.idea/
+.spyproject/
 
 # Environments
 .env
@@ -62,6 +63,3 @@ venv.bak/
 .mypy_cache
 /random_fun/
 imgui.ini
-
-# PyCharm
-.idea/

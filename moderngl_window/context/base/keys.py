@@ -1,7 +1,9 @@
 # flake8: noqa E741
 
+
 class KeyModifiers:
     """Namespace for storing key modifiers"""
+
     shift = False
     ctrl = False
     alt = False
@@ -10,7 +12,9 @@ class KeyModifiers:
         return str(self)
 
     def __str__(self):
-        return "<KeyModifiers shift={} ctrl={} alt={}".format(self.shift, self.ctrl, self.alt)
+        return "<KeyModifiers shift={} ctrl={} alt={}>".format(
+            self.shift, self.ctrl, self.alt
+        )
 
 
 class BaseKeys:
@@ -18,9 +22,10 @@ class BaseKeys:
     Namespace for mapping key constants.
     This is simply a template for what keys should be mapped for all window libraries
     """
+
     # Fallback press/release action when window libraries don't have this
-    ACTION_PRESS = 'ACTION_PRESS'
-    ACTION_RELEASE = 'ACTION_RELEASE'
+    ACTION_PRESS = "ACTION_PRESS"
+    ACTION_RELEASE = "ACTION_RELEASE"
 
     ESCAPE = None
     SPACE = None
@@ -72,6 +77,17 @@ class BaseKeys:
     NUMBER_7 = None
     NUMBER_8 = None
     NUMBER_9 = None
+
+    NUMPAD_0 = None
+    NUMPAD_1 = None
+    NUMPAD_2 = None
+    NUMPAD_3 = None
+    NUMPAD_4 = None
+    NUMPAD_5 = None
+    NUMPAD_6 = None
+    NUMPAD_7 = None
+    NUMPAD_8 = None
+    NUMPAD_9 = None
 
     A = None
     B = None

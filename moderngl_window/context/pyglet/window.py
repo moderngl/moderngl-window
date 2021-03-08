@@ -4,10 +4,10 @@ import pyglet
 
 # On OS X we need to disable the shadow context
 # because the 2.1 shadow context cannot be upgrade to a 3.3+ core
-if platform.system() == 'Darwin':
-    pyglet.options['shadow_window'] = False
+if platform.system() == "Darwin":
+    pyglet.options["shadow_window"] = False
 
-pyglet.options['debug_gl'] = False
+pyglet.options["debug_gl"] = False
 
 from moderngl_window.context.pyglet.keys import Keys  # noqa: E402
 from moderngl_window.context.base import BaseWindow  # noqa: E402
@@ -17,8 +17,9 @@ class Window(BaseWindow):
     """
     Window based on Pyglet 1.4.x
     """
+
     #: Name of the window
-    name = 'pyglet'
+    name = "pyglet"
     #: Pyglet specific key constants
     keys = Keys
 
@@ -48,12 +49,14 @@ class Window(BaseWindow):
             self._width, self._height = screen.width, screen.height
 
         self._window = PygletWrapper(
-            width=self._width, height=self._height,
+            width=self._width,
+            height=self._height,
             caption=self._title,
             resizable=self._resizable,
             vsync=self._vsync,
             fullscreen=self._fullscreen,
             config=config,
+            file_drops=True and platform.system() != "Darwin"
         )
 
         self.cursor = self._cursor
@@ -70,6 +73,7 @@ class Window(BaseWindow):
         self._window.event(self.on_text)
         self._window.event(self.on_show)
         self._window.event(self.on_hide)
+        self._window.event(self.on_file_drop)
 
         self.init_mgl_context()
         self._buffer_width, self._buffer_height = self._window.get_framebuffer_size()
@@ -182,6 +186,10 @@ class Window(BaseWindow):
         self._modifiers.ctrl = mods & 2 == 2
         self._modifiers.alt = mods & 4 == 4
 
+    def _set_icon(self, icon_path: str) -> None:
+        icon = pyglet.image.load(icon_path)
+        self._window.set_icon(icon)
+
     def on_key_press(self, symbol, modifiers):
         """Pyglet specific key press callback.
 
@@ -262,8 +270,7 @@ class Window(BaseWindow):
         if button is not None:
             self._handle_mouse_button_state_change(button, True)
             self._mouse_press_event_func(
-                x, self._height - y,
-                button,
+                x, self._height - y, button,
             )
 
     def on_mouse_release(self, x: int, y: int, button, mods):
@@ -279,8 +286,7 @@ class Window(BaseWindow):
         if button is not None:
             self._handle_mouse_button_state_change(button, False)
             self._mouse_release_event_func(
-                x, self._height - y,
-                button,
+                x, self._height - y, button,
             )
 
     def on_mouse_scroll(self, x, y, x_offset: float, y_offset: float):
@@ -317,6 +323,20 @@ class Window(BaseWindow):
     def on_hide(self):
         """Called when window is minimized"""
         self._iconify_func(True)
+
+    def on_file_drop(self, x, y, paths):
+        """Called when files dropped onto the window
+
+            Args:
+                x (int): X location in window where file was dropped
+                y (int): Y location in window where file was dropped
+                paths (list): List of file paths dropped
+        """
+        # pyglet coordinate origin is in the bottom left corner of the window
+        # mglw coordinate origin is in the top left corner of the window
+        # convert pyglet coordinates to mglw coordinates:
+        (x, y) = self.convert_window_coordinates(x, y, y_flipped=True)
+        self._files_dropped_event_func(x, y, paths)
 
     def destroy(self):
         """Destroy the pyglet window"""

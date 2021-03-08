@@ -26,6 +26,7 @@ class CustomSetup:
         self.wnd.mouse_press_event_func = self.mouse_press_event
         self.wnd.mouse_release_event_func = self.mouse_release_event
         self.wnd.unicode_char_entered_func = self.unicode_char_entered
+        self.wnd.close_func = self.close
 
     def render(self, time, frame_time):
         self.ctx.clear(
@@ -118,6 +119,9 @@ class CustomSetup:
 
     def unicode_char_entered(self, char):
         print("unicode_char_entered:", char)
+
+    def close(self):
+        print("Window was closed")
 
 
 if __name__ == '__main__':

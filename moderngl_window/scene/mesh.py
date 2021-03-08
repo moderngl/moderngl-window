@@ -5,7 +5,15 @@ import numpy
 class Mesh:
     """Mesh info and geometry"""
 
-    def __init__(self, name, vao=None, material=None, attributes=None, bbox_min=None, bbox_max=None):
+    def __init__(
+        self,
+        name,
+        vao=None,
+        material=None,
+        attributes=None,
+        bbox_min=None,
+        bbox_max=None,
+    ):
         """Initialize mesh.
 
         Args:
@@ -32,7 +40,9 @@ class Mesh:
         self.bbox_max = bbox_max
         self.mesh_program = None
 
-    def draw(self, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0.0):
+    def draw(
+        self, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0.0
+    ):
         """Draw the mesh using the assigned mesh program
 
         Keyword Args:
@@ -46,7 +56,7 @@ class Mesh:
                 projection_matrix=projection_matrix,
                 model_matrix=model_matrix,
                 camera_matrix=camera_matrix,
-                time=time
+                time=time,
             )
 
     def draw_bbox(self, proj_matrix, model_matrix, cam_matrix, program, vao):
@@ -62,8 +72,8 @@ class Mesh:
         program["m_proj"].write(proj_matrix)
         program["m_model"].write(model_matrix)
         program["m_cam"].write(cam_matrix)
-        program["bb_min"].write(self.bbox_min.astype('f4').tobytes())
-        program["bb_max"].write(self.bbox_max.astype('f4').tobytes())
+        program["bb_min"].write(self.bbox_min.astype("f4").tobytes())
+        program["bb_max"].write(self.bbox_max.astype("f4").tobytes())
         vao.render(program)
 
     def draw_wireframe(self, proj_matrix, model_matrix, program):
@@ -97,14 +107,14 @@ class Mesh:
             bbox_min, bbox_max: Combined bbox
         """
         # Copy and extend to vec4
-        bb1 = numpy.append(self.bbox_min[:], 1.0).astype('f4')
-        bb2 = numpy.append(self.bbox_max[:], 1.0).astype('f4')
+        bb1 = numpy.append(self.bbox_min[:], 1.0).astype("f4")
+        bb2 = numpy.append(self.bbox_max[:], 1.0).astype("f4")
 
         # Transform the bbox values
-        bmin = matrix44.apply_to_vector(view_matrix, bb1),
-        bmax = matrix44.apply_to_vector(view_matrix, bb2),
-        bmin = numpy.asarray(bmin, dtype='f4')[0]
-        bmax = numpy.asarray(bmax, dtype='f4')[0]
+        bmin = (matrix44.apply_to_vector(view_matrix, bb1),)
+        bmax = (matrix44.apply_to_vector(view_matrix, bb2),)
+        bmin = numpy.asarray(bmin, dtype="f4")[0]
+        bmax = numpy.asarray(bmax, dtype="f4")[0]
 
         # If a rotation happened there is an axis change and we have to ensure max-min is positive
         for i in range(3):

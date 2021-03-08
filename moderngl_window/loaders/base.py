@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 class BaseLoader:
     """Base loader class for all resources"""
+
     kind = None
     """
     The kind of resource this loaded supports.
@@ -54,7 +55,7 @@ class BaseLoader:
         path = Path(meta.path)
 
         for ext in cls.file_extensions:
-            if path.suffixes[:len(ext)] == ext:
+            if path.suffixes[: len(ext)] == ext:
                 return True
 
         return False

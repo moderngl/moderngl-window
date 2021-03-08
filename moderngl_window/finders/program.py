@@ -4,7 +4,8 @@ from moderngl_window.conf import settings
 
 class FilesystemFinder(base.BaseFilesystemFinder):
     """Find shaders in ``settings.PROGRAM_DIRS``"""
-    settings_attr = 'PROGRAM_DIRS'
+
+    settings_attr = "PROGRAM_DIRS"
 
 
 def get_finders():

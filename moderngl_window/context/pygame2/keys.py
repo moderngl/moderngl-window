@@ -8,6 +8,7 @@ class Keys(BaseKeys):
     """
     Namespace mapping pygame2 specific key constants
     """
+
     ACTION_PRESS = pygame.KEYDOWN
     ACTION_RELEASE = pygame.KEYUP
 
@@ -61,6 +62,17 @@ class Keys(BaseKeys):
     NUMBER_7 = pygame.K_7
     NUMBER_8 = pygame.K_8
     NUMBER_9 = pygame.K_9
+
+    NUMPAD_0 = pygame.K_KP_0
+    NUMPAD_1 = pygame.K_KP_1
+    NUMPAD_2 = pygame.K_KP_2
+    NUMPAD_3 = pygame.K_KP_3
+    NUMPAD_4 = pygame.K_KP_4
+    NUMPAD_5 = pygame.K_KP_5
+    NUMPAD_6 = pygame.K_KP_6
+    NUMPAD_7 = pygame.K_KP_7
+    NUMPAD_8 = pygame.K_KP_8
+    NUMPAD_9 = pygame.K_KP_9
 
     A = pygame.K_a
     B = pygame.K_b

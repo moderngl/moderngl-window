@@ -8,6 +8,7 @@ class Keys(BaseKeys):
     """
     Namespace defining glfw specific keys constants
     """
+
     ACTION_PRESS = glfw.PRESS
     ACTION_RELEASE = glfw.RELEASE
 
@@ -61,6 +62,17 @@ class Keys(BaseKeys):
     NUMBER_7 = glfw.KEY_7
     NUMBER_8 = glfw.KEY_8
     NUMBER_9 = glfw.KEY_9
+
+    NUMPAD_0 = glfw.KEY_KP_0
+    NUMPAD_1 = glfw.KEY_KP_1
+    NUMPAD_2 = glfw.KEY_KP_2
+    NUMPAD_3 = glfw.KEY_KP_3
+    NUMPAD_4 = glfw.KEY_KP_4
+    NUMPAD_5 = glfw.KEY_KP_5
+    NUMPAD_6 = glfw.KEY_KP_6
+    NUMPAD_7 = glfw.KEY_KP_7
+    NUMPAD_8 = glfw.KEY_KP_8
+    NUMPAD_9 = glfw.KEY_KP_9
 
     A = glfw.KEY_A
     B = glfw.KEY_B

@@ -11,6 +11,7 @@ Methods
 .. automethod:: Window.__init__
 .. automethod:: Window.init_mgl_context
 .. automethod:: Window.is_key_pressed
+.. automethod:: Window.set_icon
 .. automethod:: Window.close
 .. automethod:: Window.use
 .. automethod:: Window.clear
@@ -19,6 +20,7 @@ Methods
 .. automethod:: Window.resize
 .. automethod:: Window.destroy
 .. automethod:: Window.set_default_viewport
+.. automethod:: Window.convert_window_coordinates
 .. automethod:: Window.print_context_info
 
 Window Specific Methods
@@ -78,6 +80,7 @@ Attributes
 .. autoattribute:: Window.mouse_drag_event_func
 .. autoattribute:: Window.unicode_char_entered_func
 .. autoattribute:: Window.mouse_scroll_event_func
+.. autoattribute:: Window.files_dropped_event_func
 .. autoattribute:: Window.is_closing
 .. autoattribute:: Window.mouse
 .. autoattribute:: Window.mouse_states

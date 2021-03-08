@@ -3,7 +3,7 @@ from moderngl_window.exceptions import ImproperlyConfigured
 
 
 class Loader(PillowLoader):
-    kind = 'array'
+    kind = "array"
 
     def __init__(self, meta):
         super().__init__(meta)
@@ -20,15 +20,15 @@ class Loader(PillowLoader):
         """
         self._open_image()
 
-        width, height, depth = self.image.size[0], self.image.size[1] // self.layers, self.layers
+        width, height, depth = (
+            self.image.size[0],
+            self.image.size[1] // self.layers,
+            self.layers,
+        )
         components, data = image_data(self.image)
 
-        texture = self.ctx.texture_array(
-            (width, height, depth),
-            components,
-            data,
-        )
-        texture.extra = {'meta': self.meta}
+        texture = self.ctx.texture_array((width, height, depth), components, data,)
+        texture.extra = {"meta": self.meta}
 
         if self.meta.mipmap_levels is not None:
             self.meta.mipmap = True

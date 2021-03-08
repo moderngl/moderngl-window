@@ -4,7 +4,8 @@ from moderngl_window.conf import settings
 
 class FilesystemFinder(base.BaseFilesystemFinder):
     """Find scenes in ``settings.SCENE_DIRS``"""
-    settings_attr = 'SCENE_DIRS'
+
+    settings_attr = "SCENE_DIRS"
 
 
 def get_finders():

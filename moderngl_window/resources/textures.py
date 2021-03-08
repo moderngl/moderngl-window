@@ -9,9 +9,12 @@ from moderngl_window.meta import TextureDescription
 
 class Textures(BaseRegistry):
     """Handles texture resources"""
-    settings_attr = 'TEXTURE_LOADERS'
 
-    def load(self, meta: TextureDescription) -> Union[moderngl.Texture, moderngl.TextureArray]:
+    settings_attr = "TEXTURE_LOADERS"
+
+    def load(
+        self, meta: TextureDescription
+    ) -> Union[moderngl.Texture, moderngl.TextureArray]:
         """Loads a texture with the configured loaders.
 
         Args:

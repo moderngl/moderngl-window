@@ -12,8 +12,9 @@ class Window(BaseWindow):
     """
     Basic window implementation using SDL2.
     """
+
     #: Name of the window
-    name = 'sdl2'
+    name = "sdl2"
     #: SDL2 specific key constants
     keys = Keys
 
@@ -29,9 +30,15 @@ class Window(BaseWindow):
         if sdl2.SDL_Init(sdl2.SDL_INIT_VIDEO) != 0:
             raise ValueError("Failed to initialize sdl2")
 
-        sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MAJOR_VERSION, self.gl_version[0])
-        sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MINOR_VERSION, self.gl_version[1])
-        sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_PROFILE_MASK, sdl2.SDL_GL_CONTEXT_PROFILE_CORE)
+        sdl2.video.SDL_GL_SetAttribute(
+            sdl2.SDL_GL_CONTEXT_MAJOR_VERSION, self.gl_version[0]
+        )
+        sdl2.video.SDL_GL_SetAttribute(
+            sdl2.SDL_GL_CONTEXT_MINOR_VERSION, self.gl_version[1]
+        )
+        sdl2.video.SDL_GL_SetAttribute(
+            sdl2.SDL_GL_CONTEXT_PROFILE_MASK, sdl2.SDL_GL_CONTEXT_PROFILE_CORE
+        )
         sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG, 1)
         sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_DOUBLEBUFFER, 1)
         sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_DEPTH_SIZE, 24)
@@ -69,7 +76,9 @@ class Window(BaseWindow):
         self.set_default_viewport()
 
     def _set_fullscreen(self, value: bool) -> None:
-        sdl2.SDL_SetWindowFullscreen(self._window, sdl2.SDL_WINDOW_FULLSCREEN_DESKTOP if value else 0)
+        sdl2.SDL_SetWindowFullscreen(
+            self._window, sdl2.SDL_WINDOW_FULLSCREEN_DESKTOP if value else 0
+        )
 
     def _get_drawable_size(self):
         x = c_int()
@@ -197,19 +206,26 @@ class Window(BaseWindow):
         self._modifiers.ctrl = mods & sdl2.KMOD_CTRL
         self._modifiers.alt = mods & sdl2.KMOD_ALT
 
+    def _set_icon(self, icon_path: str) -> None:
+        sdl2.SDL_SetWindowIcon(self._window, sdl2.ext.load_image(icon_path))
+
     def process_events(self) -> None:
         """Handle all queued events in sdl2 dispatching events to standard methods"""
         for event in sdl2.ext.get_events():
             if event.type == sdl2.SDL_MOUSEMOTION:
                 if self.mouse_states.any:
                     self._mouse_drag_event_func(
-                        event.motion.x, event.motion.y,
-                        event.motion.xrel, event.motion.yrel,
+                        event.motion.x,
+                        event.motion.y,
+                        event.motion.xrel,
+                        event.motion.yrel,
                     )
                 else:
                     self._mouse_position_event_func(
-                        event.motion.x, event.motion.y,
-                        event.motion.xrel, event.motion.yrel,
+                        event.motion.x,
+                        event.motion.y,
+                        event.motion.xrel,
+                        event.motion.yrel,
                     )
 
             elif event.type == sdl2.SDL_MOUSEBUTTONDOWN:
@@ -218,8 +234,7 @@ class Window(BaseWindow):
                 if button is not None:
                     self._handle_mouse_button_state_change(button, True)
                     self._mouse_press_event_func(
-                        event.motion.x, event.motion.y,
-                        button,
+                        event.motion.x, event.motion.y, button,
                     )
 
             elif event.type == sdl2.SDL_MOUSEBUTTONUP:
@@ -228,14 +243,16 @@ class Window(BaseWindow):
                 if button is not None:
                     self._handle_mouse_button_state_change(button, False)
                     self._mouse_release_event_func(
-                        event.motion.x, event.motion.y,
-                        button,
+                        event.motion.x, event.motion.y, button,
                     )
 
             elif event.type in [sdl2.SDL_KEYDOWN, sdl2.SDL_KEYUP]:
                 self._handle_mods()
 
-                if self._exit_key is not None and event.key.keysym.sym == self._exit_key:
+                if (
+                    self._exit_key is not None
+                    and event.key.keysym.sym == self._exit_key
+                ):
                     self.close()
 
                 if event.type == sdl2.SDL_KEYDOWN:
@@ -250,7 +267,9 @@ class Window(BaseWindow):
 
             elif event.type == sdl2.SDL_MOUSEWHEEL:
                 self._handle_mods()
-                self._mouse_scroll_event_func(float(event.wheel.x), float(event.wheel.y))
+                self._mouse_scroll_event_func(
+                    float(event.wheel.x), float(event.wheel.y)
+                )
 
             elif event.type == sdl2.SDL_QUIT:
                 self.close()

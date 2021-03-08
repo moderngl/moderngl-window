@@ -10,13 +10,11 @@ logger = logging.getLogger(__name__)
 
 
 class Loader(BaseLoader):
-    kind = 'separate'
+    kind = "separate"
 
-    def load(self) -> Union[
-        moderngl.Program,
-        moderngl.ComputeShader,
-        program.ReloadableProgram
-    ]:
+    def load(
+        self,
+    ) -> Union[moderngl.Program, moderngl.ComputeShader, program.ReloadableProgram]:
         """Loads a shader program were each shader is a separate file.
 
         This detected and dictated by the ``kind`` in the ``ProgramDescription``.
@@ -30,7 +28,9 @@ class Loader(BaseLoader):
         geo_source = self._load_shader("geometry", self.meta.geometry_shader)
         fs_source = self._load_shader("fragment", self.meta.fragment_shader)
         tc_source = self._load_shader("tess_control", self.meta.tess_control_shader)
-        te_source = self._load_shader("tess_evaluation", self.meta.tess_evaluation_shader)
+        te_source = self._load_shader(
+            "tess_evaluation", self.meta.tess_evaluation_shader
+        )
         cs_source = self._load_shader("compute", self.meta.compute_shader)
 
         if vs_source:
@@ -65,11 +65,13 @@ class Loader(BaseLoader):
         if path:
             resolved_path = self.find_program(path)
             if not resolved_path:
-                raise ImproperlyConfigured("Cannot find {} shader '{}'".format(shader_type, path))
+                raise ImproperlyConfigured(
+                    "Cannot find {} shader '{}'".format(shader_type, path)
+                )
 
             logger.info("Loading: %s", resolved_path)
 
-            with open(str(resolved_path), 'r') as fd:
+            with open(str(resolved_path), "r") as fd:
                 return fd.read()
 
     def _load_source(self, path):
@@ -86,5 +88,5 @@ class Loader(BaseLoader):
 
         logger.info("Loading: %s", path)
 
-        with open(str(resolved_path), 'r') as fd:
+        with open(str(resolved_path), "r") as fd:
             return resolved_path, fd.read()
