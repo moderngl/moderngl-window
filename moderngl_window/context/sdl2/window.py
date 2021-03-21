@@ -278,7 +278,7 @@ class Window(BaseWindow):
                 self.close()
 
             elif event.type == sdl2.SDL_WINDOWEVENT:
-                if event.window.event == sdl2.SDL_WINDOWEVENT_RESIZED:
+                if event.window.event in [sdl2.SDL_WINDOWEVENT_RESIZED, sdl2.SDL_WINDOWEVENT_SIZE_CHANGED]:
                     self.resize(event.window.data1, event.window.data2)
                 elif event.window.event == sdl2.SDL_WINDOWEVENT_MINIMIZED:
                     self._iconify_func(True)
