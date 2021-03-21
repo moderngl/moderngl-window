@@ -48,16 +48,9 @@ class Window(BaseWindow):
 
         self._depth = 24
         self._flags = pygame.OPENGL | pygame.DOUBLEBUF
-        if self.fullscreen:
-            self._flags |= pygame.FULLSCREEN
 
-            info = pygame.display.Info()
-            desktop_size = info.current_w, info.current_h
-            self._width, self._height = desktop_size
-            self._buffer_width, self._buffer_height = self._width, self._height
-        else:
-            if self.resizable:
-                self._flags |= pygame.RESIZABLE
+        if self.resizable:
+            self._flags |= pygame.RESIZABLE
 
         self._set_mode()
         self.title = self._title
@@ -65,6 +58,10 @@ class Window(BaseWindow):
         # Get the reference for the internal sdl2 window
         # Makes us able to control window position and other properties.
         self._sdl_window = pygame._sdl2.video.Window.from_display_module()
+
+        if self.fullscreen:
+            self._set_fullscreen(True)
+
         self.init_mgl_context()
         self.set_default_viewport()
 
@@ -72,6 +69,12 @@ class Window(BaseWindow):
         self._surface = pygame.display.set_mode(
             size=(self._width, self._height), flags=self._flags, depth=self._depth,
         )
+
+    def _set_fullscreen(self, value: bool) -> None:
+        if value:
+            self._sdl_window.set_fullscreen(True)
+        else:
+            self._sdl_window.set_windowed()
 
     @property
     def size(self) -> Tuple[int, int]:
@@ -235,6 +238,10 @@ class Window(BaseWindow):
 
                 if self._exit_key is not None and event.key == self._exit_key:
                     self.close()
+
+                # Pygame can't do fullscreen yet, but this would toggle it.
+                if event.type == pygame.KEYUP and self._fs_key is not None and event.key == self._fs_key:
+                    self.fullscreen = not self.fullscreen
 
                 if event.type == pygame.KEYDOWN:
                     self._key_pressed_map[event.key] = True

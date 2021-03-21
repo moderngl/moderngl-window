@@ -202,6 +202,9 @@ class Window(BaseWindow):
         if self._exit_key is not None and symbol == self._exit_key:
             self.close()
 
+        if self._fs_key is not None and symbol == self._fs_key:
+            self.fullscreen = not self.fullscreen
+
         self._key_pressed_map[symbol] = True
         self._handle_modifiers(modifiers)
         self._key_event_func(symbol, self.keys.ACTION_PRESS, self._modifiers)

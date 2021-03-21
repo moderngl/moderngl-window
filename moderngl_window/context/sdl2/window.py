@@ -255,6 +255,9 @@ class Window(BaseWindow):
                 ):
                     self.close()
 
+                if self._fs_key is not None and event.key.keysym.sym == self._fs_key and event.type == sdl2.SDL_KEYDOWN:
+                    self.fullscreen = not self.fullscreen
+
                 if event.type == sdl2.SDL_KEYDOWN:
                     self._key_pressed_map[event.key.keysym.sym] = True
                 elif event.type == sdl2.SDL_KEYUP:

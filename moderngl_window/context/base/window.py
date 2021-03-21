@@ -115,6 +115,7 @@ class BaseWindow:
         self._samples = samples
         self._cursor = cursor
         self._exit_key = self.keys.ESCAPE
+        self._fs_key = self.keys.F11
 
         # Callback functions
         self._render_func = dummy_func
@@ -189,6 +190,28 @@ class BaseWindow:
     @title.setter
     def title(self, value: str):
         self._title = value
+
+    @property
+    def fullscreen_key(self) -> Any:
+        """Get or set the fullscreen toggle key for the window.
+
+        Pressing this key will toggle fullscreen for the window.
+
+        By default this is set to ``F11``, but this can be overridden or disabled::
+
+            # Default fullscreen key
+            window.fullscreen_key = window.keys.F11
+
+            # Set some other random fullscreen key
+            window.fullscreen_key = window.keys.F
+
+            # Disable the fullscreen key
+            window.fullscreen_key = None
+        """
+
+    @fullscreen_key.setter
+    def fullscreen_key(self, value: Any):
+        self._fs_key = value
 
     @property
     def exit_key(self) -> Any:
