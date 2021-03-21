@@ -46,11 +46,13 @@ Attributes
 .. autoattribute:: Window.fbo
 .. autoattribute:: Window.title
 .. autoattribute:: Window.exit_key
+.. autoattribute:: Window.fullscreen_key
 .. autoattribute:: Window.gl_version
 .. autoattribute:: Window.width
 .. autoattribute:: Window.height
 .. autoattribute:: Window.size
 .. autoattribute:: Window.position
+.. autoattribute:: Window.fullscreen
 .. autoattribute:: Window.buffer_width
 .. autoattribute:: Window.buffer_height
 .. autoattribute:: Window.buffer_size

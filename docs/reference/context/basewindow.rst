@@ -33,11 +33,13 @@ Attributes
 .. autoattribute:: BaseWindow.fbo
 .. autoattribute:: BaseWindow.title
 .. autoattribute:: BaseWindow.exit_key
+.. autoattribute:: BaseWindow.fullscreen_key
 .. autoattribute:: BaseWindow.gl_version
 .. autoattribute:: BaseWindow.width
 .. autoattribute:: BaseWindow.height
 .. autoattribute:: BaseWindow.size
 .. autoattribute:: BaseWindow.position
+.. autoattribute:: BaseWindow.fullscreen
 .. autoattribute:: BaseWindow.buffer_width
 .. autoattribute:: BaseWindow.buffer_height
 .. autoattribute:: BaseWindow.buffer_size
