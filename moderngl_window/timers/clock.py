@@ -65,7 +65,7 @@ class Timer(BaseTimer):
         """
         if self._start_time is None:
             self._start_time = time.time()
-            self._last_frame = self._start_time
+            self._last_frame = 0.0
         else:
             self._offset += time.time() - self._pause_time
             self._pause_time = None
