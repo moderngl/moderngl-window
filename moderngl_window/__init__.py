@@ -18,6 +18,11 @@ from moderngl_window.utils.module_loading import import_string
 
 __version__ = "2.3.0"
 
+IGNORE_DIRS = [
+    "__pycache__",
+    "base",
+]
+
 # Add new windows classes here to be recognized by the command line option --window
 WINDOW_CLASSES = ["glfw", "headless", "pygame2", "pyglet", "pyqt5", "pyside2", "sdl2", "tk"]
 
@@ -124,6 +129,24 @@ def get_local_window_cls(window: str = None) -> Type[BaseWindow]:
     return get_window_cls("moderngl_window.context.{}.Window".format(window))
 
 
+def find_window_classes() -> List[str]:
+    """
+    Find available window packages
+    Returns:
+        A list of available window packages
+    """
+    # In some environments we cannot rely on introspection
+    # and instead return a hardcoded list
+    try:
+        return [
+            path.parts[-1]
+            for path in Path(__file__).parent.joinpath("context").iterdir()
+            if path.is_dir() and path.parts[-1] not in IGNORE_DIRS
+        ]
+    except Exception:
+        return WINDOW_CLASSES
+
+
 def create_window_from_settings() -> BaseWindow:
     """
     Creates a window using configured values in :py:attr:`moderngl_window.conf.Settings.WINDOW`.
@@ -215,7 +238,7 @@ def create_parser():
     parser.add_argument(
         "-wnd",
         "--window",
-        choices=WINDOW_CLASSES,
+        choices=find_window_classes(),
         help="Name for the window type to use",
     )
     parser.add_argument(
