@@ -49,3 +49,10 @@ class DataLoaderTestcase(TestCase):
         """Ensure ImproperlyConfigured is raised if file is not found"""
         with self.assertRaises(ImproperlyConfigured):
             resources.data.load(DataDescription(path='data/notfound.bin', kind="binary"))
+
+    def test_binary_abspath(self):
+        """Strip search directories and use absolute path"""
+        path = (Path(__file__).parent / "fixtures/resources/data/data.json").resolve()
+        with resources.temporary_dirs([]):
+            json = resources.data.load(DataDescription(path=path, kind="json"))
+            self.assertEqual(json, {"test": "Hello"})

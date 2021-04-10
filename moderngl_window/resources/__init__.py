@@ -1,5 +1,6 @@
+from contextlib import contextmanager
 from pathlib import Path
-from typing import Union
+from typing import List, Union
 
 from moderngl_window.conf import settings
 from moderngl_window.exceptions import ImproperlyConfigured
@@ -76,3 +77,34 @@ def _append_unique_path(path: Union[Path, str], dest: list):
             break
     else:
         dest.append(Path(path).absolute())
+
+
+@contextmanager
+def temporary_dirs(dirs: Union[Path, str] = []):
+    """Temporarily changes all resource directories
+
+    Example::
+
+        with temporary_dirs([path1, path2, path3]):
+            # Load some resource here
+
+    Args:
+        dirs (Union[Path,str]) list of paths to use
+    """
+    data_dirs = settings.DATA_DIRS
+    program_dirs = settings.PROGRAM_DIRS
+    scene_dirs = settings.SCENE_DIRS
+    textures_dirs = settings.TEXTURE_DIRS
+
+    settings.DATA_DIRS = dirs
+    settings.PROGRAM_DIRS = dirs
+    settings.SCENE_DIRS = dirs
+    settings.TEXTURE_DIRS = dirs
+
+    try:
+        yield dirs
+    finally:
+        settings.DATA_DIRS = data_dirs
+        settings.PROGRAM_DIRS = program_dirs
+        settings.SCENE_DIRS = scene_dirs
+        settings.TEXTURE_DIRS = textures_dirs

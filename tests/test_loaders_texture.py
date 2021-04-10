@@ -78,3 +78,16 @@ class TextureLoadersTestCase(HeadlessTestCase):
         texture = resources.textures.load(desc)
         self.assertEqual(texture.anisotropy, 8.0)
         self.assertEqual(desc.mipmap, True)
+
+    def test_texture_abspath(self):
+        """Strip search directories and use absolute path"""
+        path = (Path(__file__).parent / "fixtures/resources/textures/crate.png").resolve()
+        with resources.temporary_dirs([]):
+            desc = TextureDescription(
+                path=path,
+                mipmap_levels=(0, 2),
+                anisotropy=4.0,
+            )
+            texture = resources.textures.load(desc)
+            self.assertEqual(texture.anisotropy, 4.0)
+            self.assertEqual(desc.mipmap, True)
