@@ -7,8 +7,10 @@ We support the following window types:
 * pyglet
 * glfw
 * sdl2
+* pygame2
 * pyside2
 * pyqt5
+* tk
 * headless
 
 Using built in window types
