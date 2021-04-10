@@ -113,12 +113,17 @@ class BaseLoader:
 
     def _find(self, path: Path, finders: list):
         """Find the first occurrance of this path in all finders.
+        If the incoming path is an absolute path we assume this
+        path exist and return it.
 
         Args:
             path (Path): The path to find
         """
         if not path:
             return None
+
+        if path.is_absolute():
+            return path
 
         for finder in finders:
             result = finder.find(path)

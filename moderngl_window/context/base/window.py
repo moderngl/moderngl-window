@@ -1164,7 +1164,11 @@ class WindowConfig:
         anisotropy=1.0,
         **kwargs
     ) -> moderngl.Texture:
-        """Loads a 2D texture
+        """Loads a 2D texture.
+
+        If the path is relative the resource system is used expecting one or more
+        resource directories to be registered first. Absolute paths will attempt
+        to load the file directly.
 
         Args:
             path (str): Path to the texture relative to search directories
@@ -1205,6 +1209,10 @@ class WindowConfig:
         **kwargs
     ) -> moderngl.TextureArray:
         """Loads a texture array.
+
+        If the path is relative the resource system is used expecting one or more
+        resource directories to be registered first. Absolute paths will attempt
+        to load the file directly.
 
         Args:
             path (str): Path to the texture relative to search directories
@@ -1256,6 +1264,10 @@ class WindowConfig:
         **kwargs
     ) -> moderngl.TextureCube:
         """Loads a texture cube.
+
+        If the path is relative the resource system is used expecting one or more
+        resource directories to be registered first. Absolute paths will attempt
+        to load the file directly.
 
         Keyword Args:
             pos_x (str): Path to texture representing positive x face
@@ -1310,6 +1322,10 @@ class WindowConfig:
         Note that `path` should only be used if all shaders are defined
         in the same glsl file separated by defines.
 
+        If the path is relative the resource system is used expecting one or more
+        resource directories to be registered first. Absolute paths will attempt
+        to load the file directly.
+
         Keyword Args:
             path (str): Path to a single glsl file
             vertex_shader (str): Path to vertex shader
@@ -1353,6 +1369,10 @@ class WindowConfig:
     def load_text(self, path: str, **kwargs) -> str:
         """Load a text file.
 
+        If the path is relative the resource system is used expecting one or more
+        resource directories to be registered first. Absolute paths will attempt
+        to load the file directly.
+
         Args:
             path (str): Path to the file relative to search directories
             **kwargs: Additional parameters to DataDescription
@@ -1370,6 +1390,10 @@ class WindowConfig:
     def load_json(self, path: str, **kwargs) -> dict:
         """Load a json file
 
+        If the path is relative the resource system is used expecting one or more
+        resource directories to be registered first. Absolute paths will attempt
+        to load the file directly.
+
         Args:
             path (str): Path to the file relative to search directories
             **kwargs: Additional parameters to DataDescription
@@ -1386,6 +1410,10 @@ class WindowConfig:
 
     def load_binary(self, path: str, **kwargs) -> bytes:
         """Load a file in binary mode.
+
+        If the path is relative the resource system is used expecting one or more
+        resource directories to be registered first. Absolute paths will attempt
+        to load the file directly.
 
         Args:
             path (str): Path to the file relative to search directories
@@ -1405,6 +1433,10 @@ class WindowConfig:
         self, path: str, cache=False, attr_names=AttributeNames, kind=None, **kwargs
     ) -> Scene:
         """Loads a scene.
+
+        If the path is relative the resource system is used expecting one or more
+        resource directories to be registered first. Absolute paths will attempt
+        to load the file directly.
 
         Keyword Args:
             path (str): Path to the file relative to search directories
