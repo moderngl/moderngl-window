@@ -14,7 +14,7 @@ class Textures(BaseRegistry):
 
     def load(
         self, meta: TextureDescription
-    ) -> Union[moderngl.Texture, moderngl.TextureArray]:
+    ) -> Union[moderngl.Texture, moderngl.TextureArray, moderngl.TextureCube, moderngl.Texture3D]:
         """Loads a texture with the configured loaders.
 
         Args:
