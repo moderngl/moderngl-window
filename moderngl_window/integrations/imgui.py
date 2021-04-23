@@ -11,6 +11,7 @@ class ModernglWindowMixin:
             self.wnd.viewport_width / self.wnd.pixel_ratio,
             self.wnd.viewport_height / self.wnd.pixel_ratio,
         )
+        self.io.display_fb_scale = self.wnd.pixel_ratio, self.wnd.pixel_ratio
 
     def key_event(self, key, action, modifiers):
         keys = self.wnd.keys
