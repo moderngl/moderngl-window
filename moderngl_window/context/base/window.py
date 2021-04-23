@@ -780,7 +780,7 @@ class BaseWindow:
         else:
             self._viewport = (0, 0, self._buffer_width, self._buffer_height)
 
-        self._ctx.viewport = self._viewport
+        self.fbo.viewport = self._viewport
 
     @property
     def gl_version_code(self) -> int:
