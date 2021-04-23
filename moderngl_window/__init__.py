@@ -208,6 +208,12 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     timer = timer or Timer()
     window.config = config_cls(ctx=window.ctx, wnd=window, timer=timer)
 
+    # Swap buffers once before staring the main loop.
+    # This can trigged additional resize events reporting
+    # a more accurate buffer size
+    window.swap_buffers()
+    window.set_default_viewport()
+
     timer.start()
 
     while not window.is_closing:
@@ -215,8 +221,10 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
 
         if window.config.clear_color is not None:
             window.clear(*window.config.clear_color)
-        else:
-            window.use()
+
+        # Always bind the window framebuffer before calling render
+        window.use()
+
         window.render(current_time, delta)
         if not window.is_closing:
             window.swap_buffers()
