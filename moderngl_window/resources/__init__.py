@@ -1,6 +1,6 @@
 from contextlib import contextmanager
 from pathlib import Path
-from typing import List, Union
+from typing import Union
 
 from moderngl_window.conf import settings
 from moderngl_window.exceptions import ImproperlyConfigured
