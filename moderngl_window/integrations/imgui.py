@@ -2,16 +2,14 @@ import ctypes
 
 import imgui
 import moderngl
+from imgui.integrations import compute_fb_scale
 from imgui.integrations.base import BaseOpenGLRenderer
 
 
 class ModernglWindowMixin:
     def resize(self, width: int, height: int):
-        self.io.display_size = (
-            self.wnd.viewport_width / self.wnd.pixel_ratio,
-            self.wnd.viewport_height / self.wnd.pixel_ratio,
-        )
-        self.io.display_fb_scale = self.wnd.pixel_ratio, self.wnd.pixel_ratio
+        self.io.display_size = self.wnd.size
+        self.io.display_fb_scale = compute_fb_scale(self.wnd.size, self.wnd.buffer_size)
 
     def key_event(self, key, action, modifiers):
         keys = self.wnd.keys
@@ -129,7 +127,9 @@ class ModernGLRenderer(BaseOpenGLRenderer):
 
         super().__init__()
 
-        if "display_size" in kwargs:
+        if hasattr(self, "wnd"):
+            self.resize(*self.wnd.buffer_size)
+        elif "display_size" in kwargs:
             self.io.display_size = kwargs.get("display_size")
 
     def register_texture(self, texture: moderngl.Texture):
