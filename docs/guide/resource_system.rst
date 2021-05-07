@@ -39,7 +39,7 @@ etc.) we can use the simplified version,
     from moderngl_window import resources
 
     # pathlib.Path (recommended)
-    resources.register_dir(Path('absoulte/path/using/pathlib'))
+    resources.register_dir(Path('absolute/path/using/pathlib'))
 
     # Strings and/or os.path
     resources.register_dir('absolute/string/path')
