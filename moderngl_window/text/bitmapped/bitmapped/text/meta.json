@@ -1,0 +1,17 @@
+{
+  "characters": 190,
+  "character_ranges": [
+    {
+      "min": 32,
+      "max": 126
+    },
+    {
+      "min": 161,
+      "max": 255
+    }
+  ],
+  "character_height": 159,
+  "character_width": 77,
+  "atlas_height": 30210,
+  "atlas_width": 77
+}
