@@ -48,7 +48,7 @@ class Keys(BaseKeys):
     F7 = glfw.KEY_F7
     F8 = glfw.KEY_F8
     F9 = glfw.KEY_F9
-    F10 = glfw.KEY_F11
+    F10 = glfw.KEY_F10
     F11 = glfw.KEY_F11
     F12 = glfw.KEY_F12
 
