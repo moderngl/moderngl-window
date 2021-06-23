@@ -24,6 +24,7 @@ Attributes
 .. autoattribute:: ProgramDescription.tess_control_shader
 .. autoattribute:: ProgramDescription.compute_shader
 .. autoattribute:: ProgramDescription.defines
+.. autoattribute:: ProgramDescription.varyings
 
 Inherited Attributes
 --------------------

@@ -115,3 +115,9 @@ class ProgramLoadersTestCase(HeadlessTestCase):
     def test_include(self):
         program = resources.programs.load(ProgramDescription(path='programs/include_test.glsl'))
         self.assertIsInstance(program, moderngl.Program)
+
+    def test_varyings_override(self):
+        """Specify varyings during program creation"""
+        path = 'programs/varyings.glsl'
+        descr = ProgramDescription(vertex_shader=path, varyings=["value_1",  "value_2"])
+        program = resources.programs.load(descr)

@@ -161,7 +161,7 @@ class ProgramShaders:
         if not self.fragment_source:
             # Out attributes is present in geometry shader if present
             if self.geometry_source:
-                out_attribs = self.geometry_source.find_out_attribs()
+                out_attribs = self.meta.varyings or self.geometry_source.find_out_attribs()
             # Otherwise they are specified in vertex shader
             else:
                 out_attribs = self.vertex_source.find_out_attribs()
