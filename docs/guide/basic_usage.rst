@@ -62,7 +62,7 @@ built in shortcuts to the resource loading system.
 
 .. code:: python
 
-    self.load_texture('background.png')
+    self.load_texture_2d('background.png')
     self.load_texture_array('tiles.png', layers=16)
     self.load_program('myprogram.glsl')
     self.load_text('textfile.txt')
