@@ -1,6 +1,32 @@
 # Changelog
 
-## 3.4.0
+## 2.4.0
+
+Python 3.5 is no longer supported from this version.
+
+New Features
+
+* Experimental: New simple 2D text writer
+* Vaarious smaller improvements
+* F11 now toggles fullscreen mode by default
+* Window modules are now fetched from `moderngl_window.WINDOW_CLASSES`
+  as a fallback. This is necessary in some enviroments.
+* Absolute paths will now bypass all registered resource directories
+  and load the specified file directly.
+
+Bug Fixes
+
+* Varying names can now be passed in when loading a program.
+  Since the auto detection of out attributes is far from perfect
+  this can be needed for more complex shaders.
+* Missing python 3.9 classifier in setup.py
+* SDL2 window should now also process since change events
+* GLFW: Fixed some incorrect key mappings
+* Fixed an issue with timers causing the first frame to have negative frame time
+* Fixed a pixel scale issue in the imgui integration. This was especially
+  an issue with tiling window managers
+
+## 2.3.0
 
 New Features
 
@@ -10,7 +36,7 @@ New Features
 * `TextureDescription` now supports flipping the texture on x and y
 * The pyglet window now supports dragging in files
 * Added `BaseWindow.convert_window_coordinates` for converting mouse coordinates
-* Added more examples0
+* Added more examples
 
 Bug Fixes
 
