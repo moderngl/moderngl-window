@@ -164,7 +164,7 @@ class ProgramShaders:
                 out_attribs = self.meta.varyings or self.geometry_source.find_out_attribs()
             # Otherwise they are specified in vertex shader
             else:
-                out_attribs = self.vertex_source.find_out_attribs()
+                out_attribs = self.meta.varyings or self.vertex_source.find_out_attribs()
 
         program = self.ctx.program(
             vertex_shader=self.vertex_source.source,
