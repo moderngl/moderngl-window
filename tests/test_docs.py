@@ -106,7 +106,7 @@ class TestCase(unittest.TestCase):
     def test_context_pyqt5_window(self):
         self.validate('context/pyqt5.window.rst', 'moderngl_window.context.pyqt5.window', 'Window')
 
-    @unittest.skipIf(sys.version_info >= (3, 8, 0), reason="pyside2 not supported in py38 yet")
+    # @unittest.skipIf(sys.version_info >= (3, 8, 0), reason="pyside2 not supported in py38 yet")
     def test_context_pyside2_window(self):
         self.validate('context/pyside2.window.rst', 'moderngl_window.context.pyside2.window', 'Window')
 
