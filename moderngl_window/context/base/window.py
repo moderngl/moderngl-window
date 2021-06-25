@@ -1316,6 +1316,7 @@ class WindowConfig:
         tess_control_shader=None,
         tess_evaluation_shader=None,
         defines: dict = None,
+        varyings: List[str] = None,
     ) -> moderngl.Program:
         """Loads a shader program.
 
@@ -1335,6 +1336,7 @@ class WindowConfig:
             tess_evaluation_shader (str): Path to tessellation eval shader
             defines (dict): ``#define`` values to replace in the shader source.
                             Example: ``{'VALUE1': 10, 'VALUE2': '3.1415'}``.
+            varyings (List[str]): Out attribute names for transform shaders
         Returns:
             moderngl.Program: The program instance
         """
@@ -1347,6 +1349,7 @@ class WindowConfig:
                 tess_control_shader=tess_control_shader,
                 tess_evaluation_shader=tess_evaluation_shader,
                 defines=defines,
+                varyings=varyings,
             )
         )
 
