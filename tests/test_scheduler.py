@@ -25,13 +25,17 @@ class SchedulingTestCase(TestCase):
 
         self.test_value = 0
         event = scheduler.run_every(self.increase_value, 0.1)
-        for _ in range(30):
+        start = time.time()
+        delta = time.time()
+        while (delta - start) <= 0.5:
             # simulate a render loop
-            scheduler.execute()
+            print(self.test_value)
             time.sleep(0.01)
-        self.assertEqual(self.test_value, 3)
-
+            scheduler.execute()
+            delta = time.time()
+        self.assertEqual(self.test_value, 5)
+        # make sure it stays 5 once we cancel the event
         scheduler.cancel(event)
-        time.sleep(0.2)
+        time.sleep(0.11)
         scheduler.execute()
-        self.assertEqual(self.test_value, 3)
+        self.assertEqual(self.test_value, 5)
