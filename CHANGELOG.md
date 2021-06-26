@@ -7,7 +7,7 @@ Python 3.5 is no longer supported from this version.
 New Features
 
 * Experimental: New simple 2D text writer
-* Vaarious smaller improvements
+* Various smaller improvements
 * F11 now toggles fullscreen mode by default
 * Window modules are now fetched from `moderngl_window.WINDOW_CLASSES`
   as a fallback. This is necessary in some enviroments.
