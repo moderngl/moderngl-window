@@ -99,10 +99,10 @@ Tests are set up with `tox` running pytest with coverage and flake8.
 
 ```bash
 pip install -r tests/requirements.txt
-tox -e py35
 tox -e py36
 tox -e py37
 tox -e py38
+tox -e py39
 tox -e pep8
 ```
 
