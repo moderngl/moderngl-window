@@ -65,3 +65,4 @@ venv.bak/
 imgui.ini
 .DS_Store
 /temp/
+video_rec.py
