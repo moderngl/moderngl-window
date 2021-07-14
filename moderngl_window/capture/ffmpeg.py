@@ -1,5 +1,7 @@
 from .base import BaseVideoCapture
 import subprocess
+import moderngl
+import logging
 
 class FFmpegCapture(BaseVideoCapture):
 
@@ -8,9 +10,15 @@ class FFmpegCapture(BaseVideoCapture):
 
         self._ffmpeg = None
     
-    def _start_func(self):
+    def _start_func(self) -> bool:
 
-        # took from Wasaby2D project
+        pix_fmt = 'rgb24'   # 3 component, 1 byte per color -> 24 bit
+                            
+        # for the framebuffer is easier because i can read 3 component even if
+        # the color attachment has less components
+        if isinstance(self._source, moderngl.Texture) and self._components == 4:
+            pix_fmt = 'rgba' # 4 component , 1 byte per color -> 32 bit
+
         command = [
             'ffmpeg',
             '-hide_banner',
@@ -19,7 +27,7 @@ class FFmpegCapture(BaseVideoCapture):
             '-f', 'rawvideo',
             '-vcodec', 'rawvideo',
             '-s', f'{self._width}x{self._height}',  # size of one frame
-            '-pix_fmt', 'rgb24',
+            '-pix_fmt', pix_fmt,
             '-r', f'{self._framerate}',  # frames per second
             '-i', '-',  # The imput comes from a pipe
             '-vf', 'vflip',
@@ -35,8 +43,10 @@ class FFmpegCapture(BaseVideoCapture):
                 bufsize=0
             )
         except FileNotFoundError:
-            print("ffmpeg command not found. Be sure to add it to PATH")
+            logging.info("ffmpeg command not found. Be sure to add it to PATH")
             return
+        
+        return True
     
     def _release_func(self):
         self._ffmpeg.stdin.close()
