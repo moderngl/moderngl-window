@@ -96,7 +96,7 @@ class BaseWindow:
             gl_version (tuple): Major and minor version of the opengl context to create
             size (tuple): Window size x, y
             resizable (bool): Should the window be resizable?
-            fullscreen (bool): Open window in fullsceeen mode
+            fullscreen (bool): Open window in fullscreen mode
             vsync (bool): Enable/disable vsync
             aspect_ratio (float): The desired fixed aspect ratio. Can be set to ``None`` to make
                                   aspect ratio be based on the actual window size.
@@ -358,6 +358,8 @@ class BaseWindow:
     def config(self) -> "WindowConfig":
         """Get the current WindowConfig instance
 
+        DEPRECATED PROPERTY. This is not handled in `WindowConfig.__init__`
+
         This property can also be set.
         Assinging a WindowConfig instance will automatically
         set up the necessary event callback methods::
@@ -368,6 +370,11 @@ class BaseWindow:
             return self._config()
 
         return None
+
+    @config.setter
+    def config(self, config):
+        config.assign_event_callbacks()
+        self._config = weakref.ref(config)
 
     @property
     def vsync(self) -> bool:
@@ -449,30 +456,6 @@ class BaseWindow:
     @mouse_exclusivity.setter
     def mouse_exclusivity(self, value: bool):
         self._mouse_exclusivity = value
-
-    @config.setter
-    def config(self, config):
-        self.render_func = getattr(config, "render", dummy_func)
-        self.resize_func = getattr(config, "resize", dummy_func)
-        self.close_func = getattr(config, "close", dummy_func)
-        self.iconify_func = getattr(config, "iconify", dummy_func)
-        self.key_event_func = getattr(config, "key_event", dummy_func)
-        self.mouse_position_event_func = getattr(
-            config, "mouse_position_event", dummy_func
-        )
-        self.mouse_press_event_func = getattr(config, "mouse_press_event", dummy_func)
-        self.mouse_release_event_func = getattr(
-            config, "mouse_release_event", dummy_func
-        )
-        self.mouse_drag_event_func = getattr(config, "mouse_drag_event", dummy_func)
-        self.mouse_scroll_event_func = getattr(config, "mouse_scroll_event", dummy_func)
-        self.unicode_char_entered_func = getattr(
-            config, "unicode_char_entered", dummy_func
-        )
-
-        self.files_dropped_event_func = getattr(config, "files_dropped_event", dummy_func)
-
-        self._config = weakref.ref(config)
 
     @property
     def render_func(self):
@@ -1023,6 +1006,33 @@ class WindowConfig:
 
         if not self.wnd or not isinstance(self.wnd, BaseWindow):
             raise ValueError("WindowConfig requires a window. wnd={}".format(self.wnd))
+
+        self.assign_event_callbacks()
+
+    def assign_event_callbacks(self):
+        """
+        Look for methods in the class instance and assign them to callbacks.
+        This method is call by ``__init__``.        
+        """
+        self.wnd.render_func = getattr(self, "render", dummy_func)
+        self.wnd.resize_func = getattr(self, "resize", dummy_func)
+        self.wnd.close_func = getattr(self, "close", dummy_func)
+        self.wnd.iconify_func = getattr(self, "iconify", dummy_func)
+        self.wnd.key_event_func = getattr(self, "key_event", dummy_func)
+        self.wnd.mouse_position_event_func = getattr(
+            self, "mouse_position_event", dummy_func
+        )
+        self.wnd.mouse_press_event_func = getattr(self, "mouse_press_event", dummy_func)
+        self.wnd.mouse_release_event_func = getattr(
+            self, "mouse_release_event", dummy_func
+        )
+        self.wnd.mouse_drag_event_func = getattr(self, "mouse_drag_event", dummy_func)
+        self.wnd.mouse_scroll_event_func = getattr(self, "mouse_scroll_event", dummy_func)
+        self.wnd.unicode_char_entered_func = getattr(
+            self, "unicode_char_entered", dummy_func
+        )
+
+        self.wnd.files_dropped_event_func = getattr(self, "files_dropped_event", dummy_func)
 
     @classmethod
     def run(cls):

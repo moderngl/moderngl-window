@@ -6,6 +6,7 @@ import argparse
 import logging
 import os
 import sys
+import weakref
 
 from pathlib import Path
 from typing import List, Type
@@ -206,7 +207,11 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     window.print_context_info()
     activate_context(window=window)
     timer = timer or Timer()
-    window.config = config_cls(ctx=window.ctx, wnd=window, timer=timer)
+    config = config_cls(ctx=window.ctx, wnd=window, timer=timer)
+    # Avoid the event assigning in the property setter for now
+    # We want the even assigning to happen in WindowConfig.__init__
+    # so users are free to assign them in their own __init__.
+    window._width = weakref.ref(config)
 
     # Swap buffers once before staring the main loop.
     # This can trigged additional resize events reporting
@@ -219,8 +224,8 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     while not window.is_closing:
         current_time, delta = timer.next_frame()
 
-        if window.config.clear_color is not None:
-            window.clear(*window.config.clear_color)
+        if config.clear_color is not None:
+            window.clear(*config.clear_color)
 
         # Always bind the window framebuffer before calling render
         window.use()
