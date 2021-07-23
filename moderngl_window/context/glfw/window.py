@@ -216,13 +216,17 @@ class Window(BaseWindow):
 
     def close(self) -> None:
         """Suggest to glfw the window should be closed soon"""
+        self.is_closing = True
         self._close_func()
-        glfw.set_window_should_close(self._window, True)
 
     @property
     def is_closing(self):
         """bool: Checks if the window is scheduled for closing"""
         return glfw.window_should_close(self._window)
+
+    @is_closing.setter
+    def is_closing(self, value: bool):
+        glfw.set_window_should_close(self._window, value)
 
     def swap_buffers(self):
         """Swap buffers, increment frame counter and pull events"""

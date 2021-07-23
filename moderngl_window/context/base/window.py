@@ -662,9 +662,14 @@ class BaseWindow:
         """bool: Is the window about to close?"""
         return self._close
 
+    @is_closing.setter
+    def is_closing(self, value: bool):
+        self._close = value
+
+
     def close(self) -> None:
         """Signal for the window to close"""
-        self._close = True
+        self.is_closing = True
         self.close_func()
 
     def use(self):
