@@ -1,1 +1,2 @@
-from .video_rec import VideoCapture
+from .base import BaseVideoCapture
+from .ffmpeg import FFmpegCapture
