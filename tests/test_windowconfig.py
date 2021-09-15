@@ -127,7 +127,7 @@ class WindowConfigTestCase(WindowConfigTestCase):
     def test_load_program_multiple(self):
         """Load program from multiple shader files"""
         prog = self.config.load_program(
-            vertex_shader='programs/terrain/terrain_Vs.glsl',
+            vertex_shader='programs/terrain/terrain_vs.glsl',
             fragment_shader='programs/terrain/terrain_fs.glsl',
             tess_control_shader='programs/terrain/terrain_tc.glsl',
             tess_evaluation_shader='programs/terrain/terrain_te.glsl',
