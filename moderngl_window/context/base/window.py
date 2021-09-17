@@ -649,7 +649,6 @@ class BaseWindow:
     def is_closing(self, value: bool):
         self._close = value
 
-
     def close(self) -> None:
         """Signal for the window to close"""
         self.is_closing = True

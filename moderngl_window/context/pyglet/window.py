@@ -169,8 +169,13 @@ class Window(BaseWindow):
         """Check pyglet's internal exit state"""
         return self._window.has_exit or super().is_closing
 
+    @is_closing.setter
+    def is_closing(self, value: bool):
+        self._close = value
+
     def close(self) -> None:
         """Close the pyglet window directly"""
+        self.is_closing = True
         self._window.close()
         super().close()
 
