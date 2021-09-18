@@ -208,6 +208,7 @@ class BaseWindow:
             # Disable the fullscreen key
             window.fullscreen_key = None
         """
+        return self._fs_key
 
     @fullscreen_key.setter
     def fullscreen_key(self, value: Any):
