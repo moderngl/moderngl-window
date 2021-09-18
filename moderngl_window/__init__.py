@@ -211,7 +211,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     # Avoid the event assigning in the property setter for now
     # We want the even assigning to happen in WindowConfig.__init__
     # so users are free to assign them in their own __init__.
-    window._width = weakref.ref(config)
+    window._config = weakref.ref(config)
 
     # Swap buffers once before staring the main loop.
     # This can trigged additional resize events reporting
