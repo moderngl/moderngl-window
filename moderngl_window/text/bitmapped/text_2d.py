@@ -56,7 +56,6 @@ class TextWriter2D(BaseText):
 
     @text.setter
     def text(self, value: str):
-        print(len(value))
         self._text = value
         self._string_buffer.orphan(size=len(value) * 4)
         self._string_buffer.clear(chunk=b'\32')
@@ -65,7 +64,6 @@ class TextWriter2D(BaseText):
     def _write(self, text: str):
         self._string_buffer.clear(chunk=b'\32')
 
-        print(self._string_buffer.size)
         self._string_buffer.write(
             numpy.fromiter(
                 self._translate_string(text),
