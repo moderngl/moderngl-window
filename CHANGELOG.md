@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.4.1
+
+* Experimental support for ffmpeg capture
+* Event callbacks can now be assigned in WindowConfig.__init__
+* Initial support for confirming window close (glfw)
+* Fixed a crash when closing a pyglet window
+* Remove some spammy prints in the text writer
+
+Thanks to @DavideRuzza, @wk39 and @joehalliwell for their
+contributions to this release.
+
 ## 2.4.0
 
 Python 3.5 is no longer supported from this version.
@@ -10,7 +21,7 @@ New Features
 * Various smaller improvements
 * F11 now toggles fullscreen mode by default
 * Window modules are now fetched from `moderngl_window.WINDOW_CLASSES`
-  as a fallback. This is necessary in some enviroments.
+  as a fallback. This is necessary in some environments.
 * Absolute paths will now bypass all registered resource directories
   and load the specified file directly.
 

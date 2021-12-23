@@ -2,7 +2,7 @@ from setuptools import setup, find_namespace_packages
 
 setup(
     name="moderngl-window",
-    version="2.4.0",
+    version="2.4.1",
     description="A cross platform helper library for ModernGL making window creation and resource loading simple",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
@@ -43,7 +43,7 @@ setup(
         "pywavefront": ["pywavefront>=1.2.0,<2"],
         "trimesh": ["trimesh>=3.2.6,<4", "scipy>=1.3.2"],
         "tk": ["pyopengltk>=0.0.3"],
-        "pygame": ["pygame~=2.0.1"],
+        "pygame": ["pygame>=2.0.1"],
     },
     project_urls={
         'Documentation': 'https://moderngl-window.readthedocs.io',
