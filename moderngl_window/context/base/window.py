@@ -1012,7 +1012,7 @@ class WindowConfig:
     def assign_event_callbacks(self):
         """
         Look for methods in the class instance and assign them to callbacks.
-        This method is call by ``__init__``.        
+        This method is call by ``__init__``.
         """
         self.wnd.render_func = getattr(self, "render", dummy_func)
         self.wnd.resize_func = getattr(self, "resize", dummy_func)
