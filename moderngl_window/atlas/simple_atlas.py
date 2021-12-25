@@ -1,3 +1,13 @@
+"""
+Simple row based texture atlas created for fast runtime allocation.
+
+* This atlas is partly based on the texture atlas in the Arcade project
+* The allocator is based on Pyglet's row allocator
+
+https://github.com/pyglet/pyglet/blob/master/pyglet/image/atlas.py
+https://github.com/pythonarcade/arcade/blob/development/arcade/texture_atlas.py
+"""
+
 from typing import Tuple
 
 import moderngl
@@ -61,6 +71,76 @@ class SimpleAtlas:
         pass
 
 
+class AllocatorException(Exception):
+    pass
+
+
+class _Row:
+    """
+    A row in the texture atlas.
+    """
+    __slots__ = ("x", "y", "y2", "max_height")
+
+    def __init__(self, y: int, max_height: int) -> None:
+        self.x = 0
+        self.y = y
+        self.max_height = max_height
+        self.y2 = y
+
+    def add(self, width: int, height: int) -> Tuple[int, int]:
+        """Add a region to the row and return the position"""
+        if width <= 0 or height <= 0:
+            raise AllocatorException("Cannot allocate size: [{}, {}]".format(width, height))
+        if height > self.max_height:
+            raise AllocatorException("Cannot allocate past the max height")
+
+        x, y = self.x, self.y
+        self.x += width
+        # Keep track of the highest y value for compaction
+        self.y2 = max(self.y + height, self.y2)
+        return x, y
+
+    def compact(self):
+        """
+        Compacts the row to the smallest height.
+        Should only be done once when the row is filled before adding a new row.
+        """
+        self.max_height = self.y2 - self.y
+
+
 class Allocator:
     """Row based allocator"""
-    pass
+
+    def __init__(self, width: int, height: int):
+        self.width = width
+        self.height = height
+        # First row covers the entire height until compacted
+        # when a new row is added
+        self.rows = [_Row(0, self.height)]
+
+    def alloc(self, width: int, height: int) -> Tuple[int, int]:
+        """
+        Allocate a region.
+
+        Returns:
+            Tuple[int, int]: The x,y location
+        Raises:
+            AllocatorException: if no more space
+        """
+        # Check if we have room in existing rows
+        for row in self.rows:
+            # Can we add the region to the end if this row?
+            if self.width - row.x >= width and row.max_height >= height:
+                return row.add(width, height)
+
+        # Can we make a new row?
+        if self.width >= width and self.height - row.y2 >= height:
+            # Compact the last row
+            row.compact()
+            # New row continuing from y2 with a remaining of the height as the max
+            new_row = _Row(row.y2, self.height - row.y2)
+            self.rows.append(new_row)
+            # Allocate the are in the new row
+            return new_row.add(width, height)
+
+        raise AllocatorException("No more space in {} for box [{}, {}]".format(self, width, height))
