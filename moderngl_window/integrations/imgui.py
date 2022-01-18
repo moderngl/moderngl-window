@@ -127,7 +127,7 @@ class ModernGLRenderer(BaseOpenGLRenderer):
 
         super().__init__()
 
-        if hasattr(self, "wnd"):
+        if hasattr(self, "wnd") and self.wnd:
             self.resize(*self.wnd.buffer_size)
         elif "display_size" in kwargs:
             self.io.display_size = kwargs.get("display_size")
