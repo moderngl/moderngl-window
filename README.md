@@ -82,7 +82,7 @@ or examples.
 
 ## Setup from source
 
-We assume the user knows how to handle vitrualenvs.
+We assume the user knows how to handle virtualenvs.
 
 ```bash
 # Install the package in editable mode
