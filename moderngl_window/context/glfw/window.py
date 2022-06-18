@@ -44,13 +44,14 @@ class Window(BaseWindow):
         glfw.window_hint(glfw.SCALE_TO_MONITOR, glfw.TRUE)
 
         monitor = None
-        if self.fullscreen:
-            self._set_fullscreen(True)
 
         self._window = glfw.create_window(
             self.width, self.height, self.title, monitor, None
         )
         self._has_focus = True
+
+        if self.fullscreen:
+            self._set_fullscreen(True)
 
         if not self._window:
             glfw.terminate()
