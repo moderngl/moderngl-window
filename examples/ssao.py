@@ -1,3 +1,4 @@
+import imgui
 import numpy as np
 from pathlib import Path
 from pyrr import Matrix44
@@ -5,6 +6,7 @@ from pyrr import Matrix44
 import moderngl
 import moderngl_window
 from base import OrbitCameraWindow
+from moderngl_window.integrations.imgui import ModernglWindowRenderer
 
 
 class SSAODemo(OrbitCameraWindow):
@@ -13,7 +15,7 @@ class SSAODemo(OrbitCameraWindow):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.wnd.mouse_exclusivity = True
+        #self.wnd.mouse_exclusivity = True
 
         self.camera.projection.update(near=0.1, far=50.0)
         self.camera.radius = 3.0
@@ -24,6 +26,10 @@ class SSAODemo(OrbitCameraWindow):
         self.camera.mouse_sensitivity = 0.3
 
         self.ssao_z_offset = 0.0
+        self.ssao_blur = True
+
+        self.frame_time_decay_factor = 0.995
+        self.average_frame_time = 0.01666
 
         # Create the geometry framebuffer.
         self.g_view_z = self.ctx.texture(self.wnd.buffer_size, 1, dtype="f2")
@@ -90,7 +96,16 @@ class SSAODemo(OrbitCameraWindow):
         self.random_texture.repeat_x = True
         self.random_texture.repeat_y = True
 
+        # Set up imgui.
+        imgui.create_context()
+        if self.wnd.ctx.error != "GL_NO_ERROR":
+            logger.error(self.wnd.ctx.error)
+        self.imgui = ModernglWindowRenderer(self.wnd)
+
     def render(self, time: float, frametime: float):
+        self.average_frame_time = (self.frame_time_decay_factor * self.average_frame_time +
+            (1.0 - self.frame_time_decay_factor) * frametime)
+
         projection_matrix = self.camera.projection.matrix
         camera_matrix = self.camera.matrix
         mvp = projection_matrix * camera_matrix
@@ -120,10 +135,11 @@ class SSAODemo(OrbitCameraWindow):
         self.quad_fs.render(self.ssao_program)
 
         # Blur the occlusion map.
-        self.ssao_blurred_buffer.clear(0.0)
-        self.ssao_blurred_buffer.use()
-        self.ssao_occlusion.use(location=0)
-        self.quad_fs.render(self.blur_program)
+        if self.ssao_blur:
+            self.ssao_blurred_buffer.clear(0.0)
+            self.ssao_blurred_buffer.use()
+            self.ssao_occlusion.use(location=0)
+            self.quad_fs.render(self.blur_program)
 
         # Run the shading pass.
         self.ctx.screen.clear(1.0, 1.0, 1.0);
@@ -135,8 +151,51 @@ class SSAODemo(OrbitCameraWindow):
         self.shading_program["light_pos"].value = camera_pos
         self.g_view_z.use(location=0)
         self.g_normal.use(location=1)
-        self.ssao_blurred_occlusion.use(location=2)
+        if self.ssao_blur:
+            self.ssao_blurred_occlusion.use(location=2)
+        else:
+            self.ssao_occlusion.use(location=2)
         self.quad_fs.render(self.shading_program)
+
+        self.render_ui()
+
+    def render_ui(self):
+        imgui.new_frame()
+
+        imgui.begin("Debug Panel", False)
+        imgui.text(f"Frame time: {1000.0 * self.average_frame_time:.1f} ms")
+        imgui.text(f"FPS: {1.0 / self.average_frame_time:.1f}")
+
+        _, self.ssao_z_offset = imgui.slider_float("SSAO z-offset", self.ssao_z_offset, 0.0, 1.0)
+        _, self.ssao_blur = imgui.checkbox("blur occlusion texture", self.ssao_blur)
+
+        imgui.end()
+        imgui.render()
+        self.imgui.render(imgui.get_draw_data())
+
+    def mouse_position_event(self, x, y, dx, dy):
+        self.imgui.mouse_position_event(x, y, dx, dy)
+        if not self.imgui.io.want_capture_mouse:
+            super().mouse_position_event(x, y, dx, dy)
+
+    def mouse_drag_event(self, x: int, y: int, dx, dy):
+        self.imgui.mouse_drag_event(x, y, dx, dy)
+
+    def mouse_scroll_event(self, x_offset, y_offset):
+        self.imgui.mouse_scroll_event(x_offset, y_offset)
+        if not self.imgui.io.want_capture_mouse:
+            super().mouse_scroll_event(x_offset, y_offset)
+
+    def mouse_press_event(self, x, y, button):
+        self.imgui.mouse_press_event(x, y, button)
+
+    def mouse_release_event(self, x, y, button):
+        self.imgui.mouse_release_event(x, y, button)
+
+    def key_event(self, key, action, modifiers):
+        self.imgui.key_event(key, action, modifiers)
+        if not self.imgui.io.want_capture_keyboard:
+            super().key_event(key, action, modifiers)
 
 
 if __name__ == '__main__':
