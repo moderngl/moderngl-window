@@ -35,6 +35,7 @@ uniform vec3 camera_pos;
 
 uniform sampler2D g_view_z;
 uniform sampler2D g_normal;
+uniform sampler2D ssao_occlusion;
 
 in vec3 view_ray;
 in vec2 texcoord;
@@ -53,6 +54,7 @@ void main() {
     vec3 normal = texture(g_normal, texcoord).xyz;
 
     // Compute lighting.
+    float occlusion = texture(ssao_occlusion, texcoord).x;
     vec3 light_dir = normalize(light_pos - position);
     vec3 reflection_dir = reflect(-light_dir, normal);
     float ambient = 0.3;
@@ -60,6 +62,7 @@ void main() {
     float specular = 0.4 * pow(max(dot(light_dir, normal), 0.0), 10.0);
     float luminosity = ambient + diffuse + specular;
     vec3 color = luminosity * vec3(0.2, 0.2, 0.6);
+    color = vec3(occlusion);
     frag_color = vec4(color, 1.0);
 }
 

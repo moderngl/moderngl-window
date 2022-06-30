@@ -31,6 +31,10 @@ class SSAODemo(OrbitCameraWindow):
             depth_attachment=self.g_depth
         )
 
+        # Generate the SSAO framebuffer.
+        self.ssao_occlusion = self.ctx.texture(self.wnd.buffer_size, 1, dtype="f1")
+        self.ssao_buffer = self.ctx.framebuffer(color_attachments=[self.ssao_occlusion])
+
         # Load the geometry program.
         self.geometry_program = self.load_program("programs/ssao/geometry.glsl")
 
@@ -38,13 +42,14 @@ class SSAODemo(OrbitCameraWindow):
         self.shading_program = self.load_program("programs/ssao/shading.glsl")
         self.shading_program["g_view_z"].value = 0
         self.shading_program["g_normal"].value = 1
-
-        # Generate a fullscreen quad.
-        self.quad_fs = moderngl_window.geometry.quad_fs()
+        self.shading_program["ssao_occlusion"].value = 2
 
         # Load the scene.
         self.scene = self.load_scene('scenes/stanford_dragon.obj')
         self.vao = self.scene.root_nodes[0].mesh.vao.instance(self.geometry_program)
+
+        # Generate a fullscreen quad.
+        self.quad_fs = moderngl_window.geometry.quad_fs()
 
     def render(self, time: float, frametime: float):
         projection_matrix = self.camera.projection.matrix
@@ -54,14 +59,18 @@ class SSAODemo(OrbitCameraWindow):
 
         # Run the geometry pass.
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
-        self.g_buffer.clear(0.0, 0.0, 0.0, 0.0)
+        self.g_buffer.clear(0.0, 0.0, 0.0)
         self.g_buffer.use()
         self.geometry_program["mvp"].write(mvp.astype('f4'))
         self.geometry_program["m_camera"].write(camera_matrix.astype('f4'))
         self.vao.render()
 
+        # Calculate occlusion.
+        self.ctx.disable(moderngl.DEPTH_TEST)
+        self.ssao_buffer.clear(0.0)
+
         # Run the shading pass.
-        self.ctx.screen.clear(1.0, 1.0, 1.0, 1.0);
+        self.ctx.screen.clear(1.0, 1.0, 1.0);
         self.ctx.screen.use()
         self.shading_program["m_camera_inverse"].write(camera_matrix.inverse.astype('f4'))
         self.shading_program["m_projection_inverse"].write(projection_matrix.inverse.astype('f4'))
@@ -70,6 +79,7 @@ class SSAODemo(OrbitCameraWindow):
         self.shading_program["light_pos"].value = camera_pos
         self.g_view_z.use(location=0)
         self.g_normal.use(location=1)
+        self.ssao_occlusion.use(location=2)
         self.quad_fs.render(self.shading_program)
 
 
