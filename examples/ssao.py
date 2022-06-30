@@ -1,3 +1,4 @@
+import numpy as np
 from pathlib import Path
 from pyrr import Matrix44
 
@@ -22,6 +23,9 @@ class SSAODemo(OrbitCameraWindow):
         self.camera.target = (0.0, 0.0, 0.0)
         self.camera.mouse_sensitivity = 0.3
 
+        self.randomize_ssao_sample_orientations = True
+        self.ssao_z_offset = 0.0
+
         # Create the geometry framebuffer.
         self.g_view_z = self.ctx.texture(self.wnd.buffer_size, 1, dtype="f2")
         self.g_normal = self.ctx.texture(self.wnd.buffer_size, 3, dtype="f2")
@@ -38,6 +42,12 @@ class SSAODemo(OrbitCameraWindow):
         # Load the geometry program.
         self.geometry_program = self.load_program("programs/ssao/geometry.glsl")
 
+        # Load the SSAO program.
+        self.ssao_program = self.load_program("programs/ssao/ssao.glsl")
+        self.ssao_program["g_view_z"].value = 0
+        self.ssao_program["g_norm"].value = 1
+        self.ssao_program["noise"].value = 2
+
         # Load the shading program.
         self.shading_program = self.load_program("programs/ssao/shading.glsl")
         self.shading_program["g_view_z"].value = 0
@@ -50,6 +60,26 @@ class SSAODemo(OrbitCameraWindow):
 
         # Generate a fullscreen quad.
         self.quad_fs = moderngl_window.geometry.quad_fs()
+
+        # Generate SSAO samples (in tangent space coordinates, with z along the normal).
+        self.n_ssao_samples = 64 # If you change this number, also change ssao.glsl.
+        self.ssao_std_dev = 0.5
+        self.ssao_samples = np.random.normal(0.0, self.ssao_std_dev, (self.n_ssao_samples, 3))
+        self.ssao_samples[:, 2] = np.abs(self.ssao_samples[:, 2])
+        self.ssao_program["samples"].write(self.ssao_samples.ravel().astype('f4'))
+
+        # Create random texture used to decorrelate SSAO samples.
+        rand_texture_size = 32
+        rand_texture_data = np.random.bytes(rand_texture_size * rand_texture_size)
+        self.random_texture = self.ctx.texture(
+            (rand_texture_size, rand_texture_size),
+            1,
+            dtype="f1",
+            data=rand_texture_data
+        )
+        self.random_texture.filter == (moderngl.NEAREST, moderngl.NEAREST)
+        self.random_texture.repeat_x = True
+        self.random_texture.repeat_y = True
 
     def render(self, time: float, frametime: float):
         projection_matrix = self.camera.projection.matrix
@@ -68,6 +98,18 @@ class SSAODemo(OrbitCameraWindow):
         # Calculate occlusion.
         self.ctx.disable(moderngl.DEPTH_TEST)
         self.ssao_buffer.clear(0.0)
+        self.ssao_buffer.use()
+        self.ssao_program["m_camera_inverse"].write(camera_matrix.inverse.astype('f4'))
+        self.ssao_program["m_projection_inverse"].write(projection_matrix.inverse.astype('f4'))
+        self.ssao_program["v_camera_pos"].value = camera_pos
+        self.ssao_program["f_camera_pos"].value = camera_pos
+        self.ssao_program["mvp"].write(mvp.astype('f4'))
+        self.ssao_program["randomize"].value = self.randomize_ssao_sample_orientations
+        self.ssao_program["z_offset"].value = self.ssao_z_offset
+        self.g_view_z.use(location=0)
+        self.g_normal.use(location=1)
+        self.random_texture.use(location=2)
+        self.quad_fs.render(self.ssao_program)
 
         # Run the shading pass.
         self.ctx.screen.clear(1.0, 1.0, 1.0);
