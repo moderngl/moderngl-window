@@ -499,14 +499,15 @@ class OrbitCamera(Camera):
     @property
     def matrix(self) -> numpy.ndarray:
         """numpy.ndarray: The current view matrix for the camera"""
+        # Compute camera (eye) position, calculated from angles and radius.
+        position = (
+            cos(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius + self.target[0],
+            cos(radians(self.angle_y)) * self.radius + self.target[1],
+            sin(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius + self.target[2],
+        )
+        self.set_position(*position)
         return Matrix44.look_at(
-            (
-                cos(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius
-                + self.target[0],
-                cos(radians(self.angle_y)) * self.radius + self.target[1],
-                sin(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius
-                + self.target[2],
-            ),  # camera (eye) position, calculated from angles and radius
+            position,
             self.target,  # what to look at
             self.up,  # camera up direction (change for rolling the camera)
             dtype="f4",
