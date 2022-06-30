@@ -17,18 +17,18 @@ class SSAODemo(OrbitCameraWindow):
 
         self.scene = self.load_scene('scenes/stanford_dragon.obj')
 
-        self.camera.projection.update(near=1.0, far=50.0)
+        self.camera.projection.update(near=0.1, far=50.0)
+        self.camera.radius = 3.0
+        self.camera.angle_x = 290.0
+        self.camera.angle_y = -80.0
         self.camera.velocity = 7.0
+        self.camera.target = (0.0, 0.0, 0.0)
         self.camera.mouse_sensitivity = 0.3
 
     def render(self, time: float, frametime: float):
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
 
-        translation = Matrix44.from_translation((0, 0, -1.5))
-        rotation = Matrix44.from_eulers((0, 0, 0))
-        model_matrix = translation * rotation
-        camera_matrix = self.camera.matrix * model_matrix
-
+        camera_matrix = self.camera.matrix
         self.scene.draw(
             projection_matrix=self.camera.projection.matrix,
             camera_matrix=camera_matrix,
