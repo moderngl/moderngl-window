@@ -38,6 +38,12 @@ class SSAODemo(OrbitCameraWindow):
         self.ssao_occlusion = self.ctx.texture(self.wnd.buffer_size, 1, dtype="f1")
         self.ssao_buffer = self.ctx.framebuffer(color_attachments=[self.ssao_occlusion])
 
+        # Generate the blurred SSAO framebuffer.
+        self.ssao_blurred_occlusion = self.ctx.texture(self.wnd.buffer_size, 1, dtype="f1")
+        self.ssao_blurred_buffer = self.ctx.framebuffer(
+            color_attachments=[self.ssao_blurred_occlusion]
+        )
+
         # Load the geometry program.
         self.geometry_program = self.load_program("programs/ssao/geometry.glsl")
 
@@ -46,6 +52,10 @@ class SSAODemo(OrbitCameraWindow):
         self.ssao_program["g_view_z"].value = 0
         self.ssao_program["g_norm"].value = 1
         self.ssao_program["noise"].value = 2
+
+        # Load the blurring program.
+        self.blur_program = self.load_program("programs/ssao/blur.glsl")
+        self.blur_program["input_texture"].value = 0
 
         # Load the shading program.
         self.shading_program = self.load_program("programs/ssao/shading.glsl")
@@ -109,6 +119,12 @@ class SSAODemo(OrbitCameraWindow):
         self.random_texture.use(location=2)
         self.quad_fs.render(self.ssao_program)
 
+        # Blur the occlusion map.
+        self.ssao_blurred_buffer.clear(0.0)
+        self.ssao_blurred_buffer.use()
+        self.ssao_occlusion.use(location=0)
+        self.quad_fs.render(self.blur_program)
+
         # Run the shading pass.
         self.ctx.screen.clear(1.0, 1.0, 1.0);
         self.ctx.screen.use()
@@ -119,7 +135,7 @@ class SSAODemo(OrbitCameraWindow):
         self.shading_program["light_pos"].value = camera_pos
         self.g_view_z.use(location=0)
         self.g_normal.use(location=1)
-        self.ssao_occlusion.use(location=2)
+        self.ssao_blurred_occlusion.use(location=2)
         self.quad_fs.render(self.shading_program)
 
 
