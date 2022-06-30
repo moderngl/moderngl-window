@@ -23,7 +23,7 @@ class SSAODemo(OrbitCameraWindow):
         self.camera.target = (0.0, 0.0, 0.0)
         self.camera.mouse_sensitivity = 0.3
 
-        self.randomize_ssao_sample_orientations = True
+        self.randomize_ssao_sample_orientations = False
         self.ssao_z_offset = 0.0
 
         # Create the geometry framebuffer.
