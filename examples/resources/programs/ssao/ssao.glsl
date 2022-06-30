@@ -35,7 +35,6 @@ const int n_samples = 64;
 uniform vec3 f_camera_pos;
 uniform mat4 mvp;
 uniform vec3 samples[n_samples];
-uniform bool randomize;
 uniform float z_offset;
 
 uniform sampler2D g_view_z;
@@ -59,23 +58,16 @@ void main() {
     vec3 f_norm = texture(g_norm, texcoord).xyz;
 
     // Compute the rotation matrix that takes us from tangent space to world space.
-    // For now this is an arbitrary vector. If it's parallel to f_norm things will break.
-    vec3 random_vec = normalize(vec3(1.0, 0.17, 0.11));
+    // Note that the x and y axes in tangent space aren't aligned with the texture coordinates or
+    // anything -- they are intentionally randomized to decorrelate our samples in nearby pixels.
+    const int noise_size = 32;
+    vec2 noise_pos = (1.0 / float(noise_size)) * vec2(
+        float(mod(gl_FragCoord.x, noise_size)),
+        float(mod(gl_FragCoord.y, noise_size))
+    );
+    vec3 random_vec = normalize(texture(noise, noise_pos).xyz);
     vec3 tangent_x = normalize(random_vec - f_norm * dot(random_vec, f_norm));
     vec3 tangent_y = cross(f_norm, tangent_x);
-    if (randomize) {
-        const int noise_size = 32;
-        vec2 noise_pos = (1.0 / float(noise_size)) * vec2(
-            float(mod(gl_FragCoord.x, noise_size)),
-            float(mod(gl_FragCoord.y, noise_size))
-        );
-        float random_angle = 6.2831853 * texture(noise, noise_pos).x;
-        float cosa = cos(random_angle);
-        float sina = sin(random_angle);
-        vec3 tangent_x_copy = tangent_x;
-        tangent_x = cosa * tangent_x + sina * tangent_y;
-        tangent_y = -sina * tangent_x_copy + cosa * tangent_y;
-    }
     mat3 tan_to_world = mat3(tangent_x, tangent_y, f_norm);
 
     // Measure occlusion.

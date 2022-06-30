@@ -23,7 +23,6 @@ class SSAODemo(OrbitCameraWindow):
         self.camera.target = (0.0, 0.0, 0.0)
         self.camera.mouse_sensitivity = 0.3
 
-        self.randomize_ssao_sample_orientations = False
         self.ssao_z_offset = 0.0
 
         # Create the geometry framebuffer.
@@ -68,12 +67,12 @@ class SSAODemo(OrbitCameraWindow):
         self.ssao_samples[:, 2] = np.abs(self.ssao_samples[:, 2])
         self.ssao_program["samples"].write(self.ssao_samples.ravel().astype('f4'))
 
-        # Create random texture used to decorrelate SSAO samples.
-        rand_texture_size = 32
-        rand_texture_data = np.random.bytes(rand_texture_size * rand_texture_size)
+        # Create random vectors used to decorrelate SSAO samples.
+        rand_texture_size = 32 # If you change this number, also change ssao.glgl.
+        rand_texture_data = np.random.bytes(3 * rand_texture_size * rand_texture_size)
         self.random_texture = self.ctx.texture(
             (rand_texture_size, rand_texture_size),
-            1,
+            3,
             dtype="f1",
             data=rand_texture_data
         )
@@ -104,7 +103,6 @@ class SSAODemo(OrbitCameraWindow):
         self.ssao_program["v_camera_pos"].value = camera_pos
         self.ssao_program["f_camera_pos"].value = camera_pos
         self.ssao_program["mvp"].write(mvp.astype('f4'))
-        self.ssao_program["randomize"].value = self.randomize_ssao_sample_orientations
         self.ssao_program["z_offset"].value = self.ssao_z_offset
         self.g_view_z.use(location=0)
         self.g_normal.use(location=1)
