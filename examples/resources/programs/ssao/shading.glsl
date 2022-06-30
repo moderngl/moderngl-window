@@ -57,12 +57,11 @@ void main() {
     float occlusion = texture(ssao_occlusion, texcoord).x;
     vec3 light_dir = normalize(light_pos - position);
     vec3 reflection_dir = reflect(-light_dir, normal);
-    float ambient = 0.3 * occlusion;
+    float ambient = 0.5 * occlusion;
     float diffuse = 0.5 * max(dot(light_dir, normal), 0.0);
     float specular = 0.4 * pow(max(dot(light_dir, normal), 0.0), 10.0);
     float luminosity = ambient + diffuse + specular;
     vec3 color = luminosity * vec3(0.2, 0.2, 0.6);
-    color = vec3(occlusion);
     frag_color = vec4(color, 1.0);
 }
 
