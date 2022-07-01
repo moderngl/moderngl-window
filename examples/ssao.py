@@ -1,7 +1,7 @@
 import imgui
 import numpy as np
 from pathlib import Path
-from pyrr import Matrix44
+import pyrr
 
 import moderngl
 import moderngl_window
@@ -18,19 +18,20 @@ class SSAODemo(OrbitCameraWindow):
         #self.wnd.mouse_exclusivity = True
 
         self.camera.projection.update(near=0.1, far=50.0)
-        self.camera.radius = 3.0
+        self.camera.radius = 2.0
         self.camera.angle_x = 290.0
         self.camera.angle_y = -80.0
         self.camera.velocity = 7.0
         self.camera.target = (0.0, 0.0, 0.0)
         self.camera.mouse_sensitivity = 0.3
+        self.camera.zoom_sensitivity = 0.3
 
         self.render_modes = ["ADS + SSAO", "ADS (no SSAO)", "occlusion texture"]
         self.render_mode = 0
         self.base_color = (0.2, 0.4, 0.8)
-        self.material_properties = [0.5, 0.5, 0.3, 25.0]
+        self.material_properties = [0.5, 0.5, 0.25, 25.0]
         self.ssao_z_offset = 0.0
-        self.ssao_blur = True
+        self.ssao_blur = False
 
         self.frame_time_decay_factor = 0.995
         self.average_frame_time = 0.01666
@@ -82,7 +83,7 @@ class SSAODemo(OrbitCameraWindow):
 
         # Generate SSAO samples (in tangent space coordinates, with z along the normal).
         self.n_ssao_samples = 64 # If you change this number, also change ssao.glsl.
-        self.ssao_std_dev = 0.5
+        self.ssao_std_dev = 0.1
         self.ssao_samples = np.random.normal(0.0, self.ssao_std_dev, (self.n_ssao_samples, 3))
         self.ssao_samples[:, 2] = np.abs(self.ssao_samples[:, 2])
         self.ssao_program["samples"].write(self.ssao_samples.ravel().astype('f4'))
@@ -173,7 +174,7 @@ class SSAODemo(OrbitCameraWindow):
         imgui.text(f"Frame time: {1000.0 * self.average_frame_time:.1f} ms")
         imgui.text(f"FPS: {1.0 / self.average_frame_time:.1f}")
         _, self.render_mode = imgui.combo("render mode", self.render_mode, self.render_modes)
-        _, self.ssao_z_offset = imgui.slider_float("SSAO z-offset", self.ssao_z_offset, 0.0, 1.0)
+        _, self.ssao_z_offset = imgui.slider_float("SSAO z-offset", self.ssao_z_offset, -0.3, 0.3)
         _, self.ssao_blur = imgui.checkbox("blur occlusion texture", self.ssao_blur)
 
         _, self.base_color = imgui.color_edit3(
@@ -185,7 +186,7 @@ class SSAODemo(OrbitCameraWindow):
         _, self.material_properties[0] = imgui.slider_float("ambient", self.material_properties[0], 0.0, 1.0)
         _, self.material_properties[1] = imgui.slider_float("diffuse", self.material_properties[1], 0.0, 1.0)
         _, self.material_properties[2] = imgui.slider_float("specular", self.material_properties[2], 0.0, 1.0)
-        _, self.material_properties[3] = imgui.slider_float("specular exponent", self.material_properties[3], 0.0, 100.0)
+        _, self.material_properties[3] = imgui.slider_float("specular exponent", self.material_properties[3], 1.0, 50.0)
 
         imgui.end()
         imgui.render()
