@@ -25,6 +25,10 @@ class SSAODemo(OrbitCameraWindow):
         self.camera.target = (0.0, 0.0, 0.0)
         self.camera.mouse_sensitivity = 0.3
 
+        self.render_modes = ["ADS + SSAO", "ADS (no SSAO)", "occlusion texture"]
+        self.render_mode = 0
+        self.base_color = (0.2, 0.4, 0.8)
+        self.material_properties = [0.5, 0.5, 0.3, 25.0]
         self.ssao_z_offset = 0.0
         self.ssao_blur = True
 
@@ -149,6 +153,9 @@ class SSAODemo(OrbitCameraWindow):
         self.shading_program["v_camera_pos"].value = camera_pos
         self.shading_program["camera_pos"].value = camera_pos
         self.shading_program["light_pos"].value = camera_pos
+        self.shading_program["base_color"].value = tuple(self.base_color)
+        self.shading_program["material_properties"].value = tuple(self.material_properties)
+        self.shading_program["render_mode"].value = self.render_mode
         self.g_view_z.use(location=0)
         self.g_normal.use(location=1)
         if self.ssao_blur:
@@ -165,9 +172,20 @@ class SSAODemo(OrbitCameraWindow):
         imgui.begin("Debug Panel", False)
         imgui.text(f"Frame time: {1000.0 * self.average_frame_time:.1f} ms")
         imgui.text(f"FPS: {1.0 / self.average_frame_time:.1f}")
-
+        _, self.render_mode = imgui.combo("render mode", self.render_mode, self.render_modes)
         _, self.ssao_z_offset = imgui.slider_float("SSAO z-offset", self.ssao_z_offset, 0.0, 1.0)
         _, self.ssao_blur = imgui.checkbox("blur occlusion texture", self.ssao_blur)
+
+        _, self.base_color = imgui.color_edit3(
+            "color",
+            self.base_color[0],
+            self.base_color[1],
+            self.base_color[2],
+        )
+        _, self.material_properties[0] = imgui.slider_float("ambient", self.material_properties[0], 0.0, 1.0)
+        _, self.material_properties[1] = imgui.slider_float("diffuse", self.material_properties[1], 0.0, 1.0)
+        _, self.material_properties[2] = imgui.slider_float("specular", self.material_properties[2], 0.0, 1.0)
+        _, self.material_properties[3] = imgui.slider_float("specular exponent", self.material_properties[3], 0.0, 100.0)
 
         imgui.end()
         imgui.render()
