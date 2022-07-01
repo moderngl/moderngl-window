@@ -7,9 +7,8 @@ from base import OrbitCameraWindow
 
 
 class SSAODemo(OrbitCameraWindow):
-    aspect_ratio = 16 / 9
-    resource_dir = Path(__file__).parent.resolve() / 'resources'
     title = "SSAO"
+    resource_dir = (Path(__file__) / '../resources').resolve()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -23,23 +22,55 @@ class SSAODemo(OrbitCameraWindow):
         self.camera.target = (0.0, 0.0, 0.0)
         self.camera.mouse_sensitivity = 0.3
 
-        # Load a test shading program.
+        # Create the geometry framebuffer.
+        self.g_view_z = self.ctx.texture(self.wnd.buffer_size, 1, dtype="f2")
+        self.g_normal = self.ctx.texture(self.wnd.buffer_size, 3, dtype="f2")
+        self.g_depth = self.ctx.depth_texture(self.wnd.buffer_size)
+        self.g_buffer = self.ctx.framebuffer(
+            color_attachments=[self.g_view_z, self.g_normal],
+            depth_attachment=self.g_depth
+        )
+
+        # Load the geometry program.
+        self.geometry_program = self.load_program("programs/ssao/geometry.glsl")
+
+        # Load the shading program.
         self.shading_program = self.load_program("programs/ssao/shading.glsl")
+        self.shading_program["g_view_z"].value = 0
+        self.shading_program["g_normal"].value = 1
+
+        # Generate a fullscreen quad.
+        self.quad_fs = moderngl_window.geometry.quad_fs()
 
         # Load the scene.
         self.scene = self.load_scene('scenes/stanford_dragon.obj')
-        self.vao = self.scene.root_nodes[0].mesh.vao.instance(self.shading_program)
+        self.vao = self.scene.root_nodes[0].mesh.vao.instance(self.geometry_program)
 
     def render(self, time: float, frametime: float):
         projection_matrix = self.camera.projection.matrix
         camera_matrix = self.camera.matrix
         mvp = projection_matrix * camera_matrix
+        camera_pos = (self.camera.position.x, self.camera.position.y, self.camera.position.z)
 
+        # Run the geometry pass.
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
-        self.ctx.screen.clear(1.0, 1.0, 1.0)
-        self.ctx.screen.use()
-        self.shading_program["mvp"].write(mvp.astype('f4'))
+        self.g_buffer.clear(0.0, 0.0, 0.0, 0.0)
+        self.g_buffer.use()
+        self.geometry_program["mvp"].write(mvp.astype('f4'))
+        self.geometry_program["m_camera"].write(camera_matrix.astype('f4'))
         self.vao.render()
+
+        # Run the shading pass.
+        self.ctx.screen.clear(1.0, 1.0, 1.0, 1.0);
+        self.ctx.screen.use()
+        self.shading_program["m_camera_inverse"].write(camera_matrix.inverse.astype('f4'))
+        self.shading_program["m_projection_inverse"].write(projection_matrix.inverse.astype('f4'))
+        self.shading_program["v_camera_pos"].value = camera_pos
+        self.shading_program["camera_pos"].value = camera_pos
+        self.shading_program["light_pos"].value = camera_pos
+        self.g_view_z.use(location=0)
+        self.g_normal.use(location=1)
+        self.quad_fs.render(self.shading_program)
 
 
 if __name__ == '__main__':

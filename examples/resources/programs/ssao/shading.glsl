@@ -2,30 +2,65 @@
 
 #if defined VERTEX_SHADER
 
+uniform mat4 m_camera_inverse;
+uniform mat4 m_projection_inverse;
+uniform vec3 v_camera_pos;
+
 in vec3 in_position;
-in vec3 in_normal;
+in vec2 in_texcoord_0;
 
-uniform mat4 mvp;
-
-out vec3 pos;
-out vec3 normal;
+out vec3 view_ray;
+out vec2 texcoord;
 
 void main() {
-    gl_Position = mvp * vec4(in_position, 1.0);
-    pos = in_position;
-    normal = in_normal;
+    gl_Position = vec4(in_position, 1.0);
+
+    // Convert in_position from clip space to view space.
+    vec4 pos = m_projection_inverse * vec4(in_position, 1.0);
+    // Normalize its z value.
+    pos.xy /= -pos.z;
+    pos.z = -1.0;
+    pos.w = 1.0;
+    // Convert to world space.
+    pos = m_camera_inverse * pos;
+    view_ray = pos.xyz - v_camera_pos;
+
+    texcoord = in_texcoord_0;
 }
 
 #elif defined FRAGMENT_SHADER
 
-in vec3 pos;
-in vec3 normal;
+uniform vec3 light_pos;
+uniform vec3 camera_pos;
 
-out vec4 fragColor;
+uniform sampler2D g_view_z;
+uniform sampler2D g_normal;
+
+in vec3 view_ray;
+in vec2 texcoord;
+
+layout(location=0) out vec4 frag_color;
 
 void main() {
-    float l = dot(vec3(0.0, 1.0, 0.0), normalize(normal));
-    fragColor = vec4(0.5, 0.5, 0.5, 1.0) * (0.25 + abs(l) * 0.75);
+    // Ignore background fragments.
+    float view_z = texture(g_view_z, texcoord).x;
+    if (view_z == 0.0) {
+        discard;
+    }
+
+    // Load/compute the position and normal vectors (in world space).
+    vec3 position = camera_pos + view_z * view_ray;
+    vec3 normal = texture(g_normal, texcoord).xyz;
+
+    // Compute lighting.
+    vec3 light_dir = normalize(light_pos - position);
+    vec3 reflection_dir = reflect(-light_dir, normal);
+    float ambient = 0.3;
+    float diffuse = 0.5 * max(dot(light_dir, normal), 0.0);
+    float specular = 0.4 * pow(max(dot(light_dir, normal), 0.0), 10.0);
+    float luminosity = ambient + diffuse + specular;
+    vec3 color = luminosity * vec3(0.2, 0.2, 0.6);
+    frag_color = vec4(color, 1.0);
 }
 
 #endif
