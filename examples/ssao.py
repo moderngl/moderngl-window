@@ -10,6 +10,12 @@ from moderngl_window.integrations.imgui import ModernglWindowRenderer
 
 
 class SSAODemo(OrbitCameraWindow):
+    """A demo of screen space ambient occlusion, based on https://learnopengl.com/Advanced-Lighting/SSAO
+
+    Runs best with a discrete GPU! Integrated GPUs can struggle a bit with the deferred rendering
+    pipeline.
+    """
+
     title = "SSAO"
     resource_dir = (Path(__file__) / '../resources').resolve()
 
