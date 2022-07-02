@@ -33,7 +33,10 @@ class CameraWindow(mglw.WindowConfig):
 
 
 class OrbitCameraWindow(mglw.WindowConfig):
-    """Base class with built in 3D orbit camera support"""
+    """Base class with built in 3D orbit camera support
+
+    Move the mouse to orbit the camera around the view point.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -58,6 +61,33 @@ class OrbitCameraWindow(mglw.WindowConfig):
     def mouse_scroll_event(self, x_offset: float, y_offset: float):
         if self.camera_enabled:
             self.camera.zoom_state(y_offset)
+
+    def resize(self, width: int, height: int):
+        self.camera.projection.update(aspect_ratio=self.wnd.aspect_ratio)
+
+
+class OrbitDragCameraWindow(mglw.WindowConfig):
+    """Base class with drag-based 3D orbit support
+
+    Click and drag with the left mouse button to orbit the camera around the view point.
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.camera = OrbitCamera(aspect_ratio=self.wnd.aspect_ratio)
+
+    def key_event(self, key, action, modifiers):
+        keys = self.wnd.keys
+
+        if action == keys.ACTION_PRESS:
+            if key == keys.SPACE:
+                self.timer.toggle_pause()
+
+    def mouse_drag_event(self, x: int, y: int, dx, dy):
+        self.camera.rot_state(dx, dy)
+
+    def mouse_scroll_event(self, x_offset: float, y_offset: float):
+        self.camera.zoom_state(y_offset)
 
     def resize(self, width: int, height: int):
         self.camera.projection.update(aspect_ratio=self.wnd.aspect_ratio)

@@ -5,11 +5,11 @@ import pyrr
 
 import moderngl
 import moderngl_window
-from base import OrbitCameraWindow
+from base import OrbitDragCameraWindow
 from moderngl_window.integrations.imgui import ModernglWindowRenderer
 
 
-class SSAODemo(OrbitCameraWindow):
+class SSAODemo(OrbitDragCameraWindow):
     """A demo of screen space ambient occlusion, based on https://learnopengl.com/Advanced-Lighting/SSAO
 
     Runs best with a discrete GPU! Integrated GPUs can struggle a bit with the deferred rendering
@@ -29,7 +29,7 @@ class SSAODemo(OrbitCameraWindow):
         self.camera.angle_y = -80.0
         self.camera.velocity = 7.0
         self.camera.target = (0.0, 0.0, 0.0)
-        self.camera.mouse_sensitivity = 0.3
+        self.camera.mouse_sensitivity = 1.0
         self.camera.zoom_sensitivity = 0.3
 
         self.render_modes = ["ADS + SSAO", "ADS (no SSAO)", "occlusion texture"]
@@ -200,11 +200,11 @@ class SSAODemo(OrbitCameraWindow):
 
     def mouse_position_event(self, x, y, dx, dy):
         self.imgui.mouse_position_event(x, y, dx, dy)
-        if not self.imgui.io.want_capture_mouse:
-            super().mouse_position_event(x, y, dx, dy)
 
     def mouse_drag_event(self, x: int, y: int, dx, dy):
         self.imgui.mouse_drag_event(x, y, dx, dy)
+        if not self.imgui.io.want_capture_mouse:
+            super().mouse_drag_event(x, y, dx, dy)
 
     def mouse_scroll_event(self, x_offset, y_offset):
         self.imgui.mouse_scroll_event(x_offset, y_offset)
