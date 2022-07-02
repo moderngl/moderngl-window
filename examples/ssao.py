@@ -1,7 +1,7 @@
+
 import imgui
 import numpy as np
 from pathlib import Path
-import pyrr
 
 import moderngl
 import moderngl_window
@@ -110,7 +110,7 @@ class SSAODemo(OrbitDragCameraWindow):
         # Set up imgui.
         imgui.create_context()
         if self.wnd.ctx.error != "GL_NO_ERROR":
-            logger.error(self.wnd.ctx.error)
+           print(self.wnd.ctx.error)
         self.imgui = ModernglWindowRenderer(self.wnd)
 
     def render(self, time: float, frametime: float):
