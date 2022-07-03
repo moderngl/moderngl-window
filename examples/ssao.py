@@ -81,7 +81,7 @@ class SSAODemo(OrbitDragCameraWindow):
         self.shading_program["ssao_occlusion"].value = 2
 
         # Load the scene.
-        self.scene = self.load_scene('scenes/stanford_dragon.obj')
+        self.scene = self.load_scene('scenes/stanford_dragon.obj', cache=True)
         self.vao = self.scene.root_nodes[0].mesh.vao.instance(self.geometry_program)
 
         # Generate a fullscreen quad.
