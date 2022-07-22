@@ -293,6 +293,9 @@ class Window(BaseWindow):
             #     # On OS X we only get VIDEOEXPOSE when restoring the windoe
             #     self._iconify_func(False)
 
+            elif event.type == pg.USEREVENT:
+                self.on_generic_event(event)
+
     def destroy(self) -> None:
         """Gracefully close the window"""
         pygame.quit()
