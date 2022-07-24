@@ -130,6 +130,7 @@ class BaseWindow:
         self._mouse_scroll_event_func = dummy_func
         self._unicode_char_entered_func = dummy_func
         self._files_dropped_event_func = dummy_func
+        self._on_generic_event_func = dummy_func
 
         # Internal states
         self._ctx = None  # type: moderngl.Context
@@ -807,6 +808,15 @@ class BaseWindow:
         self._mouse_pos = xpos, ypos
         return dx, dy
 
+    @property
+    def on_generic_event_func(self):
+        """callable: Get or set the on_generic_event callable used to funnel all non-processed events"""
+        return self._mouse_position_event_func
+
+    @on_generic_event_func.setter
+    @require_callable
+    def on_generic_event_func(self, func):
+        self._on_generic_event_func = func
 
 class WindowConfig:
     """
