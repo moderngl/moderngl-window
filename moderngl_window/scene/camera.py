@@ -561,7 +561,7 @@ class OrbitCamera(Camera):
         This property can also be set::
             camera.zoom_sensitivity = 2.5
         """
-        return self._mouse_sensitivity
+        return self._zoom_sensitivity
 
     @zoom_sensitivity.setter
     def zoom_sensitivity(self, value: float):
