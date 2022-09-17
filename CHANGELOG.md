@@ -12,6 +12,9 @@
 * Fixed several typos
 * Bumped several dependencies to reasonable versions
 
+Thanks to @Rafale25, @n3onUser, @erikstrand (Erik Strand),
+@sheepman4267 and @dbs4261 (Daniel Simon) for contributions to this release.
+
 ## 2.4.1
 
 * Experimental support for ffmpeg capture
