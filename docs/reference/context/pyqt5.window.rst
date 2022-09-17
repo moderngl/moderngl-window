@@ -76,6 +76,7 @@ Attributes
 .. autoattribute:: Window.close_func
 .. autoattribute:: Window.iconify_func
 .. autoattribute:: Window.key_event_func
+.. autoattribute:: Window.on_generic_event_func
 .. autoattribute:: Window.mouse_position_event_func
 .. autoattribute:: Window.mouse_press_event_func
 .. autoattribute:: Window.mouse_release_event_func

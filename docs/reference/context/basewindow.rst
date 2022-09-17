@@ -63,6 +63,7 @@ Attributes
 .. autoattribute:: BaseWindow.close_func
 .. autoattribute:: BaseWindow.iconify_func
 .. autoattribute:: BaseWindow.key_event_func
+.. autoattribute:: BaseWindow.on_generic_event_func
 .. autoattribute:: BaseWindow.mouse_position_event_func
 .. autoattribute:: BaseWindow.mouse_press_event_func
 .. autoattribute:: BaseWindow.mouse_release_event_func
