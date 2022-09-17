@@ -388,7 +388,6 @@ class BaseWindow:
         self._set_vsync(value)
         self._vsync = value
 
-
     @property
     def aspect_ratio(self) -> float:
         """float: The current aspect ratio of the window.
@@ -642,7 +641,7 @@ class BaseWindow:
         elif y_flipped and not x_flipped:
             return (x, self.height - y)
         else:
-            return(self.width - x, self.height - y)
+            return (self.width - x, self.height - y)
 
     def is_key_pressed(self, key) -> bool:
         """Returns: The press state of a key"""
@@ -743,7 +742,7 @@ class BaseWindow:
             "Toggling vsync is currently not supported by Window-type: {}".format(
                 self.name
             )
-        )  
+        )
 
     def destroy(self) -> None:
         """
@@ -830,6 +829,7 @@ class BaseWindow:
     @require_callable
     def on_generic_event_func(self, func):
         self._on_generic_event_func = func
+
 
 class WindowConfig:
     """

@@ -123,7 +123,7 @@ class Window(BaseWindow):
             glfw.swap_interval(1)
         else:
             glfw.swap_interval(0)
-    
+
     def _set_vsync(self, value: bool) -> None:
         glfw.swap_interval(value)
 
