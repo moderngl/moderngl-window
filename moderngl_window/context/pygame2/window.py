@@ -67,7 +67,7 @@ class Window(BaseWindow):
 
     def _set_mode(self):
         self._surface = pygame.display.set_mode(
-            size=(self._width, self._height), flags=self._flags, depth=self._depth,
+            size=(self._width, self._height), flags=self._flags, depth=self._depth, vsync=self._vsync
         )
 
     def _set_fullscreen(self, value: bool) -> None:
@@ -282,7 +282,8 @@ class Window(BaseWindow):
                 #         print("Window lost focus")
 
                 # Window iconify state
-                if event.state == 2:
+                print(event)
+                if getattr(event, 'state', None) == 2:
                     if event.gain:
                         self._iconify_func(False)
                     else:
