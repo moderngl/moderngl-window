@@ -383,6 +383,12 @@ class BaseWindow:
         """bool: vertical sync enabled/disabled"""
         return self._vsync
 
+    @vsync.setter
+    def vsync(self, value: bool):
+        self._set_vsync(value)
+        self._vsync = value
+
+
     @property
     def aspect_ratio(self) -> float:
         """float: The current aspect ratio of the window.
@@ -731,6 +737,13 @@ class BaseWindow:
                 self.name
             )
         )
+
+    def _set_vsync(self, value: bool) -> None:
+        raise NotImplementedError(
+            "Toggling vsync is currently not supported by Window-type: {}".format(
+                self.name
+            )
+        )  
 
     def destroy(self) -> None:
         """
