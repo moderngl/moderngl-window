@@ -75,6 +75,9 @@ class Window(BaseWindow):
         """Do nothing when fullscreen is toggled"""
         pass
 
+    def _set_vsync(self, value: bool) -> None:
+        pass
+
     def destroy(self) -> None:
         """Destroy the context"""
         self._ctx.release()
