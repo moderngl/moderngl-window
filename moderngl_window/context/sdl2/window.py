@@ -80,6 +80,9 @@ class Window(BaseWindow):
             self._window, sdl2.SDL_WINDOW_FULLSCREEN_DESKTOP if value else 0
         )
 
+    def _set_vsync(self, value: bool) -> None:
+        sdl2.video.SDL_GL_SetSwapInterval(1 if value else 0)
+
     def _get_drawable_size(self):
         x = c_int()
         y = c_int()
