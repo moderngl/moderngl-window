@@ -33,7 +33,7 @@ setup(
         'pyglet>=2.0dev23',
         'numpy>=1.16,<2',
         'pyrr>=0.10.3,<1',
-        'Pillow>=5',
+        'Pillow>=9',
     ],
     extras_require={
         "PySide2": ['PySide2<6'],
