@@ -58,6 +58,10 @@ class Window(BaseWindow):
     def _set_fullscreen(self, value: bool) -> None:
         self._tk.attributes("-fullscreen", value)
 
+    def _set_vsync(self, value: bool) -> None:
+        # TODO: Figure out how to toggle vsync
+        pass
+
     @property
     def size(self) -> Tuple[int, int]:
         """Tuple[int, int]: current window size.

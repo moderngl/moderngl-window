@@ -38,7 +38,7 @@ class Window(BaseWindow):
         gl.setProfile(QtOpenGL.QGLFormat.CoreProfile)
         gl.setDepthBufferSize(24)
         gl.setDoubleBuffer(True)
-        gl.setSwapInterval(1 if self.vsync else 0)
+        gl.setSwapInterval(1 if self._vsync else 0)
 
         # Configure multisampling if needed
         if self.samples > 1:
@@ -117,6 +117,10 @@ class Window(BaseWindow):
             self._widget.showFullScreen()
         else:
             self._widget.showNormal()
+
+    def _set_vsync(self, value: bool) -> None:
+        # TODO: Figure out how to toggle vsync
+        pass
 
     @property
     def size(self) -> Tuple[int, int]:
