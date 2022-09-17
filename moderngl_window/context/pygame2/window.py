@@ -76,6 +76,10 @@ class Window(BaseWindow):
         else:
             self._sdl_window.set_windowed()
 
+    def _set_vsync(self, value: bool) -> None:
+        self._vsync = value
+        self._set_mode()
+
     @property
     def size(self) -> Tuple[int, int]:
         """Tuple[int, int]: current window size.
@@ -282,7 +286,6 @@ class Window(BaseWindow):
                 #         print("Window lost focus")
 
                 # Window iconify state
-                print(event)
                 if getattr(event, 'state', None) == 2:
                     if event.gain:
                         self._iconify_func(False)
