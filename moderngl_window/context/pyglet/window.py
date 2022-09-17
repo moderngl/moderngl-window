@@ -195,6 +195,9 @@ class Window(BaseWindow):
         icon = pyglet.image.load(icon_path)
         self._window.set_icon(icon)
 
+    def _set_vsync(self, value: bool) -> None:
+        self._window.set_vsync(value)
+
     def on_key_press(self, symbol, modifiers):
         """Pyglet specific key press callback.
 
