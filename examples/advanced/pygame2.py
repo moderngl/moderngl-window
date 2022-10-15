@@ -36,6 +36,7 @@ class Pygame(moderngl_window.WindowConfig):
         # 24 bit (rgba) moderngl texture
         self.pg_texture = self.ctx.texture(self.pg_res, 4)
         self.pg_texture.filter = moderngl.NEAREST, moderngl.NEAREST
+        self.pg_texture.swizzle = "BGRA"
 
         # Simple geometry and shader to render
         self.cube = geometry.cube(size=(2.0, 2.0, 2.0))

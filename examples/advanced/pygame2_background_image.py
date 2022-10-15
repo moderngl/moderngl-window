@@ -30,6 +30,7 @@ class Pygame(moderngl_window.WindowConfig):
         # 24 bit (rgba) moderngl texture
         self.pg_texture = self.ctx.texture(self.window_size, 4)
         self.pg_texture.filter = moderngl.NEAREST, moderngl.NEAREST
+        self.pg_texture.swizzle = "BGRA"
 
         self.texture_program = self.load_program('programs/texture.glsl')
         self.quad_texture = self.load_texture_2d('textures/python-bg.png')
