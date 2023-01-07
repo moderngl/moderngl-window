@@ -83,7 +83,7 @@ class TestCase(unittest.TestCase):
         self.validate(
             'moderngl_window.rst',
             'moderngl_window',
-            ignore=['valid_window_size', 'valid_window_size_multiplier', 'import_string', 'valid_bool'],
+            ignore=['valid_window_size', 'valid_window_size_multiplier', 'import_string', 'valid_bool', "QWERTY", "AZERTY"],
         )
 
     def test_settings(self):
