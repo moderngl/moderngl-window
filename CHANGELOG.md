@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.4.3
+
+* Fix compatibility with moderngl 5.8.x
+* Camera now has keymap support (QWERTY, AZERTY etc) 
+
 ## 2.4.2
 
 * Allow toggling vsync and runtime for most windows

@@ -18,7 +18,7 @@ from moderngl_window.conf import settings
 from moderngl_window.utils.module_loading import import_string
 from moderngl_window.utils.keymaps import KeyMapFactory, KeyMap, QWERTY, AZERTY
 
-__version__ = "2.3.0"
+__version__ = "2.4.3"
 
 IGNORE_DIRS = [
     "__pycache__",

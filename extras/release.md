@@ -18,11 +18,13 @@ We try to follow semantic versioning as much as possible: https://semver.org/spe
 * Change version numbers in docs/conf.py (`version` and `release`)
 * Change version in `setup.py`
 * `rm -rf .tox` (Force env recreation)
-* Run tests. Ensure it passes for `py35`, `py36`, `py37`, `py38` and `pep8`.
+* Run tests. Ensure it passes for `py38`, `py39`, `py310`, `py311` and `pep8`.
   Run using `tox`.
 * Create release on Github : https://github.com/moderngl/moderngl-window/releases with entries from `CHANGELOG.md`
 * `python setup.py bdist_wheel`
+* `python setup.py sdist`
 * `twine upload dist/moderngl-window-<version>-py3-none-any.whl`
+* `twine upload dist/moderngl-window-<version>.tar.gz`
 * Ensure docs are updated : https://moderngl-window.readthedocs.io/
 * Ensure things look correct on PyPI : https://pypi.org/project/moderngl-window/
 
