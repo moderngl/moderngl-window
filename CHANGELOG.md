@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.4.3
+## 2.4.4
 
 * Added `--backend` option to specify context backend. 
   This is mostly for the headless window to enable EGL.
