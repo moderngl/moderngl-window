@@ -2,6 +2,15 @@
 
 ## 2.4.3
 
+* Added `--backend` option to specify context backend. 
+  This is mostly for the headless window to enable EGL.
+* Window now has a ``backend`` property containing the name of the context backend
+* Window now has a ``headless`` boolean property to check if the window is headless.
+  This is useful for adding headless only paths in your code.
+* Added stencil bits to window framebuffers by default
+
+## 2.4.3
+
 * Fix compatibility with moderngl 5.8.x
 * Camera now has keymap support (QWERTY, AZERTY etc) 
 

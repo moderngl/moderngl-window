@@ -49,11 +49,11 @@ sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 # -- Project information -----------------------------------------------------
 
 project = 'moderngl-window'
-copyright = '2019, Einar Forselv'
+copyright = '2023, Einar Forselv'
 author = 'Einar Forselv'
 
 # The short X.Y version
-version = '2.4.3'
+version = '2.4.4'
 # The full version, including alpha/beta/rc tags
 release = version
 
