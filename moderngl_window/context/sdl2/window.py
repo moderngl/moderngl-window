@@ -42,6 +42,7 @@ class Window(BaseWindow):
         sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG, 1)
         sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_DOUBLEBUFFER, 1)
         sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_DEPTH_SIZE, 24)
+        sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_STENCIL_SIZE, 8)
 
         self.cursor = self._cursor
 

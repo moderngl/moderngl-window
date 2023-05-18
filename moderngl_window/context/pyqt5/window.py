@@ -37,6 +37,7 @@ class Window(BaseWindow):
         gl.setVersion(self.gl_version[0], self.gl_version[1])
         gl.setProfile(QtOpenGL.QGLFormat.CoreProfile)
         gl.setDepthBufferSize(24)
+        gl.setStencilBufferSize(8)
         gl.setDoubleBuffer(True)
         gl.setSwapInterval(1 if self._vsync else 0)
 
