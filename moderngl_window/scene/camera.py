@@ -205,7 +205,7 @@ class KeyboardCamera(Camera):
         camera.projection.tobytes()
     """
 
-    def __init__(self, keys: BaseKeys, keymap: KeyMapFactory=QWERTY, fov=60.0, aspect_ratio=1.0, near=1.0, far=100.0):
+    def __init__(self, keys: BaseKeys, keymap: KeyMapFactory = QWERTY, fov=60.0, aspect_ratio=1.0, near=1.0, far=100.0):
         """Initialize the camera
 
         Args:

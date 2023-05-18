@@ -16,7 +16,7 @@ from moderngl_window.context.base import WindowConfig, BaseWindow
 from moderngl_window.timers.clock import Timer
 from moderngl_window.conf import settings
 from moderngl_window.utils.module_loading import import_string
-from moderngl_window.utils.keymaps import KeyMapFactory, KeyMap, QWERTY, AZERTY
+from moderngl_window.utils.keymaps import KeyMapFactory, KeyMap, QWERTY, AZERTY  # noqa
 
 __version__ = "2.4.3"
 
