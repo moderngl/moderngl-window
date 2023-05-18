@@ -30,6 +30,8 @@ Attributes
 .. autoattribute:: BaseWindow.keys
    :annotation:
 .. autoattribute:: BaseWindow.ctx
+.. autoattribute:: BaseWindow.backend
+.. autoattribute:: BaseWindow.headless
 .. autoattribute:: BaseWindow.fbo
 .. autoattribute:: BaseWindow.title
 .. autoattribute:: BaseWindow.exit_key

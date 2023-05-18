@@ -20,7 +20,7 @@ class Window(BaseWindow):
         self._vsync = False  # We don't care about vsync in headless mode
         self._resizable = False  # headless window is not resizable
         self._cursor = False  # Headless don't have a cursor
-        self._backend = kwargs.get("backend", None)
+        self._headless = True
         self.init_mgl_context()
         self.set_default_viewport()
 

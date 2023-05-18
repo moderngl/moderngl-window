@@ -1,10 +1,10 @@
-from argparse import ArgumentParser, Namespace
+from argparse import ArgumentParser
 from functools import wraps
 from pathlib import Path
 import logging
 import sys
 import weakref
-from typing import Any, Tuple, Type, List
+from typing import Any, Tuple, Type, List, Optional
 
 import moderngl
 from moderngl_window.context.base import KeyModifiers, BaseKeys
@@ -87,6 +87,7 @@ class BaseWindow:
         aspect_ratio: float = None,
         samples=0,
         cursor=True,
+        backend: Optional[str] = None,
         **kwargs
     ):
         """Initialize a window instance.
@@ -114,6 +115,9 @@ class BaseWindow:
         self._fixed_aspect_ratio = aspect_ratio
         self._samples = samples
         self._cursor = cursor
+        self._backend = backend
+        self._headless = False
+
         self._exit_key = self.keys.ESCAPE
         self._fs_key = self.keys.F11
 
@@ -172,6 +176,22 @@ class BaseWindow:
     def ctx(self) -> moderngl.Context:
         """moderngl.Context: The ModernGL context for the window"""
         return self._ctx
+
+    @property
+    def backend(self) -> Optional[str]:
+        """
+        Name of the context backend.
+
+        This is ``None`` unless a backend is explicitly specified
+        during context creation. The main use case for this is to
+        enable EGL in headless mode.
+        """
+        return self._backend
+
+    @property
+    def headless(self) -> bool:
+        """bool: Is the window headless?"""
+        return self._headless
 
     @property
     def fbo(self) -> moderngl.Framebuffer:

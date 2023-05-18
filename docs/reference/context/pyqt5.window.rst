@@ -43,6 +43,8 @@ Attributes
 .. autoattribute:: Window.keys
    :annotation:
 .. autoattribute:: Window.ctx
+.. autoattribute:: Window.backend
+.. autoattribute:: Window.headless
 .. autoattribute:: Window.fbo
 .. autoattribute:: Window.title
 .. autoattribute:: Window.exit_key
