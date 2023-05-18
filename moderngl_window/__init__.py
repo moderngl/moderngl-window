@@ -204,6 +204,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         vsync=values.vsync if values.vsync is not None else config_cls.vsync,
         samples=values.samples if values.samples is not None else config_cls.samples,
         cursor=show_cursor if show_cursor is not None else True,
+        backend=values.backend,
     )
     window.print_context_info()
     activate_context(window=window)
@@ -291,6 +292,10 @@ def create_parser():
         type=valid_window_size_multiplier,
         default=1.0,
         help="Multiplier for the window size making it easy scale the window",
+    )
+    parser.add_argument(
+        "--backend",
+        help="Specify context backend. This is mostly used to enable EGL in headless mode",
     )
     return parser
 
