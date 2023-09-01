@@ -1,6 +1,6 @@
 from pathlib import Path
 import numpy as np
-from pyrr import Matrix44
+import glm
 
 import moderngl
 import moderngl_window
@@ -105,9 +105,9 @@ class VolumetricTetrahedralMesh(CameraWindow):
             self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
 
         # Render tetrahedral mesh
-        translate = Matrix44.from_translation((0.0, 2.5, -15.0), dtype='f4')
-        rotate = Matrix44.from_eulers((np.radians(180), 0, 0), dtype='f4')
-        scale = Matrix44.from_scale((400, 400, 400), dtype='f4')
+        translate = glm.translate(glm.vec3(0.0, 2.5, -15.0))
+        rotate = glm.mat4(glm.quat(glm.vec3(np.radians(180), 0, 0)))
+        scale = glm.scale(glm.vec3(400, 400, 400))
         mat = self.camera.matrix * translate * rotate * scale
 
         # All render calls inside this context are timed

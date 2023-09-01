@@ -2,7 +2,7 @@ import moderngl
 from pathlib import Path
 import moderngl_window as mglw
 from moderngl_window import geometry
-from pyrr import Matrix44
+import glm
 
 # from moderngl_window.conf import settings
 # settings.SCREENSHOT_PATH = 'screenshots'
@@ -41,7 +41,7 @@ class Test(mglw.WindowConfig):
         self.offscreen_texture.filter = moderngl.NEAREST, moderngl.NEAREST
         self.offscreen = self.ctx.framebuffer(color_attachments=[self.offscreen_texture])
 
-        self.projection = Matrix44.orthogonal_projection(0, 320, 0, 256, -1.0, 1.0, dtype='f4')
+        self.projection = glm.orthographic(0, 320, 0, 256, -1.0, 1.0)
         self.sprite_program['projection'].write(self.projection)
 
     def render(self, time, frame_time):

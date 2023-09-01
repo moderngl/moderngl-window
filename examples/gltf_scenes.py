@@ -1,5 +1,5 @@
 from pathlib import Path
-from pyrr import Matrix44
+import glm
 
 import moderngl
 import moderngl_window as mglw
@@ -70,7 +70,7 @@ class CubeModel(CameraWindow):
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
 
         # Move camera in on the z axis slightly by default
-        translation = Matrix44.from_translation((0, 0, -1.5), dtype='f4')
+        translation = glm.translate(glm.vec3(0, 0, -1.5))
         camera_matrix = self.camera.matrix * translation
 
         self.scene.draw(

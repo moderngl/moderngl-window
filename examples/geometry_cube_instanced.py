@@ -7,7 +7,7 @@ Each cube is animated in the vertex shader offset by gl_InstanceID
 from pathlib import Path
 
 import numpy
-from pyrr import Matrix44
+import glm
 import moderngl
 import moderngl_window
 from moderngl_window import geometry
@@ -26,7 +26,7 @@ class CubeSimpleInstanced(CameraWindow):
         self.camera.projection.update(near=1, far=1000)
         self.cube = geometry.cube(size=(2, 2, 2))
         self.prog = self.load_program('programs/cube_simple_instanced.glsl')
-        self.prog['m_model'].write(Matrix44.identity(dtype='f4'))
+        self.prog['m_model'].write(glm.mat4())
 
         # Generate per instance data represeting a grid of cubes
         N = 100

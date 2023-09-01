@@ -1,6 +1,6 @@
 from unittest import TestCase
 import numpy as np
-from pyrr import Vector3
+import glm
 
 from moderngl_window.scene import Camera, KeyboardCamera
 from moderngl_window.scene import camera as cam
@@ -16,7 +16,7 @@ class CameraTest(TestCase):
         self.assertIsInstance(camera.projection, Projection3D)
         self.assertIsInstance(camera.matrix, np.ndarray)
 
-        camera.look_at(vec=Vector3((1, 2, 3)))
+        camera.look_at(vec=glm.vec3(1, 2, 3))
         camera.look_at(pos=(4, 5, 6))
         camera.set_position(1, 1, 1)
 

@@ -1,5 +1,5 @@
 from pathlib import Path
-from pyrr import Matrix44
+import glm
 
 import moderngl
 import moderngl_window
@@ -25,8 +25,8 @@ class CubeModel(CameraWindow):
     def render(self, time: float, frametime: float):
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
 
-        translation = Matrix44.from_translation((0, 0, -1.5))
-        rotation = Matrix44.from_eulers((0, 0, 0))
+        translation = glm.translate(glm.vec3(0, 0, -1.5))
+        rotation = glm.mat4(glm.quat(glm.vec3(0, 0, 0)))
         model_matrix = translation * rotation
         camera_matrix = self.camera.matrix * model_matrix
 
