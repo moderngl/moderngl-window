@@ -8,7 +8,7 @@ from collections import namedtuple
 
 import numpy
 from PIL import Image
-from pyrr import Matrix44, quaternion
+import glm
 
 import moderngl
 import moderngl_window
@@ -267,7 +267,7 @@ class Loader(BaseLoader):
         self.scene.nodes.append(node)
 
         if meta.matrix is not None:
-            node.matrix = Matrix44(value=meta.matrix)
+            node.matrix = glm.mat4(meta.matrix)
 
         if meta.mesh is not None:
             # Since we split up meshes with multiple primitives, this can be a list
@@ -743,24 +743,24 @@ class GLTFNode:
         self.scale = data.get("scale")
 
         if self.matrix:
-            self.matrix = Matrix44(self.matrix)
+            self.matrix = glm.mat4(self.matrix)
         else:
-            self.matrix = Matrix44.identity()
+            self.matrix = glm.mat4()
 
         if self.translation is not None:
-            self.matrix = self.matrix * Matrix44.from_translation(self.translation)
+            self.matrix = self.matrix * glm.translate(self.translation)
 
         if self.rotation is not None:
-            quat = quaternion.create(
+            quat = glm.quat(
+                w=self.rotation[3],
                 x=self.rotation[0],
                 y=self.rotation[1],
                 z=self.rotation[2],
-                w=self.rotation[3],
             )
-            self.matrix = self.matrix * Matrix44.from_quaternion(quat).transpose()
+            self.matrix = self.matrix * glm.transpose(glm.mat4(quat))
 
         if self.scale is not None:
-            self.matrix = self.matrix * Matrix44.from_scale(self.scale)
+            self.matrix = self.matrix * glm.scale(self.scale)
 
     @property
     def has_children(self):

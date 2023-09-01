@@ -11,7 +11,7 @@ PyQt5<6
 glfw<2
 PySDL2<1
 pygame>=2.0.1
-pyrr>=0.10
+PyGLM>=2.7.0
 pywavefront>=1.2.0,<2.0
 numpy>=1.16
 imgui<2

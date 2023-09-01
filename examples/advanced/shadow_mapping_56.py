@@ -4,7 +4,7 @@ https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mappin
 """
 import math
 from pathlib import Path
-from pyrr import Matrix44, matrix44, Vector3
+import glm
 
 import moderngl
 import moderngl_window
@@ -59,15 +59,15 @@ class ShadowMapping(CameraWindow):
 
     def render(self, time, frametime):
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
-        self.lightpos = Vector3((math.sin(time) * 20, 5, math.cos(time) * 20), dtype='f4')
-        scene_pos = Vector3((0, -5, -32), dtype='f4')
+        self.lightpos = glm.vec3(math.sin(time) * 20, 5, math.cos(time) * 20)
+        scene_pos = glm.vec3(0, -5, -32)
 
         # --- PASS 1: Render shadow map
         self.offscreen.clear()
         self.offscreen.use()
 
-        depth_projection = Matrix44.orthogonal_projection(-20, 20, -20, 20, -20, 40, dtype='f4')
-        depth_view = Matrix44.look_at(self.lightpos, (0, 0, 0), (0, 1, 0), dtype='f4')
+        depth_projection = glm.orthographic(-20, 20, -20, 20, -20, 40)
+        depth_view = glm.lookAt(self.lightpos, (0, 0, 0), (0, 1, 0))
         depth_mvp = depth_projection * depth_view
         self.shadowmap_program['mvp'].write(depth_mvp)
 
@@ -79,15 +79,14 @@ class ShadowMapping(CameraWindow):
         self.wnd.use()
         self.basic_light['m_proj'].write(self.camera.projection.matrix)
         self.basic_light['m_camera'].write(self.camera.matrix)
-        self.basic_light['m_model'].write(Matrix44.from_translation(scene_pos, dtype='f4'))
-        bias_matrix = Matrix44(
+        self.basic_light['m_model'].write(glm.translate(scene_pos))
+        bias_matrix = glm.mat4(
             [[0.5, 0.0, 0.0, 0.0],
              [0.0, 0.5, 0.0, 0.0],
              [0.0, 0.0, 0.5, 0.0],
-             [0.5, 0.5, 0.5, 1.0]],
-            dtype='f4',
+             [0.5, 0.5, 0.5, 1.0]]
         )
-        self.basic_light['m_shadow_bias'].write(matrix44.multiply(depth_mvp, bias_matrix))
+        self.basic_light['m_shadow_bias'].write(depth_mvp * bias_matrix)
         self.basic_light['lightDir'].write(self.lightpos)
         self.offscreen_depth.use(location=0)
         self.floor.render(self.basic_light)
@@ -97,7 +96,7 @@ class ShadowMapping(CameraWindow):
         # Render the sun position
         self.sun_prog['m_proj'].write(self.camera.projection.matrix)
         self.sun_prog['m_camera'].write(self.camera.matrix)
-        self.sun_prog['m_model'].write(Matrix44.from_translation(self.lightpos + scene_pos, dtype='f4'))
+        self.sun_prog['m_model'].write(glm.translate(self.lightpos + scene_pos))
         self.sun.render(self.sun_prog)
 
         # --- PASS 3: Debug ---

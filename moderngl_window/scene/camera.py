@@ -3,7 +3,8 @@ from math import cos, radians, sin
 
 import numpy
 from moderngl_window.utils.keymaps import QWERTY, KeyMapFactory
-from pyrr import Vector3, Matrix44, vector, vector3
+
+import glm
 
 from moderngl_window.opengl.projection import Projection3D
 from moderngl_window.context.base import BaseKeys
@@ -46,17 +47,17 @@ class Camera:
             near (float): Near plane
             far (float): Far plane
         """
-        self.position = Vector3([0.0, 0.0, 0.0])
+        self.position = glm.vec3(0.0, 0.0, 0.0)
         # Default camera placement
-        self.up = Vector3([0.0, 1.0, 0.0])
-        self.right = Vector3([1.0, 0.0, 0.0])
-        self.dir = Vector3([0.0, 0.0, -1.0])
+        self.up = glm.vec3(0.0, 1.0, 0.0)
+        self.right = glm.vec3(1.0, 0.0, 0.0)
+        self.dir = glm.vec3(0.0, 0.0, -1.0)
         # Yaw and Pitch
         self._yaw = -90.0
         self._pitch = 0.0
 
         # World up vector
-        self._up = Vector3([0.0, 1.0, 0.0])
+        self._up = glm.vec3(0.0, 1.0, 0.0)
 
         # Projection
         self._projection = Projection3D(aspect_ratio, fov, near, far)
@@ -74,7 +75,7 @@ class Camera:
             y (float): y position
             z (float): z position
         """
-        self.position = Vector3([float(x), float(y), float(z)])
+        self.position = glm.vec3(float(x), float(y), float(z))
 
     def set_rotation(self, yaw, pitch) -> None:
         """Set the rotation of the camera.
@@ -115,14 +116,14 @@ class Camera:
 
     def _update_yaw_and_pitch(self) -> None:
         """Updates the camera vectors based on the current yaw and pitch"""
-        front = Vector3([0.0, 0.0, 0.0])
+        front = glm.vec3(0.0, 0.0, 0.0)
         front.x = cos(radians(self.yaw)) * cos(radians(self.pitch))
         front.y = sin(radians(self.pitch))
         front.z = sin(radians(self.yaw)) * cos(radians(self.pitch))
 
-        self.dir = vector.normalise(front)
-        self.right = vector.normalise(vector3.cross(self.dir, self._up))
-        self.up = vector.normalise(vector3.cross(self.right, self.dir))
+        self.dir = glm.normalise(front)
+        self.right = glm.normalise(glm.cross(self.dir, self._up))
+        self.up = glm.normalise(glm.cross(self.right, self.dir))
 
     def look_at(self, vec=None, pos=None) -> numpy.ndarray:
         """Look at a specific point
@@ -130,13 +131,13 @@ class Camera:
         Either ``vec`` or ``pos`` needs to be supplied.
 
         Keyword Args:
-            vec (pyrr.Vector3): position
+            vec (glm.vec3): position
             pos (tuple/list): list of tuple ``[x, y, x]`` / ``(x, y, x)``
         Returns:
             numpy.ndarray: Camera matrix
         """
         if pos is not None:
-            vec = Vector3(pos)
+            vec = glm.vec3(pos)
 
         if vec is None:
             raise ValueError("vector or pos must be set")
@@ -153,16 +154,16 @@ class Camera:
         Returns:
             numpy.ndarray: The matrix
         """
-        z = vector.normalise(pos - target)
-        x = vector.normalise(vector3.cross(vector.normalise(up), z))
-        y = vector3.cross(z, x)
+        z = glm.normalise(pos - target)
+        x = glm.normalise(glm.cross(glm.normalise(up), z))
+        y = glm.cross(z, x)
 
-        translate = Matrix44.identity(dtype="f4")
+        translate = glm.mat4()
         translate[3][0] = -pos.x
         translate[3][1] = -pos.y
         translate[3][2] = -pos.z
 
-        rotate = Matrix44.identity(dtype="f4")
+        rotate = glm.mat4()
         rotate[0][0] = x[0]  # -- X
         rotate[1][0] = x[1]
         rotate[2][0] = x[2]
@@ -509,11 +510,10 @@ class OrbitCamera(Camera):
             sin(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius + self.target[2],
         )
         self.set_position(*position)
-        return Matrix44.look_at(
+        return glm.lookAt(
             position,
             self.target,  # what to look at
             self.up,  # camera up direction (change for rolling the camera)
-            dtype="f4",
         )
 
     @property

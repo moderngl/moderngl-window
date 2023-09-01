@@ -1,5 +1,5 @@
 from pathlib import Path
-from pyrr import Matrix44
+import glm
 
 import moderngl
 
@@ -30,8 +30,8 @@ class TextureArrayExample(CameraWindow):
     def render(self, time: float, frametime: float):
         self.ctx.enable_only(moderngl.CULL_FACE | moderngl.DEPTH_TEST)
 
-        rotation = Matrix44.from_eulers((time, time, time), dtype='f4')
-        translation = Matrix44.from_translation((0.0, 0.0, -3.5), dtype='f4')
+        rotation = glm.mat4(glm.quat(glm.vec3(time, time, time)))
+        translation = glm.translate(glm.vec3(0.0, 0.0, -3.5))
         modelview = translation * rotation
 
         self.prog['m_proj'].write(self.camera.projection.matrix)

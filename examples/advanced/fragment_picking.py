@@ -2,7 +2,7 @@ import struct
 from pathlib import Path
 
 import moderngl
-from pyrr import Matrix44
+import glm
 import moderngl_window
 from moderngl_window import geometry
 from moderngl_window.opengl.projection import Projection3D
@@ -126,8 +126,8 @@ class FragmentPicking(moderngl_window.WindowConfig):
     def render(self, time, frametime):
         self.ctx.enable(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
 
-        translation = Matrix44.from_translation((0, 0, -45 + self.zoom), dtype='f4')
-        rotation = Matrix44.from_eulers((self.y_rot, self.x_rot, 0), dtype='f4')
+        translation = glm.translate(glm.vec3(0, 0, -45 + self.zoom))
+        rotation = glm.mat4(glm.quat(glm.vec3(self.y_rot, self.x_rot, 0)))
         self.modelview = translation * rotation
 
         # Render the scene to offscreen buffer
