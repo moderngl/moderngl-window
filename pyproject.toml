@@ -1,0 +1,70 @@
+[project]
+name = "moderngl-window"
+version = "2.4.4"
+description = "A cross platform helper library for ModernGL making window creation and resource loading simple"
+readme = "README.md"
+authors = [
+    {name="Einar Forselv", email="eforselv@gmail.com"}
+]
+requires-python = ">=3.8"
+license = {file = "license.rst"}
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Games/Entertainment",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Multimedia :: Graphics :: 3D Rendering",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+# zip-safe = false
+dependencies = [
+    "moderngl<6",
+    "pyglet~=2.0.0",
+    "numpy>=1.16,<2",
+    "pyrr>=0.10.3,<1",
+    "Pillow>=9,<10",
+]
+
+[tool.setuptools.packages.find]
+include = ["moderngl_window", "moderngl_window.*"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "mypy",
+    "flake8",
+    "coverage",
+]
+docs = [
+    "Sphinx==2.2.0",
+    "sphinx-rtd-theme==0.4.3",
+    "sphinxcontrib-napoleon==0.7",
+    "doc8",
+]
+pygame = ["pygame>=2.0.1"]
+pygame-ce = ["pygame-ce>=2.0.1"]
+tk = ["pyopengltk>=0.0.3"]
+trimesh = ["trimesh>=3.2.6,<4"]
+pywavefront = ["pywavefront>=1.2.0,<2"]
+PySDL2 = ["PySDL2"]
+glfw = ["glfw"]
+pyqt5 = ["PyQt5"]
+PySide2 = ["PySide2<6"]
+pdf = ["ReportLab>=1.2"]
+
+[project.urls]
+Source = "https://github.com/moderngl/moderngl_window"
+Documentation = "https://moderngl-window.readthedocs.io"
+ModernGL = "https://github.com/moderngl/moderngl"
+
+[tool.coverage.run]
+source = ["moderngl_window"]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"

@@ -38,7 +38,7 @@ you provide us your `moderngl.Context`.
 ## Install
 
 ```bash
-pip install moderngl-window
+$ pip install moderngl-window
 ```
 
 ## Supported Platforms
@@ -67,13 +67,13 @@ Test.run()
 Run the example with different window backends:
 
 ```bash
-python test.py --window pyglet
-python test.py --window pygame2
-python test.py --window glfw
-python test.py --window sdl2
-python test.py --window pyside2
-python test.py --window pyqt5
-python test.py --window tk
+$ python test.py --window pyglet
+$ python test.py --window pygame2
+$ python test.py --window glfw
+$ python test.py --window sdl2
+$ python test.py --window pyside2
+$ python test.py --window pyqt5
+$ python test.py --window tk
 ```
 
 `WindowConfig` classes are the simplest way to get started without knowing
@@ -88,9 +88,8 @@ We assume the user knows how to handle virtualenvs.
 # Install the package in editable mode
 $ pip install -e .
 
-# Set up and dev requirements
-pip install -r requirements.txt
-pip install -r tests/requirements.txt
+# Install test and development requirements
+$ pip install -e .[tests]
 ```
 
 ## Running Tests
@@ -98,19 +97,19 @@ pip install -r tests/requirements.txt
 Tests are set up with `tox` running pytest with coverage and flake8.
 
 ```bash
-pip install -r tests/requirements.txt
-tox -e py36
-tox -e py37
-tox -e py38
-tox -e py39
-tox -e pep8
+$ pip install -e .[tests]
+$ tox -e py36
+$ tox -e py37
+$ tox -e py38
+$ tox -e py39
+$ tox -e pep8
 ```
 
 ## Building Docs
 
 ```bash
-pip install -r docs/requirements.txt
-python setup.py build_sphinx
+$ pip install -e .[docs]
+$ sphinx-build -b html docs docs/_build
 ```
 
 ## Contributing
