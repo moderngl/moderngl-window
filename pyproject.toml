@@ -68,3 +68,16 @@ source = ["moderngl_window"]
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.flake8]
+ignore = [
+    "W503",
+    "C901",
+]
+max-complexity = 10
+max-line-length = 120
+exclude = [
+    "tests/",
+    "docs/",
+    "temp/",
+]
