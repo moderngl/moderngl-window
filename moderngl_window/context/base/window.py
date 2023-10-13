@@ -1,10 +1,10 @@
-from argparse import ArgumentParser, Namespace
+from argparse import ArgumentParser
 from functools import wraps
 from pathlib import Path
 import logging
 import sys
 import weakref
-from typing import Any, Tuple, Type, List
+from typing import Any, Tuple, Type, List, Optional
 
 import moderngl
 from moderngl_window.context.base import KeyModifiers, BaseKeys
@@ -87,6 +87,7 @@ class BaseWindow:
         aspect_ratio: float = None,
         samples=0,
         cursor=True,
+        backend: Optional[str] = None,
         **kwargs
     ):
         """Initialize a window instance.
@@ -114,6 +115,9 @@ class BaseWindow:
         self._fixed_aspect_ratio = aspect_ratio
         self._samples = samples
         self._cursor = cursor
+        self._backend = backend
+        self._headless = False
+
         self._exit_key = self.keys.ESCAPE
         self._fs_key = self.keys.F11
 
@@ -130,6 +134,7 @@ class BaseWindow:
         self._mouse_scroll_event_func = dummy_func
         self._unicode_char_entered_func = dummy_func
         self._files_dropped_event_func = dummy_func
+        self._on_generic_event_func = dummy_func
 
         # Internal states
         self._ctx = None  # type: moderngl.Context
@@ -171,6 +176,22 @@ class BaseWindow:
     def ctx(self) -> moderngl.Context:
         """moderngl.Context: The ModernGL context for the window"""
         return self._ctx
+
+    @property
+    def backend(self) -> Optional[str]:
+        """
+        Name of the context backend.
+
+        This is ``None`` unless a backend is explicitly specified
+        during context creation. The main use case for this is to
+        enable EGL in headless mode.
+        """
+        return self._backend
+
+    @property
+    def headless(self) -> bool:
+        """bool: Is the window headless?"""
+        return self._headless
 
     @property
     def fbo(self) -> moderngl.Framebuffer:
@@ -381,6 +402,11 @@ class BaseWindow:
     def vsync(self) -> bool:
         """bool: vertical sync enabled/disabled"""
         return self._vsync
+
+    @vsync.setter
+    def vsync(self, value: bool):
+        self._set_vsync(value)
+        self._vsync = value
 
     @property
     def aspect_ratio(self) -> float:
@@ -635,7 +661,7 @@ class BaseWindow:
         elif y_flipped and not x_flipped:
             return (x, self.height - y)
         else:
-            return(self.width - x, self.height - y)
+            return (self.width - x, self.height - y)
 
     def is_key_pressed(self, key) -> bool:
         """Returns: The press state of a key"""
@@ -731,6 +757,13 @@ class BaseWindow:
             )
         )
 
+    def _set_vsync(self, value: bool) -> None:
+        raise NotImplementedError(
+            "Toggling vsync is currently not supported by Window-type: {}".format(
+                self.name
+            )
+        )
+
     def destroy(self) -> None:
         """
         A library specific destroy method is required
@@ -806,6 +839,16 @@ class BaseWindow:
         dx, dy = xpos - self._mouse_pos[0], ypos - self._mouse_pos[1]
         self._mouse_pos = xpos, ypos
         return dx, dy
+
+    @property
+    def on_generic_event_func(self):
+        """callable: Get or set the on_generic_event callable used to funnel all non-processed events"""
+        return self._mouse_position_event_func
+
+    @on_generic_event_func.setter
+    @require_callable
+    def on_generic_event_func(self, func):
+        self._on_generic_event_func = func
 
 
 class WindowConfig:
@@ -1012,7 +1055,7 @@ class WindowConfig:
     def assign_event_callbacks(self):
         """
         Look for methods in the class instance and assign them to callbacks.
-        This method is call by ``__init__``.        
+        This method is call by ``__init__``.
         """
         self.wnd.render_func = getattr(self, "render", dummy_func)
         self.wnd.resize_func = getattr(self, "resize", dummy_func)

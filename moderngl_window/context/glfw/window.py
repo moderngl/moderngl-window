@@ -40,17 +40,19 @@ class Window(BaseWindow):
         glfw.window_hint(glfw.RESIZABLE, self.resizable)
         glfw.window_hint(glfw.DOUBLEBUFFER, True)
         glfw.window_hint(glfw.DEPTH_BITS, 24)
+        glfw.window_hint(glfw.STENCIL_BITS, 8)
         glfw.window_hint(glfw.SAMPLES, self.samples)
         glfw.window_hint(glfw.SCALE_TO_MONITOR, glfw.TRUE)
 
         monitor = None
-        if self.fullscreen:
-            self._set_fullscreen(True)
 
         self._window = glfw.create_window(
             self.width, self.height, self.title, monitor, None
         )
         self._has_focus = True
+
+        if self.fullscreen:
+            self._set_fullscreen(True)
 
         if not self._window:
             glfw.terminate()
@@ -122,6 +124,9 @@ class Window(BaseWindow):
             glfw.swap_interval(1)
         else:
             glfw.swap_interval(0)
+
+    def _set_vsync(self, value: bool) -> None:
+        glfw.swap_interval(value)
 
     @property
     def size(self) -> Tuple[int, int]:

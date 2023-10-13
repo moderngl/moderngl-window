@@ -6,7 +6,7 @@
 moderngl_window
 ===============
 
-General helper functions aiding in the boostrapping of this library.
+General helper functions aiding in the bootstrapping of this library.
 
 .. autofunction:: setup_basic_logging
 .. autofunction:: activate_context

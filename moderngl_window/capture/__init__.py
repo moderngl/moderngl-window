@@ -1,2 +1,2 @@
-from .base import BaseVideoCapture
-from .ffmpeg import FFmpegCapture
+from .base import BaseVideoCapture  # noqa
+from .ffmpeg import FFmpegCapture  # noqa

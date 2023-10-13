@@ -12,7 +12,7 @@ def quad_fs(attr_names=AttributeNames, normals=True, uvs=True, name=None) -> VAO
     Keyword Args:
         attr_names (AttributeNames): Attrib name config
         normals (bool): Include normals in VAO
-        uvs (bool): Include normals in VAO
+        uvs (bool): Include texture coordinates in VAO
         name (str): Optional name for the VAO
     Returns:
         A :py:class:`~moderngl_window.opengl.vao.VAO` instance.
@@ -37,7 +37,7 @@ def quad_2d(
         size (tuple): width and height
         pos (float): Center position x and y
         normals (bool): Include normals in VAO
-        uvs (bool): Include normals in VAO
+        uvs (bool): Include texture coordinates in VAO
         attr_names (AttributeNames): Attrib name config
         name (str): Optional name for the VAO
     Returns:

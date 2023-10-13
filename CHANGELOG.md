@@ -1,5 +1,45 @@
 # Changelog
 
+## 2.4.4
+
+* Added `--backend` option to specify context backend. 
+  This is mostly for the headless window to enable EGL.
+* Window now has a ``backend`` property containing the name of the context backend
+* Window now has a ``headless`` boolean property to check if the window is headless.
+  This is useful for adding headless only paths in your code.
+* Added stencil bits to window framebuffers by default
+
+## 2.4.3
+
+* Fix compatibility with moderngl 5.8.x
+* Camera now has keymap support (QWERTY, AZERTY etc) 
+
+## 2.4.2
+
+* Allow toggling vsync and runtime for most windows
+* Allow rendering with imgui in headless mode
+* Fixed a crash when using fullscreen mode with glfw
+* Support moving OrbitCamera
+* Added SSAO example
+* Added `on_generic_event` callback for pygame user events
+* Fixed zoom sensitivity getter returning the wrong value
+* Fixed several typos
+* Bumped several dependencies to reasonable versions
+
+Thanks to @Rafale25, @n3onUser, @erikstrand (Erik Strand),
+@sheepman4267 and @dbs4261 (Daniel Simon) for contributions to this release.
+
+## 2.4.1
+
+* Experimental support for ffmpeg capture
+* Event callbacks can now be assigned in WindowConfig.__init__
+* Initial support for confirming window close (glfw)
+* Fixed a crash when closing a pyglet window
+* Remove some spammy prints in the text writer
+
+Thanks to @DavideRuzza, @wk39 and @joehalliwell for their
+contributions to this release.
+
 ## 2.4.0
 
 Python 3.5 is no longer supported from this version.
@@ -10,7 +50,7 @@ New Features
 * Various smaller improvements
 * F11 now toggles fullscreen mode by default
 * Window modules are now fetched from `moderngl_window.WINDOW_CLASSES`
-  as a fallback. This is necessary in some enviroments.
+  as a fallback. This is necessary in some environments.
 * Absolute paths will now bypass all registered resource directories
   and load the specified file directly.
 

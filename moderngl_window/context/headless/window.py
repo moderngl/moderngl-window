@@ -20,6 +20,7 @@ class Window(BaseWindow):
         self._vsync = False  # We don't care about vsync in headless mode
         self._resizable = False  # headless window is not resizable
         self._cursor = False  # Headless don't have a cursor
+        self._headless = True
         self.init_mgl_context()
         self.set_default_viewport()
 
@@ -30,7 +31,16 @@ class Window(BaseWindow):
 
     def init_mgl_context(self) -> None:
         """Create an standalone context and framebuffer"""
-        self._ctx = moderngl.create_standalone_context(require=self.gl_version_code)
+        if self._backend:
+            self._ctx = moderngl.create_standalone_context(
+                require=self.gl_version_code,
+                backend=self._backend,
+            )
+        else:
+            self._ctx = moderngl.create_standalone_context(
+                require=self.gl_version_code,
+            )
+
         self._fbo = self.ctx.framebuffer(
             color_attachments=self.ctx.texture(self.size, 4, samples=self._samples),
             depth_attachment=self.ctx.depth_texture(self.size, samples=self._samples),
@@ -73,6 +83,9 @@ class Window(BaseWindow):
 
     def _set_fullscreen(self, value: bool) -> None:
         """Do nothing when fullscreen is toggled"""
+        pass
+
+    def _set_vsync(self, value: bool) -> None:
         pass
 
     def destroy(self) -> None:

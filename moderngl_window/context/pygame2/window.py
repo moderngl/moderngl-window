@@ -41,6 +41,7 @@ class Window(BaseWindow):
         pygame.display.gl_set_attribute(pygame.GL_CONTEXT_FORWARD_COMPATIBLE_FLAG, 1)
         pygame.display.gl_set_attribute(pygame.GL_DOUBLEBUFFER, 1)
         pygame.display.gl_set_attribute(pygame.GL_DEPTH_SIZE, 24)
+        pygame.display.gl_set_attribute(pygame.GL_STENCIL_SIZE, 8)
 
         if self.samples > 1:
             pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLEBUFFERS, 1)
@@ -67,7 +68,7 @@ class Window(BaseWindow):
 
     def _set_mode(self):
         self._surface = pygame.display.set_mode(
-            size=(self._width, self._height), flags=self._flags, depth=self._depth,
+            size=(self._width, self._height), flags=self._flags, depth=self._depth, vsync=self._vsync
         )
 
     def _set_fullscreen(self, value: bool) -> None:
@@ -75,6 +76,10 @@ class Window(BaseWindow):
             self._sdl_window.set_fullscreen(True)
         else:
             self._sdl_window.set_windowed()
+
+    def _set_vsync(self, value: bool) -> None:
+        self._vsync = value
+        self._set_mode()
 
     @property
     def size(self) -> Tuple[int, int]:
@@ -282,7 +287,7 @@ class Window(BaseWindow):
                 #         print("Window lost focus")
 
                 # Window iconify state
-                if event.state == 2:
+                if getattr(event, 'state', None) == 2:
                     if event.gain:
                         self._iconify_func(False)
                     else:
@@ -292,6 +297,9 @@ class Window(BaseWindow):
             # elif event.type == pygame.VIDEOEXPOSE:
             #     # On OS X we only get VIDEOEXPOSE when restoring the windoe
             #     self._iconify_func(False)
+
+            elif event.type == pygame.USEREVENT:
+                self._on_generic_event_func(event)
 
     def destroy(self) -> None:
         """Gracefully close the window"""

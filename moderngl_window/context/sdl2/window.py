@@ -42,6 +42,7 @@ class Window(BaseWindow):
         sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG, 1)
         sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_DOUBLEBUFFER, 1)
         sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_DEPTH_SIZE, 24)
+        sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_STENCIL_SIZE, 8)
 
         self.cursor = self._cursor
 
@@ -79,6 +80,9 @@ class Window(BaseWindow):
         sdl2.SDL_SetWindowFullscreen(
             self._window, sdl2.SDL_WINDOW_FULLSCREEN_DESKTOP if value else 0
         )
+
+    def _set_vsync(self, value: bool) -> None:
+        sdl2.video.SDL_GL_SetSwapInterval(1 if value else 0)
 
     def _get_drawable_size(self):
         x = c_int()

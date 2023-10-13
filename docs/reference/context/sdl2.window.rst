@@ -35,6 +35,8 @@ Attributes
 .. autoattribute:: Window.keys
    :annotation:
 .. autoattribute:: Window.ctx
+.. autoattribute:: Window.backend
+.. autoattribute:: Window.headless
 .. autoattribute:: Window.fbo
 .. autoattribute:: Window.title
 .. autoattribute:: Window.exit_key
@@ -68,6 +70,7 @@ Attributes
 .. autoattribute:: Window.close_func
 .. autoattribute:: Window.iconify_func
 .. autoattribute:: Window.key_event_func
+.. autoattribute:: Window.on_generic_event_func
 .. autoattribute:: Window.mouse_position_event_func
 .. autoattribute:: Window.mouse_press_event_func
 .. autoattribute:: Window.mouse_release_event_func

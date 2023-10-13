@@ -2,6 +2,7 @@ import time
 from math import cos, radians, sin
 
 import numpy
+from moderngl_window.utils.keymaps import QWERTY, KeyMapFactory
 from pyrr import Vector3, Matrix44, vector, vector3
 
 from moderngl_window.opengl.projection import Projection3D
@@ -204,12 +205,13 @@ class KeyboardCamera(Camera):
         camera.projection.tobytes()
     """
 
-    def __init__(self, keys: BaseKeys, fov=60.0, aspect_ratio=1.0, near=1.0, far=100.0):
+    def __init__(self, keys: BaseKeys, keymap: KeyMapFactory = QWERTY, fov=60.0, aspect_ratio=1.0, near=1.0, far=100.0):
         """Initialize the camera
 
         Args:
             keys (BaseKeys): The key constants for the current window type
         Keyword Args:
+            keymap (KeyMapFactory) : The keymap to use. By default QWERTY.
             fov (float): Field of view
             aspect_ratio (float): Aspect ratio
             near (float): near plane
@@ -217,6 +219,7 @@ class KeyboardCamera(Camera):
         """
         # Position movement states
         self.keys = keys
+        self.keymap = keymap(keys)
         self._xdir = STILL
         self._zdir = STILL
         self._ydir = STILL
@@ -266,39 +269,39 @@ class KeyboardCamera(Camera):
             modifiers: key modifier states such as ctrl or shit
         """
         # Right
-        if key == self.keys.D:
+        if key == self.keymap.RIGHT:
             if action == self.keys.ACTION_PRESS:
                 self.move_right(True)
             elif action == self.keys.ACTION_RELEASE:
                 self.move_right(False)
         # Left
-        elif key == self.keys.A:
+        elif key == self.keymap.LEFT:
             if action == self.keys.ACTION_PRESS:
                 self.move_left(True)
             elif action == self.keys.ACTION_RELEASE:
                 self.move_left(False)
         # Forward
-        elif key == self.keys.W:
+        elif key == self.keymap.FORWARD:
             if action == self.keys.ACTION_PRESS:
                 self.move_forward(True)
             if action == self.keys.ACTION_RELEASE:
                 self.move_forward(False)
         # Backwards
-        elif key == self.keys.S:
+        elif key == self.keymap.BACKWARD:
             if action == self.keys.ACTION_PRESS:
                 self.move_backward(True)
             if action == self.keys.ACTION_RELEASE:
                 self.move_backward(False)
 
-        # UP
-        elif key == self.keys.Q:
+        # DOWN
+        elif key == self.keymap.DOWN:
             if action == self.keys.ACTION_PRESS:
                 self.move_down(True)
             if action == self.keys.ACTION_RELEASE:
                 self.move_down(False)
 
-        # Down
-        elif key == self.keys.E:
+        # UP
+        elif key == self.keymap.UP:
             if action == self.keys.ACTION_PRESS:
                 self.move_up(True)
             if action == self.keys.ACTION_RELEASE:
@@ -499,14 +502,15 @@ class OrbitCamera(Camera):
     @property
     def matrix(self) -> numpy.ndarray:
         """numpy.ndarray: The current view matrix for the camera"""
+        # Compute camera (eye) position, calculated from angles and radius.
+        position = (
+            cos(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius + self.target[0],
+            cos(radians(self.angle_y)) * self.radius + self.target[1],
+            sin(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius + self.target[2],
+        )
+        self.set_position(*position)
         return Matrix44.look_at(
-            (
-                cos(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius
-                + self.target[0],
-                cos(radians(self.angle_y)) * self.radius + self.target[1],
-                sin(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius
-                + self.target[2],
-            ),  # camera (eye) position, calculated from angles and radius
+            position,
             self.target,  # what to look at
             self.up,  # camera up direction (change for rolling the camera)
             dtype="f4",
@@ -560,7 +564,7 @@ class OrbitCamera(Camera):
         This property can also be set::
             camera.zoom_sensitivity = 2.5
         """
-        return self._mouse_sensitivity
+        return self._zoom_sensitivity
 
     @zoom_sensitivity.setter
     def zoom_sensitivity(self, value: float):

@@ -1,5 +1,5 @@
 [flake8]
 ignore = W503,C901
 max-line-length = 120
-exclude = tests/*,temp/
+exclude = tests/*,temp/,.tox,.venv
 max-complexity = 10

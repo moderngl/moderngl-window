@@ -5,20 +5,19 @@ import datetime
 import moderngl
 from moderngl_window.timers.clock import Timer
 
+
 class BaseVideoCapture:
     """
         ``BaseVideoCapture`` is a base class to video capture
 
         Args:
-            source (modergl.Texture, moderngl.Framebuffer): the source of the capture
+            source (moderngl.Texture, moderngl.Framebuffer): the source of the capture
             framerate (int, float) : the framerate of the video, by thefault is 60 fps
 
         if the source is texture there are some requirements:
             - dtype = 'f1';
             - components >= 3.
-        
     """
-
 
     def __init__(
         self,
@@ -31,8 +30,8 @@ class BaseVideoCapture:
 
         self._recording = False
 
-        self._last_time : float = None
-        self._filename : str = None
+        self._last_time: float = None
+        self._filename: str = None
         self._width: int = None
         self._height: int = None
 
@@ -43,16 +42,15 @@ class BaseVideoCapture:
         if isinstance(self._source, moderngl.Texture):
             self._components = self._source.components
 
-
     def _dump_frame(self, frame):
         """
-            custom function called during self.save() 
+            custom function called during self.save()
 
             Args:
                 frame: frame data in bytes
         """
         raise NotImplementedError("override this function")
-    
+
     def _start_func(self) -> bool:
         """
             custom function called during self.start_capture()
@@ -63,7 +61,7 @@ class BaseVideoCapture:
 
     def _release_func(self):
         """
-            custom function called during self.realease() 
+            custom function called during self.realease()
         """
         raise NotImplementedError("override this function")
 
@@ -72,7 +70,7 @@ class BaseVideoCapture:
             Return a tuple of the width and the height of the source
         """
         return self._source.width, self._source.height
-    
+
     def _remove_file(self):
         """ Remove the filename of the video is it exist """
         if os.path.exists(self._filename):
@@ -85,10 +83,9 @@ class BaseVideoCapture:
             Args:
                 filename (str): name of the output file
                 framerate (int, float): framerate of the video
-            
+
             if filename is not specified it will be generated based
             on the datetime.
-
         """
         if self._recording:
             print("Capturing is already started")
@@ -101,24 +98,24 @@ class BaseVideoCapture:
                 return
             if self._components < 3:
                 print("source type: moderngl.Texture must have at least 3 components")
-                return 
+                return
 
         if not filename:
             now = datetime.datetime.now()
             filename = f'video_{now:%Y%m%d_%H%M%S}.mp4'
-        
+
         self._filename = filename
 
         self._framerate = framerate
         self._width, self._height = self._get_wh()
 
         # if something goes wrong with the start
-        # function, just stop and release the 
-        # capturing process 
+        # function, just stop and release the
+        # capturing process
         if not self._start_func():
             self.release()
             print("Capturing failed")
-            return 
+            return
 
         self._timer.start()
         self._last_time = self._timer.time
@@ -131,10 +128,10 @@ class BaseVideoCapture:
         if not self._recording:
             return
 
-        dt = 1./self._framerate
+        dt = 1. / self._framerate
 
-        if self._timer.time-self._last_time > dt:
-            
+        if self._timer.time - self._last_time > dt:
+
             # start counting
             self._last_time = self._timer.time
 
@@ -146,7 +143,7 @@ class BaseVideoCapture:
                 # get data from texture
                 frame = self._source.read()
                 self._dump_frame(frame)
-     
+
     def release(self):
         """
         Stop the recording process
@@ -157,5 +154,3 @@ class BaseVideoCapture:
             self._timer.stop()
             print(f"Video file succesfully saved as {self._filename}")
         self._recording = None
-    
-

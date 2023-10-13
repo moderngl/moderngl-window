@@ -37,6 +37,11 @@ class Window(BaseWindow):
             major_version=self.gl_version[0],
             minor_version=self.gl_version[1],
             forward_compatible=True,
+            red_size=8,
+            green_size=8,
+            blue_size=8,
+            alpha_size=8,
+            stencil_size=8,
             depth_size=24,
             double_buffer=True,
             sample_buffers=1 if self.samples > 1 else 0,
@@ -194,6 +199,9 @@ class Window(BaseWindow):
     def _set_icon(self, icon_path: str) -> None:
         icon = pyglet.image.load(icon_path)
         self._window.set_icon(icon)
+
+    def _set_vsync(self, value: bool) -> None:
+        self._window.set_vsync(value)
 
     def on_key_press(self, symbol, modifiers):
         """Pyglet specific key press callback.
