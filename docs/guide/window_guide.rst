@@ -74,15 +74,6 @@ The ``swap_buffers`` method is important as it also pulls new input
 events for the next frame.
 
 
-
-
-
-
-
-
-
-
-
 Old Guide
 =========
 

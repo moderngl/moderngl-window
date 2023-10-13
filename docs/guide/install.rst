@@ -9,7 +9,7 @@ moderngl-window is available on PyPI::
 
     pip install moderngl-window
 
-Optional dependencies
+Optional Dependencies
 ---------------------
 
 We try to have as few requirements as possible and instead offer
@@ -58,8 +58,9 @@ Installing from source
     # Install moderngl-window in editable mode
     pip install -e .
 
-    # Install optional dev dependencies covering all window and loader types
-    pip install -r requirements.txt
+    # Install optional dev dependencies
+    pip install -e .[dev]
+    pip install -e .[docs]
 
 Installing the package in editable mode will make you able
 to run tests and examples. We highly recommend using
@@ -70,26 +71,13 @@ Running examples
 
 Assuming you installed from source you should be able to run the examples
 in the `examples` directory directly after installing the dev requirements
-in the root of the project::
-
-    pip install -r requirements.txt
+in the root of the project.
 
 Running tests
 -------------
 
-Install test requirements::
-
-    pip install -r tests/requirements.txt
+Assuming dev requirements are installed.
 
 Run tests with ``tox``::
 
-    # Run for specific environment
-    tox -e py35
-    tox -e py36
-    tox -e py37
-
-    # pep8 run
-    tox -e pep8
-
-    # Run all environments
-    tox
+    pytest
