@@ -88,8 +88,8 @@ We assume the user knows how to handle virtualenvs.
 # Install the package in editable mode
 $ pip install -e .
 
-# Install test and development requirements
-$ pip install -e .[tests]
+# Install development requirements
+$ pip install -e .[dev]
 ```
 
 ## Running Tests
@@ -97,7 +97,7 @@ $ pip install -e .[tests]
 Tests are set up with `tox` running pytest with coverage and flake8.
 
 ```bash
-$ pip install -e .[tests]
+$ pip install -e .[dev]
 $ tox -e py36
 $ tox -e py37
 $ tox -e py38
@@ -108,7 +108,7 @@ $ tox -e pep8
 ## Building Docs
 
 ```bash
-$ pip install -e .[docs]
+$ pip install -e .[dev]
 $ sphinx-build -b html docs docs/_build
 ```
 
