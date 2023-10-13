@@ -1,6 +1,6 @@
 [project]
 name = "moderngl-window"
-version = "2.4.4"
+version = "2.4.5"
 description = "A cross platform helper library for ModernGL making window creation and resource loading simple"
 readme = "README.md"
 authors = [
@@ -42,6 +42,7 @@ dev = [
     "pywavefront",
     "trimesh",
     "scipy",
+    "build",
 ]
 docs = [
     "Sphinx~=7.2.6 ",

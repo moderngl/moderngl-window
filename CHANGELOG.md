@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.4.5
+
+* Reorganized the project using pyproject.toml
+* Upgraded docs dependencies
+
 ## 2.4.4
 
 * Added `--backend` option to specify context backend. 
