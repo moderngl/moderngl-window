@@ -94,15 +94,10 @@ $ pip install -e .[dev]
 
 ## Running Tests
 
-Tests are set up with `tox` running pytest with coverage and flake8.
+With dev requirements installed:
 
-```bash
-$ pip install -e .[dev]
-$ tox -e py36
-$ tox -e py37
-$ tox -e py38
-$ tox -e py39
-$ tox -e pep8
+```
+pytest
 ```
 
 ## Building Docs
