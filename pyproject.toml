@@ -39,6 +39,9 @@ dev = [
     "mypy",
     "flake8",
     "coverage",
+    "pywavefront",
+    "trimesh",
+    "scipy",
 ]
 docs = [
     "Sphinx==2.2.0",
