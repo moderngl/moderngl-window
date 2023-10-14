@@ -387,9 +387,7 @@ class GLTFMeta:
 
     def check_version(self, required="2.0"):
         if not self.version == required:
-            msg = "GLTF Format version is not 2.0. Version states '{}' in file {}".format(
-                self.version, self.path,
-            )
+            msg = f"GLTF Format version is not 2.0. Version states '{self.version}' in file {self.path}"
             raise ValueError(msg)
 
     def check_extensions(self, supported):
@@ -400,12 +398,12 @@ class GLTFMeta:
         if self.data.get("extensionsRequired"):
             for ext in self.data.get("extensionsRequired"):
                 if ext not in supported:
-                    raise ValueError("Extension {} not supported".format(ext))
+                    raise ValueError(f"Extension {ext} not supported")
 
         if self.data.get("extensionsUsed"):
             for ext in self.data.get("extensionsUsed"):
                 if ext not in supported:
-                    raise ValueError("Extension {} not supported".format(ext))
+                    raise ValueError("Extension {ext} not supported")
 
     def buffers_exist(self):
         """Checks if the bin files referenced exist"""

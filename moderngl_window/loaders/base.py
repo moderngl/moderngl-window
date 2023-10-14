@@ -11,8 +11,7 @@ logger = logging.getLogger(__name__)
 
 class BaseLoader:
     """Base loader class for all resources"""
-
-    kind = None
+    kind = "unknown"
     """
     The kind of resource this loaded supports.
     This can be used when file extensions is not enough

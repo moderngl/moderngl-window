@@ -8,9 +8,9 @@ class ResourceDescription:
     This class can be extended to add more specific properties.
     """
 
-    default_kind = None  # The default kind of loader
+    default_kind = ""  # The default kind of loader
     """str: The default kind for this resource type"""
-    resource_type = None  # What resource type is described
+    resource_type = ""  # What resource type is described
     """str: A unique identifier for the resource type"""
 
     def __init__(self, **kwargs):

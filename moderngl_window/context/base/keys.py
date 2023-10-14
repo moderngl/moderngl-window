@@ -1,12 +1,12 @@
 # flake8: noqa E741
-
+from typing import Any
 
 class KeyModifiers:
     """Namespace for storing key modifiers"""
 
-    shift = False
-    ctrl = False
-    alt = False
+    shift: Any = False
+    ctrl: Any = False
+    alt: Any = False
 
     def __repr__(self):
         return str(self)
@@ -24,94 +24,94 @@ class BaseKeys:
     """
 
     # Fallback press/release action when window libraries don't have this
-    ACTION_PRESS = "ACTION_PRESS"
-    ACTION_RELEASE = "ACTION_RELEASE"
+    ACTION_PRESS: Any = "ACTION_PRESS"
+    ACTION_RELEASE: Any = "ACTION_RELEASE"
 
-    ESCAPE = None
-    SPACE = None
-    ENTER = None
-    PAGE_UP = None
-    PAGE_DOWN = None
-    LEFT = None
-    RIGHT = None
-    UP = None
-    DOWN = None
+    ESCAPE: Any = "undefined"
+    SPACE: Any = "undefined"
+    ENTER: Any = "undefined"
+    PAGE_UP: Any = "undefined"
+    PAGE_DOWN: Any = "undefined"
+    LEFT: Any = "undefined"
+    RIGHT: Any = "undefined"
+    UP: Any = "undefined"
+    DOWN: Any = "undefined"
 
-    TAB = None
-    COMMA = None
-    MINUS = None
-    PERIOD = None
-    SLASH = None
-    SEMICOLON = None
-    EQUAL = None
-    LEFT_BRACKET = None
-    RIGHT_BRACKET = None
-    BACKSLASH = None
-    BACKSPACE = None
-    INSERT = None
-    DELETE = None
-    HOME = None
-    END = None
-    CAPS_LOCK = None
+    TAB: Any = "undefined"
+    COMMA: Any = "undefined"
+    MINUS: Any = "undefined"
+    PERIOD: Any = "undefined"
+    SLASH: Any = "undefined"
+    SEMICOLON: Any = "undefined"
+    EQUAL: Any = "undefined"
+    LEFT_BRACKET: Any = "undefined"
+    RIGHT_BRACKET: Any = "undefined"
+    BACKSLASH: Any = "undefined"
+    BACKSPACE: Any = "undefined"
+    INSERT: Any = "undefined"
+    DELETE: Any = "undefined"
+    HOME: Any = "undefined"
+    END: Any = "undefined"
+    CAPS_LOCK: Any = "undefined"
 
-    F1 = None
-    F2 = None
-    F3 = None
-    F4 = None
-    F5 = None
-    F6 = None
-    F7 = None
-    F8 = None
-    F9 = None
-    F10 = None
-    F11 = None
-    F12 = None
+    F1: Any = "undefined"
+    F2: Any = "undefined"
+    F3: Any = "undefined"
+    F4: Any = "undefined"
+    F5: Any = "undefined"
+    F6: Any = "undefined"
+    F7: Any = "undefined"
+    F8: Any = "undefined"
+    F9: Any = "undefined"
+    F10: Any = "undefined"
+    F11: Any = "undefined"
+    F12: Any = "undefined"
 
-    NUMBER_0 = None
-    NUMBER_1 = None
-    NUMBER_2 = None
-    NUMBER_3 = None
-    NUMBER_4 = None
-    NUMBER_5 = None
-    NUMBER_6 = None
-    NUMBER_7 = None
-    NUMBER_8 = None
-    NUMBER_9 = None
+    NUMBER_0: Any = "undefined"
+    NUMBER_1: Any = "undefined"
+    NUMBER_2: Any = "undefined"
+    NUMBER_3: Any = "undefined"
+    NUMBER_4: Any = "undefined"
+    NUMBER_5: Any = "undefined"
+    NUMBER_6: Any = "undefined"
+    NUMBER_7: Any = "undefined"
+    NUMBER_8: Any = "undefined"
+    NUMBER_9: Any = "undefined"
 
-    NUMPAD_0 = None
-    NUMPAD_1 = None
-    NUMPAD_2 = None
-    NUMPAD_3 = None
-    NUMPAD_4 = None
-    NUMPAD_5 = None
-    NUMPAD_6 = None
-    NUMPAD_7 = None
-    NUMPAD_8 = None
-    NUMPAD_9 = None
+    NUMPAD_0: Any = "undefined"
+    NUMPAD_1: Any = "undefined"
+    NUMPAD_2: Any = "undefined"
+    NUMPAD_3: Any = "undefined"
+    NUMPAD_4: Any = "undefined"
+    NUMPAD_5: Any = "undefined"
+    NUMPAD_6: Any = "undefined"
+    NUMPAD_7: Any = "undefined"
+    NUMPAD_8: Any = "undefined"
+    NUMPAD_9: Any = "undefined"
 
-    A = None
-    B = None
-    C = None
-    D = None
-    E = None
-    F = None
-    G = None
-    H = None
-    I = None
-    J = None
-    K = None
-    L = None
-    M = None
-    N = None
-    O = None
-    P = None
-    Q = None
-    R = None
-    S = None
-    T = None
-    U = None
-    V = None
-    W = None
-    X = None
-    Y = None
-    Z = None
+    A: Any = "undefined"
+    B: Any = "undefined"
+    C: Any = "undefined"
+    D: Any = "undefined"
+    E: Any = "undefined"
+    F: Any = "undefined"
+    G: Any = "undefined"
+    H: Any = "undefined"
+    I: Any = "undefined"
+    J: Any = "undefined"
+    K: Any = "undefined"
+    L: Any = "undefined"
+    M: Any = "undefined"
+    N: Any = "undefined"
+    O: Any = "undefined"
+    P: Any = "undefined"
+    Q: Any = "undefined"
+    R: Any = "undefined"
+    S: Any = "undefined"
+    T: Any = "undefined"
+    U: Any = "undefined"
+    V: Any = "undefined"
+    W: Any = "undefined"
+    X: Any = "undefined"
+    Y: Any = "undefined"
+    Z: Any = "undefined"

@@ -70,7 +70,7 @@ class BaseWindow:
     """
 
     #: Name of the window. For example ``pyglet``, ``glfw``
-    name = None
+    name = "base"
     #: Window specific key constants
     keys = BaseKeys
     #: Mouse button enum
@@ -1218,7 +1218,7 @@ class WindowConfig:
         flip_x=False,
         flip_y=True,
         mipmap=False,
-        mipmap_levels: Tuple[int, int] = None,
+        mipmap_levels: Optional[Tuple[int, int]] = None,
         anisotropy=1.0,
         **kwargs
     ) -> moderngl.Texture:
@@ -1262,7 +1262,7 @@ class WindowConfig:
         layers: int = 0,
         flip=True,
         mipmap=False,
-        mipmap_levels: Tuple[int, int] = None,
+        mipmap_levels: Optional[Tuple[int, int]] = None,
         anisotropy=1.0,
         **kwargs
     ) -> moderngl.TextureArray:
@@ -1307,17 +1307,17 @@ class WindowConfig:
 
     def load_texture_cube(
         self,
-        pos_x: str = None,
-        pos_y: str = None,
-        pos_z: str = None,
-        neg_x: str = None,
-        neg_y: str = None,
-        neg_z: str = None,
+        pos_x: str = "",
+        pos_y: str = "",
+        pos_z: str = "",
+        neg_x: str = "",
+        neg_y: str = "",
+        neg_z: str = "",
         flip=False,
         flip_x=False,
         flip_y=False,
         mipmap=False,
-        mipmap_levels: Tuple[int, int] = None,
+        mipmap_levels: Optional[Tuple[int, int]] = None,
         anisotropy=1.0,
         **kwargs
     ) -> moderngl.TextureCube:
@@ -1373,7 +1373,7 @@ class WindowConfig:
         fragment_shader=None,
         tess_control_shader=None,
         tess_evaluation_shader=None,
-        defines: dict = None,
+        defines: Optional[dict] = None,
         varyings: Optional[List[str]] = None,
     ) -> moderngl.Program:
         """Loads a shader program.

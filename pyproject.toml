@@ -27,7 +27,7 @@ dependencies = [
     "pyglet~=2.0.0",
     "numpy>=1.16,<2",
     "pyrr>=0.10.3,<1",
-    "Pillow>=9,<10",
+    "Pillow~=10.0.1",
 ]
 
 [tool.setuptools.packages.find]
@@ -77,8 +77,8 @@ ignore = [
     "W503",
     "C901",
 ]
-max-complexity = 10
 max-line-length = 120
+max-complexity = 10
 exclude = [
     "tests/",
     "docs/",
@@ -130,4 +130,8 @@ ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
 module = "pyrr.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "trimesh.*"
 ignore_missing_imports = true

@@ -55,7 +55,7 @@ class Loader(PillowLoader):
             Tuple[int, bytes]: number of components, byte data
         """
         if not path:
-            raise ImproperlyConfigured("{} texture face not supplied".format(face_name))
+            raise ImproperlyConfigured(f"{face_name} texture face not supplied")
 
         image = self._load_texture(path)
         components, data = image_data(image)
