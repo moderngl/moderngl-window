@@ -1,7 +1,7 @@
 """
 Helper classes for loading shader
 """
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Optional
 import re
 
 import moderngl
@@ -21,12 +21,12 @@ class ProgramShaders:
 
     def __init__(self, meta: ProgramDescription):
         self.meta = meta
-        self.vertex_source = None
-        self.geometry_source = None
-        self.fragment_source = None
-        self.tess_control_source = None
-        self.tess_evaluation_source = None
-        self.compute_shader_source = None
+        self.vertex_source: Optional[ShaderSource] = None
+        self.geometry_source: Optional[ShaderSource] = None
+        self.fragment_source: Optional[ShaderSource] = None
+        self.tess_control_source: Optional[ShaderSource] = None
+        self.tess_evaluation_source: Optional[ShaderSource] = None
+        self.compute_shader_source: Optional[ShaderSource] = None
 
     @property
     def ctx(self) -> moderngl.Context:
@@ -209,8 +209,8 @@ class ShaderSource:
     """
     Helper class representing a single shader type.
 
-    It ensures the source has the right format, injects ``#define`` preprocessors,
-    resolves ``#include`` preprocessors etc.
+    It ensures the source has the right format, injects ``#define`` pre-processors,
+    resolves ``#include`` pre-processors etc.
 
     A ``ShaderSource`` can be the base/root shader or a source referenced in an ``#include``.
     """
@@ -250,16 +250,14 @@ class ShaderSource:
         if self._root and not self._lines[0].startswith("#version"):
             self.print()
             raise ShaderError(
-                "Missing #version in {}. A version must be defined in the first line".format(
-                    self._name
-                ),
+                f"Missing #version in {self._name}. A version must be defined in the first line"
             )
 
         self.apply_defines(defines)
 
         # Inject source with shade type
         if self._root:
-            self._lines.insert(1, "#define {} 1".format(self._type))
+            self._lines.insert(1, f"#define {self._type} 1")
             self._lines.insert(2, "#line 2")
 
     @property
@@ -299,12 +297,13 @@ class ShaderSource:
 
     def handle_includes(self, load_source_func, depth=0, source_id=0):
         """Inject includes into the shader source.
-        This happens recursively up to a max level in case the users has circular includes.
-        We also build up a list of all the included sources in the root shader.
+        This happens recursively up to a max level in case the users has
+        circular includes. We also build up a list of all the included
+        sources in the root shader.
 
         Args:
             load_source_func (func): A function for finding and loading a source
-            depth (int): The current include depth (incease by 1 for every call)
+            depth (int): The current include depth (increase by 1 for every call)
         """
         if depth > 100:
             raise ShaderError(
@@ -351,7 +350,7 @@ class ShaderSource:
                     if not value:
                         continue
 
-                    self.lines[nr] = "#define {} {}".format(name, str(value))
+                    self.lines[nr] = f"#define {name} {value}"
                 except IndexError:
                     pass
 
@@ -374,19 +373,19 @@ class ShaderSource:
 
     def print(self):
         """Print the shader lines (for debugging)"""
-        print("---[ START {} ]---".format(self.name))
+        print(f"---[ START {self.name} ]---")
 
         for i, line in enumerate(self.lines):
-            print("{}: {}".format(str(i).zfill(3), line))
+            print(f"{str(i).zfill(3)}: {line}")
 
-        print("---[ END {} ]---".format(self.name))
+        print("---[ END {self.name} ]---")
 
     def __repr__(self):
-        return "<ShaderSource: {} id={}>".format(self.name, self.id)
+        return f"<ShaderSource: {self.name} id={self.id}>"
 
 
 class ShaderError(Exception):
-    pass
+    """Generic shader related error"""
 
 
 class ReloadableProgram:
@@ -481,4 +480,4 @@ class ReloadableProgram:
         return self.program.geometry_vertices
 
     def __repr__(self):
-        return "<ReloadableProgram: {} id={}>".format(self.name, self.glo)
+        return f"<ReloadableProgram: {self.name} id={self.glo}>"

@@ -9,7 +9,7 @@ import sys
 import weakref
 
 from pathlib import Path
-from typing import List, Type
+from typing import List, Type, Optional
 
 import moderngl
 from moderngl_window.context.base import WindowConfig, BaseWindow
@@ -60,9 +60,8 @@ def setup_basic_logging(level: int):
 
 class ContextRefs:
     """Namespace for window/context references"""
-
-    WINDOW = None
-    CONTEXT = None
+    WINDOW: Optional[BaseWindow] = None
+    CONTEXT: Optional[moderngl.Context] = None
 
 
 def activate_context(window: BaseWindow = None, ctx: moderngl.Context = None):

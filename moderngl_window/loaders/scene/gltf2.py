@@ -152,7 +152,7 @@ class Loader(BaseLoader):
             version = struct.unpack("<I", fd.read(4))[0]
             if version != 2:
                 raise ValueError(
-                    "{} has unsupported version {}".format(self.path, version)
+                    f"{self.path} has unsupported version {version}"
                 )
 
             # Total file size including headers

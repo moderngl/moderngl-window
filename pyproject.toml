@@ -84,3 +84,50 @@ exclude = [
     "docs/",
     "temp/",
 ]
+
+[tool.mypy]
+disable_error_code = "annotation-unchecked"
+
+[[tool.mypy.overrides]]
+module = "pyglet.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "PIL.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "rocket.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "imgui.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "sdl2.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "pyopengltk.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "PySide2.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "pygame.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "glfw.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "PyQt5.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "pyrr.*"
+ignore_missing_imports = true

@@ -80,7 +80,7 @@ def _append_unique_path(path: Union[Path, str], dest: list):
 
 
 @contextmanager
-def temporary_dirs(dirs: Union[Path, str] = []):
+def temporary_dirs(dirs: Union[Path, str]):
     """Temporarily changes all resource directories
 
     Example::

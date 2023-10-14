@@ -4,7 +4,7 @@ from pathlib import Path
 import logging
 import sys
 import weakref
-from typing import Any, Tuple, Type, List, Optional
+from typing import Any, Tuple, Type, List, Optional, Dict
 
 import moderngl
 from moderngl_window.context.base import KeyModifiers, BaseKeys
@@ -1374,7 +1374,7 @@ class WindowConfig:
         tess_control_shader=None,
         tess_evaluation_shader=None,
         defines: dict = None,
-        varyings: List[str] = None,
+        varyings: Optional[List[str]] = None,
     ) -> moderngl.Program:
         """Loads a shader program.
 
@@ -1412,7 +1412,7 @@ class WindowConfig:
         )
 
     def load_compute_shader(
-        self, path, defines: dict = None, **kwargs
+        self, path, defines: Optional[Dict] = None, **kwargs
     ) -> moderngl.ComputeShader:
         """Loads a compute shader.
 

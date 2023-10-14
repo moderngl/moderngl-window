@@ -3,7 +3,7 @@ from collections import namedtuple
 from moderngl_window.loaders.texture.pillow import PillowLoader, image_data
 from moderngl_window.exceptions import ImproperlyConfigured
 
-FaceInfo = namedtuple("FaceData", ["width", "height", "data", "components"])
+FaceInfo = namedtuple("FaceInfo", ["width", "height", "data", "components"])
 
 
 class Loader(PillowLoader):

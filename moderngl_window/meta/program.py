@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from moderngl_window.meta.base import ResourceDescription
 
 
@@ -29,17 +29,17 @@ class ProgramDescription(ResourceDescription):
 
     def __init__(
         self,
-        path: str = None,
-        kind: str = None,
+        path: Optional[str] = None,
+        kind: Optional[str] = None,
         reloadable=False,
-        vertex_shader: str = None,
-        geometry_shader: str = None,
-        fragment_shader: str = None,
-        tess_control_shader: str = None,
-        tess_evaluation_shader: str = None,
-        compute_shader: str = None,
-        defines: dict = None,
-        varyings: List = None,
+        vertex_shader: Optional[str] = None,
+        geometry_shader: Optional[str] = None,
+        fragment_shader: Optional[str] = None,
+        tess_control_shader: Optional[str] = None,
+        tess_evaluation_shader: Optional[str] = None,
+        compute_shader: Optional[str] = None,
+        defines: Optional[dict] = None,
+        varyings: Optional[List] = None,
         **kwargs
     ):
         """Create a program description
