@@ -1122,7 +1122,7 @@ class WindowConfig:
     def close(self):
         """Called when the window is closed"""
 
-    def files_dropped(self, x: int, y: int, paths: List[str]):
+    def files_dropped_event(self, x: int, y: int, paths: List[str]):
         """
         Called when files dropped onto the window
 
