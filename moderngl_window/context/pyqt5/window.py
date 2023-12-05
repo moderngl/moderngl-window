@@ -75,8 +75,8 @@ class Window(BaseWindow):
         # Center the window on the screen if in window mode
         if not self.fullscreen:
             center_window_position = (
-                self.position[0] - self.width / 2,
-                self.position[1] - self.height / 2,
+                self.position[0] - self.width // 2,
+                self.position[1] - self.height // 2,
             )
             self._widget.move(*center_window_position)
 
