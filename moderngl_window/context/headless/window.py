@@ -1,5 +1,6 @@
-import moderngl
+from typing import Tuple
 
+import moderngl
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.headless.keys import Keys
 
@@ -41,11 +42,39 @@ class Window(BaseWindow):
                 require=self.gl_version_code,
             )
 
+        self._create_fbo()
+        self.use()
+
+    def _create_fbo(self):
+        if self._fbo:
+            for attachment in self._fbo.color_attachments:
+                attachment.release()
+            if self._fbo.depth_attachment:
+                self._fbo.depth_attachment.release()
+            self._fbo.release()
+
         self._fbo = self.ctx.framebuffer(
             color_attachments=self.ctx.texture(self.size, 4, samples=self._samples),
             depth_attachment=self.ctx.depth_texture(self.size, samples=self._samples),
         )
-        self.use()
+
+    @property
+    def size(self) -> Tuple[int, int]:
+        """Tuple[int, int]: current window size.
+
+        This property also support assignment::
+
+            # Resize the window to 1000 x 1000
+            window.size = 1000, 1000
+        """
+        return self._width, self._height
+
+    @size.setter
+    def size(self, value: Tuple[int, int]):
+        if value == (self._width, self._height):
+            return
+        self._width, self._height = value
+        self._create_fbo()
 
     def use(self):
         """Bind the window's framebuffer"""
