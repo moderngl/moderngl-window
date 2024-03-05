@@ -198,6 +198,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         resizable=values.resizable
         if values.resizable is not None
         else config_cls.resizable,
+        visible=config_cls.visible,
         gl_version=config_cls.gl_version,
         aspect_ratio=config_cls.aspect_ratio,
         vsync=values.vsync if values.vsync is not None else config_cls.vsync,
@@ -270,6 +271,13 @@ def create_parser():
         type=valid_bool,
         default=None,
         help="Enable/disable window resize",
+    )
+    parser.add_argument(
+        "-hd",
+        "--hidden",
+        type=valid_bool,
+        default=False,
+        help="Start the window in hidden mode",
     )
     parser.add_argument(
         "-s",

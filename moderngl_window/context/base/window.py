@@ -82,6 +82,7 @@ class BaseWindow:
         gl_version=(3, 3),
         size=(1280, 720),
         resizable=True,
+        visible=True,
         fullscreen=False,
         vsync=True,
         aspect_ratio: float = None,
@@ -97,6 +98,7 @@ class BaseWindow:
             gl_version (tuple): Major and minor version of the opengl context to create
             size (tuple): Window size x, y
             resizable (bool): Should the window be resizable?
+            visible (bool): Should the window be visible when created?
             fullscreen (bool): Open window in fullscreen mode
             vsync (bool): Enable/disable vsync
             aspect_ratio (float): The desired fixed aspect ratio. Can be set to ``None`` to make
@@ -109,6 +111,7 @@ class BaseWindow:
         self._gl_version = gl_version
         self._width, self._height = int(size[0]), int(size[1])
         self._resizable = resizable
+        self._visible = visible
         self._buffer_width, self._buffer_height = size
         self._fullscreen = fullscreen
         self._vsync = vsync
@@ -365,6 +368,32 @@ class BaseWindow:
     @resizable.setter
     def resizable(self, value: bool) -> None:
         self._resizable = value
+
+    @property
+    def visible(self) -> bool:
+        """bool: Window is visible"""
+        return self._visible
+
+    @visible.setter
+    def visible(self, value: bool) -> None:
+        self._visible = value
+
+    @property
+    def hidden(self) -> bool:
+        """bool: Window is hidden"""
+        return not self._visible
+
+    @hidden.setter
+    def hidden(self, value: bool) -> None:
+        self._visible = not value
+
+    def hide(self) -> None:
+        """Hide the window"""
+        self.visible = False
+
+    def show(self) -> None:
+        """Show the window"""
+        self.visible = True
 
     @property
     def fullscreen(self) -> bool:
@@ -931,6 +960,15 @@ class WindowConfig:
 
         # Default value
         resizable = True
+    """
+    visible = True
+    """
+    Determines if the window should be visible when created
+
+    .. code:: python
+
+        # Default value
+        visible = True
     """
     gl_version = (3, 3)
     """

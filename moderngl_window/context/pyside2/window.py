@@ -72,6 +72,9 @@ class Window(BaseWindow):
         else:
             self._widget.setFixedSize(self.width, self.height)
 
+        if not self.visible:
+            self._widget.hide()
+
         # Center the window on the screen if in window mode
         if not self.fullscreen:
             center_window_position = (
@@ -138,6 +141,25 @@ class Window(BaseWindow):
     def size(self, value: Tuple[int, int]):
         pos = self.position
         self._widget.setGeometry(pos[0], pos[1], value[0], value[1])
+
+    @property
+    def visible(self) -> bool:
+        """bool: Is the window visible?
+
+        This property can also be set::
+
+            # Hide or show the window
+            window.visible = False
+        """
+        return self._visible
+
+    @visible.setter
+    def visible(self, value: bool):
+        self._visible = value
+        if value:
+            self._widget.show()
+        else:
+            self._widget.hide()
 
     @property
     def position(self) -> Tuple[int, int]:

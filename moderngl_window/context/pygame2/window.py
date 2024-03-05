@@ -53,6 +53,9 @@ class Window(BaseWindow):
         if self.resizable:
             self._flags |= pygame.RESIZABLE
 
+        if not self._visible:
+            self._flags |= pygame.HIDDEN
+
         self._set_mode()
         self.title = self._title
         self.cursor = self._cursor
@@ -112,6 +115,25 @@ class Window(BaseWindow):
     @position.setter
     def position(self, value: Tuple[int, int]):
         self._sdl_window.position = value
+
+    @property
+    def visible(self) -> bool:
+        """bool: Is the window visible?
+
+        This property can also be set::
+
+            # Hide or show the window
+            window.visible = False
+        """
+        return self._visible
+
+    @visible.setter
+    def visible(self, value: bool):
+        self._visible = value
+        if value:
+            self._sdl_window.show()
+        else:
+            self._sdl_window.hide()
 
     @property
     def cursor(self) -> bool:

@@ -38,6 +38,7 @@ class Window(BaseWindow):
         glfw.window_hint(glfw.OPENGL_PROFILE, glfw.OPENGL_CORE_PROFILE)
         glfw.window_hint(glfw.OPENGL_FORWARD_COMPAT, True)
         glfw.window_hint(glfw.RESIZABLE, self.resizable)
+        glfw.window_hint(glfw.VISIBLE, self.visible)
         glfw.window_hint(glfw.DOUBLEBUFFER, True)
         glfw.window_hint(glfw.DEPTH_BITS, 24)
         glfw.window_hint(glfw.STENCIL_BITS, 8)
@@ -157,6 +158,25 @@ class Window(BaseWindow):
     @position.setter
     def position(self, value: Tuple[int, int]):
         self._position = glfw.set_window_pos(self._window, value[0], value[1])
+
+    @property
+    def visible(self) -> bool:
+        """bool: Is the window visible?
+
+        This property can also be set::
+
+            # Hide or show the window
+            window.visible = False
+        """
+        return self._visible
+
+    @visible.setter
+    def visible(self, value: bool):
+        self._visible = value
+        if value:
+            glfw.show_window(self._window)
+        else:
+            glfw.hide_window(self._window)
 
     @property
     def cursor(self) -> bool:
