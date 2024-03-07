@@ -58,6 +58,7 @@ class Window(BaseWindow):
             height=self._height,
             caption=self._title,
             resizable=self._resizable,
+            visible=self._visible,
             vsync=self._vsync,
             fullscreen=self._fullscreen,
             config=config,
@@ -116,6 +117,22 @@ class Window(BaseWindow):
     @position.setter
     def position(self, value: Tuple[int, int]):
         self._window.set_location(value[0], value[1])
+
+    @property
+    def visible(self) -> bool:
+        """bool: Is the window visible?
+
+        This property can also be set::
+
+            # Hide or show the window
+            window.visible = False
+        """
+        return self._visible
+
+    @visible.setter
+    def visible(self, value: bool):
+        self._visible = value
+        self._window.set_visible(value)
 
     @property
     def cursor(self) -> bool:

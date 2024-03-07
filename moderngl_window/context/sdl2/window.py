@@ -57,6 +57,9 @@ class Window(BaseWindow):
             if self.resizable:
                 flags |= sdl2.SDL_WINDOW_RESIZABLE
 
+        if not self._visible:
+            flags |= sdl2.SDL_WINDOW_HIDDEN
+
         self._window = sdl2.SDL_CreateWindow(
             self.title.encode(),
             sdl2.SDL_WINDOWPOS_UNDEFINED,
@@ -124,6 +127,25 @@ class Window(BaseWindow):
     @position.setter
     def position(self, value: Tuple[int, int]):
         sdl2.SDL_SetWindowPosition(self._window, value[0], value[1])
+
+    @property
+    def visible(self) -> bool:
+        """bool: Is the window visible?
+
+        This property can also be set::
+
+            # Hide or show the window
+            window.visible = False
+        """
+        return self._visible
+
+    @visible.setter
+    def visible(self, value: bool):
+        self._visible = value
+        if value:
+            sdl2.SDL_ShowWindow(self._window)
+        else:
+            sdl2.SDL_HideWindow(self._window)
 
     @property
     def cursor(self) -> bool:

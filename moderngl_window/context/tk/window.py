@@ -94,6 +94,25 @@ class Window(BaseWindow):
         self._tk.geometry("+{}+{}".format(value[0], value[1]))
 
     @property
+    def visible(self) -> bool:
+        """bool: Is the window visible?
+
+        This property can also be set::
+
+            # Hide or show the window
+            window.visible = False
+        """
+        return self._visible
+
+    @visible.setter
+    def visible(self, value: bool):
+        self._visible = value
+        if value:
+            self._tk.deiconify()
+        else:
+            self._tk.withdraw()
+
+    @property
     def cursor(self) -> bool:
         """bool: Should the mouse cursor be visible inside the window?
 
