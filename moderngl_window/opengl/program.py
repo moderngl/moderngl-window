@@ -315,7 +315,7 @@ class ShaderSource:
             for nr, line in enumerate(self._lines):
                 line = line.strip()
                 if line.startswith("#include"):
-                    path = line[9:]
+                    path = re.search(r'#include\s+"?([^"]+)',line)[1]
                     current_id += 1
                     _, source = load_source_func(path)
                     source = ShaderSource(
