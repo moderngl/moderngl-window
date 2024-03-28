@@ -74,7 +74,7 @@ class TextWriter2D(BaseText):
     def draw(self, pos, length=-1, size=24.0):
         # Calculate ortho projection based on viewport
         vp = self.ctx.fbo.viewport
-        w, h = vp[2] - vp[0], vp[3] - vp[1]
+        w, h = vp[2], vp[3]
         projection = matrix44.create_orthogonal_projection_matrix(
             0,  # left
             w,  # right
