@@ -12,6 +12,8 @@ Methods
 .. automethod:: BaseWindow.init_mgl_context
 .. automethod:: BaseWindow.is_key_pressed
 .. automethod:: BaseWindow.set_icon
+.. automethod:: BaseWindow.show
+.. automethod:: BaseWindow.hide
 .. automethod:: BaseWindow.close
 .. automethod:: BaseWindow.use
 .. automethod:: BaseWindow.clear
@@ -34,6 +36,8 @@ Attributes
 .. autoattribute:: BaseWindow.headless
 .. autoattribute:: BaseWindow.fbo
 .. autoattribute:: BaseWindow.title
+.. autoattribute:: BaseWindow.visible
+.. autoattribute:: BaseWindow.hidden
 .. autoattribute:: BaseWindow.exit_key
 .. autoattribute:: BaseWindow.fullscreen_key
 .. autoattribute:: BaseWindow.gl_version

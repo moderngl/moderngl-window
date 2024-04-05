@@ -11,6 +11,8 @@ Methods
 .. automethod:: Window.__init__
 .. automethod:: Window.init_mgl_context
 .. automethod:: Window.is_key_pressed
+.. automethod:: Window.show
+.. automethod:: Window.hide
 .. automethod:: Window.set_icon
 .. automethod:: Window.close
 .. automethod:: Window.use
@@ -35,6 +37,8 @@ Attributes
 .. autoattribute:: Window.keys
    :annotation:
 .. autoattribute:: Window.ctx
+.. autoattribute:: Window.visible
+.. autoattribute:: Window.hidden
 .. autoattribute:: Window.backend
 .. autoattribute:: Window.headless
 .. autoattribute:: Window.fbo
