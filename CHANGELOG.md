@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.4.6
+
+* Includes in shaders with quoted paths are now supported
+* Renamed incorrect base window method name. `filed_dropped` -> `file_dropped_event`
+* Added size setters for headless window
+* Added visible setter for all windows
+* TextWriter2D should now take viewport size into account
+* Loosened up some requirements
+
 ## 2.4.5
 
 * Reorganized the project using pyproject.toml

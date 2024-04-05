@@ -53,7 +53,7 @@ copyright = '2023, Einar Forselv'
 author = 'Einar Forselv'
 
 # The short X.Y version
-version = '2.4.5'
+version = '2.4.6'
 # The full version, including alpha/beta/rc tags
 release = version
 
