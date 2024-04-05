@@ -1,6 +1,6 @@
 [project]
 name = "moderngl-window"
-version = "2.4.5"
+version = "2.4.6"
 description = "A cross platform helper library for ModernGL making window creation and resource loading simple"
 readme = "README.md"
 authors = [
@@ -24,10 +24,10 @@ classifiers = [
 # zip-safe = false
 dependencies = [
     "moderngl<6",
-    "pyglet~=2.0.0",
+    "pyglet>=2.0.0",
     "numpy>=1.16,<2",
     "pyrr>=0.10.3,<1",
-    "Pillow~=10.0.1",
+    "Pillow>=10.0.1",
 ]
 
 [tool.setuptools.packages.find]
