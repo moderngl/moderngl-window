@@ -36,6 +36,9 @@ class BaseKeys:
     RIGHT: Any = "undefined"
     UP: Any = "undefined"
     DOWN: Any = "undefined"
+    LEFT_SHIFT: Any = "undefined"
+    RIGHT_SHIFT: Any = "undefined"
+    LEFT_CTRL: Any = "undefined"
 
     TAB: Any = "undefined"
     COMMA: Any = "undefined"

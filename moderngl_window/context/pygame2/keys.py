@@ -21,6 +21,9 @@ class Keys(BaseKeys):
     RIGHT = pygame.K_RIGHT
     UP = pygame.K_UP
     DOWN = pygame.K_DOWN
+    LEFT_SHIFT = pygame.K_LSHIFT
+    RIGHT_SHIFT = pygame.K_RSHIFT
+    LEFT_CTRL = pygame.K_LCTRL
 
     TAB = pygame.K_TAB
     COMMA = pygame.K_COMMA

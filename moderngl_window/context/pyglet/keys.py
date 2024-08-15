@@ -28,6 +28,9 @@ class Keys(BaseKeys):
     RIGHT = key.RIGHT
     UP = key.UP
     DOWN = key.DOWN
+    LEFT_SHIFT = key.LSHIFT
+    RIGHT_SHIFT = key.RSHIFT
+    LEFT_CTRL = key.LCTRL
 
     TAB = key.TAB
     COMMA = key.COMMA
