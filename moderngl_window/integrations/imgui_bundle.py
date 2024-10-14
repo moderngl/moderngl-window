@@ -289,11 +289,9 @@ class ModernglWindowRenderer(ModernGLRenderer, ModernglWindowMixin):
     def __init__(self, window):
         super().__init__(wnd=window)
         self.wnd = window
-        print('self.register_texture:', self.register_texture)
 
         self._init_key_maps()
         self.io.display_size = self.wnd.size
-        # print(dir(self.io))
         self.io.display_framebuffer_scale = self.wnd.pixel_ratio, self.wnd.pixel_ratio
 
     def _init_key_maps(self):
