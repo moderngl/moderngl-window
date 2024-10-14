@@ -1,10 +1,11 @@
 from pathlib import Path
-import imgui
+# import imgui
+from imgui_bundle import imgui
 import moderngl
 from pyrr import Matrix44
 import moderngl_window as mglw
 from moderngl_window import geometry
-from moderngl_window.integrations.imgui import ModernglWindowRenderer
+from moderngl_window.integrations.imgui_bundle import ModernglWindowRenderer
 
 import PIL
 
@@ -68,11 +69,11 @@ class WindowEvents(mglw.WindowConfig):
                 imgui.end_menu()
             imgui.end_main_menu_bar()
 
-        imgui.show_test_window()
+        imgui.show_demo_window()
 
         imgui.begin("Custom window", True)
         imgui.text("Bar")
-        imgui.text_colored("Eggs", 0.2, 1., 0.)
+        imgui.text_colored(imgui.ImVec4(0.2, 1., 0., 1.), "Eggs")
         imgui.end()
 
         # Create window with the framebuffer image
@@ -80,7 +81,7 @@ class WindowEvents(mglw.WindowConfig):
         # Create an image control by passing in the OpenGL texture ID (glo) 
         # and pass in the image size as well.
         # The texture needs to he registered using register_texture for this to work
-        imgui.image(self.fbo.color_attachments[0].glo, *self.fbo.size )
+        imgui.image(self.fbo.color_attachments[0].glo, self.fbo.size )
         imgui.end()
 
         imgui.render()
