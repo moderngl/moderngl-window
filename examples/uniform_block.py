@@ -1,4 +1,4 @@
-from pyrr import Matrix44
+import glm
 
 import moderngl
 import moderngl_window
@@ -62,10 +62,9 @@ class CubeSimple(moderngl_window.WindowConfig):
         self.vao1 = self.cube.instance(self.prog1)
         self.vao2 = self.cube.instance(self.prog2)
 
-        self.m_proj = Matrix44.perspective_projection(
+        self.m_proj = glm.perspective(
             75, self.wnd.aspect_ratio,  # fov, aspect
             0.1, 100.0,  # near, far
-            dtype='f4',
         )
 
         proj_uniform1 = self.prog1['Projection']
@@ -104,8 +103,8 @@ class CubeSimple(moderngl_window.WindowConfig):
     def render(self, time=0.0, frametime=0.0, target: moderngl.Framebuffer = None):
         self.ctx.enable_only(moderngl.CULL_FACE | moderngl.DEPTH_TEST)
 
-        rotation = Matrix44.from_eulers((time, time, time), dtype='f4')
-        translation = Matrix44.from_translation((0.0, 0.0, -5.0), dtype='f4')
+        rotation = glm.mat4(glm.quat(glm.vec3(time, time, time)))
+        translation = glm.translate(glm.vec3(0.0, 0.0, -5.0))
         modelview = translation * rotation
 
         self.view_buffer.write(modelview)

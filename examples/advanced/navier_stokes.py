@@ -8,7 +8,7 @@ Interact with the window using to add pressure and momentum.
 import random
 from pathlib import Path
 import numpy as np
-from pyrr import matrix44
+import glm
 
 import moderngl_window
 from moderngl_window import geometry
@@ -31,11 +31,10 @@ class NavierStokes2D(moderngl_window.WindowConfig):
         super().__init__(*args, **kwargs)
 
         # various vars
-        self.m_proj = matrix44.create_orthogonal_projection(
+        self.m_proj =  glm.orthographic(
             0, self.wnd.buffer_width,
             0, self.wnd.buffer_height,
             -1, 1,
-            dtype='f4',
         )
         size = self.wnd.buffer_size
 

@@ -1,5 +1,5 @@
 from pathlib import Path
-from pyrr import Matrix44
+import glm
 import numpy
 
 import moderngl
@@ -24,7 +24,7 @@ class LinesDemo(CameraWindow):
 
         self.prog = self.load_program('programs/lines/lines.glsl')
         self.prog['color'].value = (1.0, 1.0, 1.0, 1.0)
-        self.prog['m_model'].write(Matrix44.from_translation((0.0, 0.0, -3.5), dtype='f4'))
+        self.prog['m_model'].write(glm.translate(glm.vec3(0.0, 0.0, -3.5)))
 
         N = 10
         # Create lines geometry

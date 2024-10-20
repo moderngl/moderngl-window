@@ -20,10 +20,9 @@ from array import array
 
 import moderngl
 from moderngl.program_members import varying
-from pyrr.matrix44 import inverse
 from moderngl_window import geometry
 from base import CameraWindow
-from pyrr import Matrix44, Matrix33
+import glm
 
 
 class CubeVoxel(CameraWindow):
@@ -129,11 +128,10 @@ class Voxel:
 
     def render_wireframe(self, *, projection_matrix, camera_matrix, model_matrix=None):
         self.ctx.wireframe = True
-        translate = Matrix44.from_translation((
+        translate = glm.translate(glm.vec3(
             -self._size[0] / 2,
             -self._size[0] / 2,
             -self._size[0] * 2),
-            dtype='f4',
         )
         mat = camera_matrix * translate
         self.voxel_wireframe_prog["m_proj"].write(projection_matrix)
@@ -144,14 +142,13 @@ class Voxel:
     def render(self, *, projection_matrix, camera_matrix, model_matrix=None):
         """Render out the voxel to the screen"""
 
-        translate = Matrix44.from_translation((
+        translate = glm.translate(glm.vec3(
             -self._size[0] / 2,
             -self._size[0] / 2,
             -self._size[0] * 2),
-            dtype='f4',
         )
         mat = camera_matrix * translate
-        normal = Matrix33.from_matrix44(mat).inverse.transpose().astype("f4").tobytes()
+        normal = glm.transpose(glm.inverse(glm.mat3(mat))).to_bytes()
         self.voxel_light_prog["m_proj"].write(projection_matrix)
         self.voxel_light_prog["m_modelview"].write(mat)
         self.voxel_light_prog["m_normal"].write(normal)
