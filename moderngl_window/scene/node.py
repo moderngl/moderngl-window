@@ -28,7 +28,7 @@ class Node:
         self._camera = camera
         self._mesh = mesh
         # Local node matrix
-        self._matrix = matrix.astype("f4") if matrix is not None else None
+        self._matrix = matrix if matrix is not None else None
         # Global matrix
         self._matrix_global = None
 
@@ -179,7 +179,7 @@ class Node:
             for child in self._children:
                 child.calc_model_mat(self._matrix_global)
         else:
-            self._matrix_global = model_matrix.astype("f4")
+            self._matrix_global = model_matrix
 
             for child in self._children:
                 child.calc_model_mat(model_matrix)

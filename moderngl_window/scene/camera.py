@@ -120,9 +120,9 @@ class Camera:
         front.y = sin(radians(self.pitch))
         front.z = sin(radians(self.yaw)) * cos(radians(self.pitch))
 
-        self.dir = glm.normalise(front)
-        self.right = glm.normalise(glm.cross(self.dir, self._up))
-        self.up = glm.normalise(glm.cross(self.right, self.dir))
+        self.dir = glm.normalize(front)
+        self.right = glm.normalize(glm.cross(self.dir, self._up))
+        self.up = glm.normalize(glm.cross(self.right, self.dir))
 
     def look_at(self, vec=None, pos=None) -> numpy.ndarray:
         """Look at a specific point
@@ -153,8 +153,8 @@ class Camera:
         Returns:
             numpy.ndarray: The matrix
         """
-        z = glm.normalise(pos - target)
-        x = glm.normalise(glm.cross(glm.normalise(up), z))
+        z = glm.normalize(pos - target)
+        x = glm.normalize(glm.cross(glm.normalize(up), z))
         y = glm.cross(z, x)
 
         translate = glm.mat4()

@@ -87,15 +87,15 @@ class Scene:
         return self._matrix
 
     @matrix.setter
-    def matrix(self, matrix: numpy.ndarray):
-        self._matrix = matrix.astype("f4")
+    def matrix(self, matrix: glm.mat4):
+        self._matrix = matrix
         for node in self.root_nodes:
             node.calc_model_mat(self._matrix)
 
     def draw(
         self,
-        projection_matrix: numpy.ndarray = None,
-        camera_matrix: numpy.ndarray = None,
+        projection_matrix: glm.mat4 = None,
+        camera_matrix: glm.mat4 = None,
         time=0.0,
     ) -> None:
         """Draw all the nodes in the scene.
@@ -107,8 +107,8 @@ class Scene:
         """
         for node in self.root_nodes:
             node.draw(
-                projection_matrix=projection_matrix.astype("f4"),
-                camera_matrix=camera_matrix.astype("f4"),
+                projection_matrix=projection_matrix,
+                camera_matrix=camera_matrix,
                 time=time,
             )
 
@@ -129,8 +129,8 @@ class Scene:
             children (bool): Will draw bounding boxes for meshes as well
             color (tuple): Color of the bounding boxes
         """
-        projection_matrix = projection_matrix.astype("f4")
-        camera_matrix = camera_matrix.astype("f4")
+        projection_matrix = projection_matrix
+        camera_matrix = camera_matrix
 
         # Scene bounding box
         self.bbox_program["m_proj"].write(projection_matrix)
@@ -161,8 +161,8 @@ class Scene:
             children (bool): Will draw bounding boxes for meshes as well
             color (tuple): Color of the wireframes
         """
-        projection_matrix = projection_matrix.astype("f4")
-        camera_matrix = camera_matrix.astype("f4")
+        projection_matrix = projection_matrix
+        camera_matrix = camera_matrix
 
         self.wireframe_program["m_proj"].write(projection_matrix)
         self.wireframe_program["m_model"].write(self._matrix)

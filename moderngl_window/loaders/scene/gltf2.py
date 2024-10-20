@@ -741,7 +741,7 @@ class GLTFNode:
         self.scale = data.get("scale")
 
         if self.matrix:
-            self.matrix = glm.mat4(self.matrix)
+            self.matrix = glm.mat4(*self.matrix)
         else:
             self.matrix = glm.mat4()
 
