@@ -4,7 +4,7 @@ Wrapper for a loaded scene with properties.
 from typing import TYPE_CHECKING
 import logging
 import numpy
-from pyrr import matrix44, vector3
+import glm
 
 import moderngl
 import moderngl_window as mglw
@@ -71,7 +71,7 @@ class Scene:
             )
             self.ctx.extra["DEFAULT_WIREFRAME_PROGRAM"] = self.wireframe_program
 
-        self._matrix = matrix44.create_identity(dtype="f4")
+        self._matrix = glm.mat4()
 
     @property
     def ctx(self) -> moderngl.Context:
@@ -228,13 +228,13 @@ class Scene:
         bbox_min, bbox_max = None, None
         for node in self.root_nodes:
             bbox_min, bbox_max = node.calc_global_bbox(
-                matrix44.create_identity(dtype="f4"), bbox_min, bbox_max
+                glm.mat4(), bbox_min, bbox_max
             )
 
         self.bbox_min = bbox_min
         self.bbox_max = bbox_max
 
-        self.diagonal_size = vector3.length(self.bbox_max - self.bbox_min)
+        self.diagonal_size = glm.length(self.bbox_max - self.bbox_min)
 
     def prepare(self) -> None:
         """prepare the scene for rendering.
@@ -244,7 +244,7 @@ class Scene:
         """
         self.apply_mesh_programs()
         # Recursively calculate model matrices
-        self.matrix = matrix44.create_identity(dtype="f4")
+        self.matrix = glm.mat4()
 
     def find_node(self, name: str = None) -> "Node":
         """Finds a :py:class:`~moderngl_window.scene.Node`

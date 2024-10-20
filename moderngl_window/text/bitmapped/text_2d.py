@@ -1,5 +1,5 @@
 import numpy
-from pyrr import matrix44
+import glm
 
 from pathlib import Path
 
@@ -75,7 +75,7 @@ class TextWriter2D(BaseText):
         # Calculate ortho projection based on viewport
         vp = self.ctx.fbo.viewport
         w, h = vp[2], vp[3]
-        projection = matrix44.create_orthogonal_projection_matrix(
+        projection = glm.orthographic(
             0,  # left
             w,  # right
             0,  # bottom

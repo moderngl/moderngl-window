@@ -3,7 +3,7 @@ Wrapper for a loaded mesh / vao with properties
 """
 from typing import List, TYPE_CHECKING
 import numpy
-from pyrr import matrix44
+import glm
 
 if TYPE_CHECKING:
     from moderngl_window.scene import Camera, Mesh
@@ -155,7 +155,7 @@ class Node:
             bbox_max: max bbox values
         """
         if self._matrix is not None:
-            view_matrix = matrix44.multiply(self._matrix, view_matrix)
+            view_matrix = self._matrix * view_matrix
 
         if self._mesh:
             bbox_min, bbox_max = self._mesh.calc_global_bbox(
@@ -174,9 +174,7 @@ class Node:
             model_matrix (numpy.ndarray): model matrix
         """
         if self._matrix is not None:
-            self._matrix_global = matrix44.multiply(self._matrix, model_matrix).astype(
-                "f4"
-            )
+            self._matrix_global = self._matrix * model_matrix
 
             for child in self._children:
                 child.calc_model_mat(self._matrix_global)
