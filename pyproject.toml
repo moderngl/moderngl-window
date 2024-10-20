@@ -27,7 +27,7 @@ dependencies = [
     "moderngl<6",
     "pyglet>=2.0.0",
     "numpy>=1.16,<2",
-    "pyrr>=0.10.3,<1",
+    "pyglm>=2.7.0,<3",
     "Pillow>=10.0.1",
 ]
 
@@ -130,7 +130,7 @@ module = "PyQt5.*"
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
-module = "pyrr.*"
+module = "PyGLM.*"
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
