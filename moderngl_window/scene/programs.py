@@ -1,12 +1,16 @@
+from __future__ import annotations
+
+from typing import Self
 import os
 
-import numpy
+import glm
 import moderngl
 import moderngl_window
 
 from moderngl_window.conf import settings
 from moderngl_window.resources import programs
 from moderngl_window.meta import ProgramDescription
+from .mesh import Mesh
 
 
 settings.PROGRAM_DIRS.append(os.path.join(os.path.dirname(__file__), "programs"))
@@ -17,7 +21,7 @@ class MeshProgram:
     Describes how a mesh is rendered using a specific shader program
     """
 
-    def __init__(self, program: moderngl.Program = None, **kwargs):
+    def __init__(self, program: moderngl.Program | None = None, **kwargs) -> None:
         """Initialize.
 
         Args:
@@ -26,18 +30,18 @@ class MeshProgram:
         self.program = program
 
     @property
-    def ctx(self):
+    def ctx(self) -> moderngl.Context:
         """moderngl.Context: The current context"""
         return moderngl_window.ctx()
 
     def draw(
         self,
-        mesh,
-        projection_matrix: numpy.ndarray = None,
-        model_matrix: numpy.ndarray = None,
-        camera_matrix: numpy.ndarray = None,
+        mesh: Mesh,
+        projection_matrix: glm.mat4,
+        model_matrix: glm.mat4,
+        camera_matrix: glm.mat4,
         time=0.0,
-    ):
+    ) -> None:
         """Draw code for the mesh
 
         Args:
@@ -50,9 +54,10 @@ class MeshProgram:
         """
         self.program["m_proj"].write(projection_matrix)
         self.program["m_mv"].write(model_matrix)
+        self.program["m_cam"].write(camera_matrix)
         mesh.vao.render(self.program)
 
-    def apply(self, mesh):
+    def apply(self, mesh: Mesh) -> Self | None:
         """
         Determine if this ``MeshProgram`` should be applied to the mesh.
         Can return self or some ``MeshProgram`` instance to support dynamic ``MeshProgram`` creation
@@ -68,7 +73,7 @@ class MeshProgram:
 class VertexColorProgram(MeshProgram):
     """Vertex color program"""
 
-    def __init__(self, program=None, **kwargs):
+    def __init__(self, program=None, **kwargs) -> None:
         super().__init__(program=None)
         self.program = programs.load(
             ProgramDescription(path="scene_default/vertex_color.glsl")
@@ -77,17 +82,17 @@ class VertexColorProgram(MeshProgram):
     def draw(
         self,
         mesh,
-        projection_matrix=None,
-        model_matrix=None,
-        camera_matrix=None,
-        time=0,
-    ):
+        projection_matrix: glm.mat4,
+        model_matrix: glm.mat4,
+        camera_matrix: glm.mat4,
+        time=0.0,
+    ) -> None:
         self.program["m_proj"].write(projection_matrix)
         self.program["m_model"].write(model_matrix)
         self.program["m_cam"].write(camera_matrix)
         mesh.vao.render(self.program)
 
-    def apply(self, mesh):
+    def apply(self, mesh: Mesh) -> Self | None:
         if not mesh.material:
             return None
 
@@ -103,7 +108,7 @@ class VertexColorProgram(MeshProgram):
 class ColorLightProgram(MeshProgram):
     """Simple color program with light"""
 
-    def __init__(self, program=None, **kwargs):
+    def __init__(self, program=None, **kwargs) -> None:
         super().__init__(program=None)
         self.program = programs.load(
             ProgramDescription(path="scene_default/color_light.glsl")
@@ -112,12 +117,11 @@ class ColorLightProgram(MeshProgram):
     def draw(
         self,
         mesh,
-        projection_matrix=None,
-        model_matrix=None,
-        camera_matrix=None,
-        time=0,
-    ):
-
+        projection_matrix: glm.mat4,
+        model_matrix: glm.mat4,
+        camera_matrix: glm.mat4,
+        time=0.0,
+    ) -> None:
         if mesh.material:
             # if mesh.material.double_sided:
             #     self.ctx.disable(moderngl.CULL_FACE)
@@ -134,7 +138,7 @@ class ColorLightProgram(MeshProgram):
         self.program["m_cam"].write(camera_matrix)
         mesh.vao.render(self.program)
 
-    def apply(self, mesh):
+    def apply(self, mesh: Mesh) -> Self | None:
         if not mesh.material:
             return None
 
@@ -147,7 +151,7 @@ class ColorLightProgram(MeshProgram):
 class TextureProgram(MeshProgram):
     """Plan textured"""
 
-    def __init__(self, program=None, **kwargs):
+    def __init__(self, program=None, **kwargs) -> None:
         super().__init__(program=None)
         self.program = programs.load(
             ProgramDescription(path="scene_default/texture.glsl")
@@ -156,18 +160,18 @@ class TextureProgram(MeshProgram):
     def draw(
         self,
         mesh,
-        projection_matrix=None,
-        model_matrix=None,
-        camera_matrix=None,
-        time=0,
-    ):
+        projection_matrix: glm.mat4,
+        model_matrix: glm.mat4,
+        camera_matrix: glm.mat4,
+        time=0.0,
+    ) -> None:
         mesh.material.mat_texture.texture.use()
         self.program["m_proj"].write(projection_matrix)
         self.program["m_model"].write(model_matrix)
         self.program["m_cam"].write(camera_matrix)
         mesh.vao.render(self.program)
 
-    def apply(self, mesh):
+    def apply(self, mesh) -> Self | None:
         if not mesh.material:
             return None
 
@@ -187,9 +191,9 @@ class TextureProgram(MeshProgram):
 
 
 class TextureVertexColorProgram(MeshProgram):
-    """textred object with vertex color"""
+    """textured object with vertex color"""
 
-    def __init__(self, program=None, **kwargs):
+    def __init__(self, program: moderngl.Program | None = None, **kwargs) -> None:
         super().__init__(program=None)
         self.program = programs.load(
             ProgramDescription(path="scene_default/vertex_color_texture.glsl")
@@ -197,19 +201,19 @@ class TextureVertexColorProgram(MeshProgram):
 
     def draw(
         self,
-        mesh,
-        projection_matrix=None,
-        model_matrix=None,
-        camera_matrix=None,
+        mesh: Mesh,
+        projection_matrix: glm.mat4,
+        model_matrix: glm.mat4,
+        camera_matrix: glm.mat4,
         time=0,
-    ):
+    ) -> None:
         mesh.material.mat_texture.texture.use()
         self.program["m_proj"].write(projection_matrix)
         self.program["m_model"].write(model_matrix)
         self.program["m_cam"].write(camera_matrix)
         mesh.vao.render(self.program)
 
-    def apply(self, mesh):
+    def apply(self, mesh: Mesh) -> Self | None:
         if not mesh.material:
             return None
 
@@ -233,7 +237,7 @@ class TextureLightProgram(MeshProgram):
     Simple texture program
     """
 
-    def __init__(self, program=None, **kwargs):
+    def __init__(self, program: moderngl.Program | None = None, **kwargs) -> None:
         super().__init__(program=None)
         self.program = programs.load(
             ProgramDescription(path="scene_default/texture_light.glsl")
@@ -241,12 +245,12 @@ class TextureLightProgram(MeshProgram):
 
     def draw(
         self,
-        mesh,
-        projection_matrix=None,
-        model_matrix=None,
-        camera_matrix=None,
-        time=0,
-    ):
+        mesh: Mesh,
+        projection_matrix: glm.mat4,
+        model_matrix: glm.mat4,
+        camera_matrix: glm.mat4,
+        time=0.0,
+    ) -> None:
         # if mesh.material.double_sided:
         #     self.ctx.disable(moderngl.CULL_FACE)
         # else:
@@ -259,7 +263,7 @@ class TextureLightProgram(MeshProgram):
         self.program["m_cam"].write(camera_matrix)
         mesh.vao.render(self.program)
 
-    def apply(self, mesh):
+    def apply(self, mesh: Mesh) -> Self | None:
         if not mesh.material:
             return None
 
@@ -284,7 +288,7 @@ class FallbackProgram(MeshProgram):
     Fallback program only rendering positions in white
     """
 
-    def __init__(self, program=None, **kwargs):
+    def __init__(self, program: moderngl.Program | None = None, **kwargs) -> None:
         super().__init__(program=None)
         self.program = programs.load(
             ProgramDescription(path="scene_default/fallback.glsl")
@@ -292,13 +296,12 @@ class FallbackProgram(MeshProgram):
 
     def draw(
         self,
-        mesh,
-        projection_matrix=None,
-        model_matrix=None,
-        camera_matrix=None,
-        time=0,
-    ):
-
+        mesh: Mesh,
+        projection_matrix: glm.mat4,
+        model_matrix: glm.mat4,
+        camera_matrix: glm.mat4,
+        time=0.0,
+    ) -> None:
         self.program["m_proj"].write(projection_matrix)
         self.program["m_model"].write(model_matrix)
         self.program["m_cam"].write(camera_matrix)
@@ -310,5 +313,5 @@ class FallbackProgram(MeshProgram):
 
         mesh.vao.render(self.program)
 
-    def apply(self, mesh):
+    def apply(self, mesh: Mesh) -> Self | None:
         return self

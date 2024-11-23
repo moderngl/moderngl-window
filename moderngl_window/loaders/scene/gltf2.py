@@ -151,9 +151,7 @@ class Loader(BaseLoader):
 
             version = struct.unpack("<I", fd.read(4))[0]
             if version != 2:
-                raise ValueError(
-                    f"{self.path} has unsupported version {version}"
-                )
+                raise ValueError(f"{self.path} has unsupported version {version}")
 
             # Total file size including headers
             _ = struct.unpack("<I", fd.read(4))[0]  # noqa
@@ -500,9 +498,11 @@ class GLTFMesh:
                     self.name,
                     vao=vao,
                     attributes=attributes,
-                    material=materials[primitive.material]
-                    if primitive.material is not None
-                    else None,
+                    material=(
+                        materials[primitive.material]
+                        if primitive.material is not None
+                        else None
+                    ),
                     bbox_min=bbox_min,
                     bbox_max=bbox_max,
                 )
@@ -667,7 +667,8 @@ class GLTFBufferView:
 
     def read(self, byte_offset=0, dtype=None, count=0):
         data = self.buffer.read(
-            byte_offset=byte_offset + self.byteOffset, byte_length=self.byteLength,
+            byte_offset=byte_offset + self.byteOffset,
+            byte_length=self.byteLength,
         )
         vbo = numpy.frombuffer(data, count=count, dtype=dtype)
         return vbo
@@ -712,7 +713,7 @@ class GLTFBuffer:
             return
 
         if self.has_data_uri:
-            self.data = base64.b64decode(self.uri[self.uri.find(",") + 1:])
+            self.data = base64.b64decode(self.uri[self.uri.find(",") + 1 :])
             return
 
         with open(str(self.path / self.uri), "rb") as fd:
@@ -720,7 +721,7 @@ class GLTFBuffer:
 
     def read(self, byte_offset=0, byte_length=0):
         self.open()
-        return self.data[byte_offset:byte_offset + byte_length]
+        return self.data[byte_offset : byte_offset + byte_length]
 
 
 class GLTFScene:
@@ -746,16 +747,16 @@ class GLTFNode:
             self.matrix = glm.mat4()
 
         if self.translation is not None:
-            self.matrix = self.matrix * glm.translate(self.translation)
+            self.matrix = self.matrix * glm.translate(glm.vec3(*self.translation))
 
         if self.rotation is not None:
-            quat = quaternion.create(
+            quat = glm.quat(
                 x=self.rotation[0],
                 y=self.rotation[1],
                 z=self.rotation[2],
                 w=self.rotation[3],
             )
-            self.matrix = self.matrix * glm.transpose(glm.mat4(quat))
+            self.matrix = self.matrix * glm.mat4(quat)
 
         if self.scale is not None:
             self.matrix = self.matrix * glm.scale(self.scale)
@@ -803,7 +804,7 @@ class GLTFImage:
             image = Image.open(io.BytesIO(self.bufferView.read_raw()))
         # Image is embedded
         elif self.uri and self.uri.startswith("data:"):
-            data = self.uri[self.uri.find(",") + 1:]
+            data = self.uri[self.uri.find(",") + 1 :]
             image = Image.open(io.BytesIO(base64.b64decode(data)))
             logger.info("Loading embedded image")
         else:
@@ -813,7 +814,11 @@ class GLTFImage:
 
         texture = t2d.Loader(
             TextureDescription(
-                label="gltf", image=image, flip=False, mipmap=True, anisotropy=16.0,
+                label="gltf",
+                image=image,
+                flip=False,
+                mipmap=True,
+                anisotropy=16.0,
             )
         ).load()
 
