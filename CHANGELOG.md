@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.0
+
+* Pyrr is now replaced with PyGLM
+* imgui is replaced with imgui-bundle
+* Numpy version is no longer restricted
+
 ## 2.4.6
 
 * Includes in shaders with quoted paths are now supported
@@ -16,7 +22,7 @@
 
 ## 2.4.4
 
-* Added `--backend` option to specify context backend. 
+* Added `--backend` option to specify context backend.
   This is mostly for the headless window to enable EGL.
 * Window now has a ``backend`` property containing the name of the context backend
 * Window now has a ``headless`` boolean property to check if the window is headless.
@@ -26,7 +32,7 @@
 ## 2.4.3
 
 * Fix compatibility with moderngl 5.8.x
-* Camera now has keymap support (QWERTY, AZERTY etc) 
+* Camera now has keymap support (QWERTY, AZERTY etc)
 
 ## 2.4.2
 
@@ -289,7 +295,7 @@ Bug fixes
 ## 1.5.0
 
 * Added experimental support for tkinter window. Relies on
-  Jon Wright's pyopengltk package: https://github.com/jonwright/pyopengltk.
+  Jon Wright's pyopengltk package: <https://github.com/jonwright/pyopengltk>.
   Currently only supports windows and linux, but that might change
   in the future.
 * KeyboardCamera: Exposed `mouse_sensitivity`, `velocity` and `projection` attributes
