@@ -1,7 +1,7 @@
 from pathlib import Path
 import imgui
 import moderngl
-from pyrr import Matrix44
+import glm
 import moderngl_window as mglw
 from moderngl_window import geometry
 from moderngl_window.integrations.imgui import ModernglWindowRenderer
@@ -24,8 +24,8 @@ class WindowEvents(mglw.WindowConfig):
         self.cube = geometry.cube(size=(2, 2, 2))
         self.prog = self.load_program('programs/cube_simple.glsl')
         self.prog['color'].value = (1.0, 1.0, 1.0, 1.0)
-        self.prog['m_camera'].write(Matrix44.identity(dtype='f4'))
-        self.prog['m_proj'].write(Matrix44.perspective_projection(75, 1.0, 1, 100, dtype='f4'))
+        self.prog['m_camera'].write(glm.mat4())
+        self.prog['m_proj'].write(glm.perspective(glm.radians(75), 1.0, 1, 100))
 
         self.fbo = self.ctx.framebuffer(
             color_attachments=self.ctx.texture((512, 512), 4),
@@ -37,8 +37,8 @@ class WindowEvents(mglw.WindowConfig):
 
     def render(self, time: float, frametime: float):
         # Rotate/move cube
-        rotation = Matrix44.from_eulers((time, time, time), dtype='f4')
-        translation = Matrix44.from_translation((0.0, 0.0, -3.5), dtype='f4')
+        rotation = glm.mat4(glm.quat(glm.vec3(time, time, time)))
+        translation = glm.translate(glm.vec3(0.0, 0.0, -3.5))
         model = translation * rotation
 
         # Render cube to offscreen texture / fbo

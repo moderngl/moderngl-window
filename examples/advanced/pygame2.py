@@ -8,7 +8,7 @@ import pygame
 import moderngl
 import moderngl_window
 from moderngl_window import geometry
-from pyrr import matrix44
+import glm
 
 # from moderngl_window.conf import settings
 # settings.SCREENSHOT_PATH = 'capture'
@@ -41,8 +41,8 @@ class Pygame(moderngl_window.WindowConfig):
         # Simple geometry and shader to render
         self.cube = geometry.cube(size=(2.0, 2.0, 2.0))
         self.texture_prog = self.load_program('programs/cube_simple_texture.glsl')
-        self.texture_prog['m_proj'].write(matrix44.create_perspective_projection(60, self.wnd.aspect_ratio, 1, 100, dtype='f4'))
-        self.texture_prog['m_model'].write(matrix44.create_identity(dtype='f4'))
+        self.texture_prog['m_proj'].write(glm.perspective(glm.radians(60), self.wnd.aspect_ratio, 1, 100))
+        self.texture_prog['m_model'].write(glm.mat4())
 
     def render(self, time, frametime):
         # time = self.wnd.frames / 30
@@ -50,9 +50,9 @@ class Pygame(moderngl_window.WindowConfig):
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
         self.render_pygame(time)
 
-        rotate = matrix44.create_from_eulers((time, time * 1.2, time * 1.3), dtype='f4')
-        translate = matrix44.create_from_translation((0, 0, -3.5), dtype='f4')
-        camera = matrix44.multiply(rotate, translate)
+        rotate = glm.mat4(glm.quat(glm.vec3(time, time * 1.2, time * 1.3)))
+        translate = glm.translate(glm.vec3(0, 0, -3.5))
+        camera = rotate * translate
 
         self.texture_prog['m_camera'].write(camera)
         self.pg_texture.use()

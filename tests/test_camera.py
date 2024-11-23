@@ -1,6 +1,6 @@
 from unittest import TestCase
 import numpy as np
-from pyrr import Vector3
+import glm
 
 from moderngl_window.scene import Camera, KeyboardCamera
 from moderngl_window.scene import camera as cam
@@ -14,9 +14,9 @@ class CameraTest(TestCase):
     def test_camera(self):
         camera = Camera(fov=60, aspect_ratio=1.0, near=1.0, far=100.0)
         self.assertIsInstance(camera.projection, Projection3D)
-        self.assertIsInstance(camera.matrix, np.ndarray)
+        self.assertIsInstance(camera.matrix, glm.mat4)
 
-        camera.look_at(vec=Vector3((1, 2, 3)))
+        camera.look_at(vec=glm.vec3(1, 2, 3))
         camera.look_at(pos=(4, 5, 6))
         camera.set_position(1, 1, 1)
 
@@ -27,7 +27,7 @@ class CameraTest(TestCase):
         self.assertEqual(camera.mouse_sensitivity, 10.0)
         self.assertEqual(camera.velocity, 10.0)
         self.assertIsInstance(camera.projection, Projection3D)
-        self.assertIsInstance(camera.matrix, np.ndarray)
+        self.assertIsInstance(camera.matrix, glm.mat4)
 
         camera.key_input(BaseKeys.UP, BaseKeys.ACTION_PRESS, KeyModifiers)
 

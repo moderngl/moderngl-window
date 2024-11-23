@@ -1,7 +1,7 @@
 from pathlib import Path
 import random
 import numpy
-from pyrr import matrix44
+import glm
 
 import moderngl
 import moderngl_window
@@ -61,11 +61,10 @@ class Boids(moderngl_window.WindowConfig):
         self.boids_transform_program = self.load_program('programs/boids/boids_transform.glsl')
 
         # Prepare for rendering
-        self.m_proj = matrix44.create_orthogonal_projection(
+        self.m_proj =  glm.orthographic(
             -self.aspect_ratio, self.aspect_ratio,
             -1.0, 1.0,
             -1.0, 1.0,
-            dtype='f4',
         )
         self.boids_render_program['m_proj'].write(self.m_proj.tobytes())
         self.boids_transform_program['data'].value = 0

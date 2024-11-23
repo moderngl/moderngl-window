@@ -1,4 +1,4 @@
-from pyrr import Matrix44
+import glm
 
 import moderngl_window
 from moderngl_window import geometry
@@ -18,7 +18,7 @@ class GeometryBbox(CameraWindow):
         self.prog['color'].value = (1, 1, 1)
         self.prog['bb_min'].value = (-2, -2, -2)
         self.prog['bb_max'].value = (2, 2, 2)
-        self.prog['m_model'].write(Matrix44.from_translation([0.0, 0.0, -8.0], dtype='f4'))
+        self.prog['m_model'].write(glm.translate(glm.vec3(0.0, 0.0, -8.0)))
 
     def render(self, time: float, frame_time: float):
         self.ctx.clear()
