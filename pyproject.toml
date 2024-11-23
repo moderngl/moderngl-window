@@ -24,7 +24,7 @@ classifiers = [
 dependencies = [
     "moderngl<6",
     "pyglet>=2.0.0",
-    "numpy>=1.16,<2",
+    "numpy",
     "pyglm>=2.7.0,<3",
     "Pillow>=10.0.1",
 ]
@@ -48,7 +48,7 @@ imgui = ["imgui-bundle"] # 1.6.0 originally
 pygame = ["pygame>=2.0.1"]
 pygame-ce = ["pygame-ce>=2.0.1"]
 tk = ["pyopengltk>=0.0.3"]
-trimesh = ["trimesh>=3.2.6,<4"]
+trimesh = ["trimesh>=3.2.6"]
 pywavefront = ["pywavefront>=1.2.0,<2"]
 PySDL2 = ["PySDL2"]
 glfw = ["glfw"]
