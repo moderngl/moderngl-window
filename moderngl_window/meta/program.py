@@ -40,7 +40,7 @@ class ProgramDescription(ResourceDescription):
         compute_shader: Optional[str] = None,
         defines: Optional[dict] = None,
         varyings: Optional[List] = None,
-        **kwargs
+        **kwargs,
     ):
         """Create a program description
 

@@ -7,9 +7,7 @@ class MaterialTexture:
     Contains a texture and a sampler object.
     """
 
-    def __init__(
-        self, texture: moderngl.Texture = None, sampler: moderngl.Sampler = None
-    ):
+    def __init__(self, texture: moderngl.Texture = None, sampler: moderngl.Sampler = None):
         """Initialize instance.
 
         Args:

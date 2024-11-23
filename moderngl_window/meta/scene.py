@@ -31,9 +31,7 @@ class SceneDescription(ResourceDescription):
     default_kind = None
     resource_type = "scenes"
 
-    def __init__(
-        self, path=None, kind=None, cache=False, attr_names=AttributeNames, **kwargs
-    ):
+    def __init__(self, path=None, kind=None, cache=False, attr_names=AttributeNames, **kwargs):
         """Create a scene description.
 
         Keyword Args:
@@ -46,9 +44,7 @@ class SceneDescription(ResourceDescription):
         if attr_names is None:
             attr_names = AttributeNames
 
-        kwargs.update(
-            {"path": path, "kind": kind, "cache": cache, "attr_names": attr_names}
-        )
+        kwargs.update({"path": path, "kind": kind, "cache": cache, "attr_names": attr_names})
         super().__init__(**kwargs)
 
     @property

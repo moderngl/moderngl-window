@@ -30,12 +30,8 @@ class Window(BaseWindow):
         if sdl2.SDL_Init(sdl2.SDL_INIT_VIDEO) != 0:
             raise ValueError("Failed to initialize sdl2")
 
-        sdl2.video.SDL_GL_SetAttribute(
-            sdl2.SDL_GL_CONTEXT_MAJOR_VERSION, self.gl_version[0]
-        )
-        sdl2.video.SDL_GL_SetAttribute(
-            sdl2.SDL_GL_CONTEXT_MINOR_VERSION, self.gl_version[1]
-        )
+        sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MAJOR_VERSION, self.gl_version[0])
+        sdl2.video.SDL_GL_SetAttribute(sdl2.SDL_GL_CONTEXT_MINOR_VERSION, self.gl_version[1])
         sdl2.video.SDL_GL_SetAttribute(
             sdl2.SDL_GL_CONTEXT_PROFILE_MASK, sdl2.SDL_GL_CONTEXT_PROFILE_CORE
         )
@@ -260,7 +256,9 @@ class Window(BaseWindow):
                 if button is not None:
                     self._handle_mouse_button_state_change(button, True)
                     self._mouse_press_event_func(
-                        event.motion.x, event.motion.y, button,
+                        event.motion.x,
+                        event.motion.y,
+                        button,
                     )
 
             elif event.type == sdl2.SDL_MOUSEBUTTONUP:
@@ -269,19 +267,22 @@ class Window(BaseWindow):
                 if button is not None:
                     self._handle_mouse_button_state_change(button, False)
                     self._mouse_release_event_func(
-                        event.motion.x, event.motion.y, button,
+                        event.motion.x,
+                        event.motion.y,
+                        button,
                     )
 
             elif event.type in [sdl2.SDL_KEYDOWN, sdl2.SDL_KEYUP]:
                 self._handle_mods()
 
-                if (
-                    self._exit_key is not None
-                    and event.key.keysym.sym == self._exit_key
-                ):
+                if self._exit_key is not None and event.key.keysym.sym == self._exit_key:
                     self.close()
 
-                if self._fs_key is not None and event.key.keysym.sym == self._fs_key and event.type == sdl2.SDL_KEYDOWN:
+                if (
+                    self._fs_key is not None
+                    and event.key.keysym.sym == self._fs_key
+                    and event.type == sdl2.SDL_KEYDOWN
+                ):
                     self.fullscreen = not self.fullscreen
 
                 if event.type == sdl2.SDL_KEYDOWN:
@@ -296,15 +297,16 @@ class Window(BaseWindow):
 
             elif event.type == sdl2.SDL_MOUSEWHEEL:
                 self._handle_mods()
-                self._mouse_scroll_event_func(
-                    float(event.wheel.x), float(event.wheel.y)
-                )
+                self._mouse_scroll_event_func(float(event.wheel.x), float(event.wheel.y))
 
             elif event.type == sdl2.SDL_QUIT:
                 self.close()
 
             elif event.type == sdl2.SDL_WINDOWEVENT:
-                if event.window.event in [sdl2.SDL_WINDOWEVENT_RESIZED, sdl2.SDL_WINDOWEVENT_SIZE_CHANGED]:
+                if event.window.event in [
+                    sdl2.SDL_WINDOWEVENT_RESIZED,
+                    sdl2.SDL_WINDOWEVENT_SIZE_CHANGED,
+                ]:
                     self.resize(event.window.data1, event.window.data2)
                 elif event.window.event == sdl2.SDL_WINDOWEVENT_MINIMIZED:
                     self._iconify_func(True)

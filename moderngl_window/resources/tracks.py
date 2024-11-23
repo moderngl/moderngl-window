@@ -1,6 +1,7 @@
 """
 Registry for rocket tracks
 """
+
 from rocket.tracks import Track
 
 

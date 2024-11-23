@@ -26,7 +26,8 @@ class Programs(BaseRegistry):
         """Loads a shader program with the configured loaders
 
         Args:
-            meta (:py:class:`~moderngl_window.meta.program.ProgramDescription`): The resource description
+            meta (:py:class:`~moderngl_window.meta.program.ProgramDescription`):
+            The resource description
         Returns:
             moderngl.Program: The shader program
         """

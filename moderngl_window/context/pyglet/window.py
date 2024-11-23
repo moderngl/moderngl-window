@@ -62,7 +62,7 @@ class Window(BaseWindow):
             vsync=self._vsync,
             fullscreen=self._fullscreen,
             config=config,
-            file_drops=True and platform.system() != "Darwin"
+            file_drops=True and platform.system() != "Darwin",
         )
 
         self.cursor = self._cursor
@@ -303,7 +303,9 @@ class Window(BaseWindow):
         if button is not None:
             self._handle_mouse_button_state_change(button, True)
             self._mouse_press_event_func(
-                x, self._height - y, button,
+                x,
+                self._height - y,
+                button,
             )
 
     def on_mouse_release(self, x: int, y: int, button, mods):
@@ -319,7 +321,9 @@ class Window(BaseWindow):
         if button is not None:
             self._handle_mouse_button_state_change(button, False)
             self._mouse_release_event_func(
-                x, self._height - y, button,
+                x,
+                self._height - y,
+                button,
             )
 
     def on_mouse_scroll(self, x, y, x_offset: float, y_offset: float):
@@ -360,10 +364,10 @@ class Window(BaseWindow):
     def on_file_drop(self, x, y, paths):
         """Called when files dropped onto the window
 
-            Args:
-                x (int): X location in window where file was dropped
-                y (int): Y location in window where file was dropped
-                paths (list): List of file paths dropped
+        Args:
+            x (int): X location in window where file was dropped
+            y (int): Y location in window where file was dropped
+            paths (list): List of file paths dropped
         """
         # pyglet coordinate origin is in the bottom left corner of the window
         # mglw coordinate origin is in the top left corner of the window

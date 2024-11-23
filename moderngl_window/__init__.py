@@ -62,9 +62,7 @@ def setup_basic_logging(level: int):
         logger.setLevel(level)
         ch = logging.StreamHandler()
         ch.setLevel(logging.DEBUG)
-        ch.setFormatter(
-            logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-        )
+        ch.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
         logger.addHandler(ch)
 
 
@@ -206,9 +204,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         title=config_cls.title,
         size=size,
         fullscreen=config_cls.fullscreen or values.fullscreen,
-        resizable=(
-            values.resizable if values.resizable is not None else config_cls.resizable
-        ),
+        resizable=(values.resizable if values.resizable is not None else config_cls.resizable),
         visible=config_cls.visible,
         gl_version=config_cls.gl_version,
         aspect_ratio=config_cls.aspect_ratio,
@@ -250,11 +246,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     _, duration = timer.stop()
     window.destroy()
     if duration > 0:
-        logger.info(
-            "Duration: {0:.2f}s @ {1:.2f} FPS".format(
-                duration, window.frames / duration
-            )
-        )
+        logger.info("Duration: {0:.2f}s @ {1:.2f} FPS".format(duration, window.frames / duration))
 
 
 def create_parser():
@@ -351,9 +343,7 @@ def valid_bool(value):
     if value in OPTIONS_FALSE:
         return False
 
-    raise argparse.ArgumentTypeError(
-        "Boolean value expected. Options: {}".format(OPTIONS_ALL)
-    )
+    raise argparse.ArgumentTypeError("Boolean value expected. Options: {}".format(OPTIONS_ALL))
 
 
 def valid_window_size(value):

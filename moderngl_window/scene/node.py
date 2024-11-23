@@ -126,7 +126,11 @@ class Node:
             )
 
     def draw_bbox(
-        self, projection_matrix: glm.mat4, camera_matrix: glm.mat4, program: mod, vao
+        self,
+        projection_matrix: glm.mat4,
+        camera_matrix: glm.mat4,
+        program: moderngl.Program,
+        vao,
     ):
         """Draw bounding box around the node and children.
 
@@ -170,9 +174,7 @@ class Node:
             view_matrix = self._matrix * view_matrix
 
         if self._mesh:
-            bbox_min, bbox_max = self._mesh.calc_global_bbox(
-                view_matrix, bbox_min, bbox_max
-            )
+            bbox_min, bbox_max = self._mesh.calc_global_bbox(view_matrix, bbox_min, bbox_max)
 
         for child in self._children:
             bbox_min, bbox_max = child.calc_global_bbox(view_matrix, bbox_min, bbox_max)

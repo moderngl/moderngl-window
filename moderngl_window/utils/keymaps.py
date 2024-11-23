@@ -9,9 +9,9 @@ KeyMap = namedtuple("KeyMap", ["UP", "DOWN", "LEFT", "RIGHT", "FORWARD", "BACKWA
 # induced by the window software used.
 # Therefore, the factory takes as a parameter the keys used, and return a keymap instance.
 KeyMapFactory = Callable[[BaseKeys], KeyMap]
-AZERTY: KeyMapFactory = lambda keys: KeyMap(
+AZERTY: KeyMapFactory = lambda keys: KeyMap(  # noqa
     UP=keys.A, DOWN=keys.E, LEFT=keys.Q, RIGHT=keys.D, FORWARD=keys.Z, BACKWARD=keys.S
 )
-QWERTY: KeyMapFactory = lambda keys: KeyMap(
+QWERTY: KeyMapFactory = lambda keys: KeyMap(  # noqa
     UP=keys.Q, DOWN=keys.E, LEFT=keys.A, RIGHT=keys.D, FORWARD=keys.W, BACKWARD=keys.S
 )

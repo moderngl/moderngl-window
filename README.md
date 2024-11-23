@@ -38,7 +38,7 @@ you provide us your `moderngl.Context`.
 ## Install
 
 ```bash
-$ pip install moderngl-window
+pip install moderngl-window
 ```
 
 ## Supported Platforms
@@ -67,13 +67,13 @@ Test.run()
 Run the example with different window backends:
 
 ```bash
-$ python test.py --window pyglet
-$ python test.py --window pygame2
-$ python test.py --window glfw
-$ python test.py --window sdl2
-$ python test.py --window pyside2
-$ python test.py --window pyqt5
-$ python test.py --window tk
+python test.py --window pyglet
+python test.py --window pygame2
+python test.py --window glfw
+python test.py --window sdl2
+python test.py --window pyside2
+python test.py --window pyqt5
+python test.py --window tk
 ```
 
 `WindowConfig` classes are the simplest way to get started without knowing
@@ -103,8 +103,8 @@ pytest
 ## Building Docs
 
 ```bash
-$ pip install -e .[dev]
-$ sphinx-build -b html docs docs/_build
+pip install -e .[dev]
+sphinx-build -b html docs docs/_build
 ```
 
 ## Contributing
@@ -134,6 +134,7 @@ your package provides.
 ## Citation
 
 If you need to cite this repository in academic research:
+
 ```txt
 @Online{Forselv2020,
   author = {Einar Forselv},
@@ -147,8 +148,7 @@ If you need to cite this repository in academic research:
 ```
 
 If commit hash is required this can be found per release here:
-https://github.com/moderngl/moderngl-window/releases
-
+<https://github.com/moderngl/moderngl-window/releases>
 
 ## Attributions
 
@@ -157,33 +157,32 @@ and resources to make this project possible.
 
 ### Windows
 
-* pyglet (https://github.com/pyglet/pyglet)
-* pygame (https://github.com/pygame/pygame)
-* pyGLFW (https://github.com/FlorianRhiem/pyGLFW)
-* PySDL2 (https://github.com/marcusva/py-sdl2)
-* PySide2 (https://wiki.qt.io/Qt_for_Python)
-* PyQt5 (https://www.riverbankcomputing.com/software/pyqt/intro)
-* tkinter (https://github.com/jonwright/pyopengltk)
+* pyglet (<https://github.com/pyglet/pyglet>)
+* pygame (<https://github.com/pygame/pygame>)
+* pyGLFW (<https://github.com/FlorianRhiem/pyGLFW>)
+* PySDL2 (<https://github.com/marcusva/py-sdl2>)
+* PySide2 (<https://wiki.qt.io/Qt_for_Python>)
+* PyQt5 (<https://www.riverbankcomputing.com/software/pyqt/intro>)
+* tkinter (<https://github.com/jonwright/pyopengltk>)
 
 ### Loaders
 
-* Pillow (https://python-pillow.org/)
-* pywavefront (https://github.com/pywavefront/PyWavefront)
-* trimesh (https://github.com/mikedh/trimesh)
+* Pillow (<https://python-pillow.org/>)
+* pywavefront (<https://github.com/pywavefront/PyWavefront>)
+* trimesh (<https://github.com/mikedh/trimesh>)
 
 ### Testing & Utility
 
-* PyGLM (https://github.com/Zuzu-Typ/PyGLM)
-* numpy (https://github.com/numpy/numpy)
-* pytest (https://docs.pytest.org/en/latest/)
-* flake8 (https://gitlab.com/pycqa/flake8)
-* coverage (https://github.com/nedbat/coveragepy)
-* tox (https://tox.readthedocs.io/en/latest/)
+* PyGLM (<https://github.com/Zuzu-Typ/PyGLM>)
+* ruff (<https://github.com/astral-sh/ruff>)
+* numpy (<https://github.com/numpy/numpy>)
+* pytest (<https://docs.pytest.org/en/latest/>)
+* coverage (<https://github.com/nedbat/coveragepy>)
 
 ## Resources
 
-* NASA 3D Resources (https://github.com/nasa/NASA-3D-Resources)
-* glTF Sample Models (https://github.com/KhronosGroup/glTF-Sample-Models)
+* NASA 3D Resources (<https://github.com/nasa/NASA-3D-Resources>)
+* glTF Sample Models (<https://github.com/KhronosGroup/glTF-Sample-Models>)
 
 ## Some History
 

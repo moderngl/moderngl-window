@@ -23,9 +23,7 @@ class TextWriter2D(BaseText):
     def __init__(self):
         super().__init__()
 
-        meta = FontMeta(
-            resources.data.load(DataDescription(path="bitmapped/text/meta.json"))
-        )
+        meta = FontMeta(resources.data.load(DataDescription(path="bitmapped/text/meta.json")))
         self._texture = resources.textures.load(
             TextureDescription(
                 path="bitmapped/textures/VeraMono.png",

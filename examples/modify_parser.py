@@ -15,8 +15,8 @@ python script.py path/to/file --wireframe --title "Custom Window Title"
 python script.py path/to/file --title "Custom Window Title"
 
 """
+
 import math
-from pathlib import Path
 
 import moderngl_window
 
@@ -27,11 +27,11 @@ class ModifyParser(moderngl_window.WindowConfig):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        print('all arguments :', self.argv)
+        print("all arguments :", self.argv)
         # Print our custom argument
-        print('path      :', self.argv.path)
-        print('wireframe :', self.argv.wireframe)
-        print('title     :', self.argv.title)
+        print("path      :", self.argv.path)
+        print("wireframe :", self.argv.wireframe)
+        print("title     :", self.argv.title)
 
         if self.argv.title:
             self.wnd.title = self.argv.title
@@ -40,20 +40,20 @@ class ModifyParser(moderngl_window.WindowConfig):
     def add_arguments(cls, parser):
         # Mandatory positional argument for the file to load
         parser.add_argument(
-            'path',
+            "path",
             help="Path to the model to display",
         )
         # Optional flag for rendering the model in wireframe
         # This is simply enabled by adding "--wireframe" with no arguments
         parser.add_argument(
-            '--wireframe',
+            "--wireframe",
             action="store_true",
             default=False,
             help="Display the model as a wireframe",
         )
         # Optional argument for window title
         parser.add_argument(
-            '--title',
+            "--title",
             type=str,
             help="Override the window title",
         )
@@ -67,5 +67,5 @@ class ModifyParser(moderngl_window.WindowConfig):
         )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     ModifyParser.run()

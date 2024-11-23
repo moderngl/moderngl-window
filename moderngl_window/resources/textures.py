@@ -1,6 +1,7 @@
 """
 Shader Registry
 """
+
 from typing import Union
 import moderngl
 from moderngl_window.resources.base import BaseRegistry
@@ -12,13 +13,17 @@ class Textures(BaseRegistry):
 
     settings_attr = "TEXTURE_LOADERS"
 
-    def load(
-        self, meta: TextureDescription
-    ) -> Union[moderngl.Texture, moderngl.TextureArray, moderngl.TextureCube, moderngl.Texture3D]:
+    def load(self, meta: TextureDescription) -> Union[
+        moderngl.Texture,
+        moderngl.TextureArray,
+        moderngl.TextureCube,
+        moderngl.Texture3D,
+    ]:
         """Loads a texture with the configured loaders.
 
         Args:
-            meta (:py:class:`~moderngl_window.meta.texture.TextureDescription`): The resource description
+            meta (:py:class:`~moderngl_window.meta.texture.TextureDescription`):
+            The resource description
         Returns:
             moderngl.Texture: 2d texture
         Returns:

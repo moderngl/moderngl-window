@@ -3,7 +3,7 @@ from typing import Dict, Type
 
 
 class ResourceDescription:
-    """ Description of any resource.
+    """Description of any resource.
     Resource descriptions are required to load a resource.
     This class can be extended to add more specific properties.
     """

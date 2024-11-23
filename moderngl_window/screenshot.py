@@ -34,18 +34,14 @@ def create(
     dest = ""
     if settings.SCREENSHOT_PATH:
         if not os.path.exists(str(settings.SCREENSHOT_PATH)):
-            logger.debug(
-                "SCREENSHOT_PATH does not exist. creating: %s", settings.SCREENSHOT_PATH
-            )
+            logger.debug("SCREENSHOT_PATH does not exist. creating: %s", settings.SCREENSHOT_PATH)
             os.makedirs(str(settings.SCREENSHOT_PATH))
         dest = settings.SCREENSHOT_PATH
     else:
         logger.info("SCREENSHOT_PATH not defined in settings. Using cwd as fallback.")
 
     if not name:
-        name = "{}.{}".format(
-            datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f"), file_format
-        )
+        name = "{}.{}".format(datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f"), file_format)
 
     logger.debug(
         "Creating screenshot: source=%s file_format=%s name=%s mode=%s alignment=%s",
@@ -70,9 +66,7 @@ def create(
             TEXTURE_MODES[source.components], source.size, source.read(alignment=1)
         )
     else:
-        raise ValueError(
-            "Source needs to be a FrameBuffer or Texture, not a %s", type(source)
-        )
+        raise ValueError("Source needs to be a FrameBuffer or Texture, not a %s", type(source))
 
     image = image.transpose(Image.FLIP_TOP_BOTTOM)
     dest = os.path.join(str(dest), name)

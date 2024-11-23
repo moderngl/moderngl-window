@@ -1,6 +1,7 @@
 """
 Helper classes for loading shader
 """
+
 from typing import List, Tuple, Union, Optional
 import re
 
@@ -132,9 +133,7 @@ class ProgramShaders:
         return instance
 
     @classmethod
-    def compute_shader(
-        cls, meta: ProgramDescription, compute_shader_source: str = None
-    ):
+    def compute_shader(cls, meta: ProgramDescription, compute_shader_source: str = None):
         instance = cls(meta)
         instance.compute_shader_source = ShaderSource(
             COMPUTE_SHADER,
@@ -168,18 +167,14 @@ class ProgramShaders:
 
         program = self.ctx.program(
             vertex_shader=self.vertex_source.source,
-            geometry_shader=self.geometry_source.source
-            if self.geometry_source
-            else None,
-            fragment_shader=self.fragment_source.source
-            if self.fragment_source
-            else None,
-            tess_control_shader=self.tess_control_source.source
-            if self.tess_control_source
-            else None,
-            tess_evaluation_shader=self.tess_evaluation_source.source
-            if self.tess_evaluation_source
-            else None,
+            geometry_shader=(self.geometry_source.source if self.geometry_source else None),
+            fragment_shader=(self.fragment_source.source if self.fragment_source else None),
+            tess_control_shader=(
+                self.tess_control_source.source if self.tess_control_source else None
+            ),
+            tess_evaluation_shader=(
+                self.tess_evaluation_source.source if self.tess_evaluation_source else None
+            ),
             varyings=out_attribs,
         )
         program.extra = {"meta": self.meta}
@@ -227,12 +222,17 @@ class ShaderSource:
         """Create shader source.
 
         Args:
-            shader_type (str): A preprocessor name for setting the shader type
-            name (str): A string (usually the path) so we can give useful error messages to the user
-            source (str): The raw source for the shader
+            shader_type (str):
+                A preprocessor name for setting the shader type
+            name (str):
+                A string (usually the path) so we can give useful error messages to the user
+            source (str):
+                The raw source for the shader
         Keyword Args:
-            id (int): The source number. Used when shader consists of multiple sources through includes
-            root (bool): If this shader source is the root shader (Not an include)
+            id (int):
+                The source number. Used when shader consists of multiple sources through includes
+            root (bool):
+                If this shader source is the root shader (Not an include)
         """
         self._id = id
         self._root = root
@@ -315,7 +315,7 @@ class ShaderSource:
             for nr, line in enumerate(self._lines):
                 line = line.strip()
                 if line.startswith("#include"):
-                    path = re.search(r'#include\s+"?([^"]+)',line)[1]
+                    path = re.search(r'#include\s+"?([^"]+)', line)[1]
                     current_id += 1
                     _, source = load_source_func(path)
                     source = ShaderSource(
@@ -326,10 +326,8 @@ class ShaderSource:
                         id=current_id,
                         root=False,
                     )
-                    source.handle_includes(
-                        load_source_func, depth=depth + 1, source_id=current_id
-                    )
-                    self._lines = self.lines[:nr] + source.lines + self.lines[nr + 1:]
+                    source.handle_includes(load_source_func, depth=depth + 1, source_id=current_id)
+                    self._lines = self.lines[:nr] + source.lines + self.lines[nr + 1 :]
                     self._source_list += source.source_list
                     current_id = self._source_list[-1].id
                     break
@@ -363,9 +361,7 @@ class ShaderSource:
         """
         names = []
         for line in self.lines:
-            res = re.match(
-                r"(layout(.+)\))?(\s+)?(out)(\s+)(\w+)(\s+)(\w+)", line.strip()
-            )
+            res = re.match(r"(layout(.+)\))?(\s+)?(out)(\s+)(\w+)(\s+)(\w+)", line.strip())
             if res:
                 names.append(res.groups()[-1])
 
@@ -416,9 +412,7 @@ class ReloadableProgram:
     def ctx(self) -> moderngl.Context:
         return self.program.ctx
 
-    def __getitem__(
-        self, key
-    ) -> Union[
+    def __getitem__(self, key) -> Union[
         moderngl.Uniform,
         moderngl.UniformBlock,
         moderngl.Subroutine,
@@ -450,7 +444,7 @@ class ReloadableProgram:
     @property
     def subroutines(self) -> Tuple[str, ...]:
         """
-            tuple: The subroutine uniforms.
+        tuple: The subroutine uniforms.
         """
         return self.program.subroutines
 

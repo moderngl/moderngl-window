@@ -41,7 +41,7 @@ class TextureDescription(ResourceDescription):
         neg_x: str = None,
         neg_y: str = None,
         neg_z: str = None,
-        **kwargs
+        **kwargs,
     ):
         """Describes a texture resource
 

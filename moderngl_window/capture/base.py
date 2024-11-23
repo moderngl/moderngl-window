@@ -8,15 +8,15 @@ from moderngl_window.timers.clock import Timer
 
 class BaseVideoCapture:
     """
-        ``BaseVideoCapture`` is a base class to video capture
+    ``BaseVideoCapture`` is a base class to video capture
 
-        Args:
-            source (moderngl.Texture, moderngl.Framebuffer): the source of the capture
-            framerate (int, float) : the framerate of the video, by thefault is 60 fps
+    Args:
+        source (moderngl.Texture, moderngl.Framebuffer): the source of the capture
+        framerate (int, float) : the framerate of the video, by thefault is 60 fps
 
-        if the source is texture there are some requirements:
-            - dtype = 'f1';
-            - components >= 3.
+    if the source is texture there are some requirements:
+        - dtype = 'f1';
+        - components >= 3.
     """
 
     def __init__(
@@ -44,48 +44,48 @@ class BaseVideoCapture:
 
     def _dump_frame(self, frame):
         """
-            custom function called during self.save()
+        custom function called during self.save()
 
-            Args:
-                frame: frame data in bytes
+        Args:
+            frame: frame data in bytes
         """
         raise NotImplementedError("override this function")
 
     def _start_func(self) -> bool:
         """
-            custom function called during self.start_capture()
+        custom function called during self.start_capture()
 
-            must return a True if this function complete without errors
+        must return a True if this function complete without errors
         """
         raise NotImplementedError("override this function")
 
     def _release_func(self):
         """
-            custom function called during self.realease()
+        custom function called during self.release()
         """
         raise NotImplementedError("override this function")
 
     def _get_wh(self):
         """
-            Return a tuple of the width and the height of the source
+        Return a tuple of the width and the height of the source
         """
         return self._source.width, self._source.height
 
     def _remove_file(self):
-        """ Remove the filename of the video is it exist """
+        """Remove the filename of the video is it exist"""
         if os.path.exists(self._filename):
             os.remove(self._filename)
 
     def start_capture(self, filename: str = None, framerate: Union[int, float] = 60):
         """
-            Start the capturing process
+        Start the capturing process
 
-            Args:
-                filename (str): name of the output file
-                framerate (int, float): framerate of the video
+        Args:
+            filename (str): name of the output file
+            framerate (int, float): framerate of the video
 
-            if filename is not specified it will be generated based
-            on the datetime.
+        if filename is not specified it will be generated based
+        on the datetime.
         """
         if self._recording:
             print("Capturing is already started")
@@ -93,7 +93,7 @@ class BaseVideoCapture:
 
         # ensure the texture has the correct dtype and components
         if isinstance(self._source, moderngl.Texture):
-            if self._source.dtype != 'f1':
+            if self._source.dtype != "f1":
                 print("source type: moderngl.Texture must be type `f1` ")
                 return
             if self._components < 3:
@@ -102,7 +102,7 @@ class BaseVideoCapture:
 
         if not filename:
             now = datetime.datetime.now()
-            filename = f'video_{now:%Y%m%d_%H%M%S}.mp4'
+            filename = f"video_{now:%Y%m%d_%H%M%S}.mp4"
 
         self._filename = filename
 
@@ -123,12 +123,12 @@ class BaseVideoCapture:
 
     def save(self):
         """
-            Save function to call at the end of render function
+        Save function to call at the end of render function
         """
         if not self._recording:
             return
 
-        dt = 1. / self._framerate
+        dt = 1.0 / self._framerate
 
         if self._timer.time - self._last_time > dt:
 

@@ -27,7 +27,11 @@ class Loader(PillowLoader):
         )
         components, data = image_data(self.image)
 
-        texture = self.ctx.texture_array((width, height, depth), components, data,)
+        texture = self.ctx.texture_array(
+            (width, height, depth),
+            components,
+            data,
+        )
         texture.extra = {"meta": self.meta}
 
         if self.meta.mipmap_levels is not None:

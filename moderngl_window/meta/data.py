@@ -37,7 +37,5 @@ class DataDescription(ResourceDescription):
             kind (str): The resource kind deciding loader class
             **kwargs: Additional custom attributes
         """
-        kwargs.update(
-            {"path": path, "kind": kind}
-        )
+        kwargs.update({"path": path, "kind": kind})
         super().__init__(**kwargs)

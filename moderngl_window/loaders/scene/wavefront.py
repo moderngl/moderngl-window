@@ -101,9 +101,7 @@ class Loader(BaseLoader):
 
         VAOCacheLoader.attr_names = self.meta.attr_names
 
-        data = pywavefront.Wavefront(
-            str(path), create_materials=True, cache=self.meta.cache
-        )
+        data = pywavefront.Wavefront(str(path), create_materials=True, cache=self.meta.cache)
         scene = Scene(self.meta.resolved_path)
         texture_cache = {}
 
@@ -159,7 +157,8 @@ class Loader(BaseLoader):
                     texture_cache[rel_path] = texture
 
                 mesh.material.mat_texture = MaterialTexture(
-                    texture=texture, sampler=None,
+                    texture=texture,
+                    sampler=None,
                 )
 
             node = Node(mesh=mesh)

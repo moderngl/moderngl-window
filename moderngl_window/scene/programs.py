@@ -75,9 +75,7 @@ class VertexColorProgram(MeshProgram):
 
     def __init__(self, program=None, **kwargs) -> None:
         super().__init__(program=None)
-        self.program = programs.load(
-            ProgramDescription(path="scene_default/vertex_color.glsl")
-        )
+        self.program = programs.load(ProgramDescription(path="scene_default/vertex_color.glsl"))
 
     def draw(
         self,
@@ -110,9 +108,7 @@ class ColorLightProgram(MeshProgram):
 
     def __init__(self, program=None, **kwargs) -> None:
         super().__init__(program=None)
-        self.program = programs.load(
-            ProgramDescription(path="scene_default/color_light.glsl")
-        )
+        self.program = programs.load(ProgramDescription(path="scene_default/color_light.glsl"))
 
     def draw(
         self,
@@ -153,9 +149,7 @@ class TextureProgram(MeshProgram):
 
     def __init__(self, program=None, **kwargs) -> None:
         super().__init__(program=None)
-        self.program = programs.load(
-            ProgramDescription(path="scene_default/texture.glsl")
-        )
+        self.program = programs.load(ProgramDescription(path="scene_default/texture.glsl"))
 
     def draw(
         self,
@@ -239,9 +233,7 @@ class TextureLightProgram(MeshProgram):
 
     def __init__(self, program: moderngl.Program | None = None, **kwargs) -> None:
         super().__init__(program=None)
-        self.program = programs.load(
-            ProgramDescription(path="scene_default/texture_light.glsl")
-        )
+        self.program = programs.load(ProgramDescription(path="scene_default/texture_light.glsl"))
 
     def draw(
         self,
@@ -290,9 +282,7 @@ class FallbackProgram(MeshProgram):
 
     def __init__(self, program: moderngl.Program | None = None, **kwargs) -> None:
         super().__init__(program=None)
-        self.program = programs.load(
-            ProgramDescription(path="scene_default/fallback.glsl")
-        )
+        self.program = programs.load(ProgramDescription(path="scene_default/fallback.glsl"))
 
     def draw(
         self,

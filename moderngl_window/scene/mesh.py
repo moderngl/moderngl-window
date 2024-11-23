@@ -40,9 +40,7 @@ class Mesh:
         self.bbox_max = bbox_max
         self.mesh_program = None
 
-    def draw(
-        self, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0.0
-    ):
+    def draw(self, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0.0):
         """Draw the mesh using the assigned mesh program
 
         Keyword Args:
@@ -79,9 +77,9 @@ class Mesh:
     def draw_wireframe(self, proj_matrix, model_matrix, program):
         """Render the mesh as wireframe.
 
-            proj_matrix: Projection matrix
-            model_matrix: View/model matrix
-            program: The moderngl.Program rendering the wireframe
+        proj_matrix: Projection matrix
+        model_matrix: View/model matrix
+        program: The moderngl.Program rendering the wireframe
         """
         program["m_proj"].write(proj_matrix)
         program["m_model"].write(model_matrix)

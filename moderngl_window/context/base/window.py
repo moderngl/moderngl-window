@@ -89,7 +89,7 @@ class BaseWindow:
         samples=0,
         cursor=True,
         backend: Optional[str] = None,
-        **kwargs
+        **kwargs,
     ):
         """Initialize a window instance.
 
@@ -158,9 +158,7 @@ class BaseWindow:
             self._resizable = False
 
         if not self.keys:
-            raise ValueError(
-                "Window class {} missing keys attribute".format(self.__class__)
-            )
+            raise ValueError("Window class {} missing keys attribute".format(self.__class__))
 
     def init_mgl_context(self) -> None:
         """
@@ -771,9 +769,7 @@ class BaseWindow:
         A library specific destroy method is required.
         """
         raise NotImplementedError(
-            "Setting an icon is currently not supported by Window-type: {}".format(
-                self.name
-            )
+            "Setting an icon is currently not supported by Window-type: {}".format(self.name)
         )
 
     def _set_fullscreen(self, value: bool) -> None:
@@ -781,16 +777,12 @@ class BaseWindow:
         A library specific destroy method is required
         """
         raise NotImplementedError(
-            "Toggling fullscreen is currently not supported by Window-type: {}".format(
-                self.name
-            )
+            "Toggling fullscreen is currently not supported by Window-type: {}".format(self.name)
         )
 
     def _set_vsync(self, value: bool) -> None:
         raise NotImplementedError(
-            "Toggling vsync is currently not supported by Window-type: {}".format(
-                self.name
-            )
+            "Toggling vsync is currently not supported by Window-type: {}".format(self.name)
         )
 
     def destroy(self) -> None:
@@ -871,7 +863,10 @@ class BaseWindow:
 
     @property
     def on_generic_event_func(self):
-        """callable: Get or set the on_generic_event callable used to funnel all non-processed events"""
+        """
+        callable: Get or set the on_generic_event callable
+        used to funnel all non-processed events
+        """
         return self._mouse_position_event_func
 
     @on_generic_event_func.setter
@@ -1064,7 +1059,7 @@ class WindowConfig:
         ctx: moderngl.Context = None,
         wnd: BaseWindow = None,
         timer: BaseTimer = None,
-        **kwargs
+        **kwargs,
     ):
         """Initialize the window config
 
@@ -1081,9 +1076,7 @@ class WindowConfig:
             resources.register_dir(Path(self.resource_dir).resolve())
 
         if not self.ctx or not isinstance(self.ctx, moderngl.Context):
-            raise ValueError(
-                "WindowConfig requires a moderngl context. ctx={}".format(self.ctx)
-            )
+            raise ValueError("WindowConfig requires a moderngl context. ctx={}".format(self.ctx))
 
         if not self.wnd or not isinstance(self.wnd, BaseWindow):
             raise ValueError("WindowConfig requires a window. wnd={}".format(self.wnd))
@@ -1100,18 +1093,12 @@ class WindowConfig:
         self.wnd.close_func = getattr(self, "close", dummy_func)
         self.wnd.iconify_func = getattr(self, "iconify", dummy_func)
         self.wnd.key_event_func = getattr(self, "key_event", dummy_func)
-        self.wnd.mouse_position_event_func = getattr(
-            self, "mouse_position_event", dummy_func
-        )
+        self.wnd.mouse_position_event_func = getattr(self, "mouse_position_event", dummy_func)
         self.wnd.mouse_press_event_func = getattr(self, "mouse_press_event", dummy_func)
-        self.wnd.mouse_release_event_func = getattr(
-            self, "mouse_release_event", dummy_func
-        )
+        self.wnd.mouse_release_event_func = getattr(self, "mouse_release_event", dummy_func)
         self.wnd.mouse_drag_event_func = getattr(self, "mouse_drag_event", dummy_func)
         self.wnd.mouse_scroll_event_func = getattr(self, "mouse_scroll_event", dummy_func)
-        self.wnd.unicode_char_entered_func = getattr(
-            self, "unicode_char_entered", dummy_func
-        )
+        self.wnd.unicode_char_entered_func = getattr(self, "unicode_char_entered", dummy_func)
 
         self.wnd.files_dropped_event_func = getattr(self, "files_dropped_event", dummy_func)
 
@@ -1258,7 +1245,7 @@ class WindowConfig:
         mipmap=False,
         mipmap_levels: Optional[Tuple[int, int]] = None,
         anisotropy=1.0,
-        **kwargs
+        **kwargs,
     ) -> moderngl.Texture:
         """Loads a 2D texture.
 
@@ -1302,7 +1289,7 @@ class WindowConfig:
         mipmap=False,
         mipmap_levels: Optional[Tuple[int, int]] = None,
         anisotropy=1.0,
-        **kwargs
+        **kwargs,
     ) -> moderngl.TextureArray:
         """Loads a texture array.
 
@@ -1357,7 +1344,7 @@ class WindowConfig:
         mipmap=False,
         mipmap_levels: Optional[Tuple[int, int]] = None,
         anisotropy=1.0,
-        **kwargs
+        **kwargs,
     ) -> moderngl.TextureCube:
         """Loads a texture cube.
 
@@ -1548,7 +1535,11 @@ class WindowConfig:
         """
         return resources.scenes.load(
             SceneDescription(
-                path=path, cache=cache, attr_names=attr_names, kind=kind, **kwargs,
+                path=path,
+                cache=cache,
+                attr_names=attr_names,
+                kind=kind,
+                **kwargs,
             )
         )
 

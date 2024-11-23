@@ -205,7 +205,15 @@ class KeyboardCamera(Camera):
         camera.projection.tobytes()
     """
 
-    def __init__(self, keys: BaseKeys, keymap: KeyMapFactory = QWERTY, fov=60.0, aspect_ratio=1.0, near=1.0, far=100.0):
+    def __init__(
+        self,
+        keys: BaseKeys,
+        keymap: KeyMapFactory = QWERTY,
+        fov=60.0,
+        aspect_ratio=1.0,
+        near=1.0,
+        far=100.0,
+    ):
         """Initialize the camera
 
         Args:
@@ -446,8 +454,8 @@ class KeyboardCamera(Camera):
 class OrbitCamera(Camera):
     """Camera controlled by the mouse to pan around the target.
 
-    The functions :py:function:`~camera.OrbitCamera.rot_state` and :py:function:`~camera.OrbitCamera.rot_state`
-    are used to update the rotation and zoom.
+    The functions :py:function:`~camera.OrbitCamera.rot_state` and
+    :py:function:`~camera.OrbitCamera.rot_state` are used to update the rotation and zoom.
 
     Creating a orbit camera:
 
@@ -474,9 +482,7 @@ class OrbitCamera(Camera):
         camera.projection.tobytes()
     """
 
-    def __init__(
-        self, target=(0.0, 0.0, 0.0), radius=2.0, angles=(45.0, -45.0), **kwargs
-    ):
+    def __init__(self, target=(0.0, 0.0, 0.0), radius=2.0, angles=(45.0, -45.0), **kwargs):
         """Initialize the camera
 
         Keyword Args:

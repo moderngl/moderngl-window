@@ -22,6 +22,7 @@ class _Row:
     """
     A row in the texture atlas.
     """
+
     __slots__ = ("x", "y", "y2", "max_height")
 
     def __init__(self, y: int, max_height: int) -> None:
@@ -96,6 +97,7 @@ class TextureAtlas:
     is normally sufficient for dynamic atlases were textures
     are added on the fly runtime.
     """
+
     def __init__(
         self,
         ctx: moderngl.Context,
@@ -120,9 +122,7 @@ class TextureAtlas:
         self._texture = self._ctx.texture(self.size, components=self._components)
 
         # We want to be able to render into the atlas texture
-        self._fbo = self._fbo = self._ctx.framebuffer(
-            color_attachments=[self._texture]
-        )
+        self._fbo = self._fbo = self._ctx.framebuffer(color_attachments=[self._texture])
         self._allocator = Allocator(width, height)
 
     @property

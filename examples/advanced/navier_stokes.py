@@ -8,7 +8,6 @@ Interact with the window using to add pressure and momentum.
 
 import random
 from pathlib import Path
-import numpy as np
 import glm
 
 import moderngl_window

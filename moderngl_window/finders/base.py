@@ -1,6 +1,7 @@
 """
 Base finders
 """
+
 import functools
 import logging
 
@@ -25,14 +26,11 @@ class BaseFilesystemFinder:
     """
 
     def __init__(self):
-        """Initialize finder class by looking up the paths referenced in ``settings_attr``.
-        """
+        """Initialize finder class by looking up the paths referenced in ``settings_attr``."""
         if not hasattr(settings, self.settings_attr):
             raise ImproperlyConfigured(
                 "Settings doesn't define {}. "
-                "This is required when using a FileSystemFinder.".format(
-                    self.settings_attr
-                )
+                "This is required when using a FileSystemFinder.".format(self.settings_attr)
             )
         self.paths = getattr(settings, self.settings_attr)
 
@@ -67,9 +65,7 @@ class BaseFilesystemFinder:
 
             # Keep ensuring all search paths are absolute
             if not search_path.is_absolute():
-                raise ImproperlyConfigured(
-                    "Search search path '{}' is not an absolute path"
-                )
+                raise ImproperlyConfigured("Search search path '{}' is not an absolute path")
 
             abspath = search_path / path
             logger.debug("abspath %s", abspath)
@@ -97,9 +93,7 @@ def get_finder(import_path: str):
     Finder = import_string(import_path)
     if not issubclass(Finder, BaseFilesystemFinder):
         raise ImproperlyConfigured(
-            "Finder {} is not a subclass of .finders.FileSystemFinder".format(
-                import_path
-            )
+            "Finder {} is not a subclass of .finders.FileSystemFinder".format(import_path)
         )
 
     return Finder()

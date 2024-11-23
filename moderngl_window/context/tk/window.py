@@ -22,9 +22,7 @@ class Window(BaseWindow):
         super().__init__(**kwargs)
 
         self._tk = tkinter.Tk()
-        self._gl_widget = ModernglTkWindow(
-            self._tk, width=self.width, height=self.height
-        )
+        self._gl_widget = ModernglTkWindow(self._tk, width=self.width, height=self.height)
         self._gl_widget.pack(fill=tkinter.BOTH, expand=tkinter.YES)
         self._tk.resizable(self._resizable, self._resizable)
 

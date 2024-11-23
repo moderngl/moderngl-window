@@ -1,4 +1,3 @@
-
 import moderngl_window
 
 
@@ -7,12 +6,12 @@ class FontMeta:
 
     def __init__(self, meta):
         self._meta = meta
-        self.characters = self._meta['characters']
-        self.character_ranges = self._meta['character_ranges']
-        self.character_height = self._meta['character_height']
-        self.character_width = self._meta['character_width']
-        self.atlas_height = self._meta['atlas_height']
-        self.atlas_width = self._meta['atlas_width']
+        self.characters = self._meta["characters"]
+        self.character_ranges = self._meta["character_ranges"]
+        self.character_height = self._meta["character_height"]
+        self.character_width = self._meta["character_width"]
+        self.atlas_height = self._meta["atlas_height"]
+        self.atlas_width = self._meta["atlas_width"]
 
     @property
     def char_aspect_wh(self):
@@ -35,7 +34,7 @@ class BaseText:
 
     def _translate_string(self, data):
         """Translate string into character texture positions"""
-        data = data.encode('iso-8859-1', errors='replace')
+        data = data.encode("iso-8859-1", errors="replace")
 
         for index, char in enumerate(data):
             yield self._meta.characters - 1 - self._ct[char]
@@ -53,6 +52,6 @@ class BaseText:
         self._ct = [-1] * 256
         index = 0
         for c_range in self._meta.character_ranges:
-            for c_pos in range(c_range['min'], c_range['max'] + 1):
+            for c_pos in range(c_range["min"], c_range["max"] + 1):
                 self._ct[c_pos] = index
                 index += 1

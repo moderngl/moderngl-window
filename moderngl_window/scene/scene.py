@@ -1,6 +1,7 @@
 """
 Wrapper for a loaded scene with properties.
 """
+
 from typing import TYPE_CHECKING
 import logging
 import numpy
@@ -146,9 +147,7 @@ class Scene:
 
         # Draw bounding box for children
         for node in self.root_nodes:
-            node.draw_bbox(
-                projection_matrix, camera_matrix, self.bbox_program, self.bbox_vao
-            )
+            node.draw_bbox(projection_matrix, camera_matrix, self.bbox_program, self.bbox_vao)
 
     def draw_wireframe(
         self, projection_matrix=None, camera_matrix=None, color=(0.75, 0.75, 0.75, 1.0)
@@ -173,9 +172,7 @@ class Scene:
         self.ctx.wireframe = True
 
         for node in self.root_nodes:
-            node.draw_wireframe(
-                projection_matrix, camera_matrix, self.wireframe_program
-            )
+            node.draw_wireframe(projection_matrix, camera_matrix, self.wireframe_program)
 
         self.ctx.wireframe = False
 
@@ -227,9 +224,7 @@ class Scene:
         """Calculate scene bbox"""
         bbox_min, bbox_max = None, None
         for node in self.root_nodes:
-            bbox_min, bbox_max = node.calc_global_bbox(
-                glm.mat4(), bbox_min, bbox_max
-            )
+            bbox_min, bbox_max = node.calc_global_bbox(glm.mat4(), bbox_min, bbox_max)
 
         self.bbox_min = bbox_min
         self.bbox_max = bbox_max

@@ -3,7 +3,6 @@ import numpy as np
 import glm
 
 import moderngl
-import moderngl_window
 from moderngl_window.opengl.vao import VAO
 from moderngl_window import geometry
 from base import CameraWindow
@@ -30,18 +29,19 @@ class VolumetricTetrahedralMesh(CameraWindow):
     - Press b to toggle blend mode on/off
     - Mouse wheel to increase or decrease the threshold for a tetra to be alive
     """
+
     gl_version = (4, 1)
     title = "Volumetric Tetrahedra lMesh"
     aspect_ratio = None
-    resource_dir = (Path(__file__) / '../../resources').resolve()
+    resource_dir = (Path(__file__) / "../../resources").resolve()
     samples = 4
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # Finetune camera
         self.wnd.mouse_exclusivity = True
-        self.camera.projection.update(near=.01, far=100)
-        self.camera.mouse_sensitivity = .5
+        self.camera.projection.update(near=0.01, far=100)
+        self.camera.mouse_sensitivity = 0.5
         self.camera.velocity = 2.5
         self.camera.projection.update(fov=60)
 
@@ -55,33 +55,33 @@ class VolumetricTetrahedralMesh(CameraWindow):
         self.quad_fs = geometry.quad_fs()
 
         # (172575,) | 57,525 vertices
-        vertices = np.load(self.resource_dir / 'data/tetrahedral_mesh/mesh_nodes.npy')
+        vertices = np.load(self.resource_dir / "data/tetrahedral_mesh/mesh_nodes.npy")
         vertices = np.concatenate(vertices)
         # (259490, 4) (1037960,) indices
-        indices = np.load(self.resource_dir / 'data/tetrahedral_mesh/element_nodes.npy')
+        indices = np.load(self.resource_dir / "data/tetrahedral_mesh/element_nodes.npy")
         indices = np.concatenate(indices) - 1
 
         # Probability of a tetrahedron is still alive
         w, h = 8192, int(np.ceil(indices.shape[0] / 8192))
         self.alive_data = np.random.random_sample(w * h)
-        self.alive_texture = self.ctx.texture((w, h), 1, dtype='f2')
-        self.alive_texture.write(self.alive_data.astype('f2'))
+        self.alive_texture = self.ctx.texture((w, h), 1, dtype="f2")
+        self.alive_texture.write(self.alive_data.astype("f2"))
 
         # Original geometry with indices
-        self.geometry = VAO(name='geometry_indices')
-        self.geometry.buffer(vertices, '3f', 'in_position')
+        self.geometry = VAO(name="geometry_indices")
+        self.geometry.buffer(vertices, "3f", "in_position")
         self.geometry.index_buffer(indices, index_element_size=4)
 
-        self.prog_background = self.load_program('programs/tetrahedral_mesh/bg.glsl')
+        self.prog_background = self.load_program("programs/tetrahedral_mesh/bg.glsl")
         self.prog_gen_tetra = self.load_program(
-            vertex_shader='programs/tetrahedral_mesh/gen_tetra_vert.glsl',
-            geometry_shader='programs/tetrahedral_mesh/gen_tetra_geo.glsl',
-            fragment_shader='programs/tetrahedral_mesh/gen_tetra_frag.glsl',
+            vertex_shader="programs/tetrahedral_mesh/gen_tetra_vert.glsl",
+            geometry_shader="programs/tetrahedral_mesh/gen_tetra_geo.glsl",
+            fragment_shader="programs/tetrahedral_mesh/gen_tetra_frag.glsl",
         )
         self.prog_gen_tetra_lines = self.load_program(
-            vertex_shader='programs/tetrahedral_mesh/gen_tetra_vert.glsl',
-            geometry_shader='programs/tetrahedral_mesh/gen_tetra_geo.glsl',
-            fragment_shader='programs/tetrahedral_mesh/lines_frag.glsl',
+            vertex_shader="programs/tetrahedral_mesh/gen_tetra_vert.glsl",
+            geometry_shader="programs/tetrahedral_mesh/gen_tetra_geo.glsl",
+            fragment_shader="programs/tetrahedral_mesh/lines_frag.glsl",
         )
 
         # Query object for measuring the rendering call in OpenGL
@@ -113,21 +113,21 @@ class VolumetricTetrahedralMesh(CameraWindow):
         # All render calls inside this context are timed
         with self.query:
             self.alive_texture.use(location=0)
-            self.prog_gen_tetra['alive_texture'].value = 0
-            self.prog_gen_tetra['threshold'].value = self.threshold
-            self.prog_gen_tetra['color'].value = self.mesh_color
-            self.prog_gen_tetra['m_cam'].write(mat)
-            self.prog_gen_tetra['m_proj'].write(self.camera.projection.matrix)
+            self.prog_gen_tetra["alive_texture"].value = 0
+            self.prog_gen_tetra["threshold"].value = self.threshold
+            self.prog_gen_tetra["color"].value = self.mesh_color
+            self.prog_gen_tetra["m_cam"].write(mat)
+            self.prog_gen_tetra["m_proj"].write(self.camera.projection.matrix)
             self.geometry.render(self.prog_gen_tetra, mode=moderngl.LINES_ADJACENCY)
 
             # Render lines
             self.ctx.wireframe = True
             self.alive_texture.use(location=0)
-            self.prog_gen_tetra_lines['alive_texture'].value = 0
-            self.prog_gen_tetra_lines['threshold'].value = self.threshold
-            self.prog_gen_tetra_lines['color'].value = self.line_color
-            self.prog_gen_tetra_lines['m_cam'].write(mat)
-            self.prog_gen_tetra_lines['m_proj'].write(self.camera.projection.matrix)
+            self.prog_gen_tetra_lines["alive_texture"].value = 0
+            self.prog_gen_tetra_lines["threshold"].value = self.threshold
+            self.prog_gen_tetra_lines["color"].value = self.line_color
+            self.prog_gen_tetra_lines["m_cam"].write(mat)
+            self.prog_gen_tetra_lines["m_proj"].write(self.camera.projection.matrix)
             self.geometry.render(self.prog_gen_tetra_lines, mode=moderngl.LINES_ADJACENCY)
 
         self.total_elapsed = self.query.elapsed
@@ -159,11 +159,13 @@ class VolumetricTetrahedralMesh(CameraWindow):
         # 1 s = 1000000000 ns
         # 1 s = 1000000 μs
         avg = self.total_elapsed / self.wnd.frames
-        print("Average rendering time per frame: {} ns | {} μs".format(
-            round(avg, 4),  # ns
-            round(avg / 1000, 4),  # μs
-        ))
+        print(
+            "Average rendering time per frame: {} ns | {} μs".format(
+                round(avg, 4),  # ns
+                round(avg / 1000, 4),  # μs
+            )
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     VolumetricTetrahedralMesh.run()

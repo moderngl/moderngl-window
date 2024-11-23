@@ -23,6 +23,5 @@ def import_string(dotted_path):
         return getattr(module, class_name)
     except AttributeError as err:
         raise ImportError(
-            'Module "%s" does not define a "%s" attribute/class'
-            % (module_path, class_name)
+            'Module "%s" does not define a "%s" attribute/class' % (module_path, class_name)
         ) from err

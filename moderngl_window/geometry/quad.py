@@ -18,7 +18,11 @@ def quad_fs(attr_names=AttributeNames, normals=True, uvs=True, name=None) -> VAO
         A :py:class:`~moderngl_window.opengl.vao.VAO` instance.
     """
     return quad_2d(
-        size=(2.0, 2.0), normals=normals, uvs=uvs, attr_names=attr_names, name=name,
+        size=(2.0, 2.0),
+        normals=normals,
+        uvs=uvs,
+        attr_names=attr_names,
+        name=name,
     )
 
 

@@ -24,15 +24,8 @@ class ModernglWindowMixin:
     def _mouse_pos_viewport(self, x, y):
         """Make sure mouse coordinates are correct with black borders"""
         return (
-            int(
-                x
-                - (self.wnd.width - self.wnd.viewport_width / self.wnd.pixel_ratio) / 2
-            ),
-            int(
-                y
-                - (self.wnd.height - self.wnd.viewport_height / self.wnd.pixel_ratio)
-                / 2
-            ),
+            int(x - (self.wnd.width - self.wnd.viewport_width / self.wnd.pixel_ratio) / 2),
+            int(y - (self.wnd.height - self.wnd.viewport_height / self.wnd.pixel_ratio) / 2),
         )
 
     def mouse_position_event(self, x, y, dx, dy):
@@ -221,9 +214,7 @@ class ModernGLRenderer(BaseOpenGLRenderer):
                         (
                             "Texture {} is not registered. Please add to renderer using "
                             "register_texture(..). "
-                            "Current textures: {}".format(
-                                command.texture_id, list(self._textures)
-                            )
+                            "Current textures: {}".format(command.texture_id, list(self._textures))
                         )
                     )
 
@@ -231,9 +222,7 @@ class ModernGLRenderer(BaseOpenGLRenderer):
 
                 x, y, z, w = command.clip_rect
                 self.ctx.scissor = int(x), int(fb_height - w), int(z - x), int(w - y)
-                self._vao.render(
-                    moderngl.TRIANGLES, vertices=command.elem_count, first=idx_pos
-                )
+                self._vao.render(moderngl.TRIANGLES, vertices=command.elem_count, first=idx_pos)
                 idx_pos += command.elem_count
 
         self.ctx.scissor = None

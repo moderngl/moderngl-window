@@ -137,9 +137,7 @@ class VAO:
         try:
             DRAW_MODES[self.mode]
         except KeyError:
-            raise VAOError(
-                "Invalid draw mode. Options are {}".format(DRAW_MODES.values())
-            )
+            raise VAOError("Invalid draw mode. Options are {}".format(DRAW_MODES.values()))
 
         self._buffers = []
         self._index_buffer = None
@@ -153,9 +151,7 @@ class VAO:
         """moderngl.Context: The actite moderngl context"""
         return mglw.ctx()
 
-    def render(
-        self, program: moderngl.Program, mode=None, vertices=-1, first=0, instances=1
-    ):
+    def render(self, program: moderngl.Program, mode=None, vertices=-1, first=0, instances=1):
         """Render the VAO.
 
         An internal ``moderngl.VertexBuffer`` with compatible buffer bindings
@@ -176,11 +172,13 @@ class VAO:
 
         vao.render(mode, vertices=vertices, first=first, instances=instances)
 
-    def render_indirect(
-        self, program: moderngl.Program, buffer, mode=None, count=-1, *, first=0
-    ):
-        """The render primitive (mode) must be the same as the input primitive of the GeometryShader.
-        The draw commands are 5 integers: (count, instanceCount, firstIndex, baseVertex, baseInstance).
+    def render_indirect(self, program: moderngl.Program, buffer, mode=None, count=-1, *, first=0):
+        """
+        The render primitive (mode) must be the same as the input primitive of the
+        GeometryShader.
+
+        The draw commands are 5 integers:
+        (count, instanceCount, firstIndex, baseVertex, baseInstance).
 
         Args:
             program: The ``moderngl.Program``
@@ -222,27 +220,29 @@ class VAO:
         if mode is None:
             mode = self.mode
 
-        vao.transform(
-            buffer, mode=mode, vertices=vertices, first=first, instances=instances
-        )
+        vao.transform(buffer, mode=mode, vertices=vertices, first=first, instances=instances)
 
     def buffer(self, buffer, buffer_format: str, attribute_names: List[str]):
         """Register a buffer/vbo for the VAO. This can be called multiple times.
         adding multiple buffers (interleaved or not).
 
         Args:
-            buffer: The buffer data. Can be ``numpy.array``, ``moderngl.Buffer`` or ``bytes``.
-            buffer_format (str): The format of the buffer. (eg. ``3f 3f`` for interleaved positions and normals).
-            attribute_names: A list of attribute names this buffer should map to.
+            buffer:
+                The buffer data. Can be ``numpy.array``, ``moderngl.Buffer`` or ``bytes``.
+            buffer_format (str):
+                The format of the buffer. (eg. ``3f 3f`` for interleaved positions and normals).
+            attribute_names:
+                A list of attribute names this buffer should map to.
         Returns:
-            The ``moderngl.Buffer`` instance object. This is handy when providing ``bytes`` and ``numpy.array``.
+            The ``moderngl.Buffer`` instance object. This is handy when providing ``bytes``
+            and ``numpy.array``.
         """
         if not isinstance(attribute_names, list):
             attribute_names = [
                 attribute_names,
             ]
 
-        if not type(buffer) in [moderngl.Buffer, numpy.ndarray, bytes]:
+        if type(buffer) not in [moderngl.Buffer, numpy.ndarray, bytes]:
             raise VAOError(
                 (
                     "buffer parameter must be a moderngl.Buffer, numpy.ndarray or bytes instance"
@@ -259,9 +259,7 @@ class VAO:
         formats = buffer_format.split()
         if len(formats) != len(attribute_names):
             raise VAOError(
-                "Format '{}' does not describe attributes {}".format(
-                    buffer_format, attribute_names
-                )
+                "Format '{}' does not describe attributes {}".format(buffer_format, attribute_names)
             )
 
         self._buffers.append(BufferInfo(buffer, buffer_format, attribute_names))
@@ -277,7 +275,7 @@ class VAO:
         Keyword Args:
             index_element_size (int): Byte size of each element. 1, 2 or 4
         """
-        if not type(buffer) in [moderngl.Buffer, numpy.ndarray, bytes]:
+        if type(buffer) not in [moderngl.Buffer, numpy.ndarray, bytes]:
             raise VAOError(
                 "buffer parameter must be a moderngl.Buffer, numpy.ndarray or bytes instance"
             )
@@ -342,15 +340,16 @@ class VAO:
         # Any attribute left is not accounted for
         if program_attributes:
             raise VAOError(
-                "Did not find a buffer mapping for {}".format(
-                    [n for n in program_attributes]
-                )
+                "Did not find a buffer mapping for {}".format([n for n in program_attributes])
             )
 
         # Create the vao
         if self._index_buffer:
             vao = self.ctx.vertex_array(
-                program, vao_content, self._index_buffer, self._index_element_size,
+                program,
+                vao_content,
+                self._index_buffer,
+                self._index_element_size,
             )
         else:
             vao = self.ctx.vertex_array(program, vao_content)

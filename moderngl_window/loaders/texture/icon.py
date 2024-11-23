@@ -19,7 +19,5 @@ class IconLoader(BaseLoader):
         """
         abs_path = self._find(Path(self.meta.path), texture.get_finders())
         if abs_path is None:
-            raise ValueError(
-                "Could not find the icon specified. {}".format(self.meta.path)
-            )
+            raise ValueError("Could not find the icon specified. {}".format(self.meta.path))
         return abs_path

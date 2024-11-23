@@ -144,9 +144,7 @@ class Loader(BaseLoader):
             magic = fd.read(4)
             if magic != GLTF_MAGIC_HEADER:
                 raise ValueError(
-                    "{} has incorrect header {} != {}".format(
-                        self.path, magic, GLTF_MAGIC_HEADER
-                    )
+                    "{} has incorrect header {} != {}".format(self.path, magic, GLTF_MAGIC_HEADER)
                 )
 
             version = struct.unpack("<I", fd.read(4))[0]
@@ -161,9 +159,7 @@ class Loader(BaseLoader):
             chunk_0_type = fd.read(4)
             if chunk_0_type != b"JSON":
                 raise ValueError(
-                    "Expected JSON chunk, not {} in file {}".format(
-                        chunk_0_type, self.path
-                    )
+                    "Expected JSON chunk, not {} in file {}".format(chunk_0_type, self.path)
                 )
 
             json_meta = fd.read(chunk_0_length).decode()
@@ -173,9 +169,7 @@ class Loader(BaseLoader):
             chunk_1_type = fd.read(4)
             if chunk_1_type != b"BIN\x00":
                 raise ValueError(
-                    "Expected BIN chunk, not {} in file {}".format(
-                        chunk_1_type, self.path
-                    )
+                    "Expected BIN chunk, not {} in file {}".format(chunk_1_type, self.path)
                 )
 
             self.gltf = GLTFMeta(
@@ -307,31 +301,15 @@ class GLTFMeta:
 
         self.asset = GLTFAsset(data["asset"])
         self.materials = (
-            [GLTFMaterial(m) for m in data["materials"]]
-            if data.get("materials")
-            else []
+            [GLTFMaterial(m) for m in data["materials"]] if data.get("materials") else []
         )
-        self.images = (
-            [GLTFImage(i) for i in data["images"]] if data.get("images") else []
-        )
-        self.samplers = (
-            [GLTFSampler(s) for s in data["samplers"]] if data.get("samplers") else []
-        )
-        self.textures = (
-            [GLTFTexture(t) for t in data["textures"]] if data.get("textures") else []
-        )
-        self.scenes = (
-            [GLTFScene(s) for s in data["scenes"]] if data.get("scenes") else []
-        )
+        self.images = [GLTFImage(i) for i in data["images"]] if data.get("images") else []
+        self.samplers = [GLTFSampler(s) for s in data["samplers"]] if data.get("samplers") else []
+        self.textures = [GLTFTexture(t) for t in data["textures"]] if data.get("textures") else []
+        self.scenes = [GLTFScene(s) for s in data["scenes"]] if data.get("scenes") else []
         self.nodes = [GLTFNode(n) for n in data["nodes"]] if data.get("nodes") else []
-        self.meshes = (
-            [GLTFMesh(m, self.meta) for m in data["meshes"]]
-            if data.get("meshes")
-            else []
-        )
-        self.cameras = (
-            [GLTFCamera(c) for c in data["cameras"]] if data.get("cameras") else []
-        )
+        self.meshes = [GLTFMesh(m, self.meta) for m in data["meshes"]] if data.get("meshes") else []
+        self.cameras = [GLTFCamera(c) for c in data["cameras"]] if data.get("cameras") else []
         self.buffer_views = (
             [GLTFBufferView(i, v) for i, v in enumerate(data["bufferViews"])]
             if data.get("bufferViews")
@@ -385,7 +363,10 @@ class GLTFMeta:
 
     def check_version(self, required="2.0"):
         if not self.version == required:
-            msg = f"GLTF Format version is not 2.0. Version states '{self.version}' in file {self.path}"
+            msg = (
+                f"GLTF Format version is not 2.0. Version states '{self.version}' "
+                f"in file {self.path}"
+            )
             raise ValueError(msg)
 
     def check_extensions(self, supported):
@@ -499,9 +480,7 @@ class GLTFMesh:
                     vao=vao,
                     attributes=attributes,
                     material=(
-                        materials[primitive.material]
-                        if primitive.material is not None
-                        else None
+                        materials[primitive.material] if primitive.material is not None else None
                     ),
                     bbox_min=bbox_min,
                     bbox_max=bbox_max,
@@ -577,9 +556,7 @@ class VBOInfo:
         """Create the VBO"""
         dtype = NP_COMPONENT_DTYPE[self.component_type.value]
         data = numpy.frombuffer(
-            self.buffer.read(
-                byte_length=self.byte_length, byte_offset=self.byte_offset
-            ),
+            self.buffer.read(byte_length=self.byte_length, byte_offset=self.byte_offset),
             count=self.count * self.components,
             dtype=dtype,
         )
@@ -641,9 +618,7 @@ class GLTFAccessor:
         Get underlying buffer info for this accessor
         :return: buffer, byte_length, byte_offset, component_type, count
         """
-        buffer, byte_length, byte_offset = self.bufferView.info(
-            byte_offset=self.byteOffset
-        )
+        buffer, byte_length, byte_offset = self.bufferView.info(byte_offset=self.byteOffset)
         return (
             buffer,
             self.bufferView,
@@ -674,9 +649,7 @@ class GLTFBufferView:
         return vbo
 
     def read_raw(self):
-        return self.buffer.read(
-            byte_length=self.byteLength, byte_offset=self.byteOffset
-        )
+        return self.buffer.read(byte_length=self.byteLength, byte_offset=self.byteOffset)
 
     def info(self, byte_offset=0):
         """

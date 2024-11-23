@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 class BaseLoader:
     """Base loader class for all resources"""
+
     kind = "unknown"
     """
     The kind of resource this loaded supports.

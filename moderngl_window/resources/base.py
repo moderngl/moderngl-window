@@ -1,6 +1,7 @@
 """
 Base registry class
 """
+
 import inspect
 from functools import lru_cache
 from typing import Any, Generator, Tuple
@@ -84,7 +85,8 @@ class BaseRegistry:
         Attempts to assign a loader class to a ResourceDescription.
 
         Args:
-            meta (:py:class:`~moderngl_window.meta.base.ResourceDescription`): The resource description instance
+            meta (:py:class:`~moderngl_window.meta.base.ResourceDescription`):
+            The resource description instance
         """
         # Get loader using kind if specified
         if meta.kind:

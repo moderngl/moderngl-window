@@ -1,6 +1,7 @@
 """
 Bag of settings values
 """
+
 # pylint: disable = invalid-name
 import importlib
 import types
@@ -269,7 +270,8 @@ class Settings:
         except ImportError as ex:
             raise ImproperlyConfigured(
                 "Settings module '{}' not found. From importlib: {}".format(
-                    settings_module_name, ex,
+                    settings_module_name,
+                    ex,
                 )
             )
 
@@ -321,15 +323,11 @@ class Settings:
         """
         self.apply_from_iterable(cls.__dict__.items())
 
-    def apply_from_iterable(
-        self, iterable: Union[Iterable, types.GeneratorType]
-    ) -> None:
+    def apply_from_iterable(self, iterable: Union[Iterable, types.GeneratorType]) -> None:
         """
         Apply (key, value) pairs from an interable or generator
         """
-        if not isinstance(iterable, Iterable) and not isinstance(
-            self, types.GeneratorType
-        ):
+        if not isinstance(iterable, Iterable) and not isinstance(self, types.GeneratorType):
             raise ValueError(
                 "Input value is not a generator or interable, but of type: {}".format(
                     type(iterable)
@@ -351,9 +349,7 @@ class Settings:
 
     def __repr__(self) -> str:
         return "\n".join(
-            "{}={}".format(k, pformat(v, indent=2))
-            for k, v in self.__dict__.items()
-            if k.isupper()
+            "{}={}".format(k, pformat(v, indent=2)) for k, v in self.__dict__.items() if k.isupper()
         )
 
 

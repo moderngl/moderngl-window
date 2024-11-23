@@ -47,9 +47,7 @@ class Window(BaseWindow):
 
         monitor = None
 
-        self._window = glfw.create_window(
-            self.width, self.height, self.title, monitor, None
-        )
+        self._window = glfw.create_window(self.width, self.height, self.title, monitor, None)
         self._has_focus = True
 
         if self.fullscreen:
@@ -61,9 +59,7 @@ class Window(BaseWindow):
 
         self.cursor = self._cursor
 
-        self._buffer_width, self._buffer_height = glfw.get_framebuffer_size(
-            self._window
-        )
+        self._buffer_width, self._buffer_height = glfw.get_framebuffer_size(self._window)
         glfw.make_context_current(self._window)
 
         if self.vsync:
@@ -118,7 +114,7 @@ class Window(BaseWindow):
                 None,
                 *self._non_fullscreen_position,
                 *self._non_fullscreen_size,
-                refresh_rate
+                refresh_rate,
             )
 
         if self.vsync:
@@ -366,9 +362,7 @@ class Window(BaseWindow):
             height: New height
         """
         self._width, self._height = width, height
-        self._buffer_width, self._buffer_height = glfw.get_framebuffer_size(
-            self._window
-        )
+        self._buffer_width, self._buffer_height = glfw.get_framebuffer_size(self._window)
         self.set_default_viewport()
 
         super().resize(self._buffer_width, self._buffer_height)

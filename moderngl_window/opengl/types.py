@@ -13,6 +13,7 @@ Example:
         (self.pos_scale_buffer, '2f 1f/i', 'in_pos', 'in_scale'),
     ]
 """
+
 import re
 from functools import lru_cache
 from typing import List
@@ -91,7 +92,7 @@ def attribute_format(attr_format: str) -> BufferFormat:
     components = 1
     if parts[0].isalnum():
         components = int(parts[0])
-        bformat = fmt[len(parts[0]):]
+        bformat = fmt[len(parts[0]) :]
     else:
         bformat = fmt
 
@@ -121,9 +122,7 @@ def buffer_format(frmt: str) -> BufferFormat:
         return BUFFER_FORMATS[frmt]
     except KeyError:
         raise ValueError(
-            "Buffer format '{}' unknown. Valid formats: {}".format(
-                frmt, BUFFER_FORMATS.keys()
-            )
+            "Buffer format '{}' unknown. Valid formats: {}".format(frmt, BUFFER_FORMATS.keys())
         )
 
 

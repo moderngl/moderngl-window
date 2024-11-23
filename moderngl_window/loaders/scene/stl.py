@@ -38,9 +38,7 @@ class Loader(BaseLoader):
 
         vao = VAO("mesh", mode=moderngl.TRIANGLES)
         vao.buffer(numpy.array(stl_mesh.vertices, dtype="f4"), "3f", ["in_position"])
-        vao.buffer(
-            numpy.array(stl_mesh.vertex_normals, dtype="f4"), "3f", ["in_normal"]
-        )
+        vao.buffer(numpy.array(stl_mesh.vertex_normals, dtype="f4"), "3f", ["in_normal"])
         vao.index_buffer(numpy.array(stl_mesh.faces, dtype="u4"))
         scene_mesh.vao = vao
         scene_mesh.add_attribute("POSITION", "in_position", 3)

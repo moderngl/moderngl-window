@@ -41,7 +41,7 @@ dev = [
     "trimesh",
     "scipy",
     "build",
-    "flake8",
+    "ruff",
 ]
 docs = ["Sphinx~=7.2.6 ", "sphinx-rtd-theme~=1.3.0 ", "doc8"]
 imgui = ["imgui-bundle"] # 1.6.0 originally
@@ -68,18 +68,38 @@ source = ["moderngl_window"]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[tool.flake8]
-ignore = ["W503", "C901"]
-max-line-length = 120
-max-complexity = 10
-exclude = ["tests/", "docs/", "temp/"]
-
 [tool.ruff]
+exclude = [
+    "docs",
+    "tests",
+    "moderngl_window/context/tk/keys.py",
+    "moderngl_window/context/sdl2/keys.py",
+    "moderngl_window/context/pyside2/keys.py",
+    "moderngl_window/context/pyqt5/keys.py",
+    "moderngl_window/context/pyglet/keys.py",
+    "moderngl_window/context/pygame2/keys.py",
+    "moderngl_window/context/glfw/keys.py",
+    "moderngl_window/context/base/keys.py",
+]
 line-length = 100
 output-format = "full"
+# lint.ignore = ["E731", "E741"]
+lint.select = [
+    "E",
+    "F",
+    # Whitespace linting must be re-enabled manually for ruff
+    # see https://beta.ruff.rs/docs/configuration/#using-pyprojecttoml
+    "W",
+]
 
 [tool.black]
 line-length = 100
+force-exclude = '''
+(
+  docs
+  | tests
+)
+'''
 
 [tool.mypy]
 disable_error_code = "annotation-unchecked"

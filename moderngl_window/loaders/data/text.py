@@ -21,9 +21,7 @@ class Loader(BaseLoader):
         self.meta.resolved_path = self.find_data(self.meta.path)
 
         if not self.meta.resolved_path:
-            raise ImproperlyConfigured(
-                "Data file '{}' not found".format(self.meta.path)
-            )
+            raise ImproperlyConfigured("Data file '{}' not found".format(self.meta.path))
 
         logger.info("Loading: %s", self.meta.path)
 

@@ -1,6 +1,7 @@
 # flake8: noqa E741
 from typing import Any
 
+
 class KeyModifiers:
     """Namespace for storing key modifiers"""
 
@@ -12,9 +13,7 @@ class KeyModifiers:
         return str(self)
 
     def __str__(self):
-        return "<KeyModifiers shift={} ctrl={} alt={}>".format(
-            self.shift, self.ctrl, self.alt
-        )
+        return "<KeyModifiers shift={} ctrl={} alt={}>".format(self.shift, self.ctrl, self.alt)
 
 
 class BaseKeys:

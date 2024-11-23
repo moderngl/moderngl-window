@@ -32,7 +32,7 @@ class AttributeNames:
         color_0: str = None,
         joints_0: str = None,
         weights: str = None,
-        **kwargs
+        **kwargs,
     ):
         """Override default values.
         All attributes will be set on the instance as upper case strings

@@ -40,6 +40,7 @@ Other notes:
   [-1, 1] for both x and y.
 * Texture coordinates are in the [0.0, 1.0] range.
 """
+
 import math
 from array import array
 
@@ -53,14 +54,15 @@ class Pygame(moderngl_window.WindowConfig):
     """
     Example drawing a pygame surface with moderngl.
     """
+
     title = "Pygame"
     window_size = 1280, 720
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        if self.wnd.name != 'pygame2':
-            raise RuntimeError('This example only works with --window pygame2 option')
+        if self.wnd.name != "pygame2":
+            raise RuntimeError("This example only works with --window pygame2 option")
 
         # The resolution of the pygame surface
         self.pg_res = 320, 180
@@ -72,7 +74,7 @@ class Pygame(moderngl_window.WindowConfig):
         self.pg_texture.filter = moderngl.NEAREST, moderngl.NEAREST
         # The pygame surface is stored in BGRA format but RGBA
         # so we simply change the order of the channels of the texture
-        self.pg_texture.swizzle = 'BGRA'
+        self.pg_texture.swizzle = "BGRA"
 
         # Let's make a custom texture shader rendering the surface
         self.texture_program = self.ctx.program(
@@ -113,12 +115,13 @@ class Pygame(moderngl_window.WindowConfig):
         )
         # Explicitly configure the sampler to read from texture channel 0.
         # Most hardware today supports 8-16 different channels for multi-texturing.
-        self.texture_program['surface'] = 0
+        self.texture_program["surface"] = 0
 
         # Geometry to render the texture to the screen.
         # This is simply a "quad" covering the entire screen.
         # This is rendered as a triangle strip.
         # NOTE: using array.array is a simple way to create a buffer data
+        # fmt: off
         buffer = self.ctx.buffer(
             data=array('f', [
                 # Position (x, y) , Texture coordinates (x, y)
@@ -128,6 +131,7 @@ class Pygame(moderngl_window.WindowConfig):
                 1.0, -1.0, 1.0, 0.0,  # lower right
             ])
         )
+        # fmt: on
         # Create a vertex array describing the buffer layout.
         # The shader program is also passed in there to sanity check
         # the attribute names.
@@ -137,10 +141,13 @@ class Pygame(moderngl_window.WindowConfig):
                 (
                     # The buffer containing the data
                     buffer,
-                    # Format of the two attributes. 2 floats for position, 2 floats for texture coordinates
+                    # Format of the two attributes.
+                    # - 2 floats for position
+                    # - 2 floats for texture coordinates
                     "2f 2f",
                     # Names of the attributes in the shader program
-                    "in_vert", "in_texcoord",
+                    "in_vert",
+                    "in_texcoord",
                 )
             ],
         )
@@ -155,7 +162,7 @@ class Pygame(moderngl_window.WindowConfig):
             (math.sin(time + 2) + 1.0) / 2,
             (math.sin(time + 3) + 1.0) / 2,
         )
-    
+
         # Enable blending for transparency
         self.ctx.enable(moderngl.BLEND)
         # Bind the texture to texture channel 0
@@ -177,15 +184,16 @@ class Pygame(moderngl_window.WindowConfig):
                 ((i * 50) % 255, (i * 100) % 255, (i * 20) % 255),
                 (
                     math.sin(time + time_offset) * 55 + self.pg_res[0] // 2,
-                    math.cos(time + time_offset) * 55 + self.pg_res[1] // 2),
+                    math.cos(time + time_offset) * 55 + self.pg_res[1] // 2,
+                ),
                 math.sin(time) * 4 + 15,
             )
 
         # Get the buffer view of the Surface's pixels
         # and write this data into the texture
-        texture_data = self.pg_screen.get_view('1')
+        texture_data = self.pg_screen.get_view("1")
         self.pg_texture.write(texture_data)
 
 
-if __name__ == '__main__':
-    moderngl_window.run_window_config(Pygame, args=('--window', 'pygame2'))
+if __name__ == "__main__":
+    moderngl_window.run_window_config(Pygame, args=("--window", "pygame2"))
