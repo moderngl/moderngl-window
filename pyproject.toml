@@ -1,13 +1,11 @@
 [project]
 name = "moderngl-window"
-version = "2.4.6"
+version = "3.0.0"
 description = "A cross platform helper library for ModernGL making window creation and resource loading simple"
 readme = "README.md"
-authors = [
-    {name="Einar Forselv", email="eforselv@gmail.com"}
-]
-requires-python = ">=3.8"
-license = {file = "license.rst"}
+authors = [{ name = "Einar Forselv", email = "eforselv@gmail.com" }]
+requires-python = ">=3.9"
+license = { file = "license.rst" }
 classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
@@ -16,11 +14,11 @@ classifiers = [
     "Topic :: Multimedia :: Graphics :: 3D Rendering",
     "Topic :: Scientific/Engineering :: Visualization",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 # zip-safe = false
 dependencies = [
@@ -35,21 +33,9 @@ dependencies = [
 include = ["moderngl_window", "moderngl_window.*"]
 
 [project.optional-dependencies]
-dev = [
-    "pytest",
-    "mypy",
-    "flake8",
-    "coverage",
-    "pywavefront",
-    "trimesh",
-    "scipy",
-    "build",
-]
-docs = [
-    "Sphinx~=7.2.6 ",
-    "sphinx-rtd-theme~=1.3.0 ",
-    "doc8",
-]
+dev = ["pytest", "mypy", "coverage", "pywavefront", "trimesh", "scipy", "build"]
+docs = ["Sphinx~=7.2.6 ", "sphinx-rtd-theme~=1.3.0 ", "doc8"]
+imgui = ["imgui-bundle"]                                                         # 1.6.0 originally
 pygame = ["pygame>=2.0.1"]
 pygame-ce = ["pygame-ce>=2.0.1"]
 tk = ["pyopengltk>=0.0.3"]
@@ -74,17 +60,17 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.flake8]
-ignore = [
-    "W503",
-    "C901",
-]
+ignore = ["W503", "C901"]
 max-line-length = 120
 max-complexity = 10
-exclude = [
-    "tests/",
-    "docs/",
-    "temp/",
-]
+exclude = ["tests/", "docs/", "temp/"]
+
+[tool.ruff]
+line-length = 100
+output-format = "full"
+
+[tool.black]
+line-length = 100
 
 [tool.mypy]
 disable_error_code = "annotation-unchecked"
