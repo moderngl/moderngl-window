@@ -1,12 +1,13 @@
-import imgui
-import glm
-import numpy as np
 from pathlib import Path
 
+import glm
 import moderngl
+from imgui_bundle import imgui
+import numpy as np
+
 import moderngl_window
+from moderngl_window.integrations.imgui_bundle import ModernglWindowRenderer
 from base import OrbitDragCameraWindow
-from moderngl_window.integrations.imgui import ModernglWindowRenderer
 
 
 class SSAODemo(OrbitDragCameraWindow):
@@ -203,9 +204,7 @@ class SSAODemo(OrbitDragCameraWindow):
 
         _, self.base_color = imgui.color_edit3(
             "color",
-            self.base_color[0],
-            self.base_color[1],
-            self.base_color[2],
+            self.base_color
         )
         _, self.material_properties[0] = imgui.slider_float(
             "ambient", self.material_properties[0], 0.0, 1.0

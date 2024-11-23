@@ -1,10 +1,11 @@
 from pathlib import Path
-import imgui
+# import imgui
+from imgui_bundle import imgui
 import moderngl
 import glm
 import moderngl_window as mglw
 from moderngl_window import geometry
-from moderngl_window.integrations.imgui import ModernglWindowRenderer
+from moderngl_window.integrations.imgui_bundle import ModernglWindowRenderer
 
 
 class WindowEvents(mglw.WindowConfig):
@@ -51,11 +52,11 @@ class WindowEvents(mglw.WindowConfig):
                 imgui.end_menu()
             imgui.end_main_menu_bar()
 
-        imgui.show_test_window()
+        imgui.show_demo_window()
 
         imgui.begin("Custom window", True)
         imgui.text("Bar")
-        imgui.text_colored("Eggs", 0.2, 1., 0.)
+        imgui.text_colored(imgui.ImVec4(0.2, 1., 0., 1.), "Eggs")
         imgui.end()
 
         imgui.render()
