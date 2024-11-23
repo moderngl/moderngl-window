@@ -63,7 +63,7 @@ class CubeSimple(moderngl_window.WindowConfig):
         self.vao2 = self.cube.instance(self.prog2)
 
         self.m_proj = glm.perspective(
-            75, self.wnd.aspect_ratio,  # fov, aspect
+            glm.radians(75), self.wnd.aspect_ratio,  # fov, aspect
             0.1, 100.0,  # near, far
         )
 

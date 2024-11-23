@@ -63,7 +63,7 @@ class Cubes(moderngl_window.WindowConfig):
 
     def resize(self, width, height):
         self.ctx.viewport = 0, 0, width, height
-        self.projection = glm.perspective(45, width / height, 1, 50)
+        self.projection = glm.perspective(glm.radians(45), width / height, 1, 50)
 
     def _load_texture(self, path):
         tex = self.load_texture_2d(os.path.relpath(path, self.resource_dir))

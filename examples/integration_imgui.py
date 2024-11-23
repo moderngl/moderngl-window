@@ -23,7 +23,7 @@ class WindowEvents(mglw.WindowConfig):
         self.prog = self.load_program('programs/cube_simple.glsl')
         self.prog['color'].value = (1.0, 1.0, 1.0, 1.0)
         self.prog['m_camera'].write(glm.mat4())
-        self.prog['m_proj'].write(glm.perspective(75, self.wnd.aspect_ratio, 1, 100))
+        self.prog['m_proj'].write(glm.perspective(glm.radians(75), self.wnd.aspect_ratio, 1, 100))
 
     def render(self, time: float, frametime: float):
         rotation = glm.mat4(glm.quat(glm.vec3(time, time, time)))
@@ -62,7 +62,7 @@ class WindowEvents(mglw.WindowConfig):
         self.imgui.render(imgui.get_draw_data())
 
     def resize(self, width: int, height: int):
-        self.prog['m_proj'].write(glm.perspective(75, self.wnd.aspect_ratio, 1, 100))
+        self.prog['m_proj'].write(glm.perspective(glm.radians(75), self.wnd.aspect_ratio, 1, 100))
         self.imgui.resize(width, height)
 
     def key_event(self, key, action, modifiers):

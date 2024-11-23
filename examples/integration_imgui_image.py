@@ -25,7 +25,7 @@ class WindowEvents(mglw.WindowConfig):
         self.prog = self.load_program('programs/cube_simple.glsl')
         self.prog['color'].value = (1.0, 1.0, 1.0, 1.0)
         self.prog['m_camera'].write(glm.mat4())
-        self.prog['m_proj'].write(glm.perspective(75, 1.0, 1, 100))
+        self.prog['m_proj'].write(glm.perspective(glm.radians(75), 1.0, 1, 100))
 
         self.fbo = self.ctx.framebuffer(
             color_attachments=self.ctx.texture((512, 512), 4),

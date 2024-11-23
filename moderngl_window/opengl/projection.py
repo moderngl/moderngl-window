@@ -70,7 +70,7 @@ class Projection3D:
         self._far = far or self._far
 
         self._matrix = glm.perspective(
-            self._fov, self._aspect_ratio, self._near, self._far
+            glm.radians(self._fov), self._aspect_ratio, self._near, self._far
         )
         self._matrix_bytes = self._matrix.to_bytes()
 

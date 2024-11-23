@@ -59,7 +59,7 @@ class Cubes(moderngl_window.WindowConfig):
 
     def resize(self, width, height):
         self.ctx.viewport = 0, 0, width, height
-        self.projection = glm.perspective(45, width / height, 1, 50)
+        self.projection = glm.perspective(glm.radians(45), width / height, 1, 50)
 
 
 if __name__ == '__main__':

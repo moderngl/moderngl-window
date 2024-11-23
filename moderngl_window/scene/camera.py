@@ -513,7 +513,6 @@ class OrbitCamera(Camera):
             position,
             self.target,  # what to look at
             self.up,  # camera up direction (change for rolling the camera)
-            dtype="f4",
         )
 
     @property

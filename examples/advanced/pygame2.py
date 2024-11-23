@@ -41,7 +41,7 @@ class Pygame(moderngl_window.WindowConfig):
         # Simple geometry and shader to render
         self.cube = geometry.cube(size=(2.0, 2.0, 2.0))
         self.texture_prog = self.load_program('programs/cube_simple_texture.glsl')
-        self.texture_prog['m_proj'].write(glm.perspective(60, self.wnd.aspect_ratio, 1, 100, dtype='f4'))
+        self.texture_prog['m_proj'].write(glm.perspective(glm.radians(60), self.wnd.aspect_ratio, 1, 100))
         self.texture_prog['m_model'].write(glm.mat4())
 
     def render(self, time, frametime):
