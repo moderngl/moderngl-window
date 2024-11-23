@@ -1,7 +1,7 @@
 from typing import Tuple
 
 import numpy as np
-from pyrr import Matrix44
+import glm
 
 
 class Projection3D:
@@ -69,10 +69,10 @@ class Projection3D:
         self._near = near or self._near
         self._far = far or self._far
 
-        self._matrix = Matrix44.perspective_projection(
-            self._fov, self._aspect_ratio, self._near, self._far, dtype="f4",
+        self._matrix = glm.perspective(
+            glm.radians(self._fov), self._aspect_ratio, self._near, self._far
         )
-        self._matrix_bytes = self._matrix.tobytes()
+        self._matrix_bytes = self._matrix.to_bytes()
 
     def tobytes(self) -> bytes:
         """Get the byte representation of the projection matrix

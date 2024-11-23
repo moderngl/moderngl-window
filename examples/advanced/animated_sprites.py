@@ -2,7 +2,7 @@ import moderngl
 from pathlib import Path
 import moderngl_window as mglw
 from moderngl_window import geometry
-from pyrr import Matrix44
+import glm
 
 # from moderngl_window.conf import settings
 # settings.SCREENSHOT_PATH = 'screenshots'
@@ -11,7 +11,7 @@ from pyrr import Matrix44
 
 class Test(mglw.WindowConfig):
     title = "Animated Sprite"
-    resource_dir = (Path(__file__) / '../../resources').resolve()
+    resource_dir = (Path(__file__) / "../../resources").resolve()
     aspect_ratio = 320 / 256
     window_size = 320 * 3, 256 * 3
 
@@ -19,10 +19,14 @@ class Test(mglw.WindowConfig):
         super().__init__(**kwargs)
         self.buffer_size = 320, 256
         # Textures
-        self.background_texture = self.load_texture_array('textures/animated_sprites/giphy.gif')
+        self.background_texture = self.load_texture_array(
+            "textures/animated_sprites/giphy.gif"
+        )
         self.background_texture.repeat_x = False
         self.background_texture.repeat_y = False
-        self.caveman_texture = self.load_texture_array('textures/animated_sprites/player_2.gif', layers=35)
+        self.caveman_texture = self.load_texture_array(
+            "textures/animated_sprites/player_2.gif", layers=35
+        )
         self.caveman_texture.repeat_x = False
         self.caveman_texture.repeat_y = False
         self.caveman_texture.filter = moderngl.NEAREST, moderngl.NEAREST
@@ -33,24 +37,36 @@ class Test(mglw.WindowConfig):
         self.quad_fs = geometry.quad_fs()
 
         # Programs
-        self.sprite_program = self.load_program('programs/animated_sprites/sprite_array.glsl')
-        self.texture_program = self.load_program('programs/texture.glsl')
+        self.sprite_program = self.load_program(
+            "programs/animated_sprites/sprite_array.glsl"
+        )
+        self.texture_program = self.load_program("programs/texture.glsl")
 
         # Offscreen buffer
         self.offscreen_texture = self.ctx.texture(self.buffer_size, 4)
         self.offscreen_texture.filter = moderngl.NEAREST, moderngl.NEAREST
-        self.offscreen = self.ctx.framebuffer(color_attachments=[self.offscreen_texture])
+        self.offscreen = self.ctx.framebuffer(
+            color_attachments=[self.offscreen_texture]
+        )
 
-        self.projection = Matrix44.orthogonal_projection(0, 320, 0, 256, -1.0, 1.0, dtype='f4')
-        self.sprite_program['projection'].write(self.projection)
+        self.projection = glm.ortho(0, 320, 0, 256, -1.0, 1.0)
+        self.sprite_program["projection"].write(self.projection)
 
     def render(self, time, frame_time):
         # Render sprite of offscreen
         self.offscreen.use()
         self.ctx.clear(0.5, 0.5, 0.5, 0.0)
 
-        self.render_sprite(self.background_texture, frame=int(time * 15) % self.background_texture.layers)
-        self.render_sprite(self.caveman_texture, frame=int(time * 15) % self.caveman_texture.layers, blend=True, position=(260, 20))
+        self.render_sprite(
+            self.background_texture,
+            frame=int(time * 15) % self.background_texture.layers,
+        )
+        self.render_sprite(
+            self.caveman_texture,
+            frame=int(time * 15) % self.caveman_texture.layers,
+            blend=True,
+            position=(260, 20),
+        )
 
         # Display offscreen
         self.ctx.screen.use()
@@ -65,14 +81,14 @@ class Test(mglw.WindowConfig):
             self.ctx.enable(moderngl.BLEND)
 
         texture.use(location=0)
-        self.sprite_program['layer_id'] = frame
-        self.sprite_program['position'] = position
+        self.sprite_program["layer_id"] = frame
+        self.sprite_program["position"] = position
         self.sprite_geometry.render(self.sprite_program)
 
         if blend:
             self.ctx.disable(moderngl.BLEND)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     mglw.run_window_config(Test)
     # Test.run()

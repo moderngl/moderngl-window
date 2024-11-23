@@ -14,22 +14,21 @@ The point of this example is to :
 * Partial texture updates from client
 * We can reduce a voxel volume dramatically by just inspecting neighbors
 """
+
 from pathlib import Path
 from typing import Tuple
 from array import array
 
 import moderngl
-from moderngl.program_members import varying
-from pyrr.matrix44 import inverse
 from moderngl_window import geometry
 from base import CameraWindow
-from pyrr import Matrix44, Matrix33
+import glm
 
 
 class CubeVoxel(CameraWindow):
     name = "Cube Voxel"
     window_size = 1920, 1080
-    resource_dir = (Path(__file__) / '../../resources').resolve()
+    resource_dir = (Path(__file__) / "../../resources").resolve()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -41,9 +40,15 @@ class CubeVoxel(CameraWindow):
         self.voxel = Voxel(ctx=self.ctx, size=(s, s, s))
         # Load resources for the voxel instance
         self.voxel.texture_prog = self.load_program("programs/texture.glsl")
-        self.voxel.gen_instance_prog = self.load_program("programs/voxel_cubes/gen_voxel_instance_data.glsl")
-        self.voxel.voxel_light_prog = self.load_program("programs/voxel_cubes/voxel_light.glsl")
-        self.voxel.voxel_wireframe_prog = self.load_program("programs/voxel_cubes/voxel_wireframe.glsl")
+        self.voxel.gen_instance_prog = self.load_program(
+            "programs/voxel_cubes/gen_voxel_instance_data.glsl"
+        )
+        self.voxel.voxel_light_prog = self.load_program(
+            "programs/voxel_cubes/voxel_light.glsl"
+        )
+        self.voxel.voxel_wireframe_prog = self.load_program(
+            "programs/voxel_cubes/voxel_wireframe.glsl"
+        )
 
         self.wireframe = True
         self.voxel.rebuild()
@@ -83,6 +88,7 @@ class CubeVoxel(CameraWindow):
             self.fill = not self.fill
             self.current_layer = 0
 
+
 class Voxel:
     """
     Simple cube voxel implementation using OpenGL 3.3 core.
@@ -98,7 +104,7 @@ class Voxel:
         #       100 x 100 x 100 = 1_000_000 fragments
         #       1000 x 1000 = 1_000_000 fragments
         #       We store several 100 x 100 layers respersting one slice in voxel
-        self.voxel_lookup = self.ctx.texture((1000, 1000), 1, dtype='f1')
+        self.voxel_lookup = self.ctx.texture((1000, 1000), 1, dtype="f1")
         self.voxel_lookup.filter = moderngl.NEAREST, moderngl.NEAREST
         self.voxel_lookup.repeat_x = False
         self.voxel_lookup.repeat_y = False
@@ -129,11 +135,8 @@ class Voxel:
 
     def render_wireframe(self, *, projection_matrix, camera_matrix, model_matrix=None):
         self.ctx.wireframe = True
-        translate = Matrix44.from_translation((
-            -self._size[0] / 2,
-            -self._size[0] / 2,
-            -self._size[0] * 2),
-            dtype='f4',
+        translate = glm.translate(
+            glm.vec3(-self._size[0] / 2, -self._size[0] / 2, -self._size[0] * 2),
         )
         mat = camera_matrix * translate
         self.voxel_wireframe_prog["m_proj"].write(projection_matrix)
@@ -144,14 +147,11 @@ class Voxel:
     def render(self, *, projection_matrix, camera_matrix, model_matrix=None):
         """Render out the voxel to the screen"""
 
-        translate = Matrix44.from_translation((
-            -self._size[0] / 2,
-            -self._size[0] / 2,
-            -self._size[0] * 2),
-            dtype='f4',
+        translate = glm.translate(
+            glm.vec3(-self._size[0] / 2, -self._size[0] / 2, -self._size[0] * 2),
         )
         mat = camera_matrix * translate
-        normal = Matrix33.from_matrix44(mat).inverse.transpose().astype("f4").tobytes()
+        normal = glm.transpose(glm.inverse(glm.mat3(mat))).to_bytes()
         self.voxel_light_prog["m_proj"].write(projection_matrix)
         self.voxel_light_prog["m_modelview"].write(mat)
         self.voxel_light_prog["m_normal"].write(normal)
@@ -170,13 +170,17 @@ class Voxel:
         self.gen_instance_prog["voxel_size"] = self._size
         self.voxel_lookup.use(location=0)
         with self._query:
-            self.gen_instance_vao.transform(self.instance_data, mode=moderngl.POINTS, vertices=self.max_cubes)
+            self.gen_instance_vao.transform(
+                self.instance_data, mode=moderngl.POINTS, vertices=self.max_cubes
+            )
         self._num_instances = self._query.primitives
 
     def fill_layer(self, layer: int, value: int):
         x = (layer % 10) * self._size[0]
         y = (layer // 10) * self._size[1]
-        self.voxel_lookup.write(array('B', [value] * 100 * 100), viewport=(x, y, 100, 100))
+        self.voxel_lookup.write(
+            array("B", [value] * 100 * 100), viewport=(x, y, 100, 100)
+        )
 
     # NOTE: These functions can make adding and removing cubes extremely fast
     def add_cubes(self, positions):

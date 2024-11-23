@@ -1,5 +1,5 @@
 import numpy
-from pyrr import matrix44
+import glm
 
 from pathlib import Path
 
@@ -23,9 +23,9 @@ class TextWriter2D(BaseText):
     def __init__(self):
         super().__init__()
 
-        meta = FontMeta(resources.data.load(
-            DataDescription(path="bitmapped/text/meta.json")
-        ))
+        meta = FontMeta(
+            resources.data.load(DataDescription(path="bitmapped/text/meta.json"))
+        )
         self._texture = resources.textures.load(
             TextureDescription(
                 path="bitmapped/textures/VeraMono.png",
@@ -41,12 +41,12 @@ class TextWriter2D(BaseText):
         self._init(meta)
 
         self._string_buffer = self.ctx.buffer(reserve=1024 * 4)
-        self._string_buffer.clear(chunk=b'\32')
+        self._string_buffer.clear(chunk=b"\32")
         pos = self.ctx.buffer(data=bytes([0] * 4 * 3))
 
         self._vao = VAO("textwriter", mode=moderngl.POINTS)
-        self._vao.buffer(pos, '3f', 'in_position')
-        self._vao.buffer(self._string_buffer, '1u/i', 'in_char_id')
+        self._vao.buffer(pos, "3f", "in_position")
+        self._vao.buffer(self._string_buffer, "1u/i", "in_char_id")
 
         self._text: str = None
 
@@ -58,11 +58,11 @@ class TextWriter2D(BaseText):
     def text(self, value: str):
         self._text = value
         self._string_buffer.orphan(size=len(value) * 4)
-        self._string_buffer.clear(chunk=b'\32')
+        self._string_buffer.clear(chunk=b"\32")
         self._write(value)
 
     def _write(self, text: str):
-        self._string_buffer.clear(chunk=b'\32')
+        self._string_buffer.clear(chunk=b"\32")
 
         self._string_buffer.write(
             numpy.fromiter(
@@ -75,14 +75,13 @@ class TextWriter2D(BaseText):
         # Calculate ortho projection based on viewport
         vp = self.ctx.fbo.viewport
         w, h = vp[2], vp[3]
-        projection = matrix44.create_orthogonal_projection_matrix(
+        projection = glm.ortho(
             0,  # left
             w,  # right
             0,  # bottom
             h,  # top
             1.0,  # near
             -1.0,  # far
-            dtype=numpy.float32,
         )
 
         self._texture.use(location=0)

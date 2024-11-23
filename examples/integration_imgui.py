@@ -2,7 +2,7 @@ from pathlib import Path
 # import imgui
 from imgui_bundle import imgui
 import moderngl
-from pyrr import Matrix44
+import glm
 import moderngl_window as mglw
 from moderngl_window import geometry
 from moderngl_window.integrations.imgui_bundle import ModernglWindowRenderer
@@ -23,12 +23,12 @@ class WindowEvents(mglw.WindowConfig):
         self.cube = geometry.cube(size=(2, 2, 2))
         self.prog = self.load_program('programs/cube_simple.glsl')
         self.prog['color'].value = (1.0, 1.0, 1.0, 1.0)
-        self.prog['m_camera'].write(Matrix44.identity(dtype='f4'))
-        self.prog['m_proj'].write(Matrix44.perspective_projection(75, self.wnd.aspect_ratio, 1, 100, dtype='f4'))
+        self.prog['m_camera'].write(glm.mat4())
+        self.prog['m_proj'].write(glm.perspective(glm.radians(75), self.wnd.aspect_ratio, 1, 100))
 
     def render(self, time: float, frametime: float):
-        rotation = Matrix44.from_eulers((time, time, time), dtype='f4')
-        translation = Matrix44.from_translation((0.0, 0.0, -3.5), dtype='f4')
+        rotation = glm.mat4(glm.quat(glm.vec3(time, time, time)))
+        translation = glm.translate(glm.vec3(0.0, 0.0, -3.5))
         model = translation * rotation
 
         self.ctx.enable(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
@@ -63,7 +63,7 @@ class WindowEvents(mglw.WindowConfig):
         self.imgui.render(imgui.get_draw_data())
 
     def resize(self, width: int, height: int):
-        self.prog['m_proj'].write(Matrix44.perspective_projection(75, self.wnd.aspect_ratio, 1, 100, dtype='f4'))
+        self.prog['m_proj'].write(glm.perspective(glm.radians(75), self.wnd.aspect_ratio, 1, 100))
         self.imgui.resize(width, height)
 
     def key_event(self, key, action, modifiers):

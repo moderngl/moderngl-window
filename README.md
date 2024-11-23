@@ -173,7 +173,7 @@ and resources to make this project possible.
 
 ### Testing & Utility
 
-* Pyrr (https://github.com/adamlwgriffiths/Pyrr)
+* PyGLM (https://github.com/Zuzu-Typ/PyGLM)
 * numpy (https://github.com/numpy/numpy)
 * pytest (https://docs.pytest.org/en/latest/)
 * flake8 (https://gitlab.com/pycqa/flake8)

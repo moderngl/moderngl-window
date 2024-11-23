@@ -1,4 +1,4 @@
-from pyrr import Matrix44
+import glm
 
 import moderngl
 import moderngl_window
@@ -7,13 +7,14 @@ from moderngl_window import geometry
 
 class CubeSimple(moderngl_window.WindowConfig):
     """Simply shows two cubes rendered with the same uniform block data"""
+
     title = "Uniform Blocks"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.cube = geometry.cube(size=(2, 2, 2))
         shader_source = {
-            'vertex_shader': '''
+            "vertex_shader": """
                 #version 330
 
                 in vec3 in_position;
@@ -39,8 +40,8 @@ class CubeSimple(moderngl_window.WindowConfig):
                     normal = m_normal * in_normal;
                     pos = p.xyz;
                 }
-            ''',
-            'fragment_shader': '''
+            """,
+            "fragment_shader": """
                 #version 330
 
                 out vec4 color;
@@ -52,26 +53,27 @@ class CubeSimple(moderngl_window.WindowConfig):
                     float l = dot(normalize(-pos), normalize(normal));
                     color = vec4(1.0) * (0.25 + abs(l) * 0.75);
                 }
-            ''',
+            """,
         }
         self.prog1 = self.ctx.program(**shader_source)
-        self.prog1['pos_offset'].value = (1.1, 0, 0)
+        self.prog1["pos_offset"].value = (1.1, 0, 0)
         self.prog2 = self.ctx.program(**shader_source)
-        self.prog2['pos_offset'].value = (-1.1, 0, 0)
+        self.prog2["pos_offset"].value = (-1.1, 0, 0)
 
         self.vao1 = self.cube.instance(self.prog1)
         self.vao2 = self.cube.instance(self.prog2)
 
-        self.m_proj = Matrix44.perspective_projection(
-            75, self.wnd.aspect_ratio,  # fov, aspect
-            0.1, 100.0,  # near, far
-            dtype='f4',
+        self.m_proj = glm.perspective(
+            glm.radians(75),
+            self.wnd.aspect_ratio,  # fov, aspect
+            0.1,
+            100.0,  # near, far
         )
 
-        proj_uniform1 = self.prog1['Projection']
-        view_uniform1 = self.prog1['View']
-        proj_uniform2 = self.prog2['Projection']
-        view_uniform2 = self.prog2['View']
+        proj_uniform1 = self.prog1["Projection"]
+        view_uniform1 = self.prog1["View"]
+        proj_uniform2 = self.prog2["Projection"]
+        view_uniform2 = self.prog2["View"]
 
         self.proj_buffer = self.ctx.buffer(reserve=proj_uniform1.size)
         self.view_buffer = self.ctx.buffer(reserve=view_uniform1.size)
@@ -81,7 +83,7 @@ class CubeSimple(moderngl_window.WindowConfig):
         proj_uniform2.binding = 1
         view_uniform2.binding = 2
 
-        self.proj_buffer.write(self.m_proj.tobytes())
+        self.proj_buffer.write(self.m_proj)
 
         self.scope1 = self.ctx.scope(
             self.ctx.fbo,
@@ -104,8 +106,8 @@ class CubeSimple(moderngl_window.WindowConfig):
     def render(self, time=0.0, frametime=0.0, target: moderngl.Framebuffer = None):
         self.ctx.enable_only(moderngl.CULL_FACE | moderngl.DEPTH_TEST)
 
-        rotation = Matrix44.from_eulers((time, time, time), dtype='f4')
-        translation = Matrix44.from_translation((0.0, 0.0, -5.0), dtype='f4')
+        rotation = glm.mat4(glm.quat(glm.vec3(time, time, time)))
+        translation = glm.translate(glm.vec3(0.0, 0.0, -5.0))
         modelview = translation * rotation
 
         self.view_buffer.write(modelview)
@@ -117,5 +119,5 @@ class CubeSimple(moderngl_window.WindowConfig):
             self.vao2.render(mode=moderngl.TRIANGLES)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     moderngl_window.run_window_config(CubeSimple)

@@ -11,7 +11,7 @@ import os
 import moderngl
 import moderngl_window
 
-from pyrr import Matrix44
+import glm
 
 
 class Cubes(moderngl_window.WindowConfig):
@@ -35,35 +35,35 @@ class Cubes(moderngl_window.WindowConfig):
 
     def render(self, time, frame_time):
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
-        rot = Matrix44.from_eulers((time, time/2, time/3))
+        rot = glm.mat4(glm.quat(glm.vec3(time, time/2, time/3)))
 
         # Box top left
-        view = Matrix44.from_translation((-5, 2, -10), dtype='f4')
+        view = glm.translate(glm.vec3(-5, 2, -10))
         self.box_top_left.draw(self.projection, view * rot)
 
         # Box top middle
-        view = Matrix44.from_translation((0, 2, -10), dtype='f4')
+        view = glm.translate(glm.vec3(0, 2, -10))
         self.box_top_middle.draw(self.projection, view * rot)
 
         # Box top right
-        view = Matrix44.from_translation((5, 2, -10), dtype='f4')
+        view = glm.translate(glm.vec3(5, 2, -10))
         self.box_top_right.draw(self.projection, view * rot)
 
         # Box bottom left
-        view = Matrix44.from_translation((-5, -2, -10), dtype='f4')
+        view = glm.translate(glm.vec3(-5, -2, -10))
         self.box_bottom_left.draw(self.projection, view * rot)
 
         # Box bottom middle
-        view = Matrix44.from_translation((0, -2, -10), dtype='f4')
+        view = glm.translate(glm.vec3(0, -2, -10))
         self.box_bottom_middle.draw(self.projection, view * rot)
 
         # Box bottom right
-        view = Matrix44.from_translation((5, -2, -10), dtype='f4')
+        view = glm.translate(glm.vec3(5, -2, -10))
         self.box_bottom_right.draw(self.projection, view * rot)
 
     def resize(self, width, height):
         self.ctx.viewport = 0, 0, width, height
-        self.projection = Matrix44.perspective_projection(45, width / height, 1, 50, dtype='f4')
+        self.projection = glm.perspective(glm.radians(45), width / height, 1, 50)
 
     def _load_texture(self, path):
         tex = self.load_texture_2d(os.path.relpath(path, self.resource_dir))
