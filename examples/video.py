@@ -1,3 +1,9 @@
+"""
+Relies on the PyAV library to decode video frames and display them using a texture.
+
+    pip install av
+"""
+
 import math
 from typing import Tuple, Union
 from pathlib import Path
@@ -13,7 +19,7 @@ class Decoder:
     def __init__(self, path: Union[str, Path]):
         self.container = av.open(str(path))
         self.video = self.container.streams[0]
-        self.video.thread_type = 'AUTO'
+        self.video.thread_type = "AUTO"
         self._last_packet = None
         self._frame_step = float(self.video.time_base)
 
@@ -112,13 +118,15 @@ class Player:
         next_pos = self._decoder.time_to_pos(time)
         delta = next_pos - self._decoder.current_pos
 
-        print((
-            f"frame_step={self._decoder.frame_step}, "
-            f"delta={delta}, "
-            f"next_pos={next_pos}, "
-            f"current_pos={self._decoder.current_pos}, "
-            f"time={time}"
-        ))
+        print(
+            (
+                f"frame_step={self._decoder.frame_step}, "
+                f"delta={delta}, "
+                f"next_pos={next_pos}, "
+                f"current_pos={self._decoder.current_pos}, "
+                f"time={time}"
+            )
+        )
 
         # Seek we are more than 3 frames off
         if abs(delta) > self._decoder.frame_step * 3:
@@ -147,12 +155,14 @@ class Player:
 class VideoTest(moderngl_window.WindowConfig):
     gl_version = (3, 3)
     title = "Video Player"
-    resource_dir = Path(__file__).parent.resolve() / 'resources'
+    resource_dir = Path(__file__).parent.resolve() / "resources"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.player = Player(self.ctx, self.resource_dir / 'videos/Lightning - 33049.mp4')
+        self.player = Player(
+            self.ctx, self.resource_dir / "videos/Lightning - 33049.mp4"
+        )
         print("duration   :", self.player.duration)
         print("fps        :", self.player.fps)
         print("video_size :", self.player.video_size)
@@ -160,7 +170,7 @@ class VideoTest(moderngl_window.WindowConfig):
         print("step       :", self.player._decoder.frame_step)
 
         self.quad = geometry.quad_fs()
-        self.program = self.load_program('programs/texture_flipped.glsl')
+        self.program = self.load_program("programs/texture_flipped.glsl")
 
     def render(self, time, frametime):
         self.player.update(math.fmod(time, 5))
@@ -182,5 +192,5 @@ class VideoTest(moderngl_window.WindowConfig):
                 self.timer.toggle_pause()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     VideoTest.run()

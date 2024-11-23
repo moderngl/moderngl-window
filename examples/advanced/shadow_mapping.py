@@ -2,6 +2,7 @@
 Shadow mapping example from:
 https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mapping/
 """
+
 import math
 from pathlib import Path
 import glm
@@ -15,7 +16,7 @@ from base import CameraWindow
 
 class ShadowMapping(CameraWindow):
     title = "Shadow Mapping"
-    resource_dir = (Path(__file__) / '../../resources').resolve()
+    resource_dir = (Path(__file__) / "../../resources").resolve()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -25,7 +26,7 @@ class ShadowMapping(CameraWindow):
         # Offscreen buffer
         offscreen_size = 1024, 1024
         self.offscreen_depth = self.ctx.depth_texture(offscreen_size)
-        self.offscreen_depth.compare_func = ''
+        self.offscreen_depth.compare_func = ""
         self.offscreen_depth.repeat_x = False
         self.offscreen_depth.repeat_y = False
         self.offscreen_color = self.ctx.texture(offscreen_size, 4)
@@ -46,15 +47,21 @@ class ShadowMapping(CameraWindow):
         self.offscreen_quad2 = geometry.quad_2d(size=(0.5, 0.5), pos=(0.25, 0.75))
 
         # Programs
-        self.raw_depth_prog = self.load_program('programs/shadow_mapping/raw_depth.glsl')
-        self.basic_light = self.load_program('programs/shadow_mapping/directional_light.glsl')
-        self.basic_light['shadowMap'].value = 0
-        self.basic_light['color'].value = 1.0, 1.0, 1.0, 1.0
-        self.shadowmap_program = self.load_program('programs/shadow_mapping/shadowmap.glsl')
-        self.texture_prog = self.load_program('programs/texture.glsl')
-        self.texture_prog['texture0'].value = 0
-        self.sun_prog = self.load_program('programs/cube_simple.glsl')
-        self.sun_prog['color'].value = 1, 1, 0, 1
+        self.raw_depth_prog = self.load_program(
+            "programs/shadow_mapping/raw_depth.glsl"
+        )
+        self.basic_light = self.load_program(
+            "programs/shadow_mapping/directional_light.glsl"
+        )
+        self.basic_light["shadowMap"].value = 0
+        self.basic_light["color"].value = 1.0, 1.0, 1.0, 1.0
+        self.shadowmap_program = self.load_program(
+            "programs/shadow_mapping/shadowmap.glsl"
+        )
+        self.texture_prog = self.load_program("programs/texture.glsl")
+        self.texture_prog["texture0"].value = 0
+        self.sun_prog = self.load_program("programs/cube_simple.glsl")
+        self.sun_prog["color"].value = 1, 1, 0, 1
         self.lightpos = 0, 0, 0
 
     def render(self, time, frametime):
@@ -66,10 +73,10 @@ class ShadowMapping(CameraWindow):
         self.offscreen.clear()
         self.offscreen.use()
 
-        depth_projection = glm.orthographic(-20, 20, -20, 20, -20, 40)
+        depth_projection = glm.ortho(-20, 20, -20, 20, -20, 40)
         depth_view = glm.lookAt(self.lightpos, (0, 0, 0), (0, 1, 0))
         depth_mvp = depth_projection * depth_view
-        self.shadowmap_program['mvp'].write(depth_mvp)
+        self.shadowmap_program["mvp"].write(depth_mvp)
 
         self.floor.render(self.shadowmap_program)
         self.wall.render(self.shadowmap_program)
@@ -77,26 +84,30 @@ class ShadowMapping(CameraWindow):
 
         # --- PASS 2: Render scene to screen
         self.wnd.use()
-        self.basic_light['m_proj'].write(self.camera.projection.matrix)
-        self.basic_light['m_camera'].write(self.camera.matrix)
-        self.basic_light['m_model'].write(glm.translate(glm.vec3(scene_pos)))
+        self.basic_light["m_proj"].write(self.camera.projection.matrix)
+        self.basic_light["m_camera"].write(self.camera.matrix)
+        self.basic_light["m_model"].write(glm.translate(glm.vec3(scene_pos)))
         bias_matrix = glm.mat4(
-            [[0.5, 0.0, 0.0, 0.0],
-             [0.0, 0.5, 0.0, 0.0],
-             [0.0, 0.0, 0.5, 0.0],
-             [0.5, 0.5, 0.5, 1.0]],
+            [
+                [0.5, 0.0, 0.0, 0.0],
+                [0.0, 0.5, 0.0, 0.0],
+                [0.0, 0.0, 0.5, 0.0],
+                [0.5, 0.5, 0.5, 1.0],
+            ],
         )
-        self.basic_light['m_shadow_bias'].write(depth_mvp * bias_matrix)
-        self.basic_light['lightDir'].write(self.lightpos)
+        self.basic_light["m_shadow_bias"].write(bias_matrix * depth_mvp)
+        self.basic_light["lightDir"].write(self.lightpos)
         self.offscreen_depth.use(location=0)
         self.floor.render(self.basic_light)
         self.wall.render(self.basic_light)
         self.sphere.render(self.basic_light)
 
         # Render the sun position
-        self.sun_prog['m_proj'].write(self.camera.projection.matrix)
-        self.sun_prog['m_camera'].write(self.camera.matrix)
-        self.sun_prog['m_model'].write(glm.translate(glm.vec3(self.lightpos + scene_pos)))
+        self.sun_prog["m_proj"].write(self.camera.projection.matrix)
+        self.sun_prog["m_camera"].write(self.camera.matrix)
+        self.sun_prog["m_model"].write(
+            glm.translate(glm.vec3(self.lightpos + scene_pos))
+        )
         self.sun.render(self.sun_prog)
 
         # --- PASS 3: Debug ---
@@ -107,5 +118,5 @@ class ShadowMapping(CameraWindow):
         # self.offscreen_quad2.render(self.texture_prog)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     moderngl_window.run_window_config(ShadowMapping)
