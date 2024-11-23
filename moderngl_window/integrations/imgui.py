@@ -8,7 +8,7 @@ from imgui.integrations.base import BaseOpenGLRenderer
 
 class ModernglWindowMixin:
     def resize(self, width: int, height: int):
-        self.io.display_size = self.wnd.size
+        self.io.display_size = (self.wnd.viewport_width, self.wnd.viewport_height)
         self.io.display_fb_scale = compute_fb_scale(self.wnd.size, self.wnd.buffer_size)
 
     def key_event(self, key, action, modifiers):
@@ -230,7 +230,9 @@ class ModernGLRenderer(BaseOpenGLRenderer):
                 texture.use(0)
 
                 x, y, z, w = command.clip_rect
-                self.ctx.scissor = int(x), int(fb_height - w), int(z - x), int(w - y)
+                viewport_offset_x = (self.wnd.width - self.wnd.viewport_width / self.wnd.pixel_ratio) / 2
+                viewport_offset_y = (self.wnd.height - self.wnd.viewport_height / self.wnd.pixel_ratio) / 2
+                self.ctx.scissor = int(x + viewport_offset_x), int(fb_height + viewport_offset_y - w), int(z - x), int(w - y)
                 self._vao.render(
                     moderngl.TRIANGLES, vertices=command.elem_count, first=idx_pos
                 )
