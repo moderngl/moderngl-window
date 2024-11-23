@@ -13,24 +13,25 @@ class CubeModel(CameraWindow):
     model samples repository and ensure resource_dir is set correctly:
     https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0
     """
-    title = 'GL Transmission Format (glTF) 2.0 Scene'
+
+    title = "GL Transmission Format (glTF) 2.0 Scene"
     window_size = 1280, 720
     aspect_ratio = None
-    resource_dir = Path(__file__, '../../../glTF-Sample-Models/2.0').resolve()
+    resource_dir = Path(__file__, "../../../glTF-Sample-Models/2.0").resolve()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.wnd.mouse_exclusivity = True
 
         # --- glTF-Sample-Models ---
-        # self.scene = self.load_scene('2CylinderEngine/glTF-Binary/2CylinderEngine.glb')
+        # self.scene = self.load_scene("2CylinderEngine/glTF-Binary/2CylinderEngine.glb")
         # self.scene = self.load_scene('CesiumMilkTruck/glTF-Embedded/CesiumMilkTruck.gltf')
         # self.scene = self.load_scene('CesiumMilkTruck/glTF-Binary/CesiumMilkTruck.glb')
-        # self.scene = self.load_scene('CesiumMilkTruck/glTF/CesiumMilkTruck.gltf')
-        self.scene = self.load_scene('Sponza/glTF/Sponza.gltf')
-        # self.scene = self.load_scene('Lantern/glTF-Binary/Lantern.glb')
-        # self.scene = self.load_scene('Buggy/glTF-Binary/Buggy.glb')
-        # self.scene = self.load_scene('VC/glTF-Binary/VC.glb')
+        # self.scene = self.load_scene("CesiumMilkTruck/glTF/CesiumMilkTruck.gltf")
+        self.scene = self.load_scene("Sponza/glTF/Sponza.gltf")
+        # self.scene = self.load_scene("Lantern/glTF-Binary/Lantern.glb")
+        # self.scene = self.load_scene("Buggy/glTF-Binary/Buggy.glb")
+        # self.scene = self.load_scene("VC/glTF-Binary/VC.glb")
         # self.scene = self.load_scene('DamagedHelmet/glTF-Binary/DamagedHelmet.glb')
         # self.scene = self.load_scene('BoxInterleaved/glTF/BoxInterleaved.gltf')
         # self.scene = self.load_scene('OrientationTest/glTF/OrientationTest.gltf')
@@ -45,25 +46,31 @@ class CubeModel(CameraWindow):
         # self.scene = self.load_scene('FlightHelmet/glTF/FlightHelmet.gltf')
         # self.scene = self.load_scene('Fox/glTF/Fox.gltf')
         # self.scene = self.load_scene('GearboxAssy/glTF/GearboxAssy.gltf')
-        # self.scene = self.load_scene('ReciprocatingSaw/glTF/ReciprocatingSaw.gltf')
+        # self.scene = self.load_scene("ReciprocatingSaw/glTF/ReciprocatingSaw.gltf")
         # self.scene = self.load_scene('RiggedFigure/glTF/RiggedFigure.gltf')
         # self.scene = self.load_scene('RiggedSimple/glTF/RiggedSimple.gltf')
         # self.scene = self.load_scene('SciFiHelmet/glTF/SciFiHelmet.gltf')
         # self.scene = self.load_scene('SimpleMeshes/glTF/SimpleMeshes.gltf')
         # self.scene = self.load_scene('SimpleSparseAccessor/glTF/SimpleSparseAccessor.gltf')
-        # self.scene = self.load_scene('Suzanne/glTF/Suzanne.gltf')
+        # self.scene = self.load_scene("Suzanne/glTF/Suzanne.gltf")
         # self.scene = self.load_scene('TextureCoordinateTest/glTF/TextureCoordinateTest.gltf')
         # self.scene = self.load_scene('TextureSettingsTest/glTF/TextureSettingsTest.gltf')
         # self.scene = self.load_scene('VertexColorTest/glTF/VertexColorTest.gltf')
         # self.scene = self.load_scene('WaterBottle/glTF/WaterBottle.gltf')
 
-        self.camera = KeyboardCamera(self.wnd.keys, fov=75.0, aspect_ratio=self.wnd.aspect_ratio, near=0.1, far=1000.0)
-        # self.camera.velocity = 7.0
-        # self.camera.mouse_sensitivity = 0.3
+        self.camera = KeyboardCamera(
+            self.wnd.keys,
+            fov=75.0,
+            aspect_ratio=self.wnd.aspect_ratio,
+            near=0.1,
+            far=1000.0,
+        )
+        self.camera.velocity = 10.0
+        self.camera.mouse_sensitivity = 0.25
 
         # Use this for gltf scenes for better camera controls
         if self.scene.diagonal_size > 0:
-            self.camera.velocity = self.scene.diagonal_size / 5.0
+            self.camera.velocity = self.scene.diagonal_size / 10.0
 
     def render(self, time: float, frame_time: float):
         """Render the scene"""
@@ -94,5 +101,5 @@ class CubeModel(CameraWindow):
         # )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     mglw.run_window_config(CubeModel)
