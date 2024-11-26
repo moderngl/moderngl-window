@@ -42,7 +42,7 @@ class _Row:
         self.y2 = max(self.y + height, self.y2)
         return x, y
 
-    def compact(self):
+    def compact(self) -> None:
         """
         Compacts the row to the smallest height.
         Should only be done once when the row is filled before adding a new row.
@@ -114,13 +114,13 @@ class TextureAtlas:
         self._auto_resize = auto_resize
 
         # The physical size limit for the current hardware
-        self._max_size = self._ctx.info["GL_MAX_VIEWPORT_DIMS"]
+        self._max_size: tuple[int, int] = self._ctx.info["GL_MAX_VIEWPORT_DIMS"]
 
         # Atlas content
         self._texture = self._ctx.texture(self.size, components=self._components)
 
         # We want to be able to render into the atlas texture
-        self._fbo = self._fbo = self._ctx.framebuffer(color_attachments=[self._texture])
+        self._fbo = self._ctx.framebuffer(color_attachments=[self._texture])
         self._allocator = Allocator(width, height)
 
     @property
@@ -155,14 +155,14 @@ class TextureAtlas:
         """
         return self._max_size
 
-    def add(self, image: BaseImage):
+    def add(self, image: BaseImage) -> None:
         pass
 
-    def remove(self, image: BaseImage):
+    def remove(self, image: BaseImage) -> None:
         pass
 
-    def resize(self, width: int, height: int):
+    def resize(self, width: int, height: int) -> None:
         pass
 
-    def rebuild(self):
+    def rebuild(self) -> None:
         pass

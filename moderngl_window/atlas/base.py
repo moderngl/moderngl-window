@@ -27,7 +27,7 @@ class BaseImage:
         """tuple[int, int]: Size of the image in pixels (width, height)"""
         raise NotImplementedError
 
-    def get_pixel_data(self, components: int = 4):
+    def get_pixel_data(self, components: int = 4) -> bytes:
         """
         Get the raw pixel data from the image.
 
@@ -44,21 +44,21 @@ class AtlasImage(BaseImage):
     """An atlas image using Pillow"""
 
     def __init__(self, image: Image):
-        self.image = image
+        self._image = image
 
     @property
     def width(self) -> int:
-        return self._image.size[0]
+        return self._image.width
 
     @property
     def height(self) -> int:
-        return self._image.size[1]
+        return self._image.height
 
     @property
     def size(self) -> tuple[int, int]:
         return self._image.size
 
-    def get_pixel_data(self, components: int = 4):
+    def get_pixel_data(self, components: int = 4) -> bytes:
         """
         Get the raw pixel data from the image.
 
