@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 from moderngl_window.meta.base import ResourceDescription
 
 
@@ -39,7 +39,7 @@ class ProgramDescription(ResourceDescription):
         tess_evaluation_shader: Optional[str] = None,
         compute_shader: Optional[str] = None,
         defines: Optional[dict] = None,
-        varyings: Optional[List] = None,
+        varyings: Optional[list] = None,
         **kwargs,
     ):
         """Create a program description
@@ -55,7 +55,7 @@ class ProgramDescription(ResourceDescription):
             tess_evaluation_shader (str): Path to tess eval shader
             compute_shader (str): Path to compute shader
             defines (dict): Dictionary with define values to replace in the source
-            varyings (List): List of varying names for transform shader
+            varyings (list): List of varying names for transform shader
             **kwargs: Optional custom attributes
         """
         kwargs.update(
@@ -120,6 +120,6 @@ class ProgramDescription(ResourceDescription):
         return self._kwargs.get("defines", {})
 
     @property
-    def varyings(self) -> List:
-        """List: List of varying names for transform shaders"""
+    def varyings(self) -> list:
+        """list: List of varying names for transform shaders"""
         return self._kwargs.get("varyings", [])

@@ -2,7 +2,7 @@
 Helper classes for loading shader
 """
 
-from typing import List, Tuple, Union, Optional
+from typing import Union, Optional
 import re
 
 import moderngl
@@ -271,8 +271,8 @@ class ShaderSource:
         return "\n".join(self._lines)
 
     @property
-    def source_list(self) -> List["ShaderSource"]:
-        """List[ShaderSource]: List of all shader sources"""
+    def source_list(self) -> list["ShaderSource"]:
+        """list[ShaderSource]: List of all shader sources"""
         return self._source_list
 
     @property
@@ -281,8 +281,8 @@ class ShaderSource:
         return self._name
 
     @property
-    def lines(self) -> List[str]:
-        """List[str]: The lines in this shader"""
+    def lines(self) -> list[str]:
+        """list[str]: The lines in this shader"""
         return self._lines
 
     @property
@@ -352,12 +352,12 @@ class ShaderSource:
                 except IndexError:
                     pass
 
-    def find_out_attribs(self) -> List[str]:
+    def find_out_attribs(self) -> list[str]:
         """
         Get all out attributes in the shader source.
 
         Returns:
-            List[str]: List of out attribute names
+            list[str]: List of out attribute names
         """
         names = []
         for line in self.lines:
@@ -442,7 +442,7 @@ class ReloadableProgram:
         return self.program.glo
 
     @property
-    def subroutines(self) -> Tuple[str, ...]:
+    def subroutines(self) -> tuple[str, ...]:
         """
         tuple: The subroutine uniforms.
         """

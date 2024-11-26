@@ -1,5 +1,3 @@
-from typing import Tuple
-
 import numpy as np
 import glm
 
@@ -83,7 +81,7 @@ class Projection3D:
         return self._matrix_bytes
 
     @property
-    def projection_constants(self) -> Tuple[float, float]:
+    def projection_constants(self) -> tuple[float, float]:
         """
         (x, y) projection constants for the current projection.
         This is for example useful when reconstructing a view position

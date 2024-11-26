@@ -16,7 +16,6 @@ Example:
 
 import re
 from functools import lru_cache
-from typing import List
 
 VALID_DIVISORS = ["v", "i", "r"]
 
@@ -106,7 +105,7 @@ def attribute_format(attr_format: str) -> BufferFormat:
     )
 
 
-def parse_attribute_formats(frmt: str) -> List[BufferFormat]:
+def parse_attribute_formats(frmt: str) -> list[BufferFormat]:
     return [attribute_format(attr) for attr in frmt.split()]
 
 

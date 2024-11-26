@@ -1,6 +1,3 @@
-from typing import Tuple
-
-
 class BaseTimer:
     """
     A timer controls the time passed into the the render function.
@@ -34,11 +31,11 @@ class BaseTimer:
     def time(self, value: float):
         raise NotImplementedError()
 
-    def next_frame(self) -> Tuple[float, float]:
+    def next_frame(self) -> tuple[float, float]:
         """Get timer information for the next frame.
 
         Returns:
-            Tuple[float, float]: The frametime and current time
+            tuple[float, float]: The frametime and current time
         """
         raise NotImplementedError()
 
@@ -54,11 +51,11 @@ class BaseTimer:
         """Toggle pause state"""
         raise NotImplementedError()
 
-    def stop(self) -> Tuple[float, float]:
+    def stop(self) -> tuple[float, float]:
         """
         Stop the timer. Should only be called once when stopping the timer.
 
         Returns:
-            Tuple[float, float]> Current position in the timer, actual running duration
+            tuple[float, float]> Current position in the timer, actual running duration
         """
         raise NotImplementedError()

@@ -1,4 +1,3 @@
-from typing import Tuple
 from PIL.Image import Image
 from moderngl_window.meta.base import ResourceDescription
 
@@ -31,7 +30,7 @@ class TextureDescription(ResourceDescription):
         flip_x=False,
         flip_y=True,
         mipmap=False,
-        mipmap_levels: Tuple[int, int] = None,
+        mipmap_levels: tuple[int, int] = None,
         anisotropy=1.0,
         image=None,
         layers=None,
@@ -107,8 +106,8 @@ class TextureDescription(ResourceDescription):
         self._kwargs["mipmap"] = value
 
     @property
-    def mipmap_levels(self) -> Tuple[int, int]:
-        """Tuple[int, int]: base, max_level for mipmap generation"""
+    def mipmap_levels(self) -> tuple[int, int]:
+        """tuple[int, int]: base, max_level for mipmap generation"""
         return self._kwargs.get("mipmap_levels")
 
     @property

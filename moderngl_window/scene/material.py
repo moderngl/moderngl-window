@@ -1,5 +1,4 @@
 import moderngl
-from typing import Tuple
 
 
 class MaterialTexture:
@@ -60,8 +59,8 @@ class Material:
         self._name = value
 
     @property
-    def color(self) -> Tuple[float, float, float, float]:
-        """Tuple[float, float, float, float]: RGBA color"""
+    def color(self) -> tuple[float, float, float, float]:
+        """tuple[float, float, float, float]: RGBA color"""
         return self._color
 
     @color.setter

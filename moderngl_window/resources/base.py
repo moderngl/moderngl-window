@@ -4,7 +4,7 @@ Base registry class
 
 import inspect
 from functools import lru_cache
-from typing import Any, Generator, Tuple
+from typing import Any, Generator
 
 from moderngl_window.conf import settings
 from moderngl_window.exceptions import ImproperlyConfigured
@@ -64,7 +64,7 @@ class BaseRegistry:
         self.resolve_loader(meta)
         self._resources.append(meta)
 
-    def load_pool(self) -> Generator[Tuple[ResourceDescription, Any], None, None]:
+    def load_pool(self) -> Generator[tuple[ResourceDescription, Any], None, None]:
         """
         Loads all the data files using the configured finders.
 

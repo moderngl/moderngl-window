@@ -10,7 +10,7 @@ import sys
 import weakref
 
 from pathlib import Path
-from typing import List, Type, Optional
+from typing import Optional
 
 import moderngl
 from moderngl_window.context.base import WindowConfig, BaseWindow
@@ -105,7 +105,7 @@ def ctx():
     raise ValueError("No active window and context. Call activate_window.")
 
 
-def get_window_cls(window: str = None) -> Type[BaseWindow]:
+def get_window_cls(window: str = None) -> type[BaseWindow]:
     """
     Attempt to obtain a window class using the full dotted
     python path. This can be used to import custom or modified
@@ -121,7 +121,7 @@ def get_window_cls(window: str = None) -> Type[BaseWindow]:
     return import_string(window)
 
 
-def get_local_window_cls(window: str = None) -> Type[BaseWindow]:
+def get_local_window_cls(window: str = None) -> type[BaseWindow]:
     """
     Attempt to obtain a window class in the moderngl_window package
     using short window names such as ``pyglet`` or ``glfw``.
@@ -139,7 +139,7 @@ def get_local_window_cls(window: str = None) -> Type[BaseWindow]:
     return get_window_cls("moderngl_window.context.{}.Window".format(window))
 
 
-def find_window_classes() -> List[str]:
+def find_window_classes() -> list[str]:
     """
     Find available window packages
     Returns:

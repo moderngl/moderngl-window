@@ -1,4 +1,3 @@
-from typing import Tuple
 import platform
 import pyglet
 
@@ -89,8 +88,8 @@ class Window(BaseWindow):
         self._window.set_fullscreen(value)
 
     @property
-    def size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: current window size.
+    def size(self) -> tuple[int, int]:
+        """tuple[int, int]: current window size.
 
         This property also support assignment::
 
@@ -100,12 +99,12 @@ class Window(BaseWindow):
         return self._width, self._height
 
     @size.setter
-    def size(self, value: Tuple[int, int]):
+    def size(self, value: tuple[int, int]):
         self._window.set_size(value[0], value[1])
 
     @property
-    def position(self) -> Tuple[int, int]:
-        """Tuple[int, int]: The current window position.
+    def position(self) -> tuple[int, int]:
+        """tuple[int, int]: The current window position.
 
         This property can also be set to move the window::
 
@@ -115,7 +114,7 @@ class Window(BaseWindow):
         return self._window.get_location()
 
     @position.setter
-    def position(self, value: Tuple[int, int]):
+    def position(self, value: tuple[int, int]):
         self._window.set_location(value[0], value[1])
 
     @property

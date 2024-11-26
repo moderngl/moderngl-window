@@ -4,7 +4,7 @@ Wrapper for a loaded mesh / vao with properties
 
 from __future__ import annotations
 
-from typing import List, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 import glm
 import moderngl
@@ -90,7 +90,7 @@ class Node:
         self._matrix_global = value
 
     @property
-    def children(self) -> List["Node"]:
+    def children(self) -> list["Node"]:
         """list: List of children"""
         return self._children
 

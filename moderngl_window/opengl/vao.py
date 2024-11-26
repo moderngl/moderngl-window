@@ -1,5 +1,3 @@
-from typing import List
-
 import numpy
 import moderngl
 import moderngl_window as mglw
@@ -54,7 +52,7 @@ class BufferInfo:
     def vertex_size(self) -> int:
         return sum(f.bytes_total for f in self.attrib_formats)
 
-    def content(self, attributes: List[str]):
+    def content(self, attributes: list[str]):
         """Build content tuple for the buffer"""
         formats = []
         attrs = []
@@ -222,7 +220,7 @@ class VAO:
 
         vao.transform(buffer, mode=mode, vertices=vertices, first=first, instances=instances)
 
-    def buffer(self, buffer, buffer_format: str, attribute_names: List[str]):
+    def buffer(self, buffer, buffer_format: str, attribute_names: list[str]):
         """Register a buffer/vbo for the VAO. This can be called multiple times.
         adding multiple buffers (interleaved or not).
 

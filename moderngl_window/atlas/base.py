@@ -1,5 +1,5 @@
 from PIL.Image import Image
-from typing import Any, Tuple
+from typing import Any
 
 
 class BaseImage:
@@ -23,8 +23,8 @@ class BaseImage:
         raise NotImplementedError
 
     @property
-    def size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: Size of the image in pixels (width, height)"""
+    def size(self) -> tuple[int, int]:
+        """tuple[int, int]: Size of the image in pixels (width, height)"""
         raise NotImplementedError
 
     def get_pixel_data(self, components: int = 4):
@@ -55,7 +55,7 @@ class AtlasImage(BaseImage):
         return self._image.size[1]
 
     @property
-    def size(self) -> Tuple[int, int]:
+    def size(self) -> tuple[int, int]:
         return self._image.size
 
     def get_pixel_data(self, components: int = 4):

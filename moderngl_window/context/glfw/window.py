@@ -1,4 +1,3 @@
-from typing import Tuple
 import glfw
 
 from PIL import Image
@@ -126,8 +125,8 @@ class Window(BaseWindow):
         glfw.swap_interval(value)
 
     @property
-    def size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: current window size.
+    def size(self) -> tuple[int, int]:
+        """tuple[int, int]: current window size.
 
         This property also support assignment::
 
@@ -137,12 +136,12 @@ class Window(BaseWindow):
         return self._width, self._height
 
     @size.setter
-    def size(self, value: Tuple[int, int]):
+    def size(self, value: tuple[int, int]):
         glfw.set_window_size(self._window, value[0], value[1])
 
     @property
-    def position(self) -> Tuple[int, int]:
-        """Tuple[int, int]: The current window position.
+    def position(self) -> tuple[int, int]:
+        """tuple[int, int]: The current window position.
 
         This property can also be set to move the window::
 
@@ -152,7 +151,7 @@ class Window(BaseWindow):
         return glfw.get_window_pos(self._window)
 
     @position.setter
-    def position(self, value: Tuple[int, int]):
+    def position(self, value: tuple[int, int]):
         self._position = glfw.set_window_pos(self._window, value[0], value[1])
 
     @property

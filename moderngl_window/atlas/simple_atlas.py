@@ -8,8 +8,6 @@ https://github.com/pyglet/pyglet/blob/master/pyglet/image/atlas.py
 https://github.com/pythonarcade/arcade/blob/development/arcade/texture_atlas.py
 """
 
-from typing import Tuple
-
 import moderngl
 from .base import BaseImage
 
@@ -31,7 +29,7 @@ class _Row:
         self.max_height = max_height
         self.y2 = y
 
-    def add(self, width: int, height: int) -> Tuple[int, int]:
+    def add(self, width: int, height: int) -> tuple[int, int]:
         """Add a region to the row and return the position"""
         if width <= 0 or height <= 0:
             raise AllocatorException("Cannot allocate size: [{}, {}]".format(width, height))
@@ -62,12 +60,12 @@ class Allocator:
         # when a new row is added
         self.rows = [_Row(0, self.height)]
 
-    def alloc(self, width: int, height: int) -> Tuple[int, int]:
+    def alloc(self, width: int, height: int) -> tuple[int, int]:
         """
         Allocate a region.
 
         Returns:
-            Tuple[int, int]: The x,y location
+            tuple[int, int]: The x,y location
         Raises:
             AllocatorException: if no more space
         """
@@ -146,14 +144,14 @@ class TextureAtlas:
         return self._height
 
     @property
-    def size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: The size of he atlas (width, height)"""
+    def size(self) -> tuple[int, int]:
+        """tuple[int, int]: The size of he atlas (width, height)"""
         return self._width, self._height
 
     @property
-    def max_size(self) -> Tuple[int, int]:
+    def max_size(self) -> tuple[int, int]:
         """
-        Tuple[int,int]: The maximum size of the atlas in pixels (x, y)
+        tuple[int,int]: The maximum size of the atlas in pixels (x, y)
         """
         return self._max_size
 

@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Dict, Type
 
 
 class ResourceDescription:
@@ -59,8 +58,8 @@ class ResourceDescription:
         self._kwargs["kind"] = value
 
     @property
-    def loader_cls(self) -> Type:
-        """Type: The loader class for this resource.
+    def loader_cls(self) -> type:
+        """type: The loader class for this resource.
 
         This property is assigned to during the loading
         stage were a loader class is assigned based on
@@ -69,7 +68,7 @@ class ResourceDescription:
         return self._kwargs.get("loader_cls")
 
     @loader_cls.setter
-    def loader_cls(self, value: Type):
+    def loader_cls(self, value: type):
         self._kwargs["loader_cls"] = value
 
     @property
@@ -86,7 +85,7 @@ class ResourceDescription:
         self._kwargs["resolved_path"] = value
 
     @property
-    def attrs(self) -> Dict[str, str]:
+    def attrs(self) -> dict[str, str]:
         """dict: All keywords arguments passed to the resource"""
         return self._kwargs
 

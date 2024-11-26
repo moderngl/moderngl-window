@@ -1,4 +1,3 @@
-from typing import Tuple
 import tkinter
 
 from moderngl_window.context.base import BaseWindow
@@ -61,8 +60,8 @@ class Window(BaseWindow):
         pass
 
     @property
-    def size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: current window size.
+    def size(self) -> tuple[int, int]:
+        """tuple[int, int]: current window size.
 
         This property also support assignment::
 
@@ -72,12 +71,12 @@ class Window(BaseWindow):
         return self._width, self._height
 
     @size.setter
-    def size(self, value: Tuple[int, int]):
+    def size(self, value: tuple[int, int]):
         self._tk.geometry("{}x{}".format(value[0], value[1]))
 
     @property
-    def position(self) -> Tuple[int, int]:
-        """Tuple[int, int]: The current window position.
+    def position(self) -> tuple[int, int]:
+        """tuple[int, int]: The current window position.
 
         This property can also be set to move the window::
 
@@ -88,7 +87,7 @@ class Window(BaseWindow):
         return int(x), int(y)
 
     @position.setter
-    def position(self, value: Tuple[int, int]):
+    def position(self, value: tuple[int, int]):
         self._tk.geometry("+{}+{}".format(value[0], value[1]))
 
     @property

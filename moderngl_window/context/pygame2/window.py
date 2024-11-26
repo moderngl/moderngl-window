@@ -1,4 +1,3 @@
-from typing import Tuple
 import pygame
 import pygame.display
 import pygame.event
@@ -84,8 +83,8 @@ class Window(BaseWindow):
         self._set_mode()
 
     @property
-    def size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: current window size.
+    def size(self) -> tuple[int, int]:
+        """tuple[int, int]: current window size.
 
         This property also support assignment::
 
@@ -95,14 +94,14 @@ class Window(BaseWindow):
         return self._width, self._height
 
     @size.setter
-    def size(self, value: Tuple[int, int]):
+    def size(self, value: tuple[int, int]):
         self._width, self._height = value
         self._set_mode()
         self.resize(value[0], value[1])
 
     @property
-    def position(self) -> Tuple[int, int]:
-        """Tuple[int, int]: The current window position.
+    def position(self) -> tuple[int, int]:
+        """tuple[int, int]: The current window position.
 
         This property can also be set to move the window::
 
@@ -112,7 +111,7 @@ class Window(BaseWindow):
         return self._sdl_window.position
 
     @position.setter
-    def position(self, value: Tuple[int, int]):
+    def position(self, value: tuple[int, int]):
         self._sdl_window.position = value
 
     @property

@@ -1,4 +1,3 @@
-from typing import Tuple
 from ctypes import c_int, c_char_p
 import sdl2
 import sdl2.ext
@@ -90,8 +89,8 @@ class Window(BaseWindow):
         return x.value, y.value
 
     @property
-    def size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: current window size.
+    def size(self) -> tuple[int, int]:
+        """tuple[int, int]: current window size.
 
         This property also support assignment::
 
@@ -101,14 +100,14 @@ class Window(BaseWindow):
         return self._width, self._height
 
     @size.setter
-    def size(self, value: Tuple[int, int]):
+    def size(self, value: tuple[int, int]):
         sdl2.SDL_SetWindowSize(self._window, value[0], value[1])
         # SDL_SetWindowSize don't trigger a resize event
         self.resize(value[0], value[1])
 
     @property
-    def position(self) -> Tuple[int, int]:
-        """Tuple[int, int]: The current window position.
+    def position(self) -> tuple[int, int]:
+        """tuple[int, int]: The current window position.
 
         This property can also be set to move the window::
 
@@ -121,7 +120,7 @@ class Window(BaseWindow):
         return x.value, y.value
 
     @position.setter
-    def position(self, value: Tuple[int, int]):
+    def position(self, value: tuple[int, int]):
         sdl2.SDL_SetWindowPosition(self._window, value[0], value[1])
 
     @property

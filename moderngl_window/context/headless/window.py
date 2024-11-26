@@ -1,5 +1,3 @@
-from typing import Tuple
-
 import moderngl
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.headless.keys import Keys
@@ -59,8 +57,8 @@ class Window(BaseWindow):
         )
 
     @property
-    def size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: current window size.
+    def size(self) -> tuple[int, int]:
+        """tuple[int, int]: current window size.
 
         This property also support assignment::
 
@@ -70,7 +68,7 @@ class Window(BaseWindow):
         return self._width, self._height
 
     @size.setter
-    def size(self, value: Tuple[int, int]):
+    def size(self, value: tuple[int, int]):
         if value == (self._width, self._height):
             return
         self._width, self._height = value

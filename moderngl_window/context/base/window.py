@@ -4,7 +4,7 @@ from pathlib import Path
 import logging
 import sys
 import weakref
-from typing import Any, Tuple, Type, List, Optional, Dict
+from typing import Any, Optional
 
 import moderngl
 from moderngl_window.context.base import KeyModifiers, BaseKeys
@@ -260,8 +260,8 @@ class BaseWindow:
         self._exit_key = value
 
     @property
-    def gl_version(self) -> Tuple[int, int]:
-        """Tuple[int, int]: (major, minor) required OpenGL version"""
+    def gl_version(self) -> tuple[int, int]:
+        """tuple[int, int]: (major, minor) required OpenGL version"""
         return self._gl_version
 
     @property
@@ -275,8 +275,8 @@ class BaseWindow:
         return self._height
 
     @property
-    def size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: current window size.
+    def size(self) -> tuple[int, int]:
+        """tuple[int, int]: current window size.
 
         This property also support assignment::
 
@@ -286,7 +286,7 @@ class BaseWindow:
         return self._width, self._height
 
     @size.setter
-    def size(self, value: Tuple[int, int]):
+    def size(self, value: tuple[int, int]):
         self._width, self._height = int(value[0]), int(value[1])
 
     @property
@@ -300,13 +300,13 @@ class BaseWindow:
         return self._buffer_height
 
     @property
-    def buffer_size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: tuple with the current window buffer size"""
+    def buffer_size(self) -> tuple[int, int]:
+        """tuple[int, int]: tuple with the current window buffer size"""
         return self._buffer_width, self._buffer_height
 
     @property
-    def position(self) -> Tuple[int, int]:
-        """Tuple[int, int]: The current window position.
+    def position(self) -> tuple[int, int]:
+        """tuple[int, int]: The current window position.
 
         This property can also be set to move the window::
 
@@ -316,7 +316,7 @@ class BaseWindow:
         return self._position
 
     @position.setter
-    def position(self, value: Tuple[int, int]):
+    def position(self, value: tuple[int, int]):
         self._position = int(value[0]), int(value[1])
 
     @property
@@ -325,13 +325,13 @@ class BaseWindow:
         return self.buffer_size[0] / self.size[0]
 
     @property
-    def viewport(self) -> Tuple[int, int, int, int]:
-        """Tuple[int, int, int, int]: current window viewport"""
+    def viewport(self) -> tuple[int, int, int, int]:
+        """tuple[int, int, int, int]: current window viewport"""
         return self._viewport
 
     @property
-    def viewport_size(self) -> Tuple[int, int]:
-        """Tuple[int,int]: Size of the viewport.
+    def viewport_size(self) -> tuple[int, int]:
+        """tuple[int,int]: Size of the viewport.
 
         Equivalent to ``self.viewport[2], self.viewport[3]``
         """
@@ -635,7 +635,7 @@ class BaseWindow:
         self._mouse_scroll_event_func = func
 
     @property
-    def modifiers(self) -> Type[KeyModifiers]:
+    def modifiers(self) -> type[KeyModifiers]:
         """(KeyModifiers) The current keyboard modifiers"""
         return self._modifiers
 
@@ -848,14 +848,14 @@ class BaseWindow:
         if err != "GL_NO_ERROR":
             logger.warning("glerror consumed after getting context info: %s", err)
 
-    def _calc_mouse_delta(self, xpos: int, ypos: int) -> Tuple[int, int]:
+    def _calc_mouse_delta(self, xpos: int, ypos: int) -> tuple[int, int]:
         """Calculates the mouse position delta for events not support this.
 
         Args:
             xpos (int): current mouse x
             ypos (int): current mouse y
         Returns:
-            Tuple[int, int]: The x, y delta values
+            tuple[int, int]: The x, y delta values
         """
         dx, dy = xpos - self._mouse_pos[0], ypos - self._mouse_pos[1]
         self._mouse_pos = xpos, ypos
@@ -1147,7 +1147,7 @@ class WindowConfig:
     def close(self):
         """Called when the window is closed"""
 
-    def files_dropped_event(self, x: int, y: int, paths: List[str]):
+    def files_dropped_event(self, x: int, y: int, paths: list[str]):
         """
         Called when files dropped onto the window
 
@@ -1243,7 +1243,7 @@ class WindowConfig:
         flip_x=False,
         flip_y=True,
         mipmap=False,
-        mipmap_levels: Optional[Tuple[int, int]] = None,
+        mipmap_levels: Optional[tuple[int, int]] = None,
         anisotropy=1.0,
         **kwargs,
     ) -> moderngl.Texture:
@@ -1287,7 +1287,7 @@ class WindowConfig:
         layers: int = 0,
         flip=True,
         mipmap=False,
-        mipmap_levels: Optional[Tuple[int, int]] = None,
+        mipmap_levels: Optional[tuple[int, int]] = None,
         anisotropy=1.0,
         **kwargs,
     ) -> moderngl.TextureArray:
@@ -1342,7 +1342,7 @@ class WindowConfig:
         flip_x=False,
         flip_y=False,
         mipmap=False,
-        mipmap_levels: Optional[Tuple[int, int]] = None,
+        mipmap_levels: Optional[tuple[int, int]] = None,
         anisotropy=1.0,
         **kwargs,
     ) -> moderngl.TextureCube:
@@ -1399,7 +1399,7 @@ class WindowConfig:
         tess_control_shader=None,
         tess_evaluation_shader=None,
         defines: Optional[dict] = None,
-        varyings: Optional[List[str]] = None,
+        varyings: Optional[list[str]] = None,
     ) -> moderngl.Program:
         """Loads a shader program.
 
@@ -1419,7 +1419,7 @@ class WindowConfig:
             tess_evaluation_shader (str): Path to tessellation eval shader
             defines (dict): ``#define`` values to replace in the shader source.
                             Example: ``{'VALUE1': 10, 'VALUE2': '3.1415'}``.
-            varyings (List[str]): Out attribute names for transform shaders
+            varyings (list[str]): Out attribute names for transform shaders
         Returns:
             moderngl.Program: The program instance
         """
@@ -1437,7 +1437,7 @@ class WindowConfig:
         )
 
     def load_compute_shader(
-        self, path, defines: Optional[Dict] = None, **kwargs
+        self, path, defines: Optional[dict] = None, **kwargs
     ) -> moderngl.ComputeShader:
         """Loads a compute shader.
 

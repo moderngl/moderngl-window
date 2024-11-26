@@ -1,5 +1,4 @@
 import time
-from typing import Tuple
 
 from moderngl_window.timers.base import BaseTimer
 
@@ -47,13 +46,13 @@ class Timer(BaseTimer):
 
         self._offset += self.time - value
 
-    def next_frame(self) -> Tuple[float, float]:
+    def next_frame(self) -> tuple[float, float]:
         """
         Get the time and frametime for the next frame.
         This should only be called once per frame.
 
         Returns:
-            Tuple[float, float]: current time and frametime
+            tuple[float, float]: current time and frametime
         """
         current = self.time
         delta, self._last_frame = current - self._last_frame, current
@@ -81,12 +80,12 @@ class Timer(BaseTimer):
         else:
             self.pause()
 
-    def stop(self) -> Tuple[float, float]:
+    def stop(self) -> tuple[float, float]:
         """
         Stop the timer. Should only be called once when stopping the timer.
 
         Returns:
-            Tuple[float, float]: Current position in the timer, actual running duration
+            tuple[float, float]: Current position in the timer, actual running duration
         """
         self._stop_time = time.time()
         return (
