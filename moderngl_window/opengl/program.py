@@ -7,7 +7,7 @@ import re
 
 import moderngl
 import moderngl_window
-from moderngl_window.meta import ProgramDescription
+from moderngl_window.meta import ProgramDescription as ProgramDescription
 
 VERTEX_SHADER = "VERTEX_SHADER"
 GEOMETRY_SHADER = "GEOMETRY_SHADER"

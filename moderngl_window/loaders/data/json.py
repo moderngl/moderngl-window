@@ -4,6 +4,8 @@ import logging
 from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.exceptions import ImproperlyConfigured
 
+from typing import Any
+
 logger = logging.getLogger(__name__)
 
 
@@ -13,12 +15,13 @@ class Loader(BaseLoader):
         [".json"],
     ]
 
-    def load(self) -> dict:
+    def load(self) -> dict[Any, Any]:
         """Load a file as json
 
         Returns:
             dict: The json contents
         """
+        assert self.meta.path is not None, "the path is empty for this loader"
         self.meta.resolved_path = self.find_data(self.meta.path)
 
         if not self.meta.resolved_path:

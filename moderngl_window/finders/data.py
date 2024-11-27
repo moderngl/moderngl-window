@@ -1,7 +1,7 @@
 from moderngl_window.finders import base
 from moderngl_window.conf import settings
 
-from collections.abc import Iterator
+from collections.abc import Iterable
 
 
 class FilesystemFinder(base.BaseFilesystemFinder):
@@ -10,6 +10,6 @@ class FilesystemFinder(base.BaseFilesystemFinder):
     settings_attr = "DATA_DIRS"
 
 
-def get_finders() -> Iterator[base.BaseFilesystemFinder]:
+def get_finders() -> Iterable[base.BaseFilesystemFinder]:
     for finder in settings.DATA_FINDERS:
         yield base.get_finder(finder)

@@ -49,11 +49,11 @@ class SceneDescription(ResourceDescription):
         super().__init__(**kwargs)
 
     @property
-    def cache(self) -> Optional[bool]:
+    def cache(self) -> bool:
         """bool: Use cache feature in scene loader"""
-        return self._kwargs.get("cache")
+        return bool(self._kwargs["cache"])
 
     @property
-    def attr_names(self) -> Optional[AttributeNames]:
+    def attr_names(self) -> AttributeNames:
         """AttributeNames: Attribute name config"""
-        return self._kwargs.get("attr_names")
+        return self._kwargs["attr_names"]

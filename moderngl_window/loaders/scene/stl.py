@@ -4,6 +4,8 @@ import moderngl
 import numpy
 import trimesh
 
+from typing import Union
+
 from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.opengl.vao import VAO
 from moderngl_window.scene import Material, Mesh, Node, Scene

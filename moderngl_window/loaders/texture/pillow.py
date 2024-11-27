@@ -1,5 +1,6 @@
 import logging
-from typing import Any
+from typing import Any, Union, Optional
+from pathlib import Path
 
 try:
     from PIL import Image
@@ -7,7 +8,10 @@ except ImportError as ex:
     raise ImportError("Texture loader 'PillowLoader' requires Pillow: {}".format(ex))
 
 from moderngl_window.loaders.base import BaseLoader
+from moderngl_window.meta.base import ResourceDescription
+from moderngl_window.meta.texture import TextureDescription
 from moderngl_window.exceptions import ImproperlyConfigured
+from moderngl_window.resources.textures import TextureAny
 
 logger = logging.getLogger(__name__)
 
@@ -16,15 +20,16 @@ class PillowLoader(BaseLoader):
     """Base loader using PIL/Pillow"""
 
     kind = "__unknown__"
+    image: Image.Image
+    meta: TextureDescription
 
-    def __init__(self, meta):
+    def __init__(self, meta: ResourceDescription):
         super().__init__(meta)
-        self.image = None
 
-    def load(self) -> Any:
+    def load(self) -> TextureAny:
         raise NotImplementedError()
 
-    def _open_image(self):
+    def _open_image(self) -> Image.Image:
         if self.meta.image:
             self.image = self.meta.image
         else:
@@ -54,7 +59,7 @@ class PillowLoader(BaseLoader):
         self.image = self._apply_modifiers(self.image)
         return self.image
 
-    def _load_texture(self, path):
+    def _load_texture(self, path: Union[str, Path]) -> Image.Image:
         """Find and load separate texture. Useful when multiple textue files needs to be loaded"""
         resolved_path = self.find_texture(path)
         logger.info("loading %s", resolved_path)
@@ -64,16 +69,16 @@ class PillowLoader(BaseLoader):
         image = Image.open(resolved_path)
         return self._apply_modifiers(image)
 
-    def _apply_modifiers(self, image):
+    def _apply_modifiers(self, image: Image.Image) -> Image.Image:
         if self.meta.flip_x:
-            image = image.transpose(Image.FLIP_LEFT_RIGHT)
+            image = image.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
 
         if self.meta.flip_y:
-            image = image.transpose(Image.FLIP_TOP_BOTTOM)
+            image = image.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 
         return self._palette_to_raw(image)
 
-    def _palette_to_raw(self, image, mode=None):
+    def _palette_to_raw(self, image: Image.Image, mode: Optional[str] = None) -> Image.Image:
         """Converts image to raw if palette is present"""
         if image.palette and image.palette.mode.lower() in ["rgb", "rgba"]:
             mode = mode or image.palette.mode
@@ -82,11 +87,11 @@ class PillowLoader(BaseLoader):
 
         return image
 
-    def _close_image(self):
+    def _close_image(self) -> None:
         self.image.close()
 
 
-def image_data(image: Image) -> tuple[int, bytes]:
+def image_data(image: Image.Image) -> tuple[int, bytes]:
     """Get components and bytes for an image.
     The number of components is assumed by image
     size and the byte length of the raw data.
