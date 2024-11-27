@@ -28,7 +28,7 @@ class BaseTimer:
         raise NotImplementedError()
 
     @time.setter
-    def time(self, value: float):
+    def time(self, value: float) -> None:
         raise NotImplementedError()
 
     def next_frame(self) -> tuple[float, float]:
@@ -39,15 +39,15 @@ class BaseTimer:
         """
         raise NotImplementedError()
 
-    def start(self):
+    def start(self) -> None:
         """Start the timer initially or resume after pause"""
         raise NotImplementedError()
 
-    def pause(self):
+    def pause(self) -> None:
         """Pause the timer"""
         raise NotImplementedError()
 
-    def toggle_pause(self):
+    def toggle_pause(self) -> None:
         """Toggle pause state"""
         raise NotImplementedError()
 
