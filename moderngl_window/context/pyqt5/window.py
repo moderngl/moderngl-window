@@ -3,6 +3,7 @@ from PyQt5 import QtCore, QtOpenGL, QtWidgets, QtGui
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.pyqt5.keys import Keys
 
+from typing import Any
 
 class Window(BaseWindow):
     """
@@ -28,7 +29,7 @@ class Window(BaseWindow):
         4: 3,
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any):
         super().__init__(**kwargs)
 
         # Specify OpenGL context parameters
@@ -138,7 +139,7 @@ class Window(BaseWindow):
         return self._width, self._height
 
     @size.setter
-    def size(self, value: tuple[int, int]):
+    def size(self, value: tuple[int, int]) -> None:
         pos = self.position
         self._widget.setGeometry(pos[0], pos[1], value[0], value[1])
 
@@ -155,7 +156,7 @@ class Window(BaseWindow):
         return geo.x(), geo.y()
 
     @position.setter
-    def position(self, value: tuple[int, int]):
+    def position(self, value: tuple[int, int]) -> None:
         self._widget.setGeometry(value[0], value[1], self._width, self._height)
 
     @property
@@ -170,7 +171,7 @@ class Window(BaseWindow):
         return self._visible
 
     @visible.setter
-    def visible(self, value: bool):
+    def visible(self, value: bool) -> None:
         self._visible = value
         if value:
             self._widget.show()
@@ -196,7 +197,7 @@ class Window(BaseWindow):
         return self._cursor
 
     @cursor.setter
-    def cursor(self, value: bool):
+    def cursor(self, value: bool) -> None:
         if value is True:
             self._widget.setCursor(QtCore.Qt.ArrowCursor)
         else:
@@ -215,7 +216,7 @@ class Window(BaseWindow):
         return self._title
 
     @title.setter
-    def title(self, value: str):
+    def title(self, value: str) -> None:
         self._widget.setWindowTitle(value)
         self._title = value
 
@@ -237,7 +238,7 @@ class Window(BaseWindow):
         # Make sure we notify the example about the resize
         super().resize(self._buffer_width, self._buffer_height)
 
-    def _handle_modifiers(self, mods) -> None:
+    def _handle_modifiers(self, mods: int) -> None:
         """Update modifiers"""
         self._modifiers.shift = bool(mods & QtCore.Qt.ShiftModifier)
         self._modifiers.ctrl = bool(mods & QtCore.Qt.ControlModifier)
@@ -246,7 +247,7 @@ class Window(BaseWindow):
     def _set_icon(self, icon_path: str) -> None:
         self._widget.setWindowIcon(QtGui.QIcon(icon_path))
 
-    def key_pressed_event(self, event) -> None:
+    def key_pressed_event(self, event: QtCore.QEvent) -> None:
         """Process Qt key press events forwarding them to standard methods
 
         Args:
@@ -266,7 +267,7 @@ class Window(BaseWindow):
         if text.strip() or event.key() == self.keys.SPACE:
             self._unicode_char_entered_func(text)
 
-    def key_release_event(self, event) -> None:
+    def key_release_event(self, event: QtCore.QEvent) -> None:
         """Process Qt key release events forwarding them to standard methods
 
         Args:
@@ -276,7 +277,7 @@ class Window(BaseWindow):
         self._key_pressed_map[event.key()] = False
         self._key_event_func(event.key(), self.keys.ACTION_RELEASE, self._modifiers)
 
-    def mouse_move_event(self, event) -> None:
+    def mouse_move_event(self, event: QtCore.QEvent) -> None:
         """Forward mouse cursor position events to standard methods
 
         Args:
@@ -290,7 +291,7 @@ class Window(BaseWindow):
         else:
             self._mouse_position_event_func(x, y, dx, dy)
 
-    def mouse_press_event(self, event) -> None:
+    def mouse_press_event(self, event: QtCore.QEvent) -> None:
         """Forward mouse press events to standard methods
 
         Args:
@@ -304,7 +305,7 @@ class Window(BaseWindow):
         self._handle_mouse_button_state_change(button, True)
         self._mouse_press_event_func(event.x(), event.y(), button)
 
-    def mouse_release_event(self, event) -> None:
+    def mouse_release_event(self, event: QtCore.QEvent) -> None:
         """Forward mouse release events to standard methods
 
         Args:
@@ -318,7 +319,7 @@ class Window(BaseWindow):
         self._handle_mouse_button_state_change(button, False)
         self._mouse_release_event_func(event.x(), event.y(), button)
 
-    def mouse_wheel_event(self, event):
+    def mouse_wheel_event(self, event: QtCore.QEvent) -> None:
         """Forward mouse wheel events to standard metods.
 
         From Qt docs:
@@ -343,7 +344,7 @@ class Window(BaseWindow):
         point = event.angleDelta()
         self._mouse_scroll_event_func(point.x() / 120.0, point.y() / 120.0)
 
-    def close_event(self, event) -> None:
+    def close_event(self, event: QtCore.QEvent) -> None:
         """The standard PyQt close events
 
         Args:
@@ -351,16 +352,16 @@ class Window(BaseWindow):
         """
         self.close()
 
-    def close(self):
+    def close(self) -> None:
         """Close the window"""
         super().close()
         self._close_func()
 
-    def show_event(self, event):
+    def show_event(self, event: QtCore.QEvent) -> None:
         """The standard Qt show event"""
         self._iconify_func(False)
 
-    def hide_event(self, event):
+    def hide_event(self, event: QtCore.QEvent) -> None:
         """The standard Qt hide event"""
         self._iconify_func(True)
 

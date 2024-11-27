@@ -6,6 +6,8 @@ import sdl2.video
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.sdl2.keys import Keys
 
+from typing import Any
+
 
 class Window(BaseWindow):
     """
@@ -23,7 +25,7 @@ class Window(BaseWindow):
         2: 3,
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any):
         super().__init__(**kwargs)
 
         if sdl2.SDL_Init(sdl2.SDL_INIT_VIDEO) != 0:
@@ -82,7 +84,7 @@ class Window(BaseWindow):
     def _set_vsync(self, value: bool) -> None:
         sdl2.video.SDL_GL_SetSwapInterval(1 if value else 0)
 
-    def _get_drawable_size(self):
+    def _get_drawable_size(self) -> tuple[int, int]:
         x = c_int()
         y = c_int()
         sdl2.video.SDL_GL_GetDrawableSize(self._window, x, y)
@@ -100,7 +102,7 @@ class Window(BaseWindow):
         return self._width, self._height
 
     @size.setter
-    def size(self, value: tuple[int, int]):
+    def size(self, value: tuple[int, int]) -> None:
         sdl2.SDL_SetWindowSize(self._window, value[0], value[1])
         # SDL_SetWindowSize don't trigger a resize event
         self.resize(value[0], value[1])
@@ -120,7 +122,7 @@ class Window(BaseWindow):
         return x.value, y.value
 
     @position.setter
-    def position(self, value: tuple[int, int]):
+    def position(self, value: tuple[int, int]) -> None:
         sdl2.SDL_SetWindowPosition(self._window, value[0], value[1])
 
     @property
@@ -135,7 +137,7 @@ class Window(BaseWindow):
         return self._visible
 
     @visible.setter
-    def visible(self, value: bool):
+    def visible(self, value: bool) -> None:
         self._visible = value
         if value:
             sdl2.SDL_ShowWindow(self._window)
@@ -154,7 +156,7 @@ class Window(BaseWindow):
         return self._cursor
 
     @cursor.setter
-    def cursor(self, value: bool):
+    def cursor(self, value: bool) -> None:
         sdl2.SDL_ShowCursor(sdl2.SDL_ENABLE if value else sdl2.SDL_DISABLE)
         self._cursor = value
 
@@ -175,7 +177,7 @@ class Window(BaseWindow):
         return self._mouse_exclusivity
 
     @mouse_exclusivity.setter
-    def mouse_exclusivity(self, value: bool):
+    def mouse_exclusivity(self, value: bool) -> None:
         if value is True:
             sdl2.SDL_SetRelativeMouseMode(sdl2.SDL_TRUE)
         else:
@@ -194,7 +196,7 @@ class Window(BaseWindow):
         return self._title
 
     @title.setter
-    def title(self, value: str):
+    def title(self, value: str) -> None:
         data = c_char_p(value.encode())
         sdl2.SDL_SetWindowTitle(self._window, data)
         self._title = value
@@ -206,7 +208,7 @@ class Window(BaseWindow):
         self.process_events()
         self._frames += 1
 
-    def resize(self, width, height) -> None:
+    def resize(self, width: int, height: int) -> None:
         """Resize callback.
 
         Args:
@@ -312,7 +314,7 @@ class Window(BaseWindow):
                 elif event.window.event == sdl2.SDL_WINDOWEVENT_RESTORED:
                     self._iconify_func(False)
 
-    def close(self):
+    def close(self) -> None:
         """Close the window"""
         super().close()
         self._close_func()

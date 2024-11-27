@@ -4,6 +4,8 @@ from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.tk.keys import Keys
 from pyopengltk import OpenGLFrame
 
+from typing import Any
+
 
 class Window(BaseWindow):
     #: Name of the window
@@ -17,7 +19,7 @@ class Window(BaseWindow):
         2: 3,
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any):
         super().__init__(**kwargs)
 
         self._tk = tkinter.Tk()
@@ -71,7 +73,7 @@ class Window(BaseWindow):
         return self._width, self._height
 
     @size.setter
-    def size(self, value: tuple[int, int]):
+    def size(self, value: tuple[int, int]) -> None:
         self._tk.geometry("{}x{}".format(value[0], value[1]))
 
     @property
@@ -87,7 +89,7 @@ class Window(BaseWindow):
         return int(x), int(y)
 
     @position.setter
-    def position(self, value: tuple[int, int]):
+    def position(self, value: tuple[int, int]) -> None:
         self._tk.geometry("+{}+{}".format(value[0], value[1]))
 
     @property
@@ -102,7 +104,7 @@ class Window(BaseWindow):
         return self._visible
 
     @visible.setter
-    def visible(self, value: bool):
+    def visible(self, value: bool) -> None:
         self._visible = value
         if value:
             self._tk.deiconify()
@@ -121,7 +123,7 @@ class Window(BaseWindow):
         return self._cursor
 
     @cursor.setter
-    def cursor(self, value: bool):
+    def cursor(self, value: bool) -> None:
         if value is True:
             self._tk.config(cursor="arrow")
         else:
@@ -140,7 +142,7 @@ class Window(BaseWindow):
         return self._title
 
     @title.setter
-    def title(self, value: str):
+    def title(self, value: str) -> None:
         self._tk.title(value)
         self._title = value
 
@@ -160,7 +162,7 @@ class Window(BaseWindow):
     def _set_icon(self, icon_path: str) -> None:
         self._tk.iconphoto(False, tkinter.PhotoImage(file=icon_path))
 
-    def tk_key_press(self, event: tkinter.Event) -> None:
+    def tk_key_press(self, event: tkinter.Event[Any]) -> None:
         """Handle all queued key press events in tkinter dispatching events to standard methods"""
         self._key_event_func(event.keysym, self.keys.ACTION_PRESS, self._modifiers)
 
@@ -174,7 +176,7 @@ class Window(BaseWindow):
         if self._fs_key is not None and event.keysym == self._fs_key:
             self.fullscreen = not self.fullscreen
 
-    def tk_key_release(self, event: tkinter.Event) -> None:
+    def tk_key_release(self, event: tkinter.Event[Any]) -> None:
         """Handle all queued key release events in tkinter dispatching events to standard methods
 
         Args:
@@ -183,7 +185,7 @@ class Window(BaseWindow):
         self._handle_modifiers(event, False)
         self._key_event_func(event.keysym, self.keys.ACTION_RELEASE, self._modifiers)
 
-    def tk_mouse_motion(self, event: tkinter.Event) -> None:
+    def tk_mouse_motion(self, event: tkinter.Event[Any]) -> None:
         """Handle and translate tkinter mouse position events
 
         Args:
@@ -197,7 +199,7 @@ class Window(BaseWindow):
         else:
             self._mouse_position_event_func(x, y, dx, dy)
 
-    def tk_mouse_button_press(self, event: tkinter.Event) -> None:
+    def tk_mouse_button_press(self, event: tkinter.Event[Any]) -> None:
         """Handle tkinter mouse press events.
 
         Args:
@@ -211,7 +213,7 @@ class Window(BaseWindow):
         self._handle_mouse_button_state_change(button, True)
         self._mouse_press_event_func(event.x, event.y, button)
 
-    def tk_mouse_button_release(self, event: tkinter.Event) -> None:
+    def tk_mouse_button_release(self, event: tkinter.Event[Any]) -> None:
         """Handle tkinter mouse press events.
 
         Args:
@@ -225,7 +227,7 @@ class Window(BaseWindow):
         self._handle_mouse_button_state_change(button, False)
         self._mouse_release_event_func(event.x, event.y, button)
 
-    def tk_mouse_wheel(self, event: tkinter.Event) -> None:
+    def tk_mouse_wheel(self, event: tkinter.Event[Any]) -> None:
         """Handle mouse wheel event.
 
         Args:
@@ -234,7 +236,7 @@ class Window(BaseWindow):
         self._handle_modifiers(event, True)
         self._mouse_scroll_event_func(0, event.delta / 120.0)
 
-    def _handle_modifiers(self, event: tkinter.Event, press: bool) -> None:
+    def _handle_modifiers(self, event: tkinter.Event[Any], press: bool) -> None:
         """Update internal key modifiers
 
         Args:
@@ -248,7 +250,7 @@ class Window(BaseWindow):
         elif event.keysym in ["Alt_L", "Alt_R"]:
             self._modifiers.alt = press
 
-    def tk_resize(self, event) -> None:
+    def tk_resize(self, event: tkinter.Event[Any]) -> None:
         """tkinter specific window resize event.
         Forwards resize events to the configured resize function.
 
@@ -272,10 +274,10 @@ class Window(BaseWindow):
         self._close_func()
         self._close = True
 
-    def tk_map(self, event):
+    def tk_map(self, event: tkinter.Event[Any]) -> None:
         self._iconify_func(False)
 
-    def tk_unmap(self, event):
+    def tk_unmap(self, event: tkinter.Event[Any]) -> None:
         self._iconify_func(True)
 
     def destroy(self) -> None:
@@ -284,22 +286,22 @@ class Window(BaseWindow):
 
 
 class ModernglTkWindow(OpenGLFrame):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any):
         super().__init__(*args, **kwargs)
 
-    def redraw(self):
+    def redraw(self) -> None:
         """pyopengltk's own render method."""
         pass
 
-    def initgl(self):
+    def initgl(self) -> None:
         """pyopengltk's user code for initialization."""
         pass
 
-    def tkResize(self, event):
+    def tkResize(self, event: tkinter.Event[Any]) -> None:
         """Should never be called. Event overridden."""
         raise ValueError("tkResize should never be called. The event is overridden.")
 
-    def tkMap(self, event):
+    def tkMap(self, event: tkinter.Event[Any]) -> None:
         """Called when frame goes onto the screen"""
         # Only create context once
         # In a window like this we are not likely to lose the context
