@@ -5,6 +5,7 @@ import numpy
 import trimesh
 
 from typing import Union
+from pathlib import Path
 
 from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.opengl.vao import VAO
@@ -34,7 +35,12 @@ class Loader(BaseLoader):
             file_obj = gzip.GzipFile(file_obj)
 
         stl_mesh = trimesh.load(file_obj, file_type="stl")
-        scene = Scene(self.meta.resolved_path)
+        path = self.meta.resolved_path
+        if isinstance(path, Path):
+            resolved = path.as_posix()
+        else:
+            resolved = None
+        scene = Scene(resolved)
         scene_mesh = Mesh("mesh")
         scene_mesh.material = Material("default")
 

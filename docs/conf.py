@@ -17,12 +17,13 @@ import sys
 
 # sys.path.insert(0, os.path.abspath('.'))
 from unittest.mock import MagicMock
+from typing import Any
 
 
 # Mock modules
 class Mock(MagicMock):
     @classmethod
-    def __getattr__(cls, name):
+    def __getattr__(cls: Any, name: Any) -> MagicMock:
         return MagicMock()
 
 
@@ -141,7 +142,7 @@ htmlhelp_basename = "moderngl-windowdoc"
 
 # -- Options for LaTeX output ------------------------------------------------
 
-latex_elements = {
+latex_elements: dict[str, str] = {
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',

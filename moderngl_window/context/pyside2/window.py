@@ -1,5 +1,6 @@
 from PySide2 import QtCore, QtOpenGL, QtWidgets, QtGui
 from typing import Any
+from pathlib import Path
 
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.pyside2.keys import Keys
@@ -244,7 +245,7 @@ class Window(BaseWindow):
         self._modifiers.ctrl = bool(mods & QtCore.Qt.ControlModifier)
         self._modifiers.alt = bool(mods & QtCore.Qt.AltModifier)
 
-    def _set_icon(self, icon_path: str) -> None:
+    def _set_icon(self, icon_path: Path) -> None:
         self._widget.setWindowIcon(QtGui.QIcon(icon_path))
 
     def key_pressed_event(self, event: QtCore.QEvent) -> None:

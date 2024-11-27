@@ -79,7 +79,7 @@ class Loader(BaseLoader):
     ]
     #: Supported GLTF extensions
     #: https://github.com/KhronosGroup/glTF/tree/master/extensions
-    supported_extensions = []
+    supported_extensions: list[str] = []
 
     meta: SceneDescription
 
@@ -98,8 +98,8 @@ class Loader(BaseLoader):
         self.meshes: list[Mesh] = []
         self.materials: list[Material] = []
         self.images: list[Image.Image] = []
-        self.samplers = []
-        self.textures = []
+        self.samplers: list[moderngl.Sampler] = []
+        self.textures: list[MaterialTexture] = []
 
         self.path: Optional[Path] = None
         self.scene: Scene
@@ -384,13 +384,14 @@ class GLTFMeta:
         "extensionsRequired": ["KHR_draco_mesh_compression"],
         "extensionsUsed": ["KHR_draco_mesh_compression"]
         """
-        if self.data.get("extensionsRequired"):
-            for ext in self.data.get("extensionsRequired"):
+        extReq = self.data.get("extensionsRequired")
+        if extReq is not None:
+            for ext in extReq:
                 if ext not in supported:
                     raise ValueError(f"Extension {ext} not supported")
-
-        if self.data.get("extensionsUsed"):
-            for ext in self.data.get("extensionsUsed"):
+        extUse = self.data.get("extensionsUsed")
+        if extUse is not None:
+            for ext in extUse:
                 if ext not in supported:
                     raise ValueError("Extension {ext} not supported")
 
@@ -542,11 +543,11 @@ class VBOInfo:
         self,
         buffer: Optional[GLTFBuffer] = None,
         buffer_view: Optional[GLTFBuffer]=None,
-        byte_length: Optional[int] = None,
-        byte_offset: Optional[int] = None,
+        byte_length: int = 0,
+        byte_offset: int = 0,
         component_type: Optional[ComponentType] = None,
-        components: Optional[int] = None,
-        count: Optional[int] = None,
+        components: int = 0,
+        count: int = 0,
     ):
         self.buffer = buffer  # reference to the buffer
         self.buffer_view = buffer_view
@@ -568,7 +569,7 @@ class VBOInfo:
         self.components += info.components
         self.attributes += info.attributes
 
-    def create(self) -> tuple[type, npt.NDArray[Any]]:
+    def create(self) -> tuple[type[object], npt.NDArray[Any]]:
         """Create the VBO"""
         dtype = NP_COMPONENT_DTYPE[self.component_type.value]
         data = numpy.frombuffer(
@@ -646,7 +647,7 @@ class GLTFAccessor:
 
 
 class GLTFBufferView:
-    def __init__(self, view_id: str, data: dict[str, Any]):
+    def __init__(self, view_id: int, data: dict[str, Any]):
         self.id = view_id
         self.bufferId = data.get("buffer", 0)
         self.buffer: GLTFBuffer

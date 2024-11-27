@@ -5,7 +5,7 @@ Shader Registry
 from typing import Union
 import moderngl
 from moderngl_window.resources.base import BaseRegistry
-from moderngl_window.meta import TextureDescription
+from moderngl_window.meta import TextureDescription, ResourceDescription
 
 TextureAny = Union[
     moderngl.Texture,
@@ -18,8 +18,9 @@ class Textures(BaseRegistry):
     """Handles texture resources"""
 
     settings_attr = "TEXTURE_LOADERS"
+    meta: TextureDescription
 
-    def load(self, meta: TextureDescription) -> TextureAny:
+    def load(self, meta: ResourceDescription) -> TextureAny:
         """Loads a texture with the configured loaders.
 
         Args:

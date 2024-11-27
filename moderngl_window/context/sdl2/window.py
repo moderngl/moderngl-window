@@ -7,6 +7,7 @@ from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.sdl2.keys import Keys
 
 from typing import Any
+from pathlib import Path
 
 
 class Window(BaseWindow):
@@ -229,7 +230,7 @@ class Window(BaseWindow):
         self._modifiers.ctrl = mods & sdl2.KMOD_CTRL
         self._modifiers.alt = mods & sdl2.KMOD_ALT
 
-    def _set_icon(self, icon_path: str) -> None:
+    def _set_icon(self, icon_path: Path) -> None:
         sdl2.SDL_SetWindowIcon(self._window, sdl2.ext.load_image(icon_path))
 
     def process_events(self) -> None:

@@ -2,6 +2,7 @@ import glfw
 
 from PIL import Image
 from typing import Any
+from pathlib import Path
 
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.glfw.keys import Keys, GLFW_key
@@ -260,7 +261,7 @@ class Window(BaseWindow):
         self._modifiers.ctrl = mods & 2 == 2
         self._modifiers.alt = mods & 4 == 4
 
-    def _set_icon(self, icon_path: str) -> None:
+    def _set_icon(self, icon_path: Path) -> None:
         image = Image.open(icon_path)
         glfw.set_window_icon(self._window, 1, image)
 

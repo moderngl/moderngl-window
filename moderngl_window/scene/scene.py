@@ -9,7 +9,7 @@ import glm
 
 import moderngl
 import moderngl_window as mglw
-from moderngl_window.resources import programs
+from moderngl_window.resources.programs import programs
 from moderngl_window.meta import ProgramDescription
 from moderngl_window import geometry
 
@@ -34,7 +34,7 @@ if TYPE_CHECKING:
 class Scene:
     """Generic scene"""
 
-    def __init__(self, name: str, **kwargs: Any):
+    def __init__(self, name: Optional[str], **kwargs: Any):
         """Create a scene with a name.
 
         Args:

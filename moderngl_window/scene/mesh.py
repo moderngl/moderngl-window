@@ -130,7 +130,6 @@ class Mesh:
                 bmin[i], bmax[i] = bmax[i], bmin[i]
 
         if bbox_min is None or bbox_max is None:
-            print(bmin, bmax)
             return (
                 glm.vec3(bmin.x, bmin.y, bmin.z),
                 glm.vec3(bmax.x, bmax.y, bmax.z)

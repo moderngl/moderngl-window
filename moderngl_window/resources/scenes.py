@@ -4,15 +4,16 @@ Scene Registry
 
 from moderngl_window.resources.base import BaseRegistry
 from moderngl_window.scene import Scene
-from moderngl_window.meta import SceneDescription
+from moderngl_window.meta import SceneDescription, ResourceDescription
 
 
 class Scenes(BaseRegistry):
     """Handles scene loading"""
 
     settings_attr = "SCENE_LOADERS"
+    meta: SceneDescription
 
-    def load(self, meta: SceneDescription) -> Scene:
+    def load(self, meta: ResourceDescription) -> Scene:
         """Load a scene with the configured loaders.
 
         Args:

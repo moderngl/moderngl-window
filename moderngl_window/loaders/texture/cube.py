@@ -1,4 +1,5 @@
 from collections import namedtuple
+from typing import Optional, Any
 
 from moderngl_window.loaders.texture.pillow import PillowLoader, image_data
 from moderngl_window.exceptions import ImproperlyConfigured
@@ -53,7 +54,7 @@ class Loader(PillowLoader):
 
         return texture
 
-    def _load_face(self, path: str, face_name: str = None) -> FaceInfo:
+    def _load_face(self, path: Optional[str], face_name: Optional[str] = None) -> FaceInfo:
         """Obtain raw byte data for a face
 
         Returns:
@@ -66,7 +67,7 @@ class Loader(PillowLoader):
         components, data = image_data(image)
         return FaceInfo(width=image.size[0], height=image.size[1], data=data, components=components)
 
-    def _validate(self, faces: list[FaceInfo]) -> int:
+    def _validate(self, faces: list[FaceInfo]) -> Any:
         """Validates each face ensuring components and size it the same"""
         components = faces[0].components
         data_size = len(faces[0].data)

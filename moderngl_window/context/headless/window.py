@@ -3,6 +3,7 @@ from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.headless.keys import Keys
 
 from typing import Any, Optional
+from pathlib import Path
 
 
 class Window(BaseWindow):
@@ -108,7 +109,7 @@ class Window(BaseWindow):
         self._frames += 1
         self._ctx.finish()
 
-    def _set_icon(self, icon_path: str) -> None:
+    def _set_icon(self, icon_path: Path) -> None:
         """Do nothing when icon is set"""
         pass
 

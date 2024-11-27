@@ -5,6 +5,7 @@ from moderngl_window.context.tk.keys import Keys
 from pyopengltk import OpenGLFrame
 
 from typing import Any
+from pathlib import Path
 
 
 class Window(BaseWindow):
@@ -159,7 +160,7 @@ class Window(BaseWindow):
         self._gl_widget.tkSwapBuffers()
         self._frames += 1
 
-    def _set_icon(self, icon_path: str) -> None:
+    def _set_icon(self, icon_path: Path) -> None:
         self._tk.iconphoto(False, tkinter.PhotoImage(file=icon_path))
 
     def tk_key_press(self, event: tkinter.Event[Any]) -> None:

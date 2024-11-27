@@ -7,7 +7,7 @@ import moderngl
 import moderngl_window
 
 from moderngl_window.conf import settings
-from moderngl_window.resources import programs
+from moderngl_window.resources.programs import programs
 from moderngl_window.meta import ProgramDescription
 from .mesh import Mesh
 
@@ -125,7 +125,7 @@ class ColorLightProgram(MeshProgram):
     ) -> None:
         assert self.program is not None, "There is no program to draw"
         assert mesh.vao is not None, "There is no vao to render"
-        if mesh.material:
+        if mesh.material is not None:
             # if mesh.material.double_sided:
             #     self.ctx.disable(moderngl.CULL_FACE)
             # else:
@@ -168,6 +168,10 @@ class TextureProgram(MeshProgram):
     ) -> None:
         assert self.program is not None, "There is no program to draw"
         assert mesh.vao is not None, "There is no vao to render"
+        assert mesh.material is not None, "There is no material to render"
+        assert mesh.material.mat_texture is not None, "The material does not have a texture to render"
+        assert mesh.material.mat_texture.texture is not None, "The material texture is not linked to a texture, so it can not be rendered"
+
         mesh.material.mat_texture.texture.use()
         self.program["m_proj"].write(projection_matrix)
         self.program["m_model"].write(model_matrix)
@@ -212,6 +216,10 @@ class TextureVertexColorProgram(MeshProgram):
     ) -> None:
         assert self.program is not None, "There is no program to draw"
         assert mesh.vao is not None, "There is no vao to render"
+        assert mesh.material is not None, "There is no material to render"
+        assert mesh.material.mat_texture is not None, "The material does not have a texture to render"
+        assert mesh.material.mat_texture.texture is not None, "The material texture is not linked to a texture, so it can not be rendered"
+
         mesh.material.mat_texture.texture.use()
         self.program["m_proj"].write(projection_matrix)
         self.program["m_model"].write(model_matrix)
@@ -256,6 +264,10 @@ class TextureLightProgram(MeshProgram):
     ) -> None:
         assert self.program is not None, "There is no program to draw"
         assert mesh.vao is not None, "There is no vao to render"
+        assert mesh.material is not None, "There is no material to render"
+        assert mesh.material.mat_texture is not None, "The material does not have a texture to render"
+        assert mesh.material.mat_texture.texture is not None, "The material texture is not linked to a texture, so it can not be rendered"
+
         # if mesh.material.double_sided:
         #     self.ctx.disable(moderngl.CULL_FACE)
         # else:

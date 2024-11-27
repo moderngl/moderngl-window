@@ -771,7 +771,7 @@ class BaseWindow:
         resolved_path = loader.find_icon()
         self._set_icon(resolved_path)
 
-    def _set_icon(self, icon_path: str) -> None:
+    def _set_icon(self, icon_path: Path) -> None:
         """
         A library specific destroy method is required.
         """

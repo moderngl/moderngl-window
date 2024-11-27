@@ -41,10 +41,10 @@ class PillowLoader(BaseLoader):
             self.image = Image.open(self.meta.resolved_path)
 
             # If the image is animated (like a gif anim) we convert it into a vertical strip
-            if hasattr(self.image, "is_animated") and self.image.is_animated:
+            if hasattr(self.image, "is_animated") and self.image.is_animated and hasattr(self.image, "n_frames"):
                 self.layers = self.image.n_frames
                 anim = Image.new(
-                    self.image.palette.mode,
+                    self.image.palette.mode if self.image.palette is not None else "L",
                     (self.image.width, self.image.height * self.image.n_frames),
                 )
                 anim.putalpha(0)

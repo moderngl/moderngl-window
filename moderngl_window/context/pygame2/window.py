@@ -7,6 +7,7 @@ from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.pygame2.keys import Keys
 
 from typing import Any
+from pathlib import Path
 
 
 class Window(BaseWindow):
@@ -197,7 +198,7 @@ class Window(BaseWindow):
         self.process_events()
         self._frames += 1
 
-    def _set_icon(self, icon_path: str) -> None:
+    def _set_icon(self, icon_path: Path) -> None:
         icon = pygame.image.load(icon_path)
         pygame.display.set_icon(icon)
 
