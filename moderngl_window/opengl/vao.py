@@ -227,7 +227,7 @@ class VAO:
 
         vao.transform(buffer, mode=mode, vertices=vertices, first=first, instances=instances)
 
-    def buffer(self, buffer: Union[moderngl.Buffer, npt.NDArray[Any], bytes], buffer_format: str, attribute_names: list[str]) -> moderngl.Buffer:
+    def buffer(self, buffer: Union[moderngl.Buffer, npt.NDArray[Any], bytes], buffer_format: str, attribute_names: Union[list[str], str]) -> moderngl.Buffer:
         """Register a buffer/vbo for the VAO. This can be called multiple times.
         adding multiple buffers (interleaved or not).
 

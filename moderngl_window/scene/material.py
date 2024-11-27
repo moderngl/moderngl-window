@@ -1,12 +1,14 @@
 import moderngl
 
+from typing import Optional
+
 
 class MaterialTexture:
     """Wrapper for textures used in materials.
     Contains a texture and a sampler object.
     """
 
-    def __init__(self, texture: moderngl.Texture = None, sampler: moderngl.Sampler = None):
+    def __init__(self, texture: Optional[moderngl.Texture] = None, sampler: Optional[moderngl.Sampler] = None):
         """Initialize instance.
 
         Args:
@@ -17,28 +19,28 @@ class MaterialTexture:
         self._sampler = sampler
 
     @property
-    def texture(self) -> moderngl.Texture:
+    def texture(self) -> Optional[moderngl.Texture]:
         """moderngl.Texture: Texture instance"""
         return self._texture
 
     @texture.setter
-    def texture(self, value):
+    def texture(self, value: moderngl.Texture) -> None:
         self._texture = value
 
     @property
-    def sampler(self) -> moderngl.Sampler:
+    def sampler(self) -> Optional[moderngl.Sampler]:
         """moderngl.Sampler: Sampler instance"""
         return self._sampler
 
     @sampler.setter
-    def sampler(self, value):
+    def sampler(self, value: moderngl.Sampler) -> None:
         self._sampler = value
 
 
 class Material:
     """Generic material"""
 
-    def __init__(self, name: str = None):
+    def __init__(self, name: str = ""):
         """Initialize material.
 
         Args:
@@ -46,7 +48,7 @@ class Material:
         """
         self._name = name or "default"
         self._color = (1.0, 1.0, 1.0, 1.0)
-        self._mat_texture = None
+        self._mat_texture: Optional[MaterialTexture] = None
         self._double_sided = True
 
     @property
@@ -55,7 +57,7 @@ class Material:
         return self._name
 
     @name.setter
-    def name(self, value):
+    def name(self, value: str) -> None:
         self._name = value
 
     @property
@@ -64,16 +66,16 @@ class Material:
         return self._color
 
     @color.setter
-    def color(self, value):
+    def color(self, value: tuple[float, float, float, float]) -> None:
         self._color = value
 
     @property
-    def mat_texture(self) -> MaterialTexture:
+    def mat_texture(self) -> Optional[MaterialTexture]:
         """MaterialTexture: instance"""
         return self._mat_texture
 
     @mat_texture.setter
-    def mat_texture(self, value):
+    def mat_texture(self, value: MaterialTexture) -> None:
         self._mat_texture = value
 
     @property
@@ -82,10 +84,10 @@ class Material:
         return self._double_sided
 
     @double_sided.setter
-    def double_sided(self, value):
+    def double_sided(self, value: bool) -> None:
         self._double_sided = value
 
-    def release(self):
+    def release(self) -> None:
         if self._mat_texture:
             if self._mat_texture.texture:
                 self._mat_texture.texture.release()
