@@ -1,12 +1,12 @@
 from pathlib import Path
-from typing import Union
+from typing import Generator, Union
 
 from contextlib import contextmanager
 from moderngl_window.conf import settings
 
 
 @contextmanager
-def texture_dirs(paths: list[Union[Path, str]]):
+def texture_dirs(paths: list[Union[Path, str]]) -> Generator[None, None, None]:
     """Context manager temporarily replacing texture paths
     Args:
         paths (list[Union[Path, str]]): list of paths

@@ -10,19 +10,20 @@ from moderngl_window.conf import settings
 from moderngl_window.exceptions import ImproperlyConfigured
 from moderngl_window.utils.module_loading import import_string
 from moderngl_window.meta.base import ResourceDescription
+from moderngl_window.loaders.base import BaseLoader
 
 
 class BaseRegistry:
     """Base class for all resource pools"""
 
-    settings_attr = None
+    settings_attr = ""
     """str: The name of the attribute in :py:class:`~moderngl_window.conf.Settings`
     containting a list of loader classes.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize internal attributes"""
-        self._resources = []
+        self._resources: list[ResourceDescription] = []
 
     @property
     def count(self) -> int:
@@ -32,14 +33,16 @@ class BaseRegistry:
         return len(self._resources)
 
     @property
-    def loaders(self):
+    def loaders(self) -> Generator[type[BaseLoader], None, None]:
         """Generator: Loader classes for this resource type"""
         for loader in getattr(settings, self.settings_attr):
             yield self._loader_cls(loader)
 
     @lru_cache(maxsize=None)
-    def _loader_cls(self, python_path: str):
-        return import_string(python_path)
+    def _loader_cls(self, python_path: str) -> type[BaseLoader]:
+        cls = import_string(python_path)
+        assert issubclass(cls, BaseLoader), f"{python_path} does not lead to a Loader"
+        return cls
 
     def load(self, meta: ResourceDescription) -> Any:
         """
@@ -50,7 +53,9 @@ class BaseRegistry:
         """
         self._check_meta(meta)
         self.resolve_loader(meta)
-        return meta.loader_cls(meta).load()
+        cls = meta.loader_cls(meta)
+        assert cls is not None, f"Could not load {meta}, no arributes named 'loader_cls'"
+        return cls.load()
 
     def add(self, meta: ResourceDescription) -> None:
         """
@@ -109,7 +114,7 @@ class BaseRegistry:
 
         raise ImproperlyConfigured("Could not find a loader for: {}".format(meta))
 
-    def _check_meta(self, meta: Any):
+    def _check_meta(self, meta: Any) -> None:
         """Check is the instance is a resource description
         Raises:
             ImproperlyConfigured if not a ResourceDescription instance

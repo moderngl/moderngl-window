@@ -26,7 +26,7 @@ class BufferFormat:
         format_string: str,
         components: int,
         bytes_per_component: int,
-        per_instance=False,
+        per_instance: bool = False,
     ):
         """
         Args:

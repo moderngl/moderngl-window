@@ -1,4 +1,4 @@
-from .data import DataDescription  # noqa
-from .texture import TextureDescription  # noqa
-from .scene import SceneDescription  # noqa
-from .program import ProgramDescription  # noqa
+from .data import DataDescription as DataDescription
+from .texture import TextureDescription as TextureDescription
+from .scene import SceneDescription as SceneDescription
+from .program import ProgramDescription as ProgramDescription

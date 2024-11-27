@@ -3,6 +3,9 @@ import moderngl
 import moderngl_window as mglw
 from moderngl_window.opengl import types
 
+from typing import Any, Optional, Union
+import numpy.typing as npt
+
 
 # For sanity checking draw modes when creating the VAO
 DRAW_MODES = {
@@ -26,8 +29,8 @@ class BufferInfo:
         self,
         buffer: moderngl.Buffer,
         buffer_format: str,
-        attributes=None,
-        per_instance=False,
+        attributes: list[str] = [],
+        per_instance: bool = False,
     ):
         """
         :param buffer: The vbo object
@@ -52,8 +55,12 @@ class BufferInfo:
     def vertex_size(self) -> int:
         return sum(f.bytes_total for f in self.attrib_formats)
 
-    def content(self, attributes: list[str]):
-        """Build content tuple for the buffer"""
+    def content(self, attributes: list[str]) -> Optional[tuple[object, ...]]:
+        """Build content tuple for the buffer
+
+        Returns
+            The first value is the moderngl buffer
+            From the third to the end, it is the attributes of the class"""
         formats = []
         attrs = []
         for attrib_format, attrib in zip(self.attrib_formats, self.attributes):
@@ -67,7 +74,7 @@ class BufferInfo:
 
             attributes.remove(attrib)
 
-        if not attrs:
+        if len(attrs) == 0:
             return None
 
         return (
@@ -76,7 +83,7 @@ class BufferInfo:
             *attrs,
         )
 
-    def has_attribute(self, name):
+    def has_attribute(self, name: str) -> bool:
         return name in self.attributes
 
 
@@ -118,7 +125,7 @@ class VAO:
 
     """
 
-    def __init__(self, name="", mode=moderngl.TRIANGLES):
+    def __init__(self, name: str = "", mode: int = moderngl.TRIANGLES):
         """Create and empty VAO with a name and default render mode.
 
         Example::
@@ -137,19 +144,19 @@ class VAO:
         except KeyError:
             raise VAOError("Invalid draw mode. Options are {}".format(DRAW_MODES.values()))
 
-        self._buffers = []
-        self._index_buffer = None
-        self._index_element_size = None
+        self._buffers: list[BufferInfo] = []
+        self._index_buffer: Optional[moderngl.Buffer] = None
+        self._index_element_size: Optional[int] = None
 
         self.vertex_count = 0
-        self.vaos = {}
+        self.vaos: dict[Any, moderngl.VertexArray] = {}
 
     @property
-    def ctx(self):
+    def ctx(self) -> moderngl.Context:
         """moderngl.Context: The actite moderngl context"""
         return mglw.ctx()
 
-    def render(self, program: moderngl.Program, mode=None, vertices=-1, first=0, instances=1):
+    def render(self, program: moderngl.Program, mode: Optional[int] = None, vertices: int = -1, first: int = 0, instances: int = 1) -> None:
         """Render the VAO.
 
         An internal ``moderngl.VertexBuffer`` with compatible buffer bindings
@@ -170,7 +177,7 @@ class VAO:
 
         vao.render(mode, vertices=vertices, first=first, instances=instances)
 
-    def render_indirect(self, program: moderngl.Program, buffer, mode=None, count=-1, *, first=0):
+    def render_indirect(self, program: moderngl.Program, buffer: moderngl.Buffer, mode: Optional[int] = None, count: int = -1, *, first: int = 0) -> None:
         """
         The render primitive (mode) must be the same as the input primitive of the
         GeometryShader.
@@ -197,11 +204,11 @@ class VAO:
         self,
         program: moderngl.Program,
         buffer: moderngl.Buffer,
-        mode=None,
-        vertices=-1,
-        first=0,
-        instances=1,
-    ):
+        mode: Optional[int] = None,
+        vertices: int = -1,
+        first: int = 0,
+        instances: int = 1,
+    ) -> None:
         """Transform vertices. Stores the output in a single buffer.
 
         Args:
@@ -220,7 +227,7 @@ class VAO:
 
         vao.transform(buffer, mode=mode, vertices=vertices, first=first, instances=instances)
 
-    def buffer(self, buffer, buffer_format: str, attribute_names: list[str]):
+    def buffer(self, buffer: Union[moderngl.Buffer, npt.NDArray[Any], bytes], buffer_format: str, attribute_names: list[str]) -> moderngl.Buffer:
         """Register a buffer/vbo for the VAO. This can be called multiple times.
         adding multiple buffers (interleaved or not).
 
@@ -265,7 +272,7 @@ class VAO:
 
         return buffer
 
-    def index_buffer(self, buffer, index_element_size=4):
+    def index_buffer(self, buffer: Union[moderngl.Buffer, npt.NDArray[Any], bytes], index_element_size: int = 4) -> None:
         """Set the index buffer for this VAO.
 
         Args:
@@ -299,7 +306,7 @@ class VAO:
             ``moderngl.VertexArray``: instance
         """
         vao = self.vaos.get(program.glo)
-        if vao:
+        if vao is not None and isinstance(vao, moderngl.VertexArray):
             return vao
 
         program_attributes = [
@@ -355,7 +362,7 @@ class VAO:
         self.vaos[program.glo] = vao
         return vao
 
-    def release(self, buffer=True):
+    def release(self, buffer: bool = True) -> None:
         """Destroy all internally cached vaos and release all buffers.
 
         Keyword Args:
@@ -375,7 +382,7 @@ class VAO:
 
         self._buffers = []
 
-    def get_buffer_by_name(self, name: str) -> BufferInfo:
+    def get_buffer_by_name(self, name: str) -> Optional[BufferInfo]:
         """Get the BufferInfo associated with a specific attribute name
 
         If no buffer is associated with the name `None` will be returned.
