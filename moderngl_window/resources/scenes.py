@@ -21,7 +21,9 @@ class Scenes(BaseRegistry):
         Returns:
             :py:class:`~moderngl_window.scene.Scene`: The loaded scene
         """
-        return super().load(meta)
+        scene = super().load(meta)
+        assert isinstance(scene, Scene), f"{meta} did not load a moderngl_window.scene.Scene object, please correct it."
+        return scene
 
 
 scenes = Scenes()

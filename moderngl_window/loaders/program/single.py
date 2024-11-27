@@ -73,7 +73,7 @@ class Loader(BaseLoader):
         Args:
             path: Path to resource
         Returns:
-            Tuple[resolved_path, source]: The resolved path and the source
+            tuple[resolved_path, source]: The resolved path and the source
         """
         resolved_path = self.find_program(path)
         if not resolved_path:

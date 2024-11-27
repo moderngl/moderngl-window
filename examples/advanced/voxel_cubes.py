@@ -16,7 +16,6 @@ The point of this example is to :
 """
 
 from pathlib import Path
-from typing import Tuple
 from array import array
 
 import moderngl
@@ -95,7 +94,7 @@ class Voxel:
     We are sticking to simple transforms at textures.
     """
 
-    def __init__(self, *, ctx: moderngl.Context, size: Tuple[int, int, int]):
+    def __init__(self, *, ctx: moderngl.Context, size: tuple[int, int, int]):
         self.ctx = ctx
         self._size = size
 

@@ -11,6 +11,8 @@ from moderngl_window.resources import programs
 from moderngl_window.meta import ProgramDescription
 from .mesh import Mesh
 
+from typing import Any, Optional
+
 
 settings.PROGRAM_DIRS.append(os.path.join(os.path.dirname(__file__), "programs"))
 
@@ -20,7 +22,7 @@ class MeshProgram:
     Describes how a mesh is rendered using a specific shader program
     """
 
-    def __init__(self, program: moderngl.Program | None = None, **kwargs) -> None:
+    def __init__(self, program: Optional[moderngl.Program] = None, **kwargs: Any) -> None:
         """Initialize.
 
         Args:
@@ -39,7 +41,7 @@ class MeshProgram:
         projection_matrix: glm.mat4,
         model_matrix: glm.mat4,
         camera_matrix: glm.mat4,
-        time=0.0,
+        time: float = 0.0,
     ) -> None:
         """Draw code for the mesh
 
@@ -51,6 +53,8 @@ class MeshProgram:
             camera_matrix (numpy.ndarray): camera_matrix (bytes)
             time (float): The current time
         """
+        assert self.program is not None, "There is no program to draw"
+        assert mesh.vao is not None, "There is no vao to render"
         self.program["m_proj"].write(projection_matrix)
         self.program["m_mv"].write(model_matrix)
         self.program["m_cam"].write(camera_matrix)
@@ -72,24 +76,26 @@ class MeshProgram:
 class VertexColorProgram(MeshProgram):
     """Vertex color program"""
 
-    def __init__(self, program=None, **kwargs) -> None:
+    def __init__(self, program: Optional[moderngl.Program] = None, **kwargs: Any) -> None:
         super().__init__(program=None)
         self.program = programs.load(ProgramDescription(path="scene_default/vertex_color.glsl"))
 
     def draw(
         self,
-        mesh,
+        mesh: Mesh,
         projection_matrix: glm.mat4,
         model_matrix: glm.mat4,
         camera_matrix: glm.mat4,
-        time=0.0,
+        time: float = 0.0,
     ) -> None:
+        assert self.program is not None, "There is no program to draw"
+        assert mesh.vao is not None, "There is no vao to render"
         self.program["m_proj"].write(projection_matrix)
         self.program["m_model"].write(model_matrix)
         self.program["m_cam"].write(camera_matrix)
         mesh.vao.render(self.program)
 
-    def apply(self, mesh: Mesh) -> "MeshProgram" | None:
+    def apply(self, mesh: Mesh) -> Optional[MeshProgram]:
         if not mesh.material:
             return None
 
@@ -105,18 +111,20 @@ class VertexColorProgram(MeshProgram):
 class ColorLightProgram(MeshProgram):
     """Simple color program with light"""
 
-    def __init__(self, program=None, **kwargs) -> None:
+    def __init__(self, program: Optional[moderngl.Program] = None, **kwargs: Any) -> None:
         super().__init__(program=None)
         self.program = programs.load(ProgramDescription(path="scene_default/color_light.glsl"))
 
     def draw(
         self,
-        mesh,
+        mesh: Mesh,
         projection_matrix: glm.mat4,
         model_matrix: glm.mat4,
         camera_matrix: glm.mat4,
-        time=0.0,
+        time: float = 0.0,
     ) -> None:
+        assert self.program is not None, "There is no program to draw"
+        assert mesh.vao is not None, "There is no vao to render"
         if mesh.material:
             # if mesh.material.double_sided:
             #     self.ctx.disable(moderngl.CULL_FACE)
@@ -146,25 +154,27 @@ class ColorLightProgram(MeshProgram):
 class TextureProgram(MeshProgram):
     """Plan textured"""
 
-    def __init__(self, program=None, **kwargs) -> None:
+    def __init__(self, program: moderngl.Program = None, **kwargs: Any) -> None:
         super().__init__(program=None)
         self.program = programs.load(ProgramDescription(path="scene_default/texture.glsl"))
 
     def draw(
         self,
-        mesh,
+        mesh: Mesh,
         projection_matrix: glm.mat4,
         model_matrix: glm.mat4,
         camera_matrix: glm.mat4,
-        time=0.0,
+        time: float = 0.0,
     ) -> None:
+        assert self.program is not None, "There is no program to draw"
+        assert mesh.vao is not None, "There is no vao to render"
         mesh.material.mat_texture.texture.use()
         self.program["m_proj"].write(projection_matrix)
         self.program["m_model"].write(model_matrix)
         self.program["m_cam"].write(camera_matrix)
         mesh.vao.render(self.program)
 
-    def apply(self, mesh) -> "MeshProgram" | None:
+    def apply(self, mesh: Mesh) -> Optional[MeshProgram]:
         if not mesh.material:
             return None
 
@@ -186,7 +196,7 @@ class TextureProgram(MeshProgram):
 class TextureVertexColorProgram(MeshProgram):
     """textured object with vertex color"""
 
-    def __init__(self, program: moderngl.Program | None = None, **kwargs) -> None:
+    def __init__(self, program: Optional[moderngl.Program] = None, **kwargs: Any) -> None:
         super().__init__(program=None)
         self.program = programs.load(
             ProgramDescription(path="scene_default/vertex_color_texture.glsl")
@@ -198,8 +208,10 @@ class TextureVertexColorProgram(MeshProgram):
         projection_matrix: glm.mat4,
         model_matrix: glm.mat4,
         camera_matrix: glm.mat4,
-        time=0,
+        time: float = 0.0,
     ) -> None:
+        assert self.program is not None, "There is no program to draw"
+        assert mesh.vao is not None, "There is no vao to render"
         mesh.material.mat_texture.texture.use()
         self.program["m_proj"].write(projection_matrix)
         self.program["m_model"].write(model_matrix)
@@ -230,7 +242,7 @@ class TextureLightProgram(MeshProgram):
     Simple texture program
     """
 
-    def __init__(self, program: moderngl.Program | None = None, **kwargs) -> None:
+    def __init__(self, program: Optional[moderngl.Program] = None, **kwargs: Any) -> None:
         super().__init__(program=None)
         self.program = programs.load(ProgramDescription(path="scene_default/texture_light.glsl"))
 
@@ -240,8 +252,10 @@ class TextureLightProgram(MeshProgram):
         projection_matrix: glm.mat4,
         model_matrix: glm.mat4,
         camera_matrix: glm.mat4,
-        time=0.0,
+        time: float = 0.0,
     ) -> None:
+        assert self.program is not None, "There is no program to draw"
+        assert mesh.vao is not None, "There is no vao to render"
         # if mesh.material.double_sided:
         #     self.ctx.disable(moderngl.CULL_FACE)
         # else:
@@ -279,7 +293,7 @@ class FallbackProgram(MeshProgram):
     Fallback program only rendering positions in white
     """
 
-    def __init__(self, program: moderngl.Program | None = None, **kwargs) -> None:
+    def __init__(self, program: Optional[moderngl.Program] = None, **kwargs: Any) -> None:
         super().__init__(program=None)
         self.program = programs.load(ProgramDescription(path="scene_default/fallback.glsl"))
 
@@ -289,8 +303,11 @@ class FallbackProgram(MeshProgram):
         projection_matrix: glm.mat4,
         model_matrix: glm.mat4,
         camera_matrix: glm.mat4,
-        time=0.0,
+        time: float = 0.0,
     ) -> None:
+        assert self.program is not None, "There is no program to draw"
+        assert mesh.vao is not None, "There is no vao to render"
+
         self.program["m_proj"].write(projection_matrix)
         self.program["m_model"].write(model_matrix)
         self.program["m_cam"].write(camera_matrix)

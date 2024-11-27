@@ -17,8 +17,11 @@ class Programs(BaseRegistry):
         Args:
             meta (ProgramDescription): The resource description
         """
-        if not meta.kind:
-            meta.kind = "single" if meta.path else "separate"
+        if meta.kind == "":
+            if meta.path is None:
+                meta.kind = "separate"
+            else:
+                meta.kind = "single"
 
         super().resolve_loader(meta)
 
@@ -31,7 +34,10 @@ class Programs(BaseRegistry):
         Returns:
             moderngl.Program: The shader program
         """
-        return super().load(meta)
+        prog = super().load(meta)
+        # The tests fails with this line
+        # assert isinstance(prog, moderngl.Program), f"{meta} (type is {type(prog)}) do not load a moderngl.Program object, please correct this"
+        return prog
 
 
 programs = Programs()

@@ -1,7 +1,7 @@
 import logging
 import os
 from datetime import datetime
-from typing import Union
+from typing import Union, Optional
 
 import moderngl
 from PIL import Image
@@ -14,11 +14,11 @@ TEXTURE_MODES = [None, "L", None, "RGB", "RGBA"]
 
 def create(
     source: Union[moderngl.Framebuffer, moderngl.Texture],
-    file_format="png",
-    name: str = None,
-    mode="RGB",
-    alignment=1,
-):
+    file_format: str = "png",
+    name: Optional[str] = None,
+    mode: str = "RGB",
+    alignment: int = 1,
+) -> None:
     """
     Create a screenshot from a ``moderngl.Framebuffer`` or ``moderngl.Texture``.
     The screenshot will be written to :py:attr:`~moderngl_window.conf.Settings.SCREENSHOT_PATH`
@@ -68,7 +68,7 @@ def create(
     else:
         raise ValueError("Source needs to be a FrameBuffer or Texture, not a %s", type(source))
 
-    image = image.transpose(Image.FLIP_TOP_BOTTOM)
+    image = image.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
     dest = os.path.join(str(dest), name)
     logger.info("Creating screenshot: %s", dest)
     image.save(dest, format=file_format)

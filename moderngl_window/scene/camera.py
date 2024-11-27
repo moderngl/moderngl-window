@@ -1,10 +1,10 @@
 import time
-from math import cos, radians, sin
-
-import numpy
-from moderngl_window.utils.keymaps import QWERTY, KeyMapFactory
 import glm
 
+from glm import cos, radians, sin
+from typing import Optional, Union, Any
+
+from moderngl_window.utils.keymaps import QWERTY, KeyMapFactory
 from moderngl_window.opengl.projection import Projection3D
 from moderngl_window.context.base import BaseKeys
 
@@ -37,7 +37,7 @@ class Camera:
         print(camera.projection.matrix)
     """
 
-    def __init__(self, fov=60.0, aspect_ratio=1.0, near=1.0, far=100.0):
+    def __init__(self, fov: float = 60.0, aspect_ratio: float = 1.0, near: float = 1.0, far: float = 100.0):
         """Initialize camera using a specific projection
 
         Keyword Args:
@@ -62,11 +62,11 @@ class Camera:
         self._projection = Projection3D(aspect_ratio, fov, near, far)
 
     @property
-    def projection(self):
+    def projection(self) -> Projection3D:
         """:py:class:`~moderngl_window.opengl.projection.Projection3D`: The 3D projection"""
         return self._projection
 
-    def set_position(self, x, y, z) -> None:
+    def set_position(self, x: float, y: float, z: float) -> None:
         """Set the 3D position of the camera.
 
         Args:
@@ -74,17 +74,17 @@ class Camera:
             y (float): y position
             z (float): z position
         """
-        self.position = glm.vec3(float(x), float(y), float(z))
+        self.position = glm.vec3(x, y, z)
 
-    def set_rotation(self, yaw, pitch) -> None:
+    def set_rotation(self, yaw: float, pitch: float) -> None:
         """Set the rotation of the camera.
 
         Args:
             yaw (float): yaw rotation
             pitch (float): pitch rotation
         """
-        self._pitch = float(pitch)
-        self._yaw = float(yaw)
+        self._pitch = pitch
+        self._yaw = yaw
         self._update_yaw_and_pitch()
 
     @property
@@ -93,8 +93,8 @@ class Camera:
         return self._yaw
 
     @yaw.setter
-    def yaw(self, value) -> None:
-        self._yaw = float(value)
+    def yaw(self, value: float) -> None:
+        self._yaw = value
         self._update_yaw_and_pitch()
 
     @property
@@ -103,13 +103,13 @@ class Camera:
         return self._pitch
 
     @pitch.setter
-    def pitch(self, value) -> None:
-        self._pitch = float(value)
+    def pitch(self, value: float) -> None:
+        self._pitch = value
         self._update_yaw_and_pitch()
 
     @property
-    def matrix(self) -> numpy.ndarray:
-        """numpy.ndarray: The current view matrix for the camera"""
+    def matrix(self) -> glm.mat4:
+        """glm.mat4: The current view matrix for the camera"""
         self._update_yaw_and_pitch()
         return self._gl_look_at(self.position, self.position + self.dir, self._up)
 
@@ -124,7 +124,7 @@ class Camera:
         self.right = glm.normalize(glm.cross(self.dir, self._up))
         self.up = glm.normalize(glm.cross(self.right, self.dir))
 
-    def look_at(self, vec=None, pos=None) -> numpy.ndarray:
+    def look_at(self, vec: Optional[glm.vec3] = None, pos: Optional[tuple[float, float, float]] = None) -> glm.mat4:
         """Look at a specific point
 
         Either ``vec`` or ``pos`` needs to be supplied.
@@ -133,7 +133,7 @@ class Camera:
             vec (glm.vec3): position
             pos (tuple/list): list of tuple ``[x, y, x]`` / ``(x, y, x)``
         Returns:
-            numpy.ndarray: Camera matrix
+            glm.mat4x4: Camera matrix
         """
         if pos is not None:
             vec = glm.vec3(pos)
@@ -143,7 +143,7 @@ class Camera:
 
         return self._gl_look_at(self.position, vec, self._up)
 
-    def _gl_look_at(self, pos, target, up) -> numpy.ndarray:
+    def _gl_look_at(self, pos: glm.vec3, target: glm.vec3, up: glm.vec3) -> glm.mat4:
         """The standard lookAt method.
 
         Args:
@@ -151,7 +151,7 @@ class Camera:
             target: target position to look at
             up: direction up
         Returns:
-            numpy.ndarray: The matrix
+            glm.mat4: The matrix
         """
         z = glm.normalize(pos - target)
         x = glm.normalize(glm.cross(glm.normalize(up), z))
@@ -209,10 +209,10 @@ class KeyboardCamera(Camera):
         self,
         keys: BaseKeys,
         keymap: KeyMapFactory = QWERTY,
-        fov=60.0,
-        aspect_ratio=1.0,
-        near=1.0,
-        far=100.0,
+        fov: float = 60.0,
+        aspect_ratio: float = 1.0,
+        near: float = 1.0,
+        far: float = 100.0,
     ):
         """Initialize the camera
 
@@ -231,8 +231,8 @@ class KeyboardCamera(Camera):
         self._xdir = STILL
         self._zdir = STILL
         self._ydir = STILL
-        self._last_time = 0
-        self._last_rot_time = 0
+        self._last_time = 0.0
+        self._last_rot_time = 0.0
 
         # Velocity in axis units per second
         self._velocity = 10.0
@@ -251,11 +251,11 @@ class KeyboardCamera(Camera):
         return self._mouse_sensitivity
 
     @mouse_sensitivity.setter
-    def mouse_sensitivity(self, value: float):
+    def mouse_sensitivity(self, value: float) -> None:
         self._mouse_sensitivity = value
 
     @property
-    def velocity(self):
+    def velocity(self) -> float:
         """float: The speed this camera move based on key inputs
 
         The property can also be modified::
@@ -265,10 +265,10 @@ class KeyboardCamera(Camera):
         return self._velocity
 
     @velocity.setter
-    def velocity(self, value: float):
+    def velocity(self, value: float) -> None:
         self._velocity = value
 
-    def key_input(self, key, action, modifiers) -> None:
+    def key_input(self, key: str, action: str, modifiers: Any) -> None:
         """Process key inputs and move camera
 
         Args:
@@ -315,7 +315,7 @@ class KeyboardCamera(Camera):
             if action == self.keys.ACTION_RELEASE:
                 self.move_up(False)
 
-    def move_left(self, activate) -> None:
+    def move_left(self, activate: bool) -> None:
         """The camera should be continiously moving to the left.
 
         Args:
@@ -323,7 +323,7 @@ class KeyboardCamera(Camera):
         """
         self.move_state(LEFT, activate)
 
-    def move_right(self, activate) -> None:
+    def move_right(self, activate: bool) -> None:
         """The camera should be continiously moving to the right.
 
         Args:
@@ -331,7 +331,7 @@ class KeyboardCamera(Camera):
         """
         self.move_state(RIGHT, activate)
 
-    def move_forward(self, activate) -> None:
+    def move_forward(self, activate: bool) -> None:
         """The camera should be continiously moving forward.
 
         Args:
@@ -339,7 +339,7 @@ class KeyboardCamera(Camera):
         """
         self.move_state(FORWARD, activate)
 
-    def move_backward(self, activate) -> None:
+    def move_backward(self, activate: bool) -> None:
         """The camera should be continiously moving backwards.
 
         Args:
@@ -347,7 +347,7 @@ class KeyboardCamera(Camera):
         """
         self.move_state(BACKWARD, activate)
 
-    def move_up(self, activate) -> None:
+    def move_up(self, activate: bool) -> None:
         """The camera should be continiously moving up.
 
         Args:
@@ -355,7 +355,7 @@ class KeyboardCamera(Camera):
         """
         self.move_state(UP, activate)
 
-    def move_down(self, activate):
+    def move_down(self, activate: bool) -> None:
         """The camera should be continiously moving down.
 
         Args:
@@ -363,7 +363,7 @@ class KeyboardCamera(Camera):
         """
         self.move_state(DOWN, activate)
 
-    def move_state(self, direction, activate) -> None:
+    def move_state(self, direction: int, activate: bool) -> None:
         """Set the camera position move state.
 
         Args:
@@ -383,7 +383,7 @@ class KeyboardCamera(Camera):
         elif direction == DOWN:
             self._ydir = NEGATIVE if activate else STILL
 
-    def rot_state(self, dx: int, dy: int) -> None:
+    def rot_state(self, dx: float, dy: float) -> None:
         """Update the rotation of the camera.
 
         This is done by passing in the relative
@@ -421,8 +421,8 @@ class KeyboardCamera(Camera):
         self._update_yaw_and_pitch()
 
     @property
-    def matrix(self) -> numpy.ndarray:
-        """numpy.ndarray: The current view matrix for the camera"""
+    def matrix(self) -> glm.mat4:
+        """glm.mat4x4: The current view matrix for the camera"""
         # Use separate time in camera so we can move it when the demo is paused
         now = time.time()
         # If the camera has been inactive for a while, a large time delta
@@ -482,7 +482,7 @@ class OrbitCamera(Camera):
         camera.projection.tobytes()
     """
 
-    def __init__(self, target=(0.0, 0.0, 0.0), radius=2.0, angles=(45.0, -45.0), **kwargs):
+    def __init__(self, target: Union[glm.vec3, tuple[float, float, float]] = (0.0, 0.0, 0.0), radius: float = 2.0, angles: tuple[float, float] = (45.0, -45.0), **kwargs: Any):
         """Initialize the camera
 
         Keyword Args:
@@ -497,8 +497,8 @@ class OrbitCamera(Camera):
         # values for orbit camera
         self.radius = radius  # radius in base units
         self.angle_x, self.angle_y = angles  # angles in degrees
-        self.target = target  # camera target in base units
-        self.up = (0.0, 1.0, 0.0)  # camera up vector
+        self.target = glm.vec3(target)  # camera target in base units
+        self.up = glm.vec3(0.0, 1.0, 0.0)  # camera up vector
 
         self._mouse_sensitivity = 1.0
         self._zoom_sensitivity = 1.0
@@ -506,8 +506,8 @@ class OrbitCamera(Camera):
         super().__init__(**kwargs)
 
     @property
-    def matrix(self) -> numpy.ndarray:
-        """numpy.ndarray: The current view matrix for the camera"""
+    def matrix(self) -> glm.mat4:
+        """glm.mat4: The current view matrix for the camera"""
         # Compute camera (eye) position, calculated from angles and radius.
         position = (
             cos(radians(self.angle_x)) * sin(radians(self.angle_y)) * self.radius + self.target[0],
@@ -531,7 +531,7 @@ class OrbitCamera(Camera):
         return self._angle_x
 
     @angle_x.setter
-    def angle_x(self, value: float):
+    def angle_x(self, value: float) -> None:
         """Set camera rotation_x in degrees."""
         self._angle_x = value
 
@@ -545,7 +545,7 @@ class OrbitCamera(Camera):
         return self._angle_y
 
     @angle_y.setter
-    def angle_y(self, value: float):
+    def angle_y(self, value: float) -> None:
         """Set camera rotation_y in degrees."""
         self._angle_y = value
 
@@ -559,7 +559,7 @@ class OrbitCamera(Camera):
         return self._mouse_sensitivity
 
     @mouse_sensitivity.setter
-    def mouse_sensitivity(self, value: float):
+    def mouse_sensitivity(self, value: float) -> None:
         self._mouse_sensitivity = value
 
     @property
@@ -572,7 +572,7 @@ class OrbitCamera(Camera):
         return self._zoom_sensitivity
 
     @zoom_sensitivity.setter
-    def zoom_sensitivity(self, value: float):
+    def zoom_sensitivity(self, value: float) -> None:
         self._zoom_sensitivity = value
 
     def rot_state(self, dx: float, dy: float) -> None:

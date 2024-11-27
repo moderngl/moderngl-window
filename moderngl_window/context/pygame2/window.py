@@ -1,4 +1,3 @@
-from typing import Tuple
 import pygame
 import pygame.display
 import pygame.event
@@ -6,6 +5,8 @@ import pygame._sdl2
 
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.pygame2.keys import Keys
+
+from typing import Any
 
 
 class Window(BaseWindow):
@@ -24,7 +25,7 @@ class Window(BaseWindow):
         2: 3,
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any):
         super().__init__(**kwargs)
 
         pygame.display.init()
@@ -65,7 +66,7 @@ class Window(BaseWindow):
         self.init_mgl_context()
         self.set_default_viewport()
 
-    def _set_mode(self):
+    def _set_mode(self) -> None:
         self._surface = pygame.display.set_mode(
             size=(self._width, self._height),
             flags=self._flags,
@@ -84,8 +85,8 @@ class Window(BaseWindow):
         self._set_mode()
 
     @property
-    def size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: current window size.
+    def size(self) -> tuple[int, int]:
+        """tuple[int, int]: current window size.
 
         This property also support assignment::
 
@@ -95,14 +96,14 @@ class Window(BaseWindow):
         return self._width, self._height
 
     @size.setter
-    def size(self, value: Tuple[int, int]):
+    def size(self, value: tuple[int, int]) -> None:
         self._width, self._height = value
         self._set_mode()
         self.resize(value[0], value[1])
 
     @property
-    def position(self) -> Tuple[int, int]:
-        """Tuple[int, int]: The current window position.
+    def position(self) -> tuple[int, int]:
+        """tuple[int, int]: The current window position.
 
         This property can also be set to move the window::
 
@@ -112,7 +113,7 @@ class Window(BaseWindow):
         return self._sdl_window.position
 
     @position.setter
-    def position(self, value: Tuple[int, int]):
+    def position(self, value: tuple[int, int]) -> None:
         self._sdl_window.position = value
 
     @property
@@ -127,7 +128,7 @@ class Window(BaseWindow):
         return self._visible
 
     @visible.setter
-    def visible(self, value: bool):
+    def visible(self, value: bool) -> None:
         self._visible = value
         if value:
             self._sdl_window.show()
@@ -146,7 +147,7 @@ class Window(BaseWindow):
         return self._cursor
 
     @cursor.setter
-    def cursor(self, value: bool):
+    def cursor(self, value: bool) -> None:
         pygame.mouse.set_visible(value)
         self._cursor = value
 
@@ -167,7 +168,7 @@ class Window(BaseWindow):
         return self._mouse_exclusivity
 
     @mouse_exclusivity.setter
-    def mouse_exclusivity(self, value: bool):
+    def mouse_exclusivity(self, value: bool) -> None:
         if self._cursor:
             self.cursor = False
 
@@ -185,7 +186,7 @@ class Window(BaseWindow):
         return self._title
 
     @title.setter
-    def title(self, value: str):
+    def title(self, value: str) -> None:
         pygame.display.set_caption(value)
         self._title = value
 
@@ -200,7 +201,7 @@ class Window(BaseWindow):
         icon = pygame.image.load(icon_path)
         pygame.display.set_icon(icon)
 
-    def resize(self, width, height) -> None:
+    def resize(self, width: int, height: int) -> None:
         """Resize callback
 
         Args:
@@ -214,7 +215,7 @@ class Window(BaseWindow):
 
         super().resize(self._buffer_width, self._buffer_height)
 
-    def close(self):
+    def close(self) -> None:
         """Close the window"""
         super().close()
         self._close_func()

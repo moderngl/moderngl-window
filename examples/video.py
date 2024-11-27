@@ -5,7 +5,7 @@ Relies on the PyAV library to decode video frames and display them using a textu
 """
 
 import math
-from typing import Tuple, Union
+from typing import Union
 from pathlib import Path
 
 import moderngl
@@ -46,8 +46,8 @@ class Decoder:
         return self.video.frames
 
     @property
-    def video_size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: The width and height of the video in pixels"""
+    def video_size(self) -> tuple[int, int]:
+        """tuple[int, int]: The width and height of the video in pixels"""
         return self.video.width, self.video.height
 
     @property
@@ -106,8 +106,8 @@ class Player:
         return self._decoder.frames
 
     @property
-    def video_size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: Video size in pixels"""
+    def video_size(self) -> tuple[int, int]:
+        """tuple[int, int]: Video size in pixels"""
         return self._decoder.video_size
 
     @property

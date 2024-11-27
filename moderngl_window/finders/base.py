@@ -7,6 +7,7 @@ import logging
 
 from collections import namedtuple
 from pathlib import Path
+from typing import Any, Optional
 
 from moderngl_window.conf import settings
 from moderngl_window.exceptions import ImproperlyConfigured
@@ -20,12 +21,12 @@ logger = logging.getLogger(__name__)
 class BaseFilesystemFinder:
     """Base class for searching filesystem directories"""
 
-    settings_attr = None
+    settings_attr = ""
     """str: Name of the attribute in :py:class:`~moderngl_window.conf.Settings`
     containing a list of paths the finder should search in.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize finder class by looking up the paths referenced in ``settings_attr``."""
         if not hasattr(settings, self.settings_attr):
             raise ImproperlyConfigured(
@@ -34,7 +35,7 @@ class BaseFilesystemFinder:
             )
         self.paths = getattr(settings, self.settings_attr)
 
-    def find(self, path: Path) -> Path:
+    def find(self, path: Path) -> Optional[Path]:
         """Finds a file in the configured paths returning its absolute path.
 
         Args:
@@ -72,13 +73,13 @@ class BaseFilesystemFinder:
 
             if abspath.exists():
                 logger.debug("found %s", abspath)
-                return abspath
+                return Path(abspath) # Needed to please mypy, but is already be a path
 
         return None
 
 
 @functools.lru_cache(maxsize=None)
-def get_finder(import_path: str):
+def get_finder(import_path: str) -> BaseFilesystemFinder:
     """
     Get a finder class from an import path.
     This function uses an lru cache.
@@ -91,9 +92,10 @@ def get_finder(import_path: str):
         ImproperlyConfigured is the finder is not found
     """
     Finder = import_string(import_path)
-    if not issubclass(Finder, BaseFilesystemFinder):
+    find = Finder()
+    if not isinstance(find, BaseFilesystemFinder):
         raise ImproperlyConfigured(
             "Finder {} is not a subclass of .finders.FileSystemFinder".format(import_path)
         )
 
-    return Finder()
+    return find

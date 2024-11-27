@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Tuple
+from typing import Any
 
 try:
     from PIL import Image
@@ -86,13 +86,13 @@ class PillowLoader(BaseLoader):
         self.image.close()
 
 
-def image_data(image: Image) -> Tuple[int, bytes]:
+def image_data(image: Image) -> tuple[int, bytes]:
     """Get components and bytes for an image.
     The number of components is assumed by image
     size and the byte length of the raw data.
 
     Returns:
-        Tuple[int, bytes]: Number of components, byte data
+        tuple[int, bytes]: Number of components, byte data
     """
     # NOTE: We might want to check the actual image.mode
     #       and convert to an acceptable format.

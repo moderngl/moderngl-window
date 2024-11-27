@@ -3,6 +3,8 @@ import glfw
 
 from moderngl_window.context.base import BaseKeys
 
+GLFW_key = int
+
 
 class Keys(BaseKeys):
     """

@@ -8,11 +8,11 @@ from rocket.tracks import Track
 class Tracks:
     """Registry for requested rocket tracks"""
 
-    def __init__(self):
-        self.tacks = []
-        self.track_map = {}
+    def __init__(self) -> None:
+        self.tacks: list[Track] = []
+        self.track_map: dict[str, Track] = {}
 
-    def get(self, name) -> Track:
+    def get(self, name: str) -> Track:
         """
         Get or create a Track object.
 

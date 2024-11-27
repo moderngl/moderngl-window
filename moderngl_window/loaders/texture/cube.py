@@ -52,7 +52,7 @@ class Loader(PillowLoader):
         """Obtain raw byte data for a face
 
         Returns:
-            Tuple[int, bytes]: number of components, byte data
+            tuple[int, bytes]: number of components, byte data
         """
         if not path:
             raise ImproperlyConfigured(f"{face_name} texture face not supplied")

@@ -2,7 +2,7 @@
 Wrapper for a loaded scene with properties.
 """
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Optional
 import logging
 import numpy
 import glm
@@ -22,33 +22,35 @@ from .programs import (
     TextureVertexColorProgram,
     TextureLightProgram,
 )
+from .node import Node
+from .material import Material
 
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
-    from moderngl_window.scene import Node, Material
+    from moderngl_window.scene import Node, Material, Camera, Mesh
 
 
 class Scene:
     """Generic scene"""
 
-    def __init__(self, name, **kwargs):
+    def __init__(self, name: str, **kwargs: Any):
         """Create a scene with a name.
 
         Args:
             name (str): Unique name or path for the scene
         """
         self.name = name
-        self.root_nodes = []
+        self.root_nodes: list[Node] = []
 
         # References resources in the scene
-        self.nodes = []
-        self.materials = []
-        self.meshes = []
-        self.cameras = []
+        self.nodes: list[Node] = []
+        self.materials: list[Material] = []
+        self.meshes: list[Mesh] = []
+        self.cameras: list[Camera] = []
 
-        self.bbox_min = None  # Type: numpy.ndarray
-        self.bbox_max = None  # Type: numpy.ndarray
+        self.bbox_min: glm.vec3 = glm.vec3()
+        self.bbox_max: glm.vec3 = glm.vec3()
         self.diagonal_size = 1.0
 
         self.bbox_vao = geometry.bbox()
@@ -80,24 +82,24 @@ class Scene:
         return mglw.ctx()
 
     @property
-    def matrix(self) -> numpy.ndarray:
-        """numpy.ndarray: The current model matrix
+    def matrix(self) -> glm.mat4:
+        """glm.mat4x4: The current model matrix
 
         This property is settable.
         """
         return self._matrix
 
     @matrix.setter
-    def matrix(self, matrix: glm.mat4):
+    def matrix(self, matrix: glm.mat4) -> None:
         self._matrix = matrix
         for node in self.root_nodes:
             node.calc_model_mat(self._matrix)
 
     def draw(
         self,
-        projection_matrix: glm.mat4 = None,
-        camera_matrix: glm.mat4 = None,
-        time=0.0,
+        projection_matrix: Optional[glm.mat4] = None,
+        camera_matrix: Optional[glm.mat4] = None,
+        time: float = 0.0,
     ) -> None:
         """Draw all the nodes in the scene.
 
@@ -117,16 +119,16 @@ class Scene:
 
     def draw_bbox(
         self,
-        projection_matrix=None,
-        camera_matrix=None,
-        children=True,
-        color=(0.75, 0.75, 0.75),
+        projection_matrix: Optional[glm.mat4] = None,
+        camera_matrix: Optional[glm.mat4] = None,
+        children: float = True,
+        color: tuple[float, float, float] = (0.75, 0.75, 0.75),
     ) -> None:
         """Draw scene and mesh bounding boxes.
 
         Args:
-            projection_matrix (ndarray): mat4 projection
-            camera_matrix (ndarray): mat4 camera matrix
+            projection_matrix (glm.mat4): mat4 projection
+            camera_matrix (glm.mat4): mat4 camera matrix
             children (bool): Will draw bounding boxes for meshes as well
             color (tuple): Color of the bounding boxes
         """
@@ -150,8 +152,8 @@ class Scene:
             node.draw_bbox(projection_matrix, camera_matrix, self.bbox_program, self.bbox_vao)
 
     def draw_wireframe(
-        self, projection_matrix=None, camera_matrix=None, color=(0.75, 0.75, 0.75, 1.0)
-    ):
+        self, projection_matrix: Optional[glm.mat4] = None, camera_matrix: Optional[glm.mat4] = None, color: tuple[float, float, float, float] = (0.75, 0.75, 0.75, 1.0)
+    ) -> None:
         """Render the scene in wireframe mode.
 
         Args:
@@ -176,7 +178,7 @@ class Scene:
 
         self.ctx.wireframe = False
 
-    def apply_mesh_programs(self, mesh_programs=None, clear: bool = True) -> None:
+    def apply_mesh_programs(self, mesh_programs: Optional[list[MeshProgram]] = None, clear: bool = True) -> None:
         """Applies mesh programs to meshes.
         If not mesh programs are passed in we assign default ones.
 
@@ -222,9 +224,12 @@ class Scene:
 
     def calc_scene_bbox(self) -> None:
         """Calculate scene bbox"""
-        bbox_min, bbox_max = None, None
+        bbox_min: Optional[glm.vec3] = None
+        bbox_max: Optional[glm.vec3] = None
         for node in self.root_nodes:
             bbox_min, bbox_max = node.calc_global_bbox(glm.mat4(), bbox_min, bbox_max)
+
+        assert (bbox_max is not None) and (bbox_min is not None), "The bounding are not defined, please make sure your code is correct"
 
         self.bbox_min = bbox_min
         self.bbox_max = bbox_max
@@ -241,7 +246,7 @@ class Scene:
         # Recursively calculate model matrices
         self.matrix = glm.mat4()
 
-    def find_node(self, name: str = None) -> "Node":
+    def find_node(self, name: Optional[str] = None) -> Optional[Node]:
         """Finds a :py:class:`~moderngl_window.scene.Node`
 
         Keyword Args:
@@ -255,7 +260,7 @@ class Scene:
 
         return None
 
-    def find_material(self, name: str = None) -> "Material":
+    def find_material(self, name: Optional[str] = None) -> Optional[Material]:
         """Finds a :py:class:`~moderngl_window.scene.Material`
 
         Keyword Args:
@@ -269,14 +274,15 @@ class Scene:
 
         return None
 
-    def release(self):
+    def release(self) -> None:
         """Destroys the scene data and vertex buffers"""
         self.destroy()
 
     def destroy(self) -> None:
         """Destroys the scene data and vertex buffers"""
         for mesh in self.meshes:
-            mesh.vao.release()
+            if mesh.vao is not None:
+                mesh.vao.release()
             # if mesh.mesh_program:
             #     mesh.mesh_program.program.release()
 

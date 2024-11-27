@@ -32,10 +32,10 @@ DATA_FINDERS = [
 ]
 
 # Finder directories: Where finders look for their resources
-PROGRAM_DIRS = []
-TEXTURE_DIRS = []
-SCENE_DIRS = []
-DATA_DIRS = []
+PROGRAM_DIRS: list[str] = []
+TEXTURE_DIRS: list[str] = []
+SCENE_DIRS: list[str] = []
+DATA_DIRS: list[str] = []
 
 
 # Loaders
