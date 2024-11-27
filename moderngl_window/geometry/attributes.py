@@ -3,6 +3,8 @@ Follows the standard attributes from GLFT2.0
 https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#meshes
 """
 
+from typing import Any, Optional
+
 
 class AttributeNames:
     """Standard buffer/attribute names.
@@ -24,15 +26,15 @@ class AttributeNames:
 
     def __init__(
         self,
-        position: str = None,
-        normal: str = None,
-        tangent: str = None,
-        texcoord_0: str = None,
-        texcoord_1: str = None,
-        color_0: str = None,
-        joints_0: str = None,
-        weights: str = None,
-        **kwargs,
+        position: Optional[str] = None,
+        normal: Optional[str] = None,
+        tangent: Optional[str] = None,
+        texcoord_0: Optional[str] = None,
+        texcoord_1: Optional[str] = None,
+        color_0: Optional[str] = None,
+        joints_0: Optional[str] = None,
+        weights: Optional[str] = None,
+        **kwargs: Any,
     ):
         """Override default values.
         All attributes will be set on the instance as upper case strings
@@ -61,7 +63,7 @@ class AttributeNames:
             }
         )
 
-    def apply_values(self, kwargs):
+    def apply_values(self, kwargs: dict[str, Any]) -> None:
         """Only applies attribute values not None"""
         for key, value in kwargs.items():
             if value:
