@@ -16,7 +16,6 @@ from moderngl_window import geometry
 
 
 class Decoder:
-
     def __init__(self, path: Union[str, Path]):
         self.container = av.open(str(path))
         self.video = self.container.streams[0]
@@ -80,7 +79,6 @@ class Decoder:
 
 
 class Player:
-
     def __init__(self, ctx: moderngl.Context, path: Union[str, Path]):
         self._ctx = ctx
         self._path = path

@@ -7,7 +7,6 @@ from moderngl_window.conf import settings
 from moderngl_window.exceptions import ImproperlyConfigured
 from moderngl_window.resources.data import data as data
 from moderngl_window.resources.programs import programs as programs
-# from moderngl_window.resources.tracks import tracks  # noqa
 from moderngl_window.resources.scenes import scenes as scenes
 from moderngl_window.resources.textures import TextureAny as TextureAny
 from moderngl_window.resources.textures import textures as textures

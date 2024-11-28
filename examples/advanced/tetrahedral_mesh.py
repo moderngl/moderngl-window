@@ -91,7 +91,6 @@ class VolumetricTetrahedralMesh(CameraWindow):
         self.total_elapsed = 0
 
     def on_render(self, time: float, frametime: float):
-
         # Render background
         self.ctx.wireframe = False
         if not self.with_blending:

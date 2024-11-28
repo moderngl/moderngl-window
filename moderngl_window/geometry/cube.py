@@ -8,7 +8,7 @@ from moderngl_window.opengl.vao import VAO
 
 def cube(
     size: tuple[float, float, float] = (1.0, 1.0, 1.0),
-    center: tuple[float, float, float]=(0.0, 0.0, 0.0),
+    center: tuple[float, float, float] = (0.0, 0.0, 0.0),
     normals: bool = True,
     uvs: bool = True,
     name: Optional[str] = None,

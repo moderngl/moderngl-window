@@ -193,8 +193,9 @@ class FragmentPicking(moderngl_window.WindowConfig):
 
         # mouse coordinates starts in upper left corner
         # pixel positions starts and lower left corner
-        pos = int(x * self.wnd.pixel_ratio), int(
-            self.wnd.buffer_height - (y * self.wnd.pixel_ratio)
+        pos = (
+            int(x * self.wnd.pixel_ratio),
+            int(self.wnd.buffer_height - (y * self.wnd.pixel_ratio)),
         )
         print("Picking mouse position", x, y)
         print("Viewport position", pos)

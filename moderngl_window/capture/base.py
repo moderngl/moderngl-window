@@ -25,7 +25,6 @@ class BaseVideoCapture:
         source: Union[moderngl.Texture, moderngl.Framebuffer],
         framerate: Union[int, float] = 60,
     ):
-
         self._source = source
         self._framerate = framerate
 
@@ -141,7 +140,6 @@ class BaseVideoCapture:
         dt = 1.0 / self._framerate
 
         if self._timer.time - self._last_time > dt:
-
             # start counting
             self._last_time = self._timer.time
 

@@ -6,8 +6,7 @@ import moderngl
 import numpy
 
 from moderngl_window import resources
-from moderngl_window.meta import (DataDescription, ProgramDescription,
-                                  TextureDescription)
+from moderngl_window.meta import DataDescription, ProgramDescription, TextureDescription
 from moderngl_window.opengl.vao import VAO
 
 from .base import BaseText, FontMeta

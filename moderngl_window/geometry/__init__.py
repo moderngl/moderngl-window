@@ -1,5 +1,4 @@
-from moderngl_window.geometry.attributes import \
-    AttributeNames as AttributeNames
+from moderngl_window.geometry.attributes import AttributeNames as AttributeNames
 from moderngl_window.geometry.bbox import bbox as bbox
 from moderngl_window.geometry.cube import cube as cube
 from moderngl_window.geometry.quad import quad_2d as quad_2d

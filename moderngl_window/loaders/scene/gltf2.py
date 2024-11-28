@@ -441,7 +441,6 @@ class GLTFMesh:
             self.accessor = None
 
     def __init__(self, data: dict[str, Any], meta: SceneDescription):
-
         self.meta = meta
         self.name = data.get("name", "")
         self.primitives = [GLTFMesh.Primitives(p) for p in data["primitives"]]
@@ -462,7 +461,6 @@ class GLTFMesh:
         # Read all primitives as separate meshes for now
         # According to the spec they can have different materials and vertex format
         for primitive in self.primitives:
-
             vao = VAO(self.name, mode=primitive.mode or moderngl.TRIANGLES)
 
             # Index buffer
