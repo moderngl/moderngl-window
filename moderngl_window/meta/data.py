@@ -1,3 +1,5 @@
+from typing import Any, Optional
+
 from moderngl_window.meta.base import ResourceDescription
 
 
@@ -26,10 +28,10 @@ class DataDescription(ResourceDescription):
         DataDescription(path='data/data.bin', kind='binary')
     """
 
-    default_kind = None
+    default_kind: str = ""
     resource_type = "data"
 
-    def __init__(self, path=None, kind=None, **kwargs):
+    def __init__(self, path: Optional[str] = None, kind: Optional[str] = None, **kwargs: Any) -> None:
         """Initialize the resource description.
 
         Keyword Args:

@@ -4,10 +4,11 @@ Note: In the future we might want to split this into separate scene loaders
 from pathlib import Path
 
 from headless import HeadlessTestCase
+
 from moderngl_window import resources
+from moderngl_window.exceptions import ImproperlyConfigured
 from moderngl_window.meta import SceneDescription
 from moderngl_window.scene import Scene
-from moderngl_window.exceptions import ImproperlyConfigured
 
 resources.register_dir((Path(__file__).parent / 'fixtures' / 'resources').resolve())
 

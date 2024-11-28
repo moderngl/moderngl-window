@@ -1,8 +1,10 @@
 from pathlib import Path
+
+import glm
+import moderngl
 # import imgui
 from imgui_bundle import imgui
-import moderngl
-import glm
+
 import moderngl_window as mglw
 from moderngl_window import geometry
 from moderngl_window.integrations.imgui_bundle import ModernglWindowRenderer

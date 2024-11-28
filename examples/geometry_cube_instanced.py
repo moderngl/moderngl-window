@@ -7,12 +7,13 @@ Each cube is animated in the vertex shader offset by gl_InstanceID
 
 from pathlib import Path
 
-import numpy
 import glm
 import moderngl
+import numpy
+from base import CameraWindow
+
 import moderngl_window
 from moderngl_window import geometry
-from base import CameraWindow
 
 
 class CubeSimpleInstanced(CameraWindow):

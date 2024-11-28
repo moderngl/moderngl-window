@@ -2,10 +2,10 @@ from pathlib import Path
 
 import moderngl
 from headless import HeadlessTestCase
+
+from moderngl_window import geometry, resources
 from moderngl_window.context.headless import Keys
-from moderngl_window import resources
 from moderngl_window.meta import ProgramDescription
-from moderngl_window import geometry
 
 resources.register_dir((Path(__file__).parent / 'fixtures' / 'resources').resolve())
 

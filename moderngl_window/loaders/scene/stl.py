@@ -1,13 +1,15 @@
 import gzip
+from pathlib import Path
+from typing import Union
 
 import moderngl
 import numpy
 import trimesh
 
+from moderngl_window.exceptions import ImproperlyConfigured
 from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.opengl.vao import VAO
 from moderngl_window.scene import Material, Mesh, Node, Scene
-from moderngl_window.exceptions import ImproperlyConfigured
 
 
 class Loader(BaseLoader):
@@ -32,7 +34,12 @@ class Loader(BaseLoader):
             file_obj = gzip.GzipFile(file_obj)
 
         stl_mesh = trimesh.load(file_obj, file_type="stl")
-        scene = Scene(self.meta.resolved_path)
+        path = self.meta.resolved_path
+        if isinstance(path, Path):
+            resolved = path.as_posix()
+        else:
+            resolved = None
+        scene = Scene(resolved)
         scene_mesh = Mesh("mesh")
         scene_mesh.material = Material("default")
 

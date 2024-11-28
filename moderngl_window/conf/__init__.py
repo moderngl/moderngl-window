@@ -4,13 +4,12 @@ Bag of settings values
 
 # pylint: disable = invalid-name
 import importlib
-import types
 import os
-
-from collections.abc import Iterable
+import pathlib
+from collections.abc import Generator, Iterable
 from pprint import pformat
-from typing import Union
-
+from types import ModuleType as Module
+from typing import Any, Optional, Union
 
 from moderngl_window.conf import default
 from moderngl_window.exceptions import ImproperlyConfigured
@@ -44,7 +43,7 @@ class Settings:
         print(settings)
     """
 
-    WINDOW = dict()
+    WINDOW: dict[str, Any] = dict()
     """
     Window/screen properties. Most importantly the ``class`` attribute
     decides what class should be used to handle the window.
@@ -89,14 +88,14 @@ class Settings:
     - color and depth buffer is cleared for every frame
 
     """
-    SCREENSHOT_PATH = None
+    SCREENSHOT_PATH: Optional[str] = None
     """
     Absolute path to the directory screenshots will be saved by the screenshot module.
     Screenshots will end up in the project root of not defined.
     If a path is configured, the directory will be auto-created.
     """
     # Finders
-    PROGRAM_FINDERS = []
+    PROGRAM_FINDERS: list[str] = []
     """
     Finder classes for locating programs/shaders.
 
@@ -107,7 +106,7 @@ class Settings:
             "moderngl_window.finders.program.FileSystemFinder",
         ]
     """
-    TEXTURE_FINDERS = []
+    TEXTURE_FINDERS: list[str] = []
     """
     Finder classes for locating textures.
 
@@ -118,7 +117,7 @@ class Settings:
             "moderngl_window.finders.texture.FileSystemFinder",
         ]
     """
-    SCENE_FINDERS = []
+    SCENE_FINDERS: list[str] = []
     """
     Finder classes for locating scenes.
 
@@ -130,7 +129,7 @@ class Settings:
         ]
 
     """
-    DATA_FINDERS = []
+    DATA_FINDERS: list[str] = []
     """
     Finder classes for locating data files.
 
@@ -142,29 +141,29 @@ class Settings:
         ]
     """
     # Finder dirs
-    PROGRAM_DIRS = []
+    PROGRAM_DIRS: list[Union[str, pathlib.Path]] = []
     """
     Lists of `str` or `pathlib.Path` used by ``FileSystemFinder``
     to looks for programs/shaders.
     """
-    TEXTURE_DIRS = []
+    TEXTURE_DIRS: list[Union[str, pathlib.Path]] = []
     """
     Lists of `str` or `pathlib.Path` used by ``FileSystemFinder``
     to looks for textures.
     """
-    SCENE_DIRS = []
+    SCENE_DIRS: list[Union[str, pathlib.Path]] = []
     """
     Lists of `str` or `pathlib.Path` used by ``FileSystemFinder``
     to looks for scenes (obj, gltf, stl etc).
     """
-    DATA_DIRS = []
+    DATA_DIRS: list[Union[str, pathlib.Path]] = []
     """
     Lists of `str` or `pathlib.Path` used by ``FileSystemFinder``
     to looks for data files.
     """
 
     # Loaders
-    PROGRAM_LOADERS = []
+    PROGRAM_LOADERS: list[str] = []
     """
     Classes responsible for loading programs/shaders.
 
@@ -176,7 +175,7 @@ class Settings:
             'moderngl_window.loaders.program.separate.Loader',
         ]
     """
-    TEXTURE_LOADERS = []
+    TEXTURE_LOADERS: list[str] = []
     """
     Classes responsible for loading textures.
 
@@ -188,7 +187,7 @@ class Settings:
             'moderngl_window.loaders.texture.array.Loader',
         ]
     """
-    SCENE_LOADERS = []
+    SCENE_LOADERS: list[str] = []
     """
     Classes responsible for loading scenes.
 
@@ -202,7 +201,7 @@ class Settings:
         ]
 
     """
-    DATA_LOADERS = []
+    DATA_LOADERS: list[str] = []
     """
     Classes responsible for loading data files.
 
@@ -216,7 +215,7 @@ class Settings:
         ]
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize settings with default values"""
         self.apply_default_settings()
 
@@ -277,7 +276,7 @@ class Settings:
 
         self.apply_from_module(module)
 
-    def apply_from_dict(self, data: dict) -> None:
+    def apply_from_dict(self, data: dict[str, Any]) -> None:
         """
         Apply settings values from a dictionary
 
@@ -290,7 +289,7 @@ class Settings:
         """
         self.apply_from_iterable(data.items())
 
-    def apply_from_module(self, module: types.ModuleType) -> None:
+    def apply_from_module(self, module: Module) -> None:
         """
         Apply settings values from a python module
 
@@ -307,7 +306,7 @@ class Settings:
         """
         self.apply_from_iterable(module.__dict__.items())
 
-    def apply_from_cls(self, cls) -> None:
+    def apply_from_cls(self, cls: Any) -> None:
         """
         Apply settings values from a class namespace
 
@@ -323,11 +322,11 @@ class Settings:
         """
         self.apply_from_iterable(cls.__dict__.items())
 
-    def apply_from_iterable(self, iterable: Union[Iterable, types.GeneratorType]) -> None:
+    def apply_from_iterable(self, iterable: Union[Iterable[Any], Generator[Any]]) -> None:
         """
         Apply (key, value) pairs from an interable or generator
         """
-        if not isinstance(iterable, Iterable) and not isinstance(self, types.GeneratorType):
+        if not isinstance(iterable, Iterable) and not isinstance(self, Generator):
             raise ValueError(
                 "Input value is not a generator or interable, but of type: {}".format(
                     type(iterable)
@@ -338,7 +337,7 @@ class Settings:
             if name.isupper():
                 setattr(self, name, value)
 
-    def to_dict(self):
+    def to_dict(self) -> dict[str, Any]:
         """Create a dict representation of the settings
         Only uppercase attributes are included
 

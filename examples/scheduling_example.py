@@ -1,5 +1,6 @@
-import moderngl_window
 import random
+
+import moderngl_window
 from moderngl_window.utils.scheduler import Scheduler
 
 

@@ -1,16 +1,18 @@
+from typing import Optional
+
 import numpy
 
-from moderngl_window.opengl.vao import VAO
 from moderngl_window.geometry import AttributeNames
+from moderngl_window.opengl.vao import VAO
 
 
 def cube(
-    size=(1.0, 1.0, 1.0),
-    center=(0.0, 0.0, 0.0),
-    normals=True,
-    uvs=True,
-    name=None,
-    attr_names=AttributeNames,
+    size: tuple[float, float, float] = (1.0, 1.0, 1.0),
+    center: tuple[float, float, float]=(0.0, 0.0, 0.0),
+    normals: bool = True,
+    uvs: bool = True,
+    name: Optional[str] = None,
+    attr_names: type[AttributeNames] = AttributeNames,
 ) -> VAO:
     """Creates a cube VAO with normals and texture coordinates
 

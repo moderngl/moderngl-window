@@ -5,13 +5,13 @@ https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mappin
 
 import math
 from pathlib import Path
-import glm
 
+import glm
 import moderngl
+from base import CameraWindow
+
 import moderngl_window
 from moderngl_window import geometry
-
-from base import CameraWindow
 
 
 class ShadowMapping(CameraWindow):

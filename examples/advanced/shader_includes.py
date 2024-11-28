@@ -6,6 +6,7 @@ We include a library doing different blend types
 and render each quadrant of the screen with different blend types
 """
 from pathlib import Path
+
 import moderngl_window as mglw
 from moderngl_window import geometry
 

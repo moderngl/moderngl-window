@@ -1,5 +1,5 @@
-from typing import Tuple
 import platform
+
 import pyglet
 
 # On OS X we need to disable the shadow context
@@ -9,8 +9,11 @@ if platform.system() == "Darwin":
 
 pyglet.options["debug_gl"] = False
 
-from moderngl_window.context.pyglet.keys import Keys  # noqa: E402
+from pathlib import Path
+from typing import Any, Union
+
 from moderngl_window.context.base import BaseWindow  # noqa: E402
+from moderngl_window.context.pyglet.keys import Keys  # noqa: E402
 
 
 class Window(BaseWindow):
@@ -30,7 +33,7 @@ class Window(BaseWindow):
         2: 3,
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any):
         super().__init__(**kwargs)
 
         config = pyglet.gl.Config(
@@ -89,8 +92,8 @@ class Window(BaseWindow):
         self._window.set_fullscreen(value)
 
     @property
-    def size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: current window size.
+    def size(self) -> tuple[int, int]:
+        """tuple[int, int]: current window size.
 
         This property also support assignment::
 
@@ -100,12 +103,12 @@ class Window(BaseWindow):
         return self._width, self._height
 
     @size.setter
-    def size(self, value: Tuple[int, int]):
+    def size(self, value: tuple[int, int]) -> None:
         self._window.set_size(value[0], value[1])
 
     @property
-    def position(self) -> Tuple[int, int]:
-        """Tuple[int, int]: The current window position.
+    def position(self) -> tuple[int, int]:
+        """tuple[int, int]: The current window position.
 
         This property can also be set to move the window::
 
@@ -115,7 +118,7 @@ class Window(BaseWindow):
         return self._window.get_location()
 
     @position.setter
-    def position(self, value: Tuple[int, int]):
+    def position(self, value: tuple[int, int]) -> None:
         self._window.set_location(value[0], value[1])
 
     @property
@@ -130,7 +133,7 @@ class Window(BaseWindow):
         return self._visible
 
     @visible.setter
-    def visible(self, value: bool):
+    def visible(self, value: bool) -> None:
         self._visible = value
         self._window.set_visible(value)
 
@@ -146,7 +149,7 @@ class Window(BaseWindow):
         return self._cursor
 
     @cursor.setter
-    def cursor(self, value: bool):
+    def cursor(self, value: bool) -> None:
         self._window.set_mouse_visible(value)
         self._cursor = value
 
@@ -167,7 +170,7 @@ class Window(BaseWindow):
         return self._mouse_exclusivity
 
     @mouse_exclusivity.setter
-    def mouse_exclusivity(self, value: bool):
+    def mouse_exclusivity(self, value: bool) -> None:
         self._window.set_exclusive_mouse(value)
         self._mouse_exclusivity = value
 
@@ -182,7 +185,7 @@ class Window(BaseWindow):
         return self._title
 
     @title.setter
-    def title(self, value: str):
+    def title(self, value: str) -> None:
         self._window.set_caption(value)
         self._title = value
 
@@ -192,7 +195,7 @@ class Window(BaseWindow):
         return self._window.has_exit or super().is_closing
 
     @is_closing.setter
-    def is_closing(self, value: bool):
+    def is_closing(self, value: bool) -> None:
         self._close = value
 
     def close(self) -> None:
@@ -207,20 +210,20 @@ class Window(BaseWindow):
         self._frames += 1
         self._window.dispatch_events()
 
-    def _handle_modifiers(self, mods):
+    def _handle_modifiers(self, mods: int) -> None:
         """Update key modifier states"""
         self._modifiers.shift = mods & 1 == 1
         self._modifiers.ctrl = mods & 2 == 2
         self._modifiers.alt = mods & 4 == 4
 
-    def _set_icon(self, icon_path: str) -> None:
+    def _set_icon(self, icon_path: Path) -> None:
         icon = pyglet.image.load(icon_path)
         self._window.set_icon(icon)
 
     def _set_vsync(self, value: bool) -> None:
         self._window.set_vsync(value)
 
-    def on_key_press(self, symbol, modifiers):
+    def on_key_press(self, symbol: int, modifiers: int) -> bool:
         """Pyglet specific key press callback.
 
         Forwards and translates the events to the standard methods.
@@ -241,7 +244,7 @@ class Window(BaseWindow):
 
         return pyglet.event.EVENT_HANDLED
 
-    def on_text(self, text):
+    def on_text(self, text: str) -> None:
         """Pyglet specific text input callback
 
         Forwards and translates the events to the standard methods.
@@ -251,7 +254,7 @@ class Window(BaseWindow):
         """
         self._unicode_char_entered_func(text)
 
-    def on_key_release(self, symbol, modifiers):
+    def on_key_release(self, symbol: int, modifiers: int) -> None:
         """Pyglet specific key release callback.
 
         Forwards and translates the events to standard methods.
@@ -264,7 +267,7 @@ class Window(BaseWindow):
         self._handle_modifiers(modifiers)
         self._key_event_func(symbol, self.keys.ACTION_RELEASE, self._modifiers)
 
-    def on_mouse_motion(self, x, y, dx, dy):
+    def on_mouse_motion(self, x: int, y: int, dx: int, dy: int) -> None:
         """Pyglet specific mouse motion callback.
 
         Forwards and translates the event to the standard methods.
@@ -280,7 +283,7 @@ class Window(BaseWindow):
         # other window libraries
         self._mouse_position_event_func(x, self._height - y, dx, -dy)
 
-    def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
+    def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int) -> None:
         """Pyglet specific mouse drag event.
 
         When a mouse button is pressed this is the only way
@@ -289,7 +292,7 @@ class Window(BaseWindow):
         self._handle_modifiers(modifiers)
         self._mouse_drag_event_func(x, self._height - y, dx, -dy)
 
-    def on_mouse_press(self, x: int, y: int, button, mods):
+    def on_mouse_press(self, x: int, y: int, button: int, mods: int) -> None:
         """Handle mouse press events and forward to standard methods
 
         Args:
@@ -299,8 +302,8 @@ class Window(BaseWindow):
             mods: Modifiers
         """
         self._handle_modifiers(mods)
-        button = self._mouse_button_map.get(button, None)
-        if button is not None:
+        button = self._mouse_button_map.get(button, -1)
+        if button != -1:
             self._handle_mouse_button_state_change(button, True)
             self._mouse_press_event_func(
                 x,
@@ -308,7 +311,7 @@ class Window(BaseWindow):
                 button,
             )
 
-    def on_mouse_release(self, x: int, y: int, button, mods):
+    def on_mouse_release(self, x: int, y: int, button: int, mods: int) -> None:
         """Handle mouse release events and forward to standard methods
 
         Args:
@@ -317,8 +320,8 @@ class Window(BaseWindow):
             button: The button pressed
             mods: Modifiers
         """
-        button = self._mouse_button_map.get(button, None)
-        if button is not None:
+        button = self._mouse_button_map.get(button, -1)
+        if button != -1:
             self._handle_mouse_button_state_change(button, False)
             self._mouse_release_event_func(
                 x,
@@ -326,7 +329,7 @@ class Window(BaseWindow):
                 button,
             )
 
-    def on_mouse_scroll(self, x, y, x_offset: float, y_offset: float):
+    def on_mouse_scroll(self, x: int, y: int, x_offset: float, y_offset: float) -> None:
         """Handle mouse wheel.
 
         Args:
@@ -336,7 +339,7 @@ class Window(BaseWindow):
         self._handle_modifiers(0)  # No modifiers available
         self.mouse_scroll_event_func(x_offset, y_offset)
 
-    def on_resize(self, width: int, height: int):
+    def on_resize(self, width: int, height: int) -> None:
         """Pyglet specific callback for window resize events forwarding to standard methods
 
         Args:
@@ -349,19 +352,19 @@ class Window(BaseWindow):
 
         super().resize(self._buffer_width, self._buffer_height)
 
-    def on_close(self):
+    def on_close(self) -> None:
         """Pyglet specific window close callback"""
         self._close_func()
 
-    def on_show(self):
+    def on_show(self) -> None:
         """Called when window first appear or restored from hidden state"""
         self._iconify_func(False)
 
-    def on_hide(self):
+    def on_hide(self) -> None:
         """Called when window is minimized"""
         self._iconify_func(True)
 
-    def on_file_drop(self, x, y, paths):
+    def on_file_drop(self, x: int, y: int, paths: list[Union[str, Path]]) -> None:
         """Called when files dropped onto the window
 
         Args:
@@ -375,7 +378,7 @@ class Window(BaseWindow):
         (x, y) = self.convert_window_coordinates(x, y, y_flipped=True)
         self._files_dropped_event_func(x, y, paths)
 
-    def destroy(self):
+    def destroy(self) -> None:
         """Destroy the pyglet window"""
         pass
 
@@ -383,12 +386,12 @@ class Window(BaseWindow):
 class PygletWrapper(pyglet.window.Window):
     """Block out some window methods so pyglet don't trigger GL errors"""
 
-    def on_resize(self, width, height):
+    def on_resize(self, width: int, height: int) -> None:
         """Block out the resize method.
         For some reason pyglet calls this triggering errors.
         """
         pass
 
-    def on_draw(self):
+    def on_draw(self) -> None:
         """Block out the default draw method to avoid GL errors"""
         pass

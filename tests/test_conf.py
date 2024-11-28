@@ -1,10 +1,9 @@
 import os
 import sys
-
 from types import ModuleType
 from unittest import TestCase
 
-from moderngl_window.conf import Settings, SETTINGS_ENV_VAR
+from moderngl_window.conf import SETTINGS_ENV_VAR, Settings
 from moderngl_window.exceptions import ImproperlyConfigured
 
 

@@ -18,6 +18,7 @@ class Loader(BaseLoader):
         Returns:
             str: The string contents of the file
         """
+        assert self.meta.path is not None, "the path is empty for this loader"
         self.meta.resolved_path = self.find_data(self.meta.path)
 
         if not self.meta.resolved_path:

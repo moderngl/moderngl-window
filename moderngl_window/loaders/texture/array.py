@@ -1,18 +1,23 @@
-from moderngl_window.loaders.texture.pillow import PillowLoader, image_data
+import moderngl
+
 from moderngl_window.exceptions import ImproperlyConfigured
+from moderngl_window.loaders.texture.pillow import PillowLoader, image_data
+from moderngl_window.meta.base import ResourceDescription
+from moderngl_window.meta.texture import TextureDescription
 
 
 class Loader(PillowLoader):
     kind = "array"
+    meta: TextureDescription
 
-    def __init__(self, meta):
+    def __init__(self, meta: ResourceDescription):
         super().__init__(meta)
         self.layers = self.meta.layers
 
         if self.layers is None:
             raise ImproperlyConfigured("TextureArray requires layers parameter")
 
-    def load(self):
+    def load(self) -> moderngl.TextureArray:
         """Load a texture array as described by the supplied ``TextureDescription```
 
         Returns:

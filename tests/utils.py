@@ -1,6 +1,6 @@
-from contextlib import contextmanager
-import string
 import random
+import string
+from contextlib import contextmanager
 
 from moderngl_window import conf
 

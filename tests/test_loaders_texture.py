@@ -2,9 +2,10 @@ from pathlib import Path
 
 import moderngl
 from headless import HeadlessTestCase
+
 from moderngl_window import resources
-from moderngl_window.meta import TextureDescription
 from moderngl_window.exceptions import ImproperlyConfigured
+from moderngl_window.meta import TextureDescription
 
 resources.register_dir((Path(__file__).parent / 'fixtures' / 'resources').resolve())
 

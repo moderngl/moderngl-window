@@ -3,16 +3,18 @@ Registry general data files
 """
 
 from typing import Any
+
+from moderngl_window.meta import DataDescription, ResourceDescription
 from moderngl_window.resources.base import BaseRegistry
-from moderngl_window.meta import DataDescription
 
 
 class DataFiles(BaseRegistry):
     """Registry for requested data files"""
 
     settings_attr = "DATA_LOADERS"
+    meta: DataDescription
 
-    def load(self, meta: DataDescription) -> Any:
+    def load(self, meta: ResourceDescription) -> Any:
         """Load data file with the configured loaders.
 
         Args:

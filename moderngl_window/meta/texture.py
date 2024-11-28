@@ -1,5 +1,7 @@
-from typing import Tuple
+from typing import Any, Optional
+
 from PIL.Image import Image
+
 from moderngl_window.meta.base import ResourceDescription
 
 
@@ -25,23 +27,23 @@ class TextureDescription(ResourceDescription):
 
     def __init__(
         self,
-        path: str = None,
-        kind: str = None,
-        flip=True,
-        flip_x=False,
-        flip_y=True,
-        mipmap=False,
-        mipmap_levels: Tuple[int, int] = None,
-        anisotropy=1.0,
-        image=None,
-        layers=None,
-        pos_x: str = None,
-        pos_y: str = None,
-        pos_z: str = None,
-        neg_x: str = None,
-        neg_y: str = None,
-        neg_z: str = None,
-        **kwargs,
+        path: Optional[str] = None,
+        kind: Optional[str] = None,
+        flip: bool = True,
+        flip_x: bool = False,
+        flip_y: bool = True,
+        mipmap: bool = False,
+        mipmap_levels: Optional[tuple[int, int]] = None,
+        anisotropy: float =1.0,
+        image: Optional[Image] = None,
+        layers: Optional[int] = None,
+        pos_x: Optional[str] = None,
+        pos_y: Optional[str] = None,
+        pos_z: Optional[str] = None,
+        neg_x: Optional[str] = None,
+        neg_y: Optional[str] = None,
+        neg_z: Optional[str] = None,
+        **kwargs: Any,
     ):
         """Describes a texture resource
 
@@ -88,70 +90,70 @@ class TextureDescription(ResourceDescription):
         super().__init__(**kwargs)
 
     @property
-    def flip_x(self) -> bool:
+    def flip_x(self) -> Optional[bool]:
         """bool: If the image should be flipped horizontally (left to right)"""
         return self._kwargs.get("flip_x")
 
     @property
-    def flip_y(self) -> bool:
+    def flip_y(self) -> Optional[bool]:
         """bool: If the image should be flipped vertically (top to bottom)"""
         return self._kwargs.get("flip_y")
 
     @property
-    def mipmap(self) -> bool:
+    def mipmap(self) -> Optional[bool]:
         """bool: If mipmaps should be generated"""
         return self._kwargs.get("mipmap")
 
     @mipmap.setter
-    def mipmap(self, value: float):
+    def mipmap(self, value: float) -> None:
         self._kwargs["mipmap"] = value
 
     @property
-    def mipmap_levels(self) -> Tuple[int, int]:
-        """Tuple[int, int]: base, max_level for mipmap generation"""
+    def mipmap_levels(self) -> Optional[tuple[int, int]]:
+        """tuple[int, int]: base, max_level for mipmap generation"""
         return self._kwargs.get("mipmap_levels")
 
     @property
-    def layers(self) -> int:
+    def layers(self) -> Optional[int]:
         """int: Number of layers in texture array"""
         return self._kwargs.get("layers")
 
     @property
-    def anisotropy(self) -> float:
+    def anisotropy(self) -> Optional[float]:
         """float: Number of samples for anisotropic filtering"""
         return self._kwargs.get("anisotropy")
 
     @property
-    def image(self) -> Image:
+    def image(self) -> Optional[Image]:
         """Image: PIL image when loading embedded resources"""
         return self._kwargs.get("image")
 
     @property
-    def pos_x(self):
+    def pos_x(self) -> Optional[str]:
         """str: Path to positive x in a cubemap texture"""
         return self._kwargs.get("pos_x")
 
     @property
-    def pos_y(self):
+    def pos_y(self) -> Optional[str]:
         """str: Path to positive y in a cubemap texture"""
         return self._kwargs.get("pos_y")
 
     @property
-    def pos_z(self):
+    def pos_z(self) -> Optional[str]:
         """str: Path to positive z in a cubemap texture"""
         return self._kwargs.get("pos_z")
 
     @property
-    def neg_x(self):
+    def neg_x(self) -> Optional[str]:
         """str: Path to negative x in a cubemap texture"""
         return self._kwargs.get("neg_x")
 
     @property
-    def neg_y(self):
+    def neg_y(self) -> Optional[str]:
         """str: Path to negative y in a cubemap texture"""
         return self._kwargs.get("neg_y")
 
     @property
-    def neg_z(self):
+    def neg_z(self) -> Optional[str]:
         """str: Path to negative z in a cubemap texture"""
         return self._kwargs.get("neg_z")

@@ -1,20 +1,21 @@
 import math
-
-import numpy
+from typing import Any, Optional
 
 import moderngl as mlg
-from moderngl_window.opengl.vao import VAO
+import numpy
+
 from moderngl_window.geometry import AttributeNames
+from moderngl_window.opengl.vao import VAO
 
 
 def sphere(
-    radius=0.5,
-    sectors=32,
-    rings=16,
-    normals=True,
-    uvs=True,
-    name: str = None,
-    attr_names=AttributeNames,
+    radius: float = 0.5,
+    sectors: int = 32,
+    rings: int = 16,
+    normals: bool = True,
+    uvs: bool = True,
+    name: Optional[str] = None,
+    attr_names: type[AttributeNames] = AttributeNames,
 ) -> VAO:
     """Creates a sphere.
 
@@ -32,9 +33,10 @@ def sphere(
     R = 1.0 / (rings - 1)
     S = 1.0 / (sectors - 1)
 
-    vertices = [0] * (rings * sectors * 3)
-    normals = [0] * (rings * sectors * 3)
-    uvs = [0] * (rings * sectors * 2)
+    # Use those names as normals and uvs are part of the API
+    vertices_l = [0.0] * (rings * sectors * 3)
+    normals_l = [0.0] * (rings * sectors * 3)
+    uvs_l = [0.0] * (rings * sectors * 2)
 
     v, n, t = 0, 0, 0
     for r in range(rings):
@@ -43,16 +45,16 @@ def sphere(
             x = math.cos(2 * math.pi * s * S) * math.sin(math.pi * r * R)
             z = math.sin(2 * math.pi * s * S) * math.sin(math.pi * r * R)
 
-            uvs[t] = s * S
-            uvs[t + 1] = r * R
+            uvs_l[t] = s * S
+            uvs_l[t + 1] = r * R
 
-            vertices[v] = x * radius
-            vertices[v + 1] = y * radius
-            vertices[v + 2] = z * radius
+            vertices_l[v] = x * radius
+            vertices_l[v + 1] = y * radius
+            vertices_l[v + 2] = z * radius
 
-            normals[n] = x
-            normals[n + 1] = y
-            normals[n + 2] = z
+            normals_l[n] = x
+            normals_l[n + 1] = y
+            normals_l[n + 2] = z
 
             t += 2
             v += 3
@@ -73,15 +75,15 @@ def sphere(
 
     vao = VAO(name or "sphere", mode=mlg.TRIANGLES)
 
-    vbo_vertices = numpy.array(vertices, dtype=numpy.float32)
+    vbo_vertices = numpy.array(vertices_l, dtype=numpy.float32)
     vao.buffer(vbo_vertices, "3f", [attr_names.POSITION])
 
     if normals:
-        vbo_normals = numpy.array(normals, dtype=numpy.float32)
+        vbo_normals = numpy.array(normals_l, dtype=numpy.float32)
         vao.buffer(vbo_normals, "3f", [attr_names.NORMAL])
 
     if uvs:
-        vbo_uvs = numpy.array(uvs, dtype=numpy.float32)
+        vbo_uvs = numpy.array(uvs_l, dtype=numpy.float32)
         vao.buffer(vbo_uvs, "2f", [attr_names.TEXCOORD_0])
 
     vbo_elements = numpy.array(indices, dtype=numpy.uint32)

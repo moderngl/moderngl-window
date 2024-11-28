@@ -15,14 +15,14 @@ The point of this example is to :
 * We can reduce a voxel volume dramatically by just inspecting neighbors
 """
 
-from pathlib import Path
-from typing import Tuple
 from array import array
+from pathlib import Path
 
-import moderngl
-from moderngl_window import geometry
-from base import CameraWindow
 import glm
+import moderngl
+from base import CameraWindow
+
+from moderngl_window import geometry
 
 
 class CubeVoxel(CameraWindow):
@@ -95,7 +95,7 @@ class Voxel:
     We are sticking to simple transforms at textures.
     """
 
-    def __init__(self, *, ctx: moderngl.Context, size: Tuple[int, int, int]):
+    def __init__(self, *, ctx: moderngl.Context, size: tuple[int, int, int]):
         self.ctx = ctx
         self._size = size
 

@@ -2,8 +2,8 @@ from pathlib import Path
 from unittest import TestCase
 
 from moderngl_window import resources
-from moderngl_window.meta import DataDescription
 from moderngl_window.exceptions import ImproperlyConfigured
+from moderngl_window.meta import DataDescription
 
 resources.register_dir((Path(__file__).parent / 'fixtures' / 'resources').resolve())
 

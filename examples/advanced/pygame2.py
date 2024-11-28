@@ -5,11 +5,13 @@ https://blubberquark.tumblr.com/post/185013752945/using-moderngl-for-post-proces
 
 import math
 from pathlib import Path
-import pygame
+
+import glm
 import moderngl
+import pygame
+
 import moderngl_window
 from moderngl_window import geometry
-import glm
 
 # from moderngl_window.conf import settings
 # settings.SCREENSHOT_PATH = 'capture'

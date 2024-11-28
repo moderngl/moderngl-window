@@ -1,8 +1,9 @@
-import os
-from typing import Union
-
 import datetime
+import os
+from typing import Any, Optional, Union
+
 import moderngl
+
 from moderngl_window.timers.clock import Timer
 
 
@@ -21,28 +22,28 @@ class BaseVideoCapture:
 
     def __init__(
         self,
-        source: Union[moderngl.Texture, moderngl.Framebuffer] = None,
+        source: Union[moderngl.Texture, moderngl.Framebuffer],
         framerate: Union[int, float] = 60,
     ):
 
         self._source = source
         self._framerate = framerate
 
-        self._recording = False
+        self._recording: Optional[bool] = False
 
-        self._last_time: float = None
-        self._filename: str = None
-        self._width: int = None
-        self._height: int = None
+        self._last_time: float = 0.0
+        self._filename: str = ""
+        self._width: Optional[int] = None
+        self._height: Optional[int] = None
 
         self._timer = Timer()
 
-        self._components: int = None  # for textures
+        self._components: int = 0  # for textures
 
         if isinstance(self._source, moderngl.Texture):
             self._components = self._source.components
 
-    def _dump_frame(self, frame):
+    def _dump_frame(self, frame: Any) -> None:
         """
         custom function called during self.save()
 
@@ -59,24 +60,24 @@ class BaseVideoCapture:
         """
         raise NotImplementedError("override this function")
 
-    def _release_func(self):
+    def _release_func(self) -> None:
         """
         custom function called during self.release()
         """
         raise NotImplementedError("override this function")
 
-    def _get_wh(self):
+    def _get_wh(self) -> tuple[int, int]:
         """
         Return a tuple of the width and the height of the source
         """
         return self._source.width, self._source.height
 
-    def _remove_file(self):
+    def _remove_file(self) -> None:
         """Remove the filename of the video is it exist"""
         if os.path.exists(self._filename):
             os.remove(self._filename)
 
-    def start_capture(self, filename: str = None, framerate: Union[int, float] = 60):
+    def start_capture(self, filename: Optional[str] = None, framerate: Union[int, float] = 60) -> None:
         """
         Start the capturing process
 
@@ -100,6 +101,10 @@ class BaseVideoCapture:
                 print("source type: moderngl.Texture must have at least 3 components")
                 return
 
+        if self._source is None:
+            print("No source defined, there is nothing to record")
+            return
+
         if not filename:
             now = datetime.datetime.now()
             filename = f"video_{now:%Y%m%d_%H%M%S}.mp4"
@@ -121,11 +126,14 @@ class BaseVideoCapture:
         self._last_time = self._timer.time
         self._recording = True
 
-    def save(self):
+    def save(self) -> None:
         """
         Save function to call at the end of render function
         """
         if not self._recording:
+            return
+        
+        if self._source is None:
             return
 
         dt = 1.0 / self._framerate
@@ -144,7 +152,7 @@ class BaseVideoCapture:
                 frame = self._source.read()
                 self._dump_frame(frame)
 
-    def release(self):
+    def release(self) -> None:
         """
         Stop the recording process
         """

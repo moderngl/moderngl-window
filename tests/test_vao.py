@@ -1,7 +1,7 @@
 import moderngl
 import numpy
-
 from headless import HeadlessTestCase
+
 from moderngl_window.opengl.vao import VAO, BufferInfo, VAOError
 
 

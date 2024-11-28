@@ -5,13 +5,13 @@ For each box, locate an image in your File Manager, and drag and drop onto the b
 
 Currently only working with the Pyglet backend.
 """
-from pathlib import Path
 import os
-
-import moderngl
-import moderngl_window
+from pathlib import Path
 
 import glm
+import moderngl
+
+import moderngl_window
 
 
 class Cubes(moderngl_window.WindowConfig):

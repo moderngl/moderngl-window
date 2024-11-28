@@ -1,16 +1,16 @@
+from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Union
 
 from moderngl_window.conf import settings
 from moderngl_window.exceptions import ImproperlyConfigured
-
-from moderngl_window.resources.programs import programs  # noqa
-from moderngl_window.resources.textures import textures  # noqa
-
+from moderngl_window.resources.data import data as data
+from moderngl_window.resources.programs import programs as programs
 # from moderngl_window.resources.tracks import tracks  # noqa
-from moderngl_window.resources.scenes import scenes  # noqa
-from moderngl_window.resources.data import data  # noqa
+from moderngl_window.resources.scenes import scenes as scenes
+from moderngl_window.resources.textures import TextureAny as TextureAny
+from moderngl_window.resources.textures import textures as textures
 
 
 def register_dir(path: Union[Path, str]) -> None:
@@ -61,7 +61,7 @@ def register_data_dir(path: Union[Path, str]) -> None:
     _append_unique_path(path, settings.DATA_DIRS)
 
 
-def _append_unique_path(path: Union[Path, str], dest: list):
+def _append_unique_path(path: Union[Path, str], dest: list[Union[Path, str]]) -> None:
     path = Path(path)
     if not path.is_absolute():
         raise ImproperlyConfigured("Search path must be absolute: {}".format(path))
@@ -80,7 +80,7 @@ def _append_unique_path(path: Union[Path, str], dest: list):
 
 
 @contextmanager
-def temporary_dirs(dirs: Union[Path, str]):
+def temporary_dirs(dirs: list[Union[Path, str]]) -> Iterator[list[Union[Path, str]]]:
     """Temporarily changes all resource directories
 
     Example::

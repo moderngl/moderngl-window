@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 import moderngl
+
 import moderngl_window as mglw
 from moderngl_window.conf import settings
 

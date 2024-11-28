@@ -1,10 +1,11 @@
-from typing import Tuple
-import glfw
+from pathlib import Path
+from typing import Any
 
+import glfw
 from PIL import Image
 
 from moderngl_window.context.base import BaseWindow
-from moderngl_window.context.glfw.keys import Keys
+from moderngl_window.context.glfw.keys import GLFW_key, Keys
 
 
 class Window(BaseWindow):
@@ -24,7 +25,7 @@ class Window(BaseWindow):
         2: 3,
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any):
         super().__init__(**kwargs)
 
         if not glfw.init():
@@ -126,8 +127,8 @@ class Window(BaseWindow):
         glfw.swap_interval(value)
 
     @property
-    def size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: current window size.
+    def size(self) -> tuple[int, int]:
+        """tuple[int, int]: current window size.
 
         This property also support assignment::
 
@@ -137,12 +138,12 @@ class Window(BaseWindow):
         return self._width, self._height
 
     @size.setter
-    def size(self, value: Tuple[int, int]):
+    def size(self, value: tuple[int, int]) -> None:
         glfw.set_window_size(self._window, value[0], value[1])
 
     @property
-    def position(self) -> Tuple[int, int]:
-        """Tuple[int, int]: The current window position.
+    def position(self) -> tuple[int, int]:
+        """tuple[int, int]: The current window position.
 
         This property can also be set to move the window::
 
@@ -152,7 +153,7 @@ class Window(BaseWindow):
         return glfw.get_window_pos(self._window)
 
     @position.setter
-    def position(self, value: Tuple[int, int]):
+    def position(self, value: tuple[int, int]) -> None:
         self._position = glfw.set_window_pos(self._window, value[0], value[1])
 
     @property
@@ -167,7 +168,7 @@ class Window(BaseWindow):
         return self._visible
 
     @visible.setter
-    def visible(self, value: bool):
+    def visible(self, value: bool) -> None:
         self._visible = value
         if value:
             glfw.show_window(self._window)
@@ -186,7 +187,7 @@ class Window(BaseWindow):
         return self._cursor
 
     @cursor.setter
-    def cursor(self, value: bool):
+    def cursor(self, value: bool) -> None:
         if not self.mouse_exclusivity:
             if value is True:
                 glfw.set_input_mode(self._window, glfw.CURSOR, glfw.CURSOR_NORMAL)
@@ -212,7 +213,7 @@ class Window(BaseWindow):
         return self._mouse_exclusivity
 
     @mouse_exclusivity.setter
-    def mouse_exclusivity(self, value: bool):
+    def mouse_exclusivity(self, value: bool) -> None:
         self._mouse_exclusivity = value
         if value is True:
             self._mouse_pos = glfw.get_cursor_pos(self._window)
@@ -231,7 +232,7 @@ class Window(BaseWindow):
         return self._title
 
     @title.setter
-    def title(self, value: str):
+    def title(self, value: str) -> None:
         glfw.set_window_title(self._window, value)
         self._title = value
 
@@ -241,31 +242,31 @@ class Window(BaseWindow):
         self._close_func()
 
     @property
-    def is_closing(self):
+    def is_closing(self) -> bool:
         """bool: Checks if the window is scheduled for closing"""
         return glfw.window_should_close(self._window)
 
     @is_closing.setter
-    def is_closing(self, value: bool):
+    def is_closing(self, value: bool) -> None:
         glfw.set_window_should_close(self._window, value)
 
-    def swap_buffers(self):
+    def swap_buffers(self) -> None:
         """Swap buffers, increment frame counter and pull events"""
         glfw.swap_buffers(self._window)
         self._frames += 1
         glfw.poll_events()
 
-    def _handle_modifiers(self, mods):
+    def _handle_modifiers(self, mods: GLFW_key) -> None:
         """Checks key modifiers"""
         self._modifiers.shift = mods & 1 == 1
         self._modifiers.ctrl = mods & 2 == 2
         self._modifiers.alt = mods & 4 == 4
 
-    def _set_icon(self, icon_path) -> None:
+    def _set_icon(self, icon_path: Path) -> None:
         image = Image.open(icon_path)
         glfw.set_window_icon(self._window, 1, image)
 
-    def glfw_key_event_callback(self, window, key, scancode, action, mods):
+    def glfw_key_event_callback(self, window: Any, key: GLFW_key, scancode: int, action: GLFW_key, mods: GLFW_key) -> None:
         """Key event callback for glfw.
         Translates and forwards keyboard event to :py:func:`keyboard_event`
 
@@ -291,7 +292,7 @@ class Window(BaseWindow):
 
         self._key_event_func(key, action, self._modifiers)
 
-    def glfw_mouse_event_callback(self, window, xpos, ypos):
+    def glfw_mouse_event_callback(self, window: Any, xpos: float, ypos: float) -> None:
         """Mouse position event callback from glfw.
         Translates the events forwarding them to :py:func:`cursor_event`.
 
@@ -310,7 +311,7 @@ class Window(BaseWindow):
         else:
             self._mouse_position_event_func(xpos, ypos, dx, dy)
 
-    def glfw_mouse_button_callback(self, window, button, action, mods):
+    def glfw_mouse_button_callback(self, window: Any, button: GLFW_key, action: GLFW_key, mods: GLFW_key) -> None:
         """Handle mouse button events and forward them to the example
 
         Args:
@@ -320,8 +321,8 @@ class Window(BaseWindow):
             mods: They modifiers such as ctrl or shift
         """
         self._handle_modifiers(mods)
-        button = self._mouse_button_map.get(button, None)
-        if button is None:
+        button = self._mouse_button_map.get(button, -1)
+        if button == -1:
             return
 
         xpos, ypos = glfw.get_cursor_pos(self._window)
@@ -333,7 +334,7 @@ class Window(BaseWindow):
             self._handle_mouse_button_state_change(button, False)
             self._mouse_release_event_func(xpos, ypos, button)
 
-    def glfw_mouse_scroll_callback(self, window, x_offset: float, y_offset: float):
+    def glfw_mouse_scroll_callback(self, window: Any, x_offset: float, y_offset: float) -> None:
         """Handle mouse scroll events and forward them to the example
 
         Args:
@@ -343,7 +344,7 @@ class Window(BaseWindow):
         """
         self._mouse_scroll_event_func(x_offset, y_offset)
 
-    def glfw_char_callback(self, window, codepoint: int):
+    def glfw_char_callback(self, window: Any, codepoint: int) -> None:
         """Handle text input (only unicode charaters)
 
         Args:
@@ -352,7 +353,7 @@ class Window(BaseWindow):
         """
         self._unicode_char_entered_func(chr(codepoint))
 
-    def glfw_window_resize_callback(self, window, width, height):
+    def glfw_window_resize_callback(self, window: Any, width: int, height: int) -> None:
         """
         Window resize callback for glfw
 
@@ -367,7 +368,7 @@ class Window(BaseWindow):
 
         super().resize(self._buffer_width, self._buffer_height)
 
-    def glfw_window_focus(self, window, focused: int):
+    def glfw_window_focus(self, window: Any, focused: int) -> None:
         """Called when the window focus is changed.
 
         Args:
@@ -376,7 +377,7 @@ class Window(BaseWindow):
         """
         self._has_focus = True if focused == 1 else False
 
-    def glfw_cursor_enter(self, window, enter: int):
+    def glfw_cursor_enter(self, window: Any, enter: int) -> None:
         """called when the cursor enters or leaves the content area of the window.
 
         Args:
@@ -385,7 +386,7 @@ class Window(BaseWindow):
         """
         pass
 
-    def glfw_window_iconify(self, window, iconified: int):
+    def glfw_window_iconify(self, window: Any, iconified: int) -> None:
         """Called when the window is minimized or restored.
 
         Args:
@@ -394,10 +395,10 @@ class Window(BaseWindow):
         """
         self._iconify_func(True if iconified == 1 else False)
 
-    def glfw_window_close(self, window):
+    def glfw_window_close(self, window: Any) -> None:
         """Called when the window is closed"""
         self.close()
 
-    def destroy(self):
+    def destroy(self) -> None:
         """Gracefully terminate GLFW"""
         glfw.terminate()

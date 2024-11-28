@@ -1,11 +1,13 @@
-import numpy
+from typing import Optional
 
 import moderngl
-from moderngl_window.opengl.vao import VAO
+import numpy
+
 from moderngl_window.geometry import AttributeNames
+from moderngl_window.opengl.vao import VAO
 
 
-def bbox(size=(1.0, 1.0, 1.0), name=None, attr_names=AttributeNames):
+def bbox(size: tuple[float, float, float] = (1.0, 1.0, 1.0), name: Optional[str] = None, attr_names: type[AttributeNames] = AttributeNames) -> VAO:
     """
     Generates a bounding box with (0.0, 0.0, 0.0) as the center.
     This is simply a box with ``LINE_STRIP`` as draw mode.

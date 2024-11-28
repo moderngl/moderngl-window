@@ -16,6 +16,7 @@ from unittest.mock import MagicMock
 
 from moderngl_window.utils import module_loading
 
+
 # Mock modules
 class Mock(MagicMock):
     @classmethod

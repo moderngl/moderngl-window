@@ -1,19 +1,28 @@
-import numpy
-import glm
+from typing import TYPE_CHECKING, Any, Optional, Union
 
+import glm
+import moderngl
+import numpy
+
+from moderngl_window.opengl.vao import VAO
+
+from .material import Material
+
+if TYPE_CHECKING:
+    from .programs import MeshProgram
 
 class Mesh:
     """Mesh info and geometry"""
 
     def __init__(
         self,
-        name,
-        vao=None,
-        material=None,
-        attributes=None,
-        bbox_min=None,
-        bbox_max=None,
-    ):
+        name: str,
+        vao: Optional[VAO] = None,
+        material: Optional[Material] = None,
+        attributes: Optional[dict[str, Any]] = None,
+        bbox_min: glm.vec3 = glm.vec3(),
+        bbox_max: glm.vec3 = glm.vec3(),
+    ) -> None:
         """Initialize mesh.
 
         Args:
@@ -38,9 +47,9 @@ class Mesh:
         self.attributes = attributes or {}
         self.bbox_min = bbox_min
         self.bbox_max = bbox_max
-        self.mesh_program = None
+        self.mesh_program: Optional["MeshProgram"] = None
 
-    def draw(self, projection_matrix=None, model_matrix=None, camera_matrix=None, time=0.0):
+    def draw(self, projection_matrix: Optional[glm.mat4] = None, model_matrix: Optional[glm.mat4] = None, camera_matrix: Optional[glm.mat4] = None, time: float = 0.0) -> None:
         """Draw the mesh using the assigned mesh program
 
         Keyword Args:
@@ -48,7 +57,10 @@ class Mesh:
             view_matrix (bytes): view_matrix
             camera_matrix (bytes): camera_matrix
         """
-        if self.mesh_program:
+        if self.mesh_program is not None:
+            assert projection_matrix is not None, "Can not draw, there is no projection matrix to use"
+            assert model_matrix is not None, "Can not draw, there is no model matrix to use"
+            assert camera_matrix is not None, "Can not draw, there is no camera matrix to use"
             self.mesh_program.draw(
                 self,
                 projection_matrix=projection_matrix,
@@ -57,7 +69,7 @@ class Mesh:
                 time=time,
             )
 
-    def draw_bbox(self, proj_matrix, model_matrix, cam_matrix, program, vao):
+    def draw_bbox(self, proj_matrix: glm.mat4, model_matrix: glm.mat4, cam_matrix: glm.mat4, program: moderngl.Program, vao: VAO) -> None:
         """Renders the bounding box for this mesh.
 
         Args:
@@ -67,25 +79,26 @@ class Mesh:
             program: The moderngl.Program rendering the bounding box
             vao: The vao mesh for the bounding box
         """
-        program["m_proj"].write(proj_matrix)
-        program["m_model"].write(model_matrix)
-        program["m_cam"].write(cam_matrix)
-        program["bb_min"].write(self.bbox_min.astype("f4").tobytes())
-        program["bb_max"].write(self.bbox_max.astype("f4").tobytes())
+        program["m_proj"].write(proj_matrix.to_bytes())
+        program["m_model"].write(model_matrix.to_bytes())
+        program["m_cam"].write(cam_matrix.to_bytes())
+        program["bb_min"].write(self.bbox_min.to_bytes())
+        program["bb_max"].write(self.bbox_max.to_bytes())
         vao.render(program)
 
-    def draw_wireframe(self, proj_matrix, model_matrix, program):
+    def draw_wireframe(self, proj_matrix: glm.mat4, model_matrix: glm.mat4, program: moderngl.Program) -> None:
         """Render the mesh as wireframe.
 
         proj_matrix: Projection matrix
         model_matrix: View/model matrix
         program: The moderngl.Program rendering the wireframe
         """
-        program["m_proj"].write(proj_matrix)
-        program["m_model"].write(model_matrix)
+        assert self.vao is not None, "Can not draw the wireframe, vao is empty"
+        program["m_proj"].write(proj_matrix.to_bytes())
+        program["m_model"].write(model_matrix.to_bytes())
         self.vao.render(program)
 
-    def add_attribute(self, attr_type, name, components):
+    def add_attribute(self, attr_type: str, name: str, components: int) -> None:
         """
         Add metadata about the mesh
         :param attr_type: POSITION, NORMAL etc
@@ -94,7 +107,7 @@ class Mesh:
         """
         self.attributes[attr_type] = {"name": name, "components": components}
 
-    def calc_global_bbox(self, view_matrix, bbox_min, bbox_max):
+    def calc_global_bbox(self, view_matrix: glm.mat4, bbox_min: Optional[glm.vec3], bbox_max: Optional[glm.vec3]) -> tuple[glm.vec3, glm.vec3]:
         """Calculates the global bounding.
 
         Args:
@@ -105,12 +118,13 @@ class Mesh:
             bbox_min, bbox_max: Combined bbox
         """
         # Copy and extend to vec4
-        bb1 = glm.vec4(*self.bbox_min[:], 1.0)
-        bb2 = glm.vec4(*self.bbox_max[:], 1.0)
+        bb1 = glm.vec4(self.bbox_min, 1.0)
+        bb2 = glm.vec4(self.bbox_max, 1.0)
 
         # Transform the bbox values
-        bmin = numpy.asarray(view_matrix * bb1, dtype="f4")
-        bmax = numpy.asarray(view_matrix * bb2, dtype="f4")
+        bmin = view_matrix * bb1
+        bmax = view_matrix * bb2
+
 
         # If a rotation happened there is an axis change and we have to ensure max-min is positive
         for i in range(3):
@@ -118,7 +132,10 @@ class Mesh:
                 bmin[i], bmax[i] = bmax[i], bmin[i]
 
         if bbox_min is None or bbox_max is None:
-            return bmin[0:3], bmax[0:3]
+            return (
+                glm.vec3(bmin.x, bmin.y, bmin.z),
+                glm.vec3(bmax.x, bmax.y, bmax.z)
+            )
 
         for i in range(3):
             bbox_min[i] = min(bbox_min[i], bmin[i])
@@ -135,7 +152,7 @@ class Mesh:
         """
         return "NORMAL" in self.attributes
 
-    def has_uvs(self, layer=0) -> bool:
+    def has_uvs(self, layer: int = 0) -> bool:
         """
         Returns:
             bool: Does the mesh have texture coordinates?

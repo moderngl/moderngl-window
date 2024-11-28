@@ -1,5 +1,7 @@
 import logging
 
+import moderngl
+
 from moderngl_window.loaders.texture.pillow import PillowLoader, image_data
 
 logger = logging.getLogger(__name__)
@@ -8,7 +10,7 @@ logger = logging.getLogger(__name__)
 class Loader(PillowLoader):
     kind = "2d"
 
-    def load(self):
+    def load(self) -> moderngl.Texture:
         """Load a 2d texture as configured in the supplied ``TextureDescription``
 
         Returns:

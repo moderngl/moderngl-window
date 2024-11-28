@@ -1,16 +1,11 @@
 from pathlib import Path
 from unittest import TestCase
 
-from moderngl_window.finders.base import BaseFilesystemFinder
-from moderngl_window.finders import (
-    data,
-    program,
-    texture,
-    scene,
-)
-from moderngl_window.exceptions import ImproperlyConfigured
-
 from utils import settings_context
+
+from moderngl_window.exceptions import ImproperlyConfigured
+from moderngl_window.finders import data, program, scene, texture
+from moderngl_window.finders.base import BaseFilesystemFinder
 
 
 class FinderTestCase(TestCase):

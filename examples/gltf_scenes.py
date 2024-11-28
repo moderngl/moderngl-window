@@ -1,10 +1,11 @@
 from pathlib import Path
-import glm
 
+import glm
 import moderngl
+from base import CameraWindow
+
 import moderngl_window as mglw
 from moderngl_window.scene.camera import KeyboardCamera
-from base import CameraWindow
 
 
 class CubeModel(CameraWindow):

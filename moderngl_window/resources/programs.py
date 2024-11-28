@@ -1,14 +1,16 @@
 import moderngl
+
+from moderngl_window.meta import ProgramDescription, ResourceDescription
 from moderngl_window.resources.base import BaseRegistry
-from moderngl_window.meta import ProgramDescription
 
 
 class Programs(BaseRegistry):
     """Handle program loading"""
 
     settings_attr = "PROGRAM_LOADERS"
+    meta: ProgramDescription
 
-    def resolve_loader(self, meta: ProgramDescription) -> None:
+    def resolve_loader(self, meta: ResourceDescription) -> None:
         """Resolve program loader.
 
         Determines if the references resource is a single
@@ -17,12 +19,15 @@ class Programs(BaseRegistry):
         Args:
             meta (ProgramDescription): The resource description
         """
-        if not meta.kind:
-            meta.kind = "single" if meta.path else "separate"
+        if meta.kind == "":
+            if meta.path is None:
+                meta.kind = "separate"
+            else:
+                meta.kind = "single"
 
         super().resolve_loader(meta)
 
-    def load(self, meta: ProgramDescription) -> moderngl.Program:
+    def load(self, meta: ResourceDescription) -> moderngl.Program:
         """Loads a shader program with the configured loaders
 
         Args:
@@ -31,7 +36,10 @@ class Programs(BaseRegistry):
         Returns:
             moderngl.Program: The shader program
         """
-        return super().load(meta)
+        prog = super().load(meta)
+        # The tests fails with this line
+        # assert isinstance(prog, moderngl.Program), f"{meta} (type is {type(prog)}) do not load a moderngl.Program object, please correct this"
+        return prog
 
 
 programs = Programs()

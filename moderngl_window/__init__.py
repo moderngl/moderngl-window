@@ -8,16 +8,17 @@ import logging
 import os
 import sys
 import weakref
-
 from pathlib import Path
-from typing import List, Type, Optional
+from typing import Any, Optional
 
 import moderngl
-from moderngl_window.context.base import WindowConfig, BaseWindow
-from moderngl_window.timers.clock import Timer
+
 from moderngl_window.conf import settings
+from moderngl_window.context.base import BaseWindow, WindowConfig
+from moderngl_window.timers.clock import Timer
+from moderngl_window.utils.keymaps import (AZERTY, QWERTY, KeyMap,  # noqa
+                                           KeyMapFactory)
 from moderngl_window.utils.module_loading import import_string
-from moderngl_window.utils.keymaps import KeyMapFactory, KeyMap, QWERTY, AZERTY  # noqa
 
 __version__ = "3.0.0"
 
@@ -47,7 +48,7 @@ OPTIONS_ALL = OPTIONS_TRUE + OPTIONS_FALSE
 logger = logging.getLogger(__name__)
 
 
-def setup_basic_logging(level: int):
+def setup_basic_logging(level: int) -> None:
     """Set up basic logging
 
     Args:
@@ -73,7 +74,7 @@ class ContextRefs:
     CONTEXT: Optional[moderngl.Context] = None
 
 
-def activate_context(window: BaseWindow = None, ctx: moderngl.Context = None):
+def activate_context(window: Optional[BaseWindow] = None, ctx: Optional[moderngl.Context] = None) -> None:
     """
     Register the active window and context.
     If only a window is supplied the context is taken from the window.
@@ -85,11 +86,12 @@ def activate_context(window: BaseWindow = None, ctx: moderngl.Context = None):
     """
     ContextRefs.WINDOW = window
     ContextRefs.CONTEXT = ctx
-    if not ctx:
+    if ctx is None:
+        assert window is not None, "The window parameter can not be None if ctx is None"
         ContextRefs.CONTEXT = window.ctx
 
 
-def window():
+def window() -> BaseWindow:
     """Obtain the active window"""
     if ContextRefs.WINDOW:
         return ContextRefs.WINDOW
@@ -97,7 +99,7 @@ def window():
     raise ValueError("No active window and context. Call activate_window.")
 
 
-def ctx():
+def ctx() -> moderngl.Context:
     """Obtain the active context"""
     if ContextRefs.CONTEXT:
         return ContextRefs.CONTEXT
@@ -105,7 +107,7 @@ def ctx():
     raise ValueError("No active window and context. Call activate_window.")
 
 
-def get_window_cls(window: str = None) -> Type[BaseWindow]:
+def get_window_cls(window: str = "") -> type[BaseWindow]:
     """
     Attempt to obtain a window class using the full dotted
     python path. This can be used to import custom or modified
@@ -118,10 +120,12 @@ def get_window_cls(window: str = None) -> Type[BaseWindow]:
         A reference to the requested window class. Raises exception if not found.
     """
     logger.info("Attempting to load window class: %s", window)
-    return import_string(window)
+    win = import_string(window)
 
+    assert issubclass(win, BaseWindow), f"{win} is not derived from moderngl_window.context.base.BaseWindow"
+    return win
 
-def get_local_window_cls(window: str = None) -> Type[BaseWindow]:
+def get_local_window_cls(window: Optional[str] = None) -> type[BaseWindow]:
     """
     Attempt to obtain a window class in the moderngl_window package
     using short window names such as ``pyglet`` or ``glfw``.
@@ -133,13 +137,13 @@ def get_local_window_cls(window: str = None) -> Type[BaseWindow]:
         A reference to the requested window class. Raises exception if not found.
     """
     window = os.environ.get("MODERNGL_WINDOW") or window
-    if not window:
+    if window is None:
         window = "pyglet"
 
     return get_window_cls("moderngl_window.context.{}.Window".format(window))
 
 
-def find_window_classes() -> List[str]:
+def find_window_classes() -> list[str]:
     """
     Find available window packages
     Returns:
@@ -167,6 +171,8 @@ def create_window_from_settings() -> BaseWindow:
     """
     window_cls = import_string(settings.WINDOW["class"])
     window = window_cls(**settings.WINDOW)
+
+    assert isinstance(window, BaseWindow), f"{type(window)} is not derived from moderngl_window.context.base.BaseWindow"
     activate_context(window=window)
     return window
 
@@ -174,7 +180,7 @@ def create_window_from_settings() -> BaseWindow:
 # --- The simple window config system ---
 
 
-def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
+def run_window_config(config_cls: type[WindowConfig], timer: Optional[Timer] = None, args: Any = None) -> None:
     """
     Run an WindowConfig entering a blocking main loop
 
@@ -215,7 +221,8 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
     )
     window.print_context_info()
     activate_context(window=window)
-    timer = timer or Timer()
+    if timer is None:
+        timer = Timer()
     config = config_cls(ctx=window.ctx, wnd=window, timer=timer)
     # Avoid the event assigning in the property setter for now
     # We want the even assigning to happen in WindowConfig.__init__
@@ -249,7 +256,7 @@ def run_window_config(config_cls: WindowConfig, timer=None, args=None) -> None:
         logger.info("Duration: {0:.2f}s @ {1:.2f} FPS".format(duration, window.frames / duration))
 
 
-def create_parser():
+def create_parser() -> argparse.ArgumentParser:
     """Create an argparser parsing the standard arguments for WindowConfig"""
     parser = argparse.ArgumentParser()
 
@@ -315,7 +322,7 @@ def create_parser():
     return parser
 
 
-def parse_args(args=None, parser=None):
+def parse_args(args: Optional[Any] = None, parser: Optional[argparse.ArgumentParser] = None) -> argparse.Namespace:
     """Parse arguments from sys.argv
 
     Passing in your own argparser can be user to extend the parser.
@@ -331,22 +338,22 @@ def parse_args(args=None, parser=None):
 # --- Validators ---
 
 
-def valid_bool(value):
+def valid_bool(value: Optional[str]) -> Optional[bool]:
     """Validator for bool values"""
-    value = value.lower()
     if value is None:
         return None
 
+    value = value.lower()
     if value in OPTIONS_TRUE:
         return True
 
     if value in OPTIONS_FALSE:
         return False
 
-    raise argparse.ArgumentTypeError("Boolean value expected. Options: {}".format(OPTIONS_ALL))
+    raise argparse.ArgumentTypeError(f"Boolean value expected. Options: {OPTIONS_ALL}")
 
 
-def valid_window_size(value):
+def valid_window_size(value: str) -> tuple[int, int]:
     """
     Validator for window size parameter.
 
@@ -363,7 +370,7 @@ def valid_window_size(value):
     )
 
 
-def valid_window_size_multiplier(value):
+def valid_window_size_multiplier(value: str) -> float:
     """Validates window size multiplier
 
     Must be an integer or float greater than 0

@@ -1,8 +1,9 @@
 from pathlib import Path
 from unittest import TestCase
-from moderngl_window.opengl import program
+
 from moderngl_window import resources
 from moderngl_window.meta import DataDescription
+from moderngl_window.opengl import program
 
 resources.register_dir((Path(__file__).parent / 'fixtures/resources').resolve())
 

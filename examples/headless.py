@@ -1,6 +1,7 @@
+import moderngl
 import numpy as np
 from PIL import Image
-import moderngl
+
 import moderngl_window
 
 

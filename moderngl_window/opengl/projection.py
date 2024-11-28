@@ -1,13 +1,13 @@
-from typing import Tuple
+from typing import Optional
 
-import numpy as np
 import glm
+import numpy as np
 
 
 class Projection3D:
     """3D Projection"""
 
-    def __init__(self, aspect_ratio=16 / 9, fov=75.0, near=1.0, far=100.0):
+    def __init__(self, aspect_ratio: float = 16 / 9, fov: float = 75.0, near: float = 1.0, far: float = 100.0):
         """Create a 3D projection
 
         Keyword Args:
@@ -20,8 +20,8 @@ class Projection3D:
         self._fov = fov
         self._near = near
         self._far = far
-        self._matrix = None
-        self._matrix_bytes = None
+        self._matrix = glm.mat4(0)
+        self._matrix_bytes = bytes(0)
         self.update()
 
     @property
@@ -45,16 +45,16 @@ class Projection3D:
         return self._far
 
     @property
-    def matrix(self) -> np.ndarray:
-        """np.ndarray: Current numpy projection matrix"""
+    def matrix(self) -> glm.mat4:
+        """glm.mat4x4: Current projection matrix"""
         return self._matrix
 
     def update(
         self,
-        aspect_ratio: float = None,
-        fov: float = None,
-        near: float = None,
-        far: float = None,
+        aspect_ratio: Optional[float] = None,
+        fov: Optional[float] = None,
+        near: Optional[float] = None,
+        far: Optional[float] = None,
     ) -> None:
         """Update the projection matrix
 
@@ -64,10 +64,14 @@ class Projection3D:
             near (float): Near plane value
             far (float): Far plane value
         """
-        self._aspect_ratio = aspect_ratio or self._aspect_ratio
-        self._fov = fov or self._fov
-        self._near = near or self._near
-        self._far = far or self._far
+        if aspect_ratio is not None:
+            self._aspect_ratio = aspect_ratio
+        if fov is not None:
+            self._fov = fov
+        if near is not None:
+            self._near = near
+        if far is not None:
+            self._far = far
 
         self._matrix = glm.perspective(
             glm.radians(self._fov), self._aspect_ratio, self._near, self._far
@@ -83,7 +87,7 @@ class Projection3D:
         return self._matrix_bytes
 
     @property
-    def projection_constants(self) -> Tuple[float, float]:
+    def projection_constants(self) -> tuple[float, float]:
         """
         (x, y) projection constants for the current projection.
         This is for example useful when reconstructing a view position

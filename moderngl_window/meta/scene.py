@@ -1,5 +1,7 @@
-from moderngl_window.meta.base import ResourceDescription
+from typing import Any, Optional
+
 from moderngl_window.geometry.attributes import AttributeNames
+from moderngl_window.meta.base import ResourceDescription
 
 
 class SceneDescription(ResourceDescription):
@@ -28,10 +30,10 @@ class SceneDescription(ResourceDescription):
     on the fly to speed up loading.
     """
 
-    default_kind = None
+    default_kind = ""
     resource_type = "scenes"
 
-    def __init__(self, path=None, kind=None, cache=False, attr_names=AttributeNames, **kwargs):
+    def __init__(self, path: Optional[str] = None, kind: Optional[str] = None, cache: bool = False, attr_names: type[AttributeNames] = AttributeNames, **kwargs: Any):
         """Create a scene description.
 
         Keyword Args:
@@ -50,7 +52,7 @@ class SceneDescription(ResourceDescription):
     @property
     def cache(self) -> bool:
         """bool: Use cache feature in scene loader"""
-        return self._kwargs["cache"]
+        return bool(self._kwargs["cache"])
 
     @property
     def attr_names(self) -> AttributeNames:

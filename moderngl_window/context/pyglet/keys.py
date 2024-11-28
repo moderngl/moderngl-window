@@ -1,5 +1,6 @@
 # flake8: noqa E741
 import platform
+
 import pyglet
 
 # On OS X we need to disable the shadow context

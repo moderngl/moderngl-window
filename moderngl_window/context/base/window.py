@@ -1,33 +1,37 @@
-from argparse import ArgumentParser
-from functools import wraps
-from pathlib import Path
 import logging
 import sys
 import weakref
-from typing import Any, Tuple, Type, List, Optional, Dict
+from argparse import ArgumentParser, Namespace
+from functools import wraps
+from pathlib import Path
+from typing import Any, Callable, Optional, Union
 
 import moderngl
-from moderngl_window.context.base import KeyModifiers, BaseKeys
-from moderngl_window.timers.base import BaseTimer
+
 from moderngl_window import resources
+from moderngl_window.context.base import BaseKeys, KeyModifiers
 from moderngl_window.geometry.attributes import AttributeNames
-from moderngl_window.meta import (
-    TextureDescription,
-    ProgramDescription,
-    SceneDescription,
-    DataDescription,
-)
 from moderngl_window.loaders.texture.icon import IconLoader
+from moderngl_window.meta import (DataDescription, ProgramDescription,
+                                  SceneDescription, TextureDescription)
 from moderngl_window.scene import Scene
+from moderngl_window.timers.base import BaseTimer
+
+try:
+    from pygame.event import Event
+except ModuleNotFoundError:
+    Event = Any
+
+FuncAny = Callable[[Any], Any]
 
 logger = logging.getLogger(__name__)
 
 
-def require_callable(func):
+def require_callable(func: Callable[[Any], Any]) -> Callable[[Any], Any]:
     """Decorator ensuring assigned callbacks are valid callables"""
 
     @wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         if not callable(args[1]):
             raise ValueError("{} is not a callable".format(args[1]))
         return func(*args, **kwargs)
@@ -51,7 +55,7 @@ class MouseButtonStates:
     middle = False
 
     @property
-    def any(self):
+    def any(self) -> bool:
         """bool: if any mouse buttons are pressed"""
         return self.left or self.right or self.middle
 
@@ -78,19 +82,19 @@ class BaseWindow:
 
     def __init__(
         self,
-        title="ModernGL",
-        gl_version=(3, 3),
-        size=(1280, 720),
-        resizable=True,
-        visible=True,
-        fullscreen=False,
-        vsync=True,
-        aspect_ratio: float = None,
-        samples=0,
-        cursor=True,
+        title: str="ModernGL",
+        gl_version: tuple[int, int] = (3, 3),
+        size: tuple[int, int] = (1280, 720),
+        resizable: bool= True,
+        visible: bool = True,
+        fullscreen: bool = False,
+        vsync: bool = True,
+        aspect_ratio: Optional[float] = None,
+        samples: int = 0,
+        cursor: bool = True,
         backend: Optional[str] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         """Initialize a window instance.
 
         Args:
@@ -125,28 +129,28 @@ class BaseWindow:
         self._fs_key = self.keys.F11
 
         # Callback functions
-        self._render_func = dummy_func
-        self._resize_func = dummy_func
-        self._close_func = dummy_func
-        self._iconify_func = dummy_func
-        self._key_event_func = dummy_func
-        self._mouse_position_event_func = dummy_func
-        self._mouse_press_event_func = dummy_func
-        self._mouse_release_event_func = dummy_func
-        self._mouse_drag_event_func = dummy_func
-        self._mouse_scroll_event_func = dummy_func
-        self._unicode_char_entered_func = dummy_func
-        self._files_dropped_event_func = dummy_func
-        self._on_generic_event_func = dummy_func
+        self._render_func: Callable[[float, float], None] = dummy_func
+        self._resize_func: Callable[[int, int], None] = dummy_func
+        self._close_func: Callable[[], None] = dummy_func
+        self._iconify_func: Callable[[bool], None] = dummy_func
+        self._key_event_func: Callable[[Union[str, int], int, KeyModifiers], None] = dummy_func
+        self._mouse_position_event_func: Callable[[int, int, int, int], None] = dummy_func
+        self._mouse_press_event_func: Callable[[int, int, int], None] = dummy_func
+        self._mouse_release_event_func: Callable[[int, int, int], None] = dummy_func
+        self._mouse_drag_event_func: Callable[[int, int, int, int], None] = dummy_func
+        self._mouse_scroll_event_func: Callable[[float, float], None] = dummy_func
+        self._unicode_char_entered_func: Callable[[str], None] = dummy_func
+        self._files_dropped_event_func: Callable[[int, int, list[Union[str, Path]]], None] = dummy_func
+        self._on_generic_event_func: Callable[[Event], None] = dummy_func
 
         # Internal states
-        self._ctx = None  # type: moderngl.Context
-        self._viewport = None
+        self._ctx: moderngl.Context
+        self._viewport: tuple[int, int, int, int] = (0, 0, 0, 0)
         self._position = 0, 0
         self._frames = 0  # Frame counter
         self._close = False
-        self._config = None
-        self._key_pressed_map = {}
+        self._config: Optional[weakref.ReferenceType["WindowConfig"]] = None
+        self._key_pressed_map: dict[Union[str, int], bool] = {}
         self._modifiers = KeyModifiers()
         self._mouse_buttons = MouseButtonStates()
         # Manual tracking of mouse position used by some windows
@@ -157,7 +161,7 @@ class BaseWindow:
         if self._fullscreen:
             self._resizable = False
 
-        if not self.keys:
+        if self.keys is None:
             raise ValueError("Window class {} missing keys attribute".format(self.__class__))
 
     def init_mgl_context(self) -> None:
@@ -210,7 +214,7 @@ class BaseWindow:
         return self._title
 
     @title.setter
-    def title(self, value: str):
+    def title(self, value: str) -> None:
         self._title = value
 
     @property
@@ -233,7 +237,7 @@ class BaseWindow:
         return self._fs_key
 
     @fullscreen_key.setter
-    def fullscreen_key(self, value: Any):
+    def fullscreen_key(self, value: Any) -> None:
         self._fs_key = value
 
     @property
@@ -256,12 +260,12 @@ class BaseWindow:
         return self._exit_key
 
     @exit_key.setter
-    def exit_key(self, value: Any):
+    def exit_key(self, value: Any) -> None:
         self._exit_key = value
 
     @property
-    def gl_version(self) -> Tuple[int, int]:
-        """Tuple[int, int]: (major, minor) required OpenGL version"""
+    def gl_version(self) -> tuple[int, int]:
+        """tuple[int, int]: (major, minor) required OpenGL version"""
         return self._gl_version
 
     @property
@@ -275,8 +279,8 @@ class BaseWindow:
         return self._height
 
     @property
-    def size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: current window size.
+    def size(self) -> tuple[int, int]:
+        """tuple[int, int]: current window size.
 
         This property also support assignment::
 
@@ -286,7 +290,7 @@ class BaseWindow:
         return self._width, self._height
 
     @size.setter
-    def size(self, value: Tuple[int, int]):
+    def size(self, value: tuple[int, int]) -> None:
         self._width, self._height = int(value[0]), int(value[1])
 
     @property
@@ -300,13 +304,13 @@ class BaseWindow:
         return self._buffer_height
 
     @property
-    def buffer_size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: tuple with the current window buffer size"""
+    def buffer_size(self) -> tuple[int, int]:
+        """tuple[int, int]: tuple with the current window buffer size"""
         return self._buffer_width, self._buffer_height
 
     @property
-    def position(self) -> Tuple[int, int]:
-        """Tuple[int, int]: The current window position.
+    def position(self) -> tuple[int, int]:
+        """tuple[int, int]: The current window position.
 
         This property can also be set to move the window::
 
@@ -316,7 +320,7 @@ class BaseWindow:
         return self._position
 
     @position.setter
-    def position(self, value: Tuple[int, int]):
+    def position(self, value: tuple[int, int]) -> None:
         self._position = int(value[0]), int(value[1])
 
     @property
@@ -325,13 +329,13 @@ class BaseWindow:
         return self.buffer_size[0] / self.size[0]
 
     @property
-    def viewport(self) -> Tuple[int, int, int, int]:
-        """Tuple[int, int, int, int]: current window viewport"""
+    def viewport(self) -> tuple[int, int, int, int]:
+        """tuple[int, int, int, int]: current window viewport"""
         return self._viewport
 
     @property
-    def viewport_size(self) -> Tuple[int, int]:
-        """Tuple[int,int]: Size of the viewport.
+    def viewport_size(self) -> tuple[int, int]:
+        """tuple[int,int]: Size of the viewport.
 
         Equivalent to ``self.viewport[2], self.viewport[3]``
         """
@@ -404,7 +408,7 @@ class BaseWindow:
         self._fullscreen = value
 
     @property
-    def config(self) -> "WindowConfig":
+    def config(self) -> Optional["WindowConfig"]:
         """Get the current WindowConfig instance
 
         DEPRECATED PROPERTY. This is not handled in `WindowConfig.__init__`
@@ -421,7 +425,7 @@ class BaseWindow:
         return None
 
     @config.setter
-    def config(self, config):
+    def config(self, config: "WindowConfig") -> None:
         config.assign_event_callbacks()
         self._config = weakref.ref(config)
 
@@ -431,7 +435,7 @@ class BaseWindow:
         return self._vsync
 
     @vsync.setter
-    def vsync(self, value: bool):
+    def vsync(self, value: bool) -> None:
         self._set_vsync(value)
         self._vsync = value
 
@@ -450,7 +454,7 @@ class BaseWindow:
         return self.width / self.height
 
     @property
-    def fixed_aspect_ratio(self):
+    def fixed_aspect_ratio(self) -> Optional[float]:
         """float: The fixed aspect ratio for the window.
 
         Can be set to ``None`` to disable fixed aspect ratio
@@ -468,11 +472,11 @@ class BaseWindow:
         return self._fixed_aspect_ratio
 
     @fixed_aspect_ratio.setter
-    def fixed_aspect_ratio(self, value: float):
+    def fixed_aspect_ratio(self, value: float) -> None:
         self._fixed_aspect_ratio = value
 
     @property
-    def samples(self) -> float:
+    def samples(self) -> int:
         """float: Number of Multisample anti-aliasing (MSAA) samples"""
         return self._samples
 
@@ -488,7 +492,7 @@ class BaseWindow:
         return self._cursor
 
     @cursor.setter
-    def cursor(self, value: bool):
+    def cursor(self, value: bool) -> None:
         self._cursor = value
 
     @property
@@ -508,11 +512,11 @@ class BaseWindow:
         return self._mouse_exclusivity
 
     @mouse_exclusivity.setter
-    def mouse_exclusivity(self, value: bool):
+    def mouse_exclusivity(self, value: bool) -> None:
         self._mouse_exclusivity = value
 
     @property
-    def render_func(self):
+    def render_func(self) -> Callable[[float, float], None]:
         """callable: The render callable
 
         This property can also be used to assign a callable.
@@ -521,121 +525,121 @@ class BaseWindow:
 
     @render_func.setter
     @require_callable
-    def render_func(self, func):
+    def render_func(self, func: Callable[[float, float], None]) -> None:
         self._render_func = func
 
     @property
-    def resize_func(self):
+    def resize_func(self) -> Callable[[int, int], None]:
         """callable: Get or set the resize callable"""
         return self._resize_func
 
     @resize_func.setter
     @require_callable
-    def resize_func(self, func):
+    def resize_func(self, func: Callable[[int, int], None]) -> None:
         self._resize_func = func
 
     @property
-    def close_func(self):
+    def close_func(self) -> Callable[[], None]:
         """callable: Get or set the close callable"""
         return self._close_func
 
+    @close_func.setter
+    @require_callable
+    def close_func(self, func: Callable[[], None]) -> None:
+        self._close_func = func
+
     @property
-    def files_dropped_event_func(self):
+    def files_dropped_event_func(self) -> Callable[[int, int, list[Union[str, Path]]], None]:
         """callable: Get or set the files_dropped callable"""
         return self._files_dropped_event_func
 
-    @close_func.setter
-    @require_callable
-    def close_func(self, func):
-        self._close_func = func
-
     @files_dropped_event_func.setter
     @require_callable
-    def files_dropped_event_func(self, func):
+    def files_dropped_event_func(self, func: Callable[[int, int, list[Union[str, Path]]], None]) -> None:
         self._files_dropped_event_func = func
 
     @property
-    def iconify_func(self):
+    def iconify_func(self) -> Callable[[bool], None]:
         """callable: Get or set ehe iconify/show/hide callable"""
         return self._iconify_func
 
     @iconify_func.setter
     @require_callable
-    def iconify_func(self, func):
+    def iconify_func(self, func: Callable[[bool], None]) -> None:
         self._iconify_func = func
 
     @property
-    def key_event_func(self):
+    def key_event_func(self) -> Callable[[Union[str, int], int, KeyModifiers], None]:
         """callable: Get or set the key_event callable"""
         return self._key_event_func
 
     @key_event_func.setter
     @require_callable
-    def key_event_func(self, func):
+    def key_event_func(self, func: Callable[[Union[str, int], int, KeyModifiers], None]) -> None:
         self._key_event_func = func
 
     @property
-    def mouse_position_event_func(self):
+    def mouse_position_event_func(self) -> Callable[[int, int, int, int], None]:
         """callable: Get or set the mouse_position callable"""
         return self._mouse_position_event_func
 
     @mouse_position_event_func.setter
     @require_callable
-    def mouse_position_event_func(self, func):
+    def mouse_position_event_func(self, func:Callable[[int, int, int, int], None]) -> None:
         self._mouse_position_event_func = func
 
     @property
-    def mouse_drag_event_func(self):
+    def mouse_drag_event_func(self) -> Callable[[int, int, int, int], None]:
         """callable: Get or set the mouse_drag callable"""
         return self._mouse_drag_event_func
 
     @mouse_drag_event_func.setter
     @require_callable
-    def mouse_drag_event_func(self, func):
+    def mouse_drag_event_func(self, func: Callable[[int, int, int, int], None]) -> None:
         self._mouse_drag_event_func = func
 
     @property
-    def mouse_press_event_func(self):
+    def mouse_press_event_func(self) -> Callable[[int, int, int], None]:
         """callable: Get or set the mouse_press callable"""
         return self._mouse_press_event_func
 
     @mouse_press_event_func.setter
     @require_callable
-    def mouse_press_event_func(self, func):
+    def mouse_press_event_func(self, func: Callable[[int, int, int], None]) -> None:
         self._mouse_press_event_func = func
 
     @property
-    def mouse_release_event_func(self):
+    def mouse_release_event_func(self) -> Callable[[int, int, int], None]:
         """callable: Get or set the mouse_release callable"""
         return self._mouse_release_event_func
 
     @mouse_release_event_func.setter
     @require_callable
-    def mouse_release_event_func(self, func):
+    def mouse_release_event_func(self, func: Callable[[int, int, int], None]) -> None:
         self._mouse_release_event_func = func
 
     @property
-    def unicode_char_entered_func(self):
+    def unicode_char_entered_func(self) -> Callable[[str], None]:
         """callable: Get or set the unicode_char_entered callable"""
         return self._unicode_char_entered_func
 
     @unicode_char_entered_func.setter
     @require_callable
-    def unicode_char_entered_func(self, func):
+    def unicode_char_entered_func(self, func: Callable[[str], None]) -> None:
         self._unicode_char_entered_func = func
 
     @property
-    def mouse_scroll_event_func(self):
+    def mouse_scroll_event_func(self) -> Callable[[float, float], None]:
         """callable: Get or set the mouse_scroll_event calable"""
         return self._mouse_scroll_event_func
 
     @mouse_scroll_event_func.setter
     @require_callable
-    def mouse_scroll_event_func(self, func):
+    def mouse_scroll_event_func(self, func: Callable[[float, float], None]) -> None:
         self._mouse_scroll_event_func = func
 
     @property
-    def modifiers(self) -> Type[KeyModifiers]:
+    def modifiers(self) -> KeyModifiers:
         """(KeyModifiers) The current keyboard modifiers"""
         return self._modifiers
 
@@ -653,7 +657,7 @@ class BaseWindow:
         """
         return self._mouse_buttons
 
-    def _handle_mouse_button_state_change(self, button: int, pressed: bool):
+    def _handle_mouse_button_state_change(self, button: int, pressed: bool) -> None:
         """Updates the internal mouse button state object.
 
         Args:
@@ -669,7 +673,7 @@ class BaseWindow:
         else:
             raise ValueError("Incompatible mouse button number: {}".format(button))
 
-    def convert_window_coordinates(self, x, y, x_flipped=False, y_flipped=False):
+    def convert_window_coordinates(self, x: int, y: int, x_flipped: bool = False, y_flipped: bool = False) -> tuple[int, int]:
         """
         Convert window coordinates to top-left coordinate space.
         The default origin is the top left corner of the window.
@@ -690,7 +694,7 @@ class BaseWindow:
         else:
             return (self.width - x, self.height - y)
 
-    def is_key_pressed(self, key) -> bool:
+    def is_key_pressed(self, key: str) -> bool:
         """Returns: The press state of a key"""
         return self._key_pressed_map.get(key) is True
 
@@ -700,7 +704,7 @@ class BaseWindow:
         return self._close
 
     @is_closing.setter
-    def is_closing(self, value: bool):
+    def is_closing(self, value: bool) -> None:
         self._close = value
 
     def close(self) -> None:
@@ -708,11 +712,11 @@ class BaseWindow:
         self.is_closing = True
         self.close_func()
 
-    def use(self):
+    def use(self) -> None:
         """Bind the window's framebuffer"""
         self._ctx.screen.use()
 
-    def clear(self, red=0.0, green=0.0, blue=0.0, alpha=0.0, depth=1.0, viewport=None):
+    def clear(self, red: float =0.0, green: float=0.0, blue: float=0.0, alpha: float=0.0, depth: float =1.0, viewport: Optional[tuple[int, int, int, int]]=None) -> None:
         """
         Binds and clears the default framebuffer
 
@@ -729,7 +733,7 @@ class BaseWindow:
             red=red, green=green, blue=blue, alpha=alpha, depth=depth, viewport=viewport
         )
 
-    def render(self, time=0.0, frame_time=0.0) -> None:
+    def render(self, time: float = 0.0, frame_time: float = 0.0) -> None:
         """
         Renders a frame by calling the configured render callback
 
@@ -745,12 +749,12 @@ class BaseWindow:
         """
         raise NotImplementedError()
 
-    def resize(self, width, height) -> None:
+    def resize(self, width: int, height: int) -> None:
         """
         Should be called every time window is resized
         so the example can adapt to the new size if needed
         """
-        if self._resize_func:
+        if self._resize_func is not dummy_func:
             self._resize_func(width, height)
 
     def set_icon(self, icon_path: str) -> None:
@@ -764,7 +768,7 @@ class BaseWindow:
         resolved_path = loader.find_icon()
         self._set_icon(resolved_path)
 
-    def _set_icon(self, icon_path: str) -> None:
+    def _set_icon(self, icon_path: Path) -> None:
         """
         A library specific destroy method is required.
         """
@@ -832,7 +836,7 @@ class BaseWindow:
         """
         return self.gl_version[0] * 100 + self.gl_version[1] * 10
 
-    def print_context_info(self):
+    def print_context_info(self) -> None:
         """Prints moderngl context info."""
         logger.info("Context Version:")
         logger.info("ModernGL: %s", moderngl.__version__)
@@ -848,21 +852,21 @@ class BaseWindow:
         if err != "GL_NO_ERROR":
             logger.warning("glerror consumed after getting context info: %s", err)
 
-    def _calc_mouse_delta(self, xpos: int, ypos: int) -> Tuple[int, int]:
+    def _calc_mouse_delta(self, xpos: int, ypos: int) -> tuple[int, int]:
         """Calculates the mouse position delta for events not support this.
 
         Args:
             xpos (int): current mouse x
             ypos (int): current mouse y
         Returns:
-            Tuple[int, int]: The x, y delta values
+            tuple[int, int]: The x, y delta values
         """
         dx, dy = xpos - self._mouse_pos[0], ypos - self._mouse_pos[1]
         self._mouse_pos = xpos, ypos
         return dx, dy
 
     @property
-    def on_generic_event_func(self):
+    def on_generic_event_func(self) -> Union[Callable[[int, int, int, int], None], Callable[[Event], None]]:
         """
         callable: Get or set the on_generic_event callable
         used to funnel all non-processed events
@@ -871,7 +875,7 @@ class BaseWindow:
 
     @on_generic_event_func.setter
     @require_callable
-    def on_generic_event_func(self, func):
+    def on_generic_event_func(self, func: Callable[[Event], None]) -> None:
         self._on_generic_event_func = func
 
 
@@ -1049,18 +1053,18 @@ class WindowConfig:
         # Default value
         log_level = logging.INFO
     """
-    argv = None  # type: Namespace
+    argv: Optional[Namespace] = None
     """
     The parsed command line arguments.
     """
 
     def __init__(
         self,
-        ctx: moderngl.Context = None,
-        wnd: BaseWindow = None,
-        timer: BaseTimer = None,
-        **kwargs,
-    ):
+        ctx: Optional[moderngl.Context] = None,
+        wnd: Optional[BaseWindow] = None,
+        timer: Optional[BaseTimer] = None,
+        **kwargs: Any,
+    ) -> None:
         """Initialize the window config
 
         Keyword Args:
@@ -1068,22 +1072,22 @@ class WindowConfig:
             wnd: The window instance
             timer: The timer instance
         """
+        if self.resource_dir:
+            resources.register_dir(Path(self.resource_dir).resolve())
+
+        if ctx is None or not isinstance(ctx, moderngl.Context):
+            raise ValueError("WindowConfig requires a moderngl context. ctx={}".format(ctx))
+
+        if wnd is None or not isinstance(wnd, BaseWindow):
+            raise ValueError("WindowConfig requires a window. wnd={}".format(wnd))
+
         self.ctx = ctx
         self.wnd = wnd
         self.timer = timer
 
-        if self.resource_dir:
-            resources.register_dir(Path(self.resource_dir).resolve())
-
-        if not self.ctx or not isinstance(self.ctx, moderngl.Context):
-            raise ValueError("WindowConfig requires a moderngl context. ctx={}".format(self.ctx))
-
-        if not self.wnd or not isinstance(self.wnd, BaseWindow):
-            raise ValueError("WindowConfig requires a window. wnd={}".format(self.wnd))
-
         self.assign_event_callbacks()
 
-    def assign_event_callbacks(self):
+    def assign_event_callbacks(self) -> None:
         """
         Look for methods in the class instance and assign them to callbacks.
         This method is call by ``__init__``.
@@ -1103,7 +1107,7 @@ class WindowConfig:
         self.wnd.files_dropped_event_func = getattr(self, "files_dropped_event", dummy_func)
 
     @classmethod
-    def run(cls):
+    def run(cls: type["WindowConfig"]) -> None:
         """Shortcut for running a ``WindowConfig``.
 
         This executes the following code::
@@ -1116,7 +1120,7 @@ class WindowConfig:
         moderngl_window.run_window_config(cls)
 
     @classmethod
-    def add_arguments(cls, parser: ArgumentParser):
+    def add_arguments(cls: type["WindowConfig"], parser: ArgumentParser) -> None:
         """Add arguments to default argument parser.
         Add arguments using ``add_argument(..)``.
 
@@ -1125,7 +1129,7 @@ class WindowConfig:
         """
         pass
 
-    def render(self, time: float, frame_time: float):
+    def render(self, time: float, frame_time: float) -> None:
         """Renders the assigned effect
 
         Args:
@@ -1134,7 +1138,7 @@ class WindowConfig:
         """
         raise NotImplementedError("WindowConfig.render not implemented")
 
-    def resize(self, width: int, height: int):
+    def resize(self, width: int, height: int) -> None:
         """
         Called every time the window is resized
         in case the we need to do internal adjustments.
@@ -1144,10 +1148,10 @@ class WindowConfig:
             height (int): height in buffer size (not window size)
         """
 
-    def close(self):
+    def close(self) -> None:
         """Called when the window is closed"""
 
-    def files_dropped_event(self, x: int, y: int, paths: List[str]):
+    def files_dropped_event(self, x: int, y: int, paths: list[str]) -> None:
         """
         Called when files dropped onto the window
 
@@ -1157,7 +1161,7 @@ class WindowConfig:
             paths (list): List of file paths dropped
         """
 
-    def iconify(self, iconified: bool):
+    def iconify(self, iconified: bool) -> None:
         """
         Called when the window is minimized/iconified
         or restored from this state
@@ -1166,7 +1170,7 @@ class WindowConfig:
             iconified (bool): If ``True`` the window is iconified/minimized. Otherwise restored.
         """
 
-    def key_event(self, key: Any, action: Any, modifiers: KeyModifiers):
+    def key_event(self, key: Any, action: Any, modifiers: KeyModifiers) -> None:
         """
         Called for every key press and release.
         Depending on the library used, key events may
@@ -1180,7 +1184,7 @@ class WindowConfig:
             modifiers: Modifier state for shift, ctrl and alt
         """
 
-    def mouse_position_event(self, x: int, y: int, dx: int, dy: int):
+    def mouse_position_event(self, x: int, y: int, dx: int, dy: int) -> None:
         """Reports the current mouse cursor position in the window
 
         Args:
@@ -1190,7 +1194,7 @@ class WindowConfig:
             dy (int): Y delta position
         """
 
-    def mouse_drag_event(self, x: int, y: int, dx: int, dy: int):
+    def mouse_drag_event(self, x: int, y: int, dx: int, dy: int) -> None:
         """Called when the mouse is moved while a button is pressed.
 
         Args:
@@ -1200,7 +1204,7 @@ class WindowConfig:
             dy (int): Y delta position
         """
 
-    def mouse_press_event(self, x: int, y: int, button: int):
+    def mouse_press_event(self, x: int, y: int, button: int) -> None:
         """Called when a mouse button in pressed
 
         Args:
@@ -1209,7 +1213,7 @@ class WindowConfig:
             button (int): 1 = Left button, 2 = right button
         """
 
-    def mouse_release_event(self, x: int, y: int, button: int):
+    def mouse_release_event(self, x: int, y: int, button: int) -> None:
         """Called when a mouse button in released
 
         Args:
@@ -1218,7 +1222,7 @@ class WindowConfig:
             button (int): 1 = Left button, 2 = right button
         """
 
-    def mouse_scroll_event(self, x_offset: float, y_offset: float):
+    def mouse_scroll_event(self, x_offset: float, y_offset: float) -> None:
         """Called when the mouse wheel is scrolled.
 
         Some input devices also support horizontal scrolling,
@@ -1229,7 +1233,7 @@ class WindowConfig:
             y_offset (int): Y scroll offset
         """
 
-    def unicode_char_entered(self, char: str):
+    def unicode_char_entered(self, char: str) -> None:
         """Called when the user entered a unicode character.
 
         Args:
@@ -1239,13 +1243,13 @@ class WindowConfig:
     def load_texture_2d(
         self,
         path: str,
-        flip=True,
-        flip_x=False,
-        flip_y=True,
-        mipmap=False,
-        mipmap_levels: Optional[Tuple[int, int]] = None,
-        anisotropy=1.0,
-        **kwargs,
+        flip: bool = True,
+        flip_x: bool = False,
+        flip_y: bool = True,
+        mipmap: bool = False,
+        mipmap_levels: Optional[tuple[int, int]] = None,
+        anisotropy: float = 1.0,
+        **kwargs: Any,
     ) -> moderngl.Texture:
         """Loads a 2D texture.
 
@@ -1268,7 +1272,7 @@ class WindowConfig:
         Returns:
             moderngl.Texture: Texture instance
         """
-        return resources.textures.load(
+        texture = resources.textures.load(
             TextureDescription(
                 path=path,
                 flip=flip,
@@ -1280,16 +1284,18 @@ class WindowConfig:
                 **kwargs,
             )
         )
+        assert isinstance(texture, moderngl.Texture), f"There was an error when loading the texture, {type(texture)} is not a moderngl.Texture"
+        return texture
 
     def load_texture_array(
         self,
         path: str,
         layers: int = 0,
-        flip=True,
-        mipmap=False,
-        mipmap_levels: Optional[Tuple[int, int]] = None,
-        anisotropy=1.0,
-        **kwargs,
+        flip: bool = True,
+        mipmap: bool = False,
+        mipmap_levels: Optional[tuple[int, int]] = None,
+        anisotropy: float = 1.0,
+        **kwargs: Any,
     ) -> moderngl.TextureArray:
         """Loads a texture array.
 
@@ -1312,13 +1318,13 @@ class WindowConfig:
         Returns:
             moderngl.TextureArray: The texture instance
         """
-        if not kwargs:
+        if kwargs is None:
             kwargs = {}
 
         if "kind" not in kwargs:
             kwargs["kind"] = "array"
 
-        return resources.textures.load(
+        texture = resources.textures.load(
             TextureDescription(
                 path=path,
                 layers=layers,
@@ -1329,6 +1335,8 @@ class WindowConfig:
                 **kwargs,
             )
         )
+        assert isinstance(texture, moderngl.TextureArray), f"There was an error when loading the texture, {type(texture)} is not a moderngl.TextureArray"
+        return texture
 
     def load_texture_cube(
         self,
@@ -1338,13 +1346,13 @@ class WindowConfig:
         neg_x: str = "",
         neg_y: str = "",
         neg_z: str = "",
-        flip=False,
-        flip_x=False,
-        flip_y=False,
-        mipmap=False,
-        mipmap_levels: Optional[Tuple[int, int]] = None,
-        anisotropy=1.0,
-        **kwargs,
+        flip : bool = False,
+        flip_x: bool = False,
+        flip_y: bool = False,
+        mipmap: bool = False,
+        mipmap_levels: Optional[tuple[int, int]] = None,
+        anisotropy: float = 1.0,
+        **kwargs: Any,
     ) -> moderngl.TextureCube:
         """Loads a texture cube.
 
@@ -1371,7 +1379,7 @@ class WindowConfig:
         Returns:
             moderngl.TextureCube: Texture instance
         """
-        return resources.textures.load(
+        texture = resources.textures.load(
             TextureDescription(
                 pos_x=pos_x,
                 pos_y=pos_y,
@@ -1390,16 +1398,19 @@ class WindowConfig:
             )
         )
 
+        assert isinstance(texture, moderngl.TextureCube), f"There was an error when loading the texture, {type(texture)} is not a moderngl.TextureCube"
+        return texture
+
     def load_program(
         self,
-        path=None,
-        vertex_shader=None,
-        geometry_shader=None,
-        fragment_shader=None,
-        tess_control_shader=None,
-        tess_evaluation_shader=None,
-        defines: Optional[dict] = None,
-        varyings: Optional[List[str]] = None,
+        path: Optional[str] = None,
+        vertex_shader: Optional[str] = None,
+        geometry_shader: Optional[str] = None,
+        fragment_shader: Optional[str] = None,
+        tess_control_shader: Optional[str] = None,
+        tess_evaluation_shader: Optional[str] = None,
+        defines: Optional[dict[str, Any]] = None,
+        varyings: Optional[list[str]] = None,
     ) -> moderngl.Program:
         """Loads a shader program.
 
@@ -1419,11 +1430,11 @@ class WindowConfig:
             tess_evaluation_shader (str): Path to tessellation eval shader
             defines (dict): ``#define`` values to replace in the shader source.
                             Example: ``{'VALUE1': 10, 'VALUE2': '3.1415'}``.
-            varyings (List[str]): Out attribute names for transform shaders
+            varyings (list[str]): Out attribute names for transform shaders
         Returns:
             moderngl.Program: The program instance
         """
-        return resources.programs.load(
+        prog = resources.programs.load(
             ProgramDescription(
                 path=path,
                 vertex_shader=vertex_shader,
@@ -1436,8 +1447,11 @@ class WindowConfig:
             )
         )
 
+        assert isinstance(prog, moderngl.Program), f"There was an error when loading the program, {type(prog)} is not a moderngl.Program"
+        return prog
+
     def load_compute_shader(
-        self, path, defines: Optional[Dict] = None, **kwargs
+        self, path: str, defines: Optional[dict[str, Any]] = None, **kwargs: Any
     ) -> moderngl.ComputeShader:
         """Loads a compute shader.
 
@@ -1448,11 +1462,14 @@ class WindowConfig:
         Returns:
             moderngl.ComputeShader: The compute shader
         """
-        return resources.programs.load(
+        shader = resources.programs.load(
             ProgramDescription(compute_shader=path, defines=defines, **kwargs)
         )
 
-    def load_text(self, path: str, **kwargs) -> str:
+        assert isinstance(shader, moderngl.ComputeShader), f"There was an error when loading the shader, {type(shader)} is not a moderngl.ComputeShader"
+        return shader
+
+    def load_text(self, path: str, **kwargs: Any) -> str:
         """Load a text file.
 
         If the path is relative the resource system is used expecting one or more
@@ -1465,15 +1482,18 @@ class WindowConfig:
         Returns:
             str: Contents of the text file
         """
-        if not kwargs:
+        if kwargs is None:
             kwargs = {}
 
         if "kind" not in kwargs:
             kwargs["kind"] = "text"
 
-        return resources.data.load(DataDescription(path=path, **kwargs))
+        text = resources.data.load(DataDescription(path=path, **kwargs))
 
-    def load_json(self, path: str, **kwargs) -> dict:
+        assert isinstance(text, str), f"There was an error when loading the text, {type(text)} is not a string"
+        return text
+
+    def load_json(self, path: str, **kwargs: Any) -> dict[str, Any]:
         """Load a json file
 
         If the path is relative the resource system is used expecting one or more
@@ -1486,15 +1506,18 @@ class WindowConfig:
         Returns:
             dict: Contents of the json file
         """
-        if not kwargs:
+        if kwargs is not None:
             kwargs = {}
 
         if "kind" not in kwargs:
             kwargs["kind"] = "json"
 
-        return resources.data.load(DataDescription(path=path, **kwargs))
+        json = resources.data.load(DataDescription(path=path, **kwargs))
 
-    def load_binary(self, path: str, **kwargs) -> bytes:
+        assert isinstance(json, dict), f"There was an error when loading the Texture, {type(json)} is not a dictionnary"
+        return json
+
+    def load_binary(self, path: str, **kwargs: Any) -> bytes:
         """Load a file in binary mode.
 
         If the path is relative the resource system is used expecting one or more
@@ -1507,16 +1530,19 @@ class WindowConfig:
         Returns:
             bytes: The byte data of the file
         """
-        if not kwargs:
+        if kwargs is not None:
             kwargs = {}
 
         if "kind" not in kwargs:
             kwargs["kind"] = "binary"
 
-        return resources.data.load(DataDescription(path=path, kind="binary"))
+        binary = resources.data.load(DataDescription(path=path, kind="binary"))
+
+        assert isinstance(binary, bytes), f"There was an error when loading the binary, {type(binary)} is not a binary file"
+        return binary
 
     def load_scene(
-        self, path: str, cache=False, attr_names=AttributeNames, kind=None, **kwargs
+        self, path: str, cache: bool = False, attr_names: type[AttributeNames] = AttributeNames, kind: Optional[str] = None, **kwargs: Any
     ) -> Scene:
         """Loads a scene.
 
@@ -1533,7 +1559,7 @@ class WindowConfig:
         Returns:
             Scene: The scene instance
         """
-        return resources.scenes.load(
+        scene = resources.scenes.load(
             SceneDescription(
                 path=path,
                 cache=cache,
@@ -1543,7 +1569,10 @@ class WindowConfig:
             )
         )
 
+        assert isinstance(scene, Scene), f"There was an error when loading the scene, {type(scene)} is not a Scene"
+        return scene
 
-def dummy_func(*args, **kwargs) -> None:
+
+def dummy_func(*args: Any, **kwargs: Any) -> None:
     """Dummy function used as the default for callbacks"""
     pass

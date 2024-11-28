@@ -1,8 +1,9 @@
 # pylint: disable = missing-docstring
-from .scene import Scene  # noqa
-from .node import Node  # noqa
-from .camera import Camera  # noqa
-from .camera import KeyboardCamera  # noqa
-from .mesh import Mesh  # noqa
-from .material import Material, MaterialTexture  # noqa
-from .programs import MeshProgram  # noqa
+from .camera import Camera as Camera
+from .camera import KeyboardCamera as KeyboardCamera
+from .material import Material as Material
+from .material import MaterialTexture as MaterialTexture
+from .mesh import Mesh as Mesh
+from .node import Node as Node
+from .programs import MeshProgram as MeshProgram
+from .scene import Scene as Scene

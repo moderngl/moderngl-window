@@ -1,11 +1,13 @@
-import numpy
+from typing import Optional
 
 import moderngl
-from moderngl_window.opengl.vao import VAO
+import numpy
+
 from moderngl_window.geometry.attributes import AttributeNames
+from moderngl_window.opengl.vao import VAO
 
 
-def quad_fs(attr_names=AttributeNames, normals=True, uvs=True, name=None) -> VAO:
+def quad_fs(attr_names: type[AttributeNames] = AttributeNames, normals: bool = True, uvs: bool = True, name: Optional[str] = None) -> VAO:
     """
     Creates a screen aligned quad using two triangles with normals and texture coordinates.
 
@@ -27,12 +29,12 @@ def quad_fs(attr_names=AttributeNames, normals=True, uvs=True, name=None) -> VAO
 
 
 def quad_2d(
-    size=(1.0, 1.0),
-    pos=(0.0, 0.0),
-    normals=True,
-    uvs=True,
-    attr_names=AttributeNames,
-    name=None,
+    size: tuple[float, float] = (1.0, 1.0),
+    pos: tuple[float, float] = (0.0, 0.0),
+    normals: bool = True,
+    uvs: bool = True,
+    attr_names: type[AttributeNames] = AttributeNames,
+    name: Optional[str] = None,
 ) -> VAO:
     """
     Creates a 2D quad VAO using 2 triangles with normals and texture coordinates.

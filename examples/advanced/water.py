@@ -5,12 +5,12 @@ Hold left mouse button to place drop in the surface
 """
 import random
 from pathlib import Path
-import numpy as np
 
 import moderngl
+import numpy as np
+
 import moderngl_window
-from moderngl_window import geometry
-from moderngl_window import screenshot
+from moderngl_window import geometry, screenshot
 
 
 class Water(moderngl_window.WindowConfig):

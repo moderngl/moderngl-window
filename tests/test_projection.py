@@ -1,5 +1,7 @@
 from unittest import TestCase
+
 import glm
+
 from moderngl_window.opengl.projection import Projection3D
 
 

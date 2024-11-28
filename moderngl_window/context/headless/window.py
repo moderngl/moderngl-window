@@ -1,6 +1,8 @@
-from typing import Tuple
+from pathlib import Path
+from typing import Any, Optional
 
 import moderngl
+
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.headless.keys import Keys
 
@@ -15,9 +17,9 @@ class Window(BaseWindow):
     name = "headless"
     keys = Keys
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any):
         super().__init__(**kwargs)
-        self._fbo = None
+        self._fbo: Optional[moderngl.Framebuffer] = None
         self._vsync = False  # We don't care about vsync in headless mode
         self._resizable = False  # headless window is not resizable
         self._cursor = False  # Headless don't have a cursor
@@ -28,11 +30,12 @@ class Window(BaseWindow):
     @property
     def fbo(self) -> moderngl.Framebuffer:
         """moderngl.Framebuffer: The default framebuffer"""
+        assert self._fbo is not None, "No default framebuffer defined"
         return self._fbo
 
     def init_mgl_context(self) -> None:
         """Create an standalone context and framebuffer"""
-        if self._backend:
+        if self._backend is not None:
             self._ctx = moderngl.create_standalone_context(
                 require=self.gl_version_code,
                 backend=self._backend,
@@ -45,7 +48,7 @@ class Window(BaseWindow):
         self._create_fbo()
         self.use()
 
-    def _create_fbo(self):
+    def _create_fbo(self) -> None:
         if self._fbo:
             for attachment in self._fbo.color_attachments:
                 attachment.release()
@@ -59,8 +62,8 @@ class Window(BaseWindow):
         )
 
     @property
-    def size(self) -> Tuple[int, int]:
-        """Tuple[int, int]: current window size.
+    def size(self) -> tuple[int, int]:
+        """tuple[int, int]: current window size.
 
         This property also support assignment::
 
@@ -70,17 +73,18 @@ class Window(BaseWindow):
         return self._width, self._height
 
     @size.setter
-    def size(self, value: Tuple[int, int]):
+    def size(self, value: tuple[int, int]) -> None:
         if value == (self._width, self._height):
             return
         self._width, self._height = value
         self._create_fbo()
 
-    def use(self):
+    def use(self) -> None:
         """Bind the window's framebuffer"""
+        assert self._fbo is not None, "No framebuffer defined, did you forget to call create_fbo()?"
         self._fbo.use()
 
-    def clear(self, red=0.0, green=0.0, blue=0.0, alpha=0.0, depth=1.0, viewport=None):
+    def clear(self, red: float = 0.0, green: float = 0.0, blue: float = 0.0, alpha: float = 0.0, depth: float = 1.0, viewport: Optional[tuple[int, int, int, int]] = None) -> None:
         """
         Binds and clears the default framebuffer
 
@@ -106,7 +110,7 @@ class Window(BaseWindow):
         self._frames += 1
         self._ctx.finish()
 
-    def _set_icon(self, icon_path: str) -> None:
+    def _set_icon(self, icon_path: Path) -> None:
         """Do nothing when icon is set"""
         pass
 

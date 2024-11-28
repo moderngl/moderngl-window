@@ -1,15 +1,19 @@
 import logging
+from pathlib import Path
+from typing import Union
 
 import moderngl
+
+from moderngl_window.exceptions import ImproperlyConfigured
 from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.opengl import program
-from moderngl_window.exceptions import ImproperlyConfigured
 
 logger = logging.getLogger(__name__)
 
 
 class Loader(BaseLoader):
     kind = "single"
+    meta: program.ProgramDescription
 
     def load(self) -> moderngl.Program:
         """Loads a shader program from a single glsl file.
@@ -53,6 +57,10 @@ class Loader(BaseLoader):
         Returns:
             moderngl.Program: The Program instance
         """
+        prog: Union[moderngl.Program, program.ReloadableProgram]
+        assert self.meta.path is not None, "There is no path for the resource"
+        assert self.meta.path is not None, "There is no path for the resource"
+
         self.meta.resolved_path, source = self._load_source(self.meta.path)
         shaders = program.ProgramShaders.from_single(self.meta, source)
         shaders.handle_includes(self._load_source)
@@ -67,13 +75,13 @@ class Loader(BaseLoader):
 
         return prog
 
-    def _load_source(self, path):
+    def _load_source(self, path: Union[Path, str]) -> tuple[Path, str]:
         """Finds and loads a single source file.
 
         Args:
             path: Path to resource
         Returns:
-            Tuple[resolved_path, source]: The resolved path and the source
+            tuple[resolved_path, source]: The resolved path and the source
         """
         resolved_path = self.find_program(path)
         if not resolved_path:

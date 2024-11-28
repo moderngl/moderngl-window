@@ -44,9 +44,9 @@ Other notes:
 import math
 from array import array
 
+import moderngl
 import pygame
 
-import moderngl
 import moderngl_window
 
 

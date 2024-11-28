@@ -1,5 +1,7 @@
 import sched
 import time
+from typing import Any, Callable
+
 from moderngl_window.timers.base import BaseTimer
 
 
@@ -18,13 +20,13 @@ class Scheduler:
                 "timer, {}, has to be a instance of BaseTimer or a callable!".format(timer)
             )
 
-        self._events = dict()
+        self._events: dict[int, sched.Event] = dict()
         self._event_id = 0
 
         self._scheduler = sched.scheduler(lambda: timer.time, time.sleep)
 
     def run_once(
-        self, action, delay: float, *, priority: int = 1, arguments=(), kwargs=dict()
+        self, action: Callable[[Any], Any], delay: float, *, priority: int = 1, arguments: tuple[Any, ...]=(), kwargs: dict[Any, Any] = dict()
     ) -> int:
         """Schedule a function for execution after a delay.
 
@@ -48,7 +50,7 @@ class Scheduler:
         self._event_id += 1
         return self._event_id - 1
 
-    def run_at(self, action, time: float, *, priority: int = 1, arguments=(), kwargs=dict()) -> int:
+    def run_at(self, action: Callable[[Any], Any], time: float, *, priority: int = 1, arguments: tuple[Any, ...] = (), kwargs: dict[Any, Any] = dict()) -> int:
         """Schedule a function to be executed at a certain time.
 
         Args:
@@ -73,13 +75,13 @@ class Scheduler:
 
     def run_every(
         self,
-        action,
+        action: Callable[[Any], Any],
         delay: float,
         *,
         priority: int = 1,
         initial_delay: float = 0.0,
-        arguments=(),
-        kwargs=dict(),
+        arguments: tuple[Any, ...] = (),
+        kwargs: dict[Any, Any] = dict(),
     ) -> int:
         """Schedule a recurring function to be called every `delay` seconds after a initial delay.
 
@@ -108,7 +110,7 @@ class Scheduler:
         self._event_id += 1
         return self._event_id - 1
 
-    def _recurring_event_factory(self, function, arguments, kwargs, scheduling_info, id):
+    def _recurring_event_factory(self, function: Callable[[Any], Any], arguments: tuple[Any, ...], kwargs: dict[Any, Any], scheduling_info: tuple[Any, Any], id: int) -> Callable[[], None]:
         """Factory for creating recurring events that will reschedule themselves.
 
         Args:
@@ -119,7 +121,7 @@ class Scheduler:
             id (int): event id this event should be assigned to.
         """
 
-        def _f():
+        def _f() -> None:
             function(*arguments, **kwargs)
             event = self._scheduler.enter(*scheduling_info, _f)
             self._events[id] = event
@@ -142,7 +144,7 @@ class Scheduler:
         else:
             self.run_once(self._cancel, delay, priority=0, arguments=(event_id,))
 
-    def _cancel(self, event_id: int):
+    def _cancel(self, event_id: int) -> None:
         if event_id not in self._events:
             raise ValueError("Recurring event with id {} does not exist".format(event_id))
         event = self._events.pop(event_id)

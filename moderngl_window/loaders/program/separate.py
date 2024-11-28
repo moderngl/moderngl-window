@@ -1,16 +1,19 @@
-from typing import Union
-
 import logging
+from pathlib import Path
+from typing import Optional, Union
+
 import moderngl
+
+from moderngl_window.exceptions import ImproperlyConfigured
 from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.opengl import program
-from moderngl_window.exceptions import ImproperlyConfigured
 
 logger = logging.getLogger(__name__)
 
 
 class Loader(BaseLoader):
     kind = "separate"
+    meta: program.ProgramDescription
 
     def load(
         self,
@@ -22,7 +25,7 @@ class Loader(BaseLoader):
         Returns:
             moderngl.Program: The Program instance
         """
-        prog = None
+        prog: Union[moderngl.Program, moderngl.ComputeShader, program.ReloadableProgram]
 
         vs_source = self._load_shader("vertex", self.meta.vertex_shader)
         geo_source = self._load_shader("geometry", self.meta.geometry_shader)
@@ -58,9 +61,9 @@ class Loader(BaseLoader):
 
         return prog
 
-    def _load_shader(self, shader_type: str, path: str):
+    def _load_shader(self, shader_type: str, path: Optional[str]) -> Optional[str]:
         """Load a single shader source"""
-        if path:
+        if path is not None:
             resolved_path = self.find_program(path)
             if not resolved_path:
                 raise ImproperlyConfigured("Cannot find {} shader '{}'".format(shader_type, path))
@@ -69,17 +72,18 @@ class Loader(BaseLoader):
 
             with open(str(resolved_path), "r") as fd:
                 return fd.read()
+        return None
 
-    def _load_source(self, path):
+    def _load_source(self, path: Union[Path, str]) -> tuple[Path, str]:
         """Finds and loads a single source file.
 
         Args:
             path: Path to resource
         Returns:
-            Tuple[resolved_path, source]: The resolved path and the source
+            tuple[resolved_path, source]: The resolved path and the source
         """
         resolved_path = self.find_program(path)
-        if not resolved_path:
+        if resolved_path is None:
             raise ImproperlyConfigured("Cannot find program '{}'".format(path))
 
         logger.info("Loading: %s", path)

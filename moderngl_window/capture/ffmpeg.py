@@ -1,6 +1,9 @@
-from .base import BaseVideoCapture
 import subprocess
+from typing import Any, Optional
+
 import moderngl
+
+from .base import BaseVideoCapture
 
 
 class FFmpegCapture(BaseVideoCapture):
@@ -46,9 +49,9 @@ class FFmpegCapture(BaseVideoCapture):
 
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
-        self._ffmpeg = None
+        self._ffmpeg: Optional[subprocess.Popen[bytes]] = None
 
     def _start_func(self) -> bool:
         """
@@ -92,19 +95,23 @@ class FFmpegCapture(BaseVideoCapture):
             self._ffmpeg = subprocess.Popen(command, stdin=subprocess.PIPE, bufsize=0)
         except FileNotFoundError:
             print("ffmpeg command not found. Be sure to add it to PATH")
-            return
+            return False
 
         return True
 
-    def _release_func(self):
+    def _release_func(self) -> None:
         """
         Safely release the capture
         """
+        if (self._ffmpeg is None) or (self._ffmpeg.stdin is None):
+            return
         self._ffmpeg.stdin.close()
         _ = self._ffmpeg.wait()
 
-    def _dump_frame(self, frame):
+    def _dump_frame(self, frame: Any) -> None:
         """
         write the frame data in to the ffmpeg pipe
         """
+        if (self._ffmpeg is None) or (self._ffmpeg.stdin is None):
+            return
         self._ffmpeg.stdin.write(frame)

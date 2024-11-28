@@ -1,5 +1,6 @@
-import numpy as np
 import moderngl
+import numpy as np
+
 import moderngl_window as mglw
 
 

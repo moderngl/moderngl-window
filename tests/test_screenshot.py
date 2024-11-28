@@ -1,8 +1,10 @@
 from pathlib import Path
 from unittest import mock
-from moderngl_window import screenshot
+
 from headless import HeadlessTestCase
 from utils import settings_context
+
+from moderngl_window import screenshot
 
 
 class ScreenshotTestCase(HeadlessTestCase):

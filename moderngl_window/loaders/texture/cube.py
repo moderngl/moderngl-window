@@ -1,18 +1,24 @@
 from collections import namedtuple
+from typing import Any, Optional
 
-from moderngl_window.loaders.texture.pillow import PillowLoader, image_data
+import moderngl
+
 from moderngl_window.exceptions import ImproperlyConfigured
+from moderngl_window.loaders.texture.pillow import PillowLoader, image_data
+from moderngl_window.meta.base import ResourceDescription
+from moderngl_window.meta.texture import TextureDescription
 
 FaceInfo = namedtuple("FaceInfo", ["width", "height", "data", "components"])
 
 
 class Loader(PillowLoader):
     kind = "cube"
+    meta: TextureDescription
 
-    def __init__(self, meta):
+    def __init__(self, meta: ResourceDescription):
         super().__init__(meta)
 
-    def load(self):
+    def load(self) -> moderngl.TextureCube:
         """Load a texture cube as described by the supplied ``TextureDescription```
 
         Returns:
@@ -48,11 +54,11 @@ class Loader(PillowLoader):
 
         return texture
 
-    def _load_face(self, path: str, face_name: str = None):
+    def _load_face(self, path: Optional[str], face_name: Optional[str] = None) -> FaceInfo:
         """Obtain raw byte data for a face
 
         Returns:
-            Tuple[int, bytes]: number of components, byte data
+            tuple[int, bytes]: number of components, byte data
         """
         if not path:
             raise ImproperlyConfigured(f"{face_name} texture face not supplied")
@@ -61,7 +67,7 @@ class Loader(PillowLoader):
         components, data = image_data(image)
         return FaceInfo(width=image.size[0], height=image.size[1], data=data, components=components)
 
-    def _validate(self, faces):
+    def _validate(self, faces: list[FaceInfo]) -> Any:
         """Validates each face ensuring components and size it the same"""
         components = faces[0].components
         data_size = len(faces[0].data)

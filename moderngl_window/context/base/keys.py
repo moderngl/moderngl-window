@@ -9,10 +9,10 @@ class KeyModifiers:
     ctrl: Any = False
     alt: Any = False
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "<KeyModifiers shift={} ctrl={} alt={}>".format(self.shift, self.ctrl, self.alt)
 
 

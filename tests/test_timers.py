@@ -1,5 +1,6 @@
 import time
 from unittest import TestCase
+
 from moderngl_window.timers import clock
 
 
@@ -22,3 +23,10 @@ class TimerTestCase(TestCase):
         pos, duration = timer.stop()
         self.assertTrue(pos >= 10)
         self.assertTrue(duration >= 0)
+
+    def test_not_started(self) -> None:
+        """Make sure the timer return 0 when it is never started"""
+        timer = clock.Timer()
+        t, real_t = timer.stop()
+        self.assertTrue(t == 0)
+        self.assertTrue(real_t == 0)

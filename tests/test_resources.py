@@ -1,11 +1,11 @@
-from unittest import TestCase
 from pathlib import Path
-
-from moderngl_window import resources
-from moderngl_window.exceptions import ImproperlyConfigured
-from moderngl_window.conf import settings
+from unittest import TestCase
 
 from utils import settings_context
+
+from moderngl_window import resources
+from moderngl_window.conf import settings
+from moderngl_window.exceptions import ImproperlyConfigured
 
 
 class ResourcesTestCase(TestCase):

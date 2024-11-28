@@ -1,4 +1,5 @@
-from typing import List, Optional
+from typing import Any, Optional
+
 from moderngl_window.meta.base import ResourceDescription
 
 
@@ -24,23 +25,23 @@ class ProgramDescription(ResourceDescription):
         )
     """
 
-    default_kind = None
+    default_kind = ""
     resource_type = "programs"
 
     def __init__(
         self,
         path: Optional[str] = None,
         kind: Optional[str] = None,
-        reloadable=False,
+        reloadable: bool = False,
         vertex_shader: Optional[str] = None,
         geometry_shader: Optional[str] = None,
         fragment_shader: Optional[str] = None,
         tess_control_shader: Optional[str] = None,
         tess_evaluation_shader: Optional[str] = None,
         compute_shader: Optional[str] = None,
-        defines: Optional[dict] = None,
-        varyings: Optional[List] = None,
-        **kwargs,
+        defines: Optional[dict[str, Any]] = None,
+        varyings: Optional[list[str]] = None,
+        **kwargs: Any,
     ):
         """Create a program description
 
@@ -55,7 +56,7 @@ class ProgramDescription(ResourceDescription):
             tess_evaluation_shader (str): Path to tess eval shader
             compute_shader (str): Path to compute shader
             defines (dict): Dictionary with define values to replace in the source
-            varyings (List): List of varying names for transform shader
+            varyings (list): List of varying names for transform shader
             **kwargs: Optional custom attributes
         """
         kwargs.update(
@@ -76,50 +77,50 @@ class ProgramDescription(ResourceDescription):
         super().__init__(**kwargs)
 
     @property
-    def reloadable(self) -> bool:
+    def reloadable(self) -> Optional[bool]:
         """bool: if this program is reloadable"""
         return self._kwargs.get("reloadable")
 
     @reloadable.setter
-    def reloadable(self, value):
+    def reloadable(self, value: Any) -> None:
         self._kwargs["reloadable"] = value
 
     @property
-    def vertex_shader(self) -> str:
+    def vertex_shader(self) -> Optional[str]:
         """str: Relative path to vertex shader"""
         return self._kwargs.get("vertex_shader")
 
     @property
-    def geometry_shader(self) -> str:
+    def geometry_shader(self) -> Optional[str]:
         """str: Relative path to geometry shader"""
         return self._kwargs.get("geometry_shader")
 
     @property
-    def fragment_shader(self) -> str:
+    def fragment_shader(self) -> Optional[str]:
         """str: Relative path to fragment shader"""
         return self._kwargs.get("fragment_shader")
 
     @property
-    def tess_control_shader(self) -> str:
+    def tess_control_shader(self) -> Optional[str]:
         """str: Relative path to tess control shader"""
         return self._kwargs.get("tess_control_shader")
 
     @property
-    def tess_evaluation_shader(self) -> str:
+    def tess_evaluation_shader(self) -> Optional[str]:
         """str: Relative path to tessellation evaluation shader"""
         return self._kwargs.get("tess_evaluation_shader")
 
     @property
-    def compute_shader(self) -> str:
+    def compute_shader(self) -> Optional[str]:
         """str: Relative path to compute shader"""
         return self._kwargs.get("compute_shader")
 
     @property
-    def defines(self) -> dict:
+    def defines(self) -> dict[str, Any]:
         """dict: Dictionary with define values to replace in the source"""
         return self._kwargs.get("defines", {})
 
     @property
-    def varyings(self) -> List:
-        """List: List of varying names for transform shaders"""
+    def varyings(self) -> list[str]:
+        """list: List of varying names for transform shaders"""
         return self._kwargs.get("varyings", [])

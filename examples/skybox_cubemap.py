@@ -1,8 +1,10 @@
 from pathlib import Path
+
 import moderngl
+from base import CameraWindow
+
 import moderngl_window
 from moderngl_window import geometry
-from base import CameraWindow
 
 
 class Cubemap(CameraWindow):

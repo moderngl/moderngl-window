@@ -1,27 +1,27 @@
+import io
 import logging
 import os
+from pathlib import Path
 
+import moderngl
 import numpy
-
 import pywavefront
 from pywavefront import cache
 from pywavefront.obj import ObjParser
 
-import moderngl
-from moderngl_window.loaders.base import BaseLoader
-from moderngl_window.opengl.vao import VAO
 from moderngl_window import resources
-from moderngl_window.resources.decorators import texture_dirs
-from moderngl_window.meta import SceneDescription, TextureDescription
-from moderngl_window.scene import Material, MaterialTexture, Mesh, Node, Scene
 from moderngl_window.exceptions import ImproperlyConfigured
 from moderngl_window.geometry.attributes import AttributeNames
-
+from moderngl_window.loaders.base import BaseLoader
+from moderngl_window.meta import SceneDescription, TextureDescription
+from moderngl_window.opengl.vao import VAO
+from moderngl_window.resources.decorators import texture_dirs
+from moderngl_window.scene import Material, MaterialTexture, Mesh, Node, Scene
 
 logger = logging.getLogger(__name__)
 
 
-def translate_buffer_format(vertex_format: str, attr_names: AttributeNames):
+def translate_buffer_format(vertex_format: str, attr_names: AttributeNames) -> tuple[str, list[str], list[tuple[str, str, int]]]:
     """Translate the buffer format"""
     buffer_format = []
     attributes = []
@@ -52,15 +52,15 @@ def translate_buffer_format(vertex_format: str, attr_names: AttributeNames):
 class VAOCacheLoader(cache.CacheLoader):
     """Load geometry data directly into vaos"""
 
-    attr_names = None
+    attr_names: AttributeNames
 
-    def load_vertex_buffer(self, fd, material, length):
+    def load_vertex_buffer(self, fd: io.TextIOWrapper, material: pywavefront.material.Material, length: int) -> None:
         buffer_format, attributes, mesh_attributes = translate_buffer_format(
             material.vertex_format, self.attr_names
         )
 
         vao = VAO(material.name, mode=moderngl.TRIANGLES)
-        vao.buffer(fd.read(length), buffer_format, attributes)
+        vao.buffer(fd.read(length).encode(), buffer_format, attributes)
 
         setattr(material, "vao", vao)
         setattr(material, "buffer_format", buffer_format)
@@ -80,17 +80,18 @@ class Loader(BaseLoader):
         [".obj", ".gz"],
         [".bin"],
     ]
+    meta: SceneDescription
 
     def __init__(self, meta: SceneDescription):
         super().__init__(meta)
 
-    def load(self):
+    def load(self) -> Scene:
         """Loads a wavefront/obj file including materials and textures
 
         Returns:
             Scene: The Scene instance
         """
-        path = self.find_scene(self.meta.path)
+        path = self.find_scene(Path(self.meta.path if self.meta.path is not None else ""))
         logger.info("loading %s", path)
 
         if not path:
@@ -102,8 +103,8 @@ class Loader(BaseLoader):
         VAOCacheLoader.attr_names = self.meta.attr_names
 
         data = pywavefront.Wavefront(str(path), create_materials=True, cache=self.meta.cache)
-        scene = Scene(self.meta.resolved_path)
-        texture_cache = {}
+        scene = Scene(self.meta.resolved_path.as_posix() if self.meta.resolved_path is not None else "")
+        texture_cache: dict[str, pywavefront.material.Material] = {}
 
         for _, mat in data.materials.items():
             mesh = Mesh(mat.name)

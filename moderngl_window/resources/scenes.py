@@ -2,17 +2,18 @@
 Scene Registry
 """
 
+from moderngl_window.meta import ResourceDescription, SceneDescription
 from moderngl_window.resources.base import BaseRegistry
 from moderngl_window.scene import Scene
-from moderngl_window.meta import SceneDescription
 
 
 class Scenes(BaseRegistry):
     """Handles scene loading"""
 
     settings_attr = "SCENE_LOADERS"
+    meta: SceneDescription
 
-    def load(self, meta: SceneDescription) -> Scene:
+    def load(self, meta: ResourceDescription) -> Scene:
         """Load a scene with the configured loaders.
 
         Args:
@@ -21,7 +22,9 @@ class Scenes(BaseRegistry):
         Returns:
             :py:class:`~moderngl_window.scene.Scene`: The loaded scene
         """
-        return super().load(meta)
+        scene = super().load(meta)
+        assert isinstance(scene, Scene), f"{meta} did not load a moderngl_window.scene.Scene object, please correct it."
+        return scene
 
 
 scenes = Scenes()
