@@ -266,7 +266,9 @@ class Window(BaseWindow):
         image = Image.open(icon_path)
         glfw.set_window_icon(self._window, 1, image)
 
-    def glfw_key_event_callback(self, window: Any, key: GLFW_key, scancode: int, action: GLFW_key, mods: GLFW_key) -> None:
+    def glfw_key_event_callback(
+        self, window: Any, key: GLFW_key, scancode: int, action: GLFW_key, mods: GLFW_key
+    ) -> None:
         """Key event callback for glfw.
         Translates and forwards keyboard event to :py:func:`keyboard_event`
 
@@ -311,7 +313,9 @@ class Window(BaseWindow):
         else:
             self._mouse_position_event_func(xpos, ypos, dx, dy)
 
-    def glfw_mouse_button_callback(self, window: Any, button: GLFW_key, action: GLFW_key, mods: GLFW_key) -> None:
+    def glfw_mouse_button_callback(
+        self, window: Any, button: GLFW_key, action: GLFW_key, mods: GLFW_key
+    ) -> None:
         """Handle mouse button events and forward them to the example
 
         Args:

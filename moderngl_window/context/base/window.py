@@ -12,8 +12,12 @@ from moderngl_window import resources
 from moderngl_window.context.base import BaseKeys, KeyModifiers
 from moderngl_window.geometry.attributes import AttributeNames
 from moderngl_window.loaders.texture.icon import IconLoader
-from moderngl_window.meta import (DataDescription, ProgramDescription,
-                                  SceneDescription, TextureDescription)
+from moderngl_window.meta import (
+    DataDescription,
+    ProgramDescription,
+    SceneDescription,
+    TextureDescription,
+)
 from moderngl_window.scene import Scene
 from moderngl_window.timers.base import BaseTimer
 
@@ -82,10 +86,10 @@ class BaseWindow:
 
     def __init__(
         self,
-        title: str="ModernGL",
+        title: str = "ModernGL",
         gl_version: tuple[int, int] = (3, 3),
         size: tuple[int, int] = (1280, 720),
-        resizable: bool= True,
+        resizable: bool = True,
         visible: bool = True,
         fullscreen: bool = False,
         vsync: bool = True,
@@ -140,7 +144,9 @@ class BaseWindow:
         self._mouse_drag_event_func: Callable[[int, int, int, int], None] = dummy_func
         self._mouse_scroll_event_func: Callable[[float, float], None] = dummy_func
         self._unicode_char_entered_func: Callable[[str], None] = dummy_func
-        self._files_dropped_event_func: Callable[[int, int, list[Union[str, Path]]], None] = dummy_func
+        self._files_dropped_event_func: Callable[[int, int, list[Union[str, Path]]], None] = (
+            dummy_func
+        )
         self._on_generic_event_func: Callable[[Event], None] = dummy_func
 
         # Internal states
@@ -555,7 +561,9 @@ class BaseWindow:
 
     @files_dropped_event_func.setter
     @require_callable
-    def files_dropped_event_func(self, func: Callable[[int, int, list[Union[str, Path]]], None]) -> None:
+    def files_dropped_event_func(
+        self, func: Callable[[int, int, list[Union[str, Path]]], None]
+    ) -> None:
         self._files_dropped_event_func = func
 
     @property
@@ -585,7 +593,7 @@ class BaseWindow:
 
     @mouse_position_event_func.setter
     @require_callable
-    def mouse_position_event_func(self, func:Callable[[int, int, int, int], None]) -> None:
+    def mouse_position_event_func(self, func: Callable[[int, int, int, int], None]) -> None:
         self._mouse_position_event_func = func
 
     @property
@@ -673,7 +681,9 @@ class BaseWindow:
         else:
             raise ValueError("Incompatible mouse button number: {}".format(button))
 
-    def convert_window_coordinates(self, x: int, y: int, x_flipped: bool = False, y_flipped: bool = False) -> tuple[int, int]:
+    def convert_window_coordinates(
+        self, x: int, y: int, x_flipped: bool = False, y_flipped: bool = False
+    ) -> tuple[int, int]:
         """
         Convert window coordinates to top-left coordinate space.
         The default origin is the top left corner of the window.
@@ -716,7 +726,15 @@ class BaseWindow:
         """Bind the window's framebuffer"""
         self._ctx.screen.use()
 
-    def clear(self, red: float =0.0, green: float=0.0, blue: float=0.0, alpha: float=0.0, depth: float =1.0, viewport: Optional[tuple[int, int, int, int]]=None) -> None:
+    def clear(
+        self,
+        red: float = 0.0,
+        green: float = 0.0,
+        blue: float = 0.0,
+        alpha: float = 0.0,
+        depth: float = 1.0,
+        viewport: Optional[tuple[int, int, int, int]] = None,
+    ) -> None:
         """
         Binds and clears the default framebuffer
 
@@ -866,7 +884,9 @@ class BaseWindow:
         return dx, dy
 
     @property
-    def on_generic_event_func(self) -> Union[Callable[[int, int, int, int], None], Callable[[Event], None]]:
+    def on_generic_event_func(
+        self,
+    ) -> Union[Callable[[int, int, int, int], None], Callable[[Event], None]]:
         """
         callable: Get or set the on_generic_event callable
         used to funnel all non-processed events
@@ -1284,7 +1304,9 @@ class WindowConfig:
                 **kwargs,
             )
         )
-        assert isinstance(texture, moderngl.Texture), f"There was an error when loading the texture, {type(texture)} is not a moderngl.Texture"
+        assert isinstance(
+            texture, moderngl.Texture
+        ), f"There was an error when loading the texture, {type(texture)} is not a moderngl.Texture"
         return texture
 
     def load_texture_array(
@@ -1335,7 +1357,9 @@ class WindowConfig:
                 **kwargs,
             )
         )
-        assert isinstance(texture, moderngl.TextureArray), f"There was an error when loading the texture, {type(texture)} is not a moderngl.TextureArray"
+        assert isinstance(
+            texture, moderngl.TextureArray
+        ), f"Error when loading the texture, {type(texture)} is not a moderngl.TextureArray"
         return texture
 
     def load_texture_cube(
@@ -1346,7 +1370,7 @@ class WindowConfig:
         neg_x: str = "",
         neg_y: str = "",
         neg_z: str = "",
-        flip : bool = False,
+        flip: bool = False,
         flip_x: bool = False,
         flip_y: bool = False,
         mipmap: bool = False,
@@ -1398,7 +1422,9 @@ class WindowConfig:
             )
         )
 
-        assert isinstance(texture, moderngl.TextureCube), f"There was an error when loading the texture, {type(texture)} is not a moderngl.TextureCube"
+        assert isinstance(
+            texture, moderngl.TextureCube
+        ), f"Error when loading the texture. {type(texture)} is not a moderngl.TextureCube"
         return texture
 
     def load_program(
@@ -1447,7 +1473,9 @@ class WindowConfig:
             )
         )
 
-        assert isinstance(prog, moderngl.Program), f"There was an error when loading the program, {type(prog)} is not a moderngl.Program"
+        assert isinstance(
+            prog, moderngl.Program
+        ), f"There was an error when loading the program, {type(prog)} is not a moderngl.Program"
         return prog
 
     def load_compute_shader(
@@ -1466,7 +1494,9 @@ class WindowConfig:
             ProgramDescription(compute_shader=path, defines=defines, **kwargs)
         )
 
-        assert isinstance(shader, moderngl.ComputeShader), f"There was an error when loading the shader, {type(shader)} is not a moderngl.ComputeShader"
+        assert isinstance(
+            shader, moderngl.ComputeShader
+        ), f"Error loading compute shader. {type(shader)} is not a moderngl.ComputeShader"
         return shader
 
     def load_text(self, path: str, **kwargs: Any) -> str:
@@ -1490,7 +1520,9 @@ class WindowConfig:
 
         text = resources.data.load(DataDescription(path=path, **kwargs))
 
-        assert isinstance(text, str), f"There was an error when loading the text, {type(text)} is not a string"
+        assert isinstance(
+            text, str
+        ), f"There was an error when loading the text, {type(text)} is not a string"
         return text
 
     def load_json(self, path: str, **kwargs: Any) -> dict[str, Any]:
@@ -1514,7 +1546,9 @@ class WindowConfig:
 
         json = resources.data.load(DataDescription(path=path, **kwargs))
 
-        assert isinstance(json, dict), f"There was an error when loading the Texture, {type(json)} is not a dictionnary"
+        assert isinstance(
+            json, dict
+        ), f"There was an error when loading the Texture, {type(json)} is not a dictionnary"
         return json
 
     def load_binary(self, path: str, **kwargs: Any) -> bytes:
@@ -1538,11 +1572,18 @@ class WindowConfig:
 
         binary = resources.data.load(DataDescription(path=path, kind="binary"))
 
-        assert isinstance(binary, bytes), f"There was an error when loading the binary, {type(binary)} is not a binary file"
+        assert isinstance(
+            binary, bytes
+        ), f"There was an error when loading the binary, {type(binary)} is not a binary file"
         return binary
 
     def load_scene(
-        self, path: str, cache: bool = False, attr_names: type[AttributeNames] = AttributeNames, kind: Optional[str] = None, **kwargs: Any
+        self,
+        path: str,
+        cache: bool = False,
+        attr_names: type[AttributeNames] = AttributeNames,
+        kind: Optional[str] = None,
+        **kwargs: Any,
     ) -> Scene:
         """Loads a scene.
 
@@ -1569,7 +1610,9 @@ class WindowConfig:
             )
         )
 
-        assert isinstance(scene, Scene), f"There was an error when loading the scene, {type(scene)} is not a Scene"
+        assert isinstance(
+            scene, Scene
+        ), f"There was an error when loading the scene, {type(scene)} is not a Scene"
         return scene
 
 

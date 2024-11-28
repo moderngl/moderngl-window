@@ -33,7 +33,14 @@ class SceneDescription(ResourceDescription):
     default_kind = ""
     resource_type = "scenes"
 
-    def __init__(self, path: Optional[str] = None, kind: Optional[str] = None, cache: bool = False, attr_names: type[AttributeNames] = AttributeNames, **kwargs: Any):
+    def __init__(
+        self,
+        path: Optional[str] = None,
+        kind: Optional[str] = None,
+        cache: bool = False,
+        attr_names: type[AttributeNames] = AttributeNames,
+        **kwargs: Any,
+    ):
         """Create a scene description.
 
         Keyword Args:

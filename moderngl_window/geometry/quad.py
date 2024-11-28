@@ -7,7 +7,12 @@ from moderngl_window.geometry.attributes import AttributeNames
 from moderngl_window.opengl.vao import VAO
 
 
-def quad_fs(attr_names: type[AttributeNames] = AttributeNames, normals: bool = True, uvs: bool = True, name: Optional[str] = None) -> VAO:
+def quad_fs(
+    attr_names: type[AttributeNames] = AttributeNames,
+    normals: bool = True,
+    uvs: bool = True,
+    name: Optional[str] = None,
+) -> VAO:
     """
     Creates a screen aligned quad using two triangles with normals and texture coordinates.
 

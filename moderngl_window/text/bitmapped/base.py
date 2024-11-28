@@ -44,7 +44,9 @@ class BaseText:
 
     def _translate_string(self, data: str) -> Generator[int, None, None]:
         """Translate string into character texture positions"""
-        assert (self._meta is not None) and (self._ct is not None), "_meta or _ct (or both) are empty. Did you call _init()?"
+        assert (self._meta is not None) and (
+            self._ct is not None
+        ), "_meta or _ct (or both) are empty. Did you call _init()?"
         data_bytes = data.encode("iso-8859-1", errors="replace")
 
         for index, char in enumerate(data_bytes):

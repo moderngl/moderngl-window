@@ -2,7 +2,7 @@
 Wrapper for a loaded mesh / vao with properties
 """
 
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 import glm
 import moderngl
@@ -102,7 +102,12 @@ class Node:
         """
         self._children.append(node)
 
-    def draw(self, projection_matrix: Optional[glm.mat4], camera_matrix: Optional[glm.mat4], time: float = 0.0) -> None:
+    def draw(
+        self,
+        projection_matrix: Optional[glm.mat4],
+        camera_matrix: Optional[glm.mat4],
+        time: float = 0.0,
+    ) -> None:
         """Draw node and children.
 
         Keyword Args:
@@ -141,7 +146,9 @@ class Node:
             vao: The vertex array representing the bounding box
         """
         if self._mesh:
-            assert projection_matrix is not None, "Can not draw bbox, the projection matrix is empty"
+            assert (
+                projection_matrix is not None
+            ), "Can not draw bbox, the projection matrix is empty"
             assert self._matrix_global is not None, "Can not draw bbox, the global matrix is empty"
             assert camera_matrix is not None, "Can not draw bbox, the camera matrix is empty"
             self._mesh.draw_bbox(
@@ -151,7 +158,12 @@ class Node:
         for child in self.children:
             child.draw_bbox(projection_matrix, camera_matrix, program, vao)
 
-    def draw_wireframe(self, projection_matrix: Optional[glm.mat4], camera_matrix: Optional[glm.mat4], program: moderngl.Program) -> None:
+    def draw_wireframe(
+        self,
+        projection_matrix: Optional[glm.mat4],
+        camera_matrix: Optional[glm.mat4],
+        program: moderngl.Program,
+    ) -> None:
         """Render the node as wireframe.
 
         Keyword Args:
@@ -160,14 +172,18 @@ class Node:
             program (moderngl.Program): The program to render wireframe
         """
         if self._mesh:
-            assert projection_matrix is not None, "Can not draw bbox, the projection matrix is empty"
+            assert (
+                projection_matrix is not None
+            ), "Can not draw bbox, the projection matrix is empty"
             assert self._matrix_global is not None, "Can not draw bbox, the global matrix is empty"
             self._mesh.draw_wireframe(projection_matrix, self._matrix_global, program)
 
         for child in self.children:
             child.draw_wireframe(projection_matrix, self._matrix_global, program)
 
-    def calc_global_bbox(self, view_matrix: glm.mat4, bbox_min: Optional[glm.vec3], bbox_max: Optional[glm.vec3]) -> tuple[glm.vec3, glm.vec3]:
+    def calc_global_bbox(
+        self, view_matrix: glm.mat4, bbox_min: Optional[glm.vec3], bbox_max: Optional[glm.vec3]
+    ) -> tuple[glm.vec3, glm.vec3]:
         """Recursive calculation of scene bbox.
 
         Keyword Args:
@@ -184,7 +200,9 @@ class Node:
         for child in self._children:
             bbox_min, bbox_max = child.calc_global_bbox(view_matrix, bbox_min, bbox_max)
 
-        assert (bbox_max is not None) and (bbox_min is not None), "The bounding are not defined, please make sure your code is correct"
+        assert (bbox_max is not None) and (
+            bbox_min is not None
+        ), "The bounding are not defined, please make sure your code is correct"
 
         return bbox_min, bbox_max
 

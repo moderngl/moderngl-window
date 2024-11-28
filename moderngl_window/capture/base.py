@@ -77,7 +77,9 @@ class BaseVideoCapture:
         if os.path.exists(self._filename):
             os.remove(self._filename)
 
-    def start_capture(self, filename: Optional[str] = None, framerate: Union[int, float] = 60) -> None:
+    def start_capture(
+        self, filename: Optional[str] = None, framerate: Union[int, float] = 60
+    ) -> None:
         """
         Start the capturing process
 
@@ -132,7 +134,7 @@ class BaseVideoCapture:
         """
         if not self._recording:
             return
-        
+
         if self._source is None:
             return
 

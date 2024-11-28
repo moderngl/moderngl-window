@@ -16,8 +16,7 @@ import moderngl
 from moderngl_window.conf import settings
 from moderngl_window.context.base import BaseWindow, WindowConfig
 from moderngl_window.timers.clock import Timer
-from moderngl_window.utils.keymaps import (AZERTY, QWERTY, KeyMap,  # noqa
-                                           KeyMapFactory)
+from moderngl_window.utils.keymaps import AZERTY, QWERTY, KeyMap, KeyMapFactory  # noqa
 from moderngl_window.utils.module_loading import import_string
 
 __version__ = "3.0.0"
@@ -74,7 +73,9 @@ class ContextRefs:
     CONTEXT: Optional[moderngl.Context] = None
 
 
-def activate_context(window: Optional[BaseWindow] = None, ctx: Optional[moderngl.Context] = None) -> None:
+def activate_context(
+    window: Optional[BaseWindow] = None, ctx: Optional[moderngl.Context] = None
+) -> None:
     """
     Register the active window and context.
     If only a window is supplied the context is taken from the window.
@@ -122,8 +123,11 @@ def get_window_cls(window: str = "") -> type[BaseWindow]:
     logger.info("Attempting to load window class: %s", window)
     win = import_string(window)
 
-    assert issubclass(win, BaseWindow), f"{win} is not derived from moderngl_window.context.base.BaseWindow"
+    assert issubclass(
+        win, BaseWindow
+    ), f"{win} is not derived from moderngl_window.context.base.BaseWindow"
     return win
+
 
 def get_local_window_cls(window: Optional[str] = None) -> type[BaseWindow]:
     """
@@ -172,7 +176,9 @@ def create_window_from_settings() -> BaseWindow:
     window_cls = import_string(settings.WINDOW["class"])
     window = window_cls(**settings.WINDOW)
 
-    assert isinstance(window, BaseWindow), f"{type(window)} is not derived from moderngl_window.context.base.BaseWindow"
+    assert isinstance(
+        window, BaseWindow
+    ), f"{type(window)} is not derived from moderngl_window.context.base.BaseWindow"
     activate_context(window=window)
     return window
 
@@ -180,7 +186,9 @@ def create_window_from_settings() -> BaseWindow:
 # --- The simple window config system ---
 
 
-def run_window_config(config_cls: type[WindowConfig], timer: Optional[Timer] = None, args: Any = None) -> None:
+def run_window_config(
+    config_cls: type[WindowConfig], timer: Optional[Timer] = None, args: Any = None
+) -> None:
     """
     Run an WindowConfig entering a blocking main loop
 
@@ -322,7 +330,9 @@ def create_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def parse_args(args: Optional[Any] = None, parser: Optional[argparse.ArgumentParser] = None) -> argparse.Namespace:
+def parse_args(
+    args: Optional[Any] = None, parser: Optional[argparse.ArgumentParser] = None
+) -> argparse.Namespace:
     """Parse arguments from sys.argv
 
     Passing in your own argparser can be user to extend the parser.

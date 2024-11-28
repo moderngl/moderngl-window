@@ -1,8 +1,7 @@
-from typing import TYPE_CHECKING, Any, Optional, Union
+from typing import TYPE_CHECKING, Any, Optional
 
 import glm
 import moderngl
-import numpy
 
 from moderngl_window.opengl.vao import VAO
 
@@ -10,6 +9,7 @@ from .material import Material
 
 if TYPE_CHECKING:
     from .programs import MeshProgram
+
 
 class Mesh:
     """Mesh info and geometry"""
@@ -49,7 +49,13 @@ class Mesh:
         self.bbox_max = bbox_max
         self.mesh_program: Optional["MeshProgram"] = None
 
-    def draw(self, projection_matrix: Optional[glm.mat4] = None, model_matrix: Optional[glm.mat4] = None, camera_matrix: Optional[glm.mat4] = None, time: float = 0.0) -> None:
+    def draw(
+        self,
+        projection_matrix: Optional[glm.mat4] = None,
+        model_matrix: Optional[glm.mat4] = None,
+        camera_matrix: Optional[glm.mat4] = None,
+        time: float = 0.0,
+    ) -> None:
         """Draw the mesh using the assigned mesh program
 
         Keyword Args:
@@ -58,7 +64,9 @@ class Mesh:
             camera_matrix (bytes): camera_matrix
         """
         if self.mesh_program is not None:
-            assert projection_matrix is not None, "Can not draw, there is no projection matrix to use"
+            assert (
+                projection_matrix is not None
+            ), "Can not draw, there is no projection matrix to use"
             assert model_matrix is not None, "Can not draw, there is no model matrix to use"
             assert camera_matrix is not None, "Can not draw, there is no camera matrix to use"
             self.mesh_program.draw(
@@ -69,7 +77,14 @@ class Mesh:
                 time=time,
             )
 
-    def draw_bbox(self, proj_matrix: glm.mat4, model_matrix: glm.mat4, cam_matrix: glm.mat4, program: moderngl.Program, vao: VAO) -> None:
+    def draw_bbox(
+        self,
+        proj_matrix: glm.mat4,
+        model_matrix: glm.mat4,
+        cam_matrix: glm.mat4,
+        program: moderngl.Program,
+        vao: VAO,
+    ) -> None:
         """Renders the bounding box for this mesh.
 
         Args:
@@ -86,7 +101,9 @@ class Mesh:
         program["bb_max"].write(self.bbox_max.to_bytes())
         vao.render(program)
 
-    def draw_wireframe(self, proj_matrix: glm.mat4, model_matrix: glm.mat4, program: moderngl.Program) -> None:
+    def draw_wireframe(
+        self, proj_matrix: glm.mat4, model_matrix: glm.mat4, program: moderngl.Program
+    ) -> None:
         """Render the mesh as wireframe.
 
         proj_matrix: Projection matrix
@@ -107,7 +124,9 @@ class Mesh:
         """
         self.attributes[attr_type] = {"name": name, "components": components}
 
-    def calc_global_bbox(self, view_matrix: glm.mat4, bbox_min: Optional[glm.vec3], bbox_max: Optional[glm.vec3]) -> tuple[glm.vec3, glm.vec3]:
+    def calc_global_bbox(
+        self, view_matrix: glm.mat4, bbox_min: Optional[glm.vec3], bbox_max: Optional[glm.vec3]
+    ) -> tuple[glm.vec3, glm.vec3]:
         """Calculates the global bounding.
 
         Args:
@@ -125,17 +144,13 @@ class Mesh:
         bmin = view_matrix * bb1
         bmax = view_matrix * bb2
 
-
         # If a rotation happened there is an axis change and we have to ensure max-min is positive
         for i in range(3):
             if bmax[i] - bmin[i] < 0:
                 bmin[i], bmax[i] = bmax[i], bmin[i]
 
         if bbox_min is None or bbox_max is None:
-            return (
-                glm.vec3(bmin.x, bmin.y, bmin.z),
-                glm.vec3(bmax.x, bmax.y, bmax.z)
-            )
+            return (glm.vec3(bmin.x, bmin.y, bmin.z), glm.vec3(bmax.x, bmax.y, bmax.z))
 
         for i in range(3):
             bbox_min[i] = min(bbox_min[i], bmin[i])

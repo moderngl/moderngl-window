@@ -36,10 +36,7 @@ class Programs(BaseRegistry):
         Returns:
             moderngl.Program: The shader program
         """
-        prog = super().load(meta)
-        # The tests fails with this line
-        # assert isinstance(prog, moderngl.Program), f"{meta} (type is {type(prog)}) do not load a moderngl.Program object, please correct this"
-        return prog
+        return super().load(meta)
 
 
 programs = Programs()

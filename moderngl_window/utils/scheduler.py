@@ -26,7 +26,13 @@ class Scheduler:
         self._scheduler = sched.scheduler(lambda: timer.time, time.sleep)
 
     def run_once(
-        self, action: Callable[[Any], Any], delay: float, *, priority: int = 1, arguments: tuple[Any, ...]=(), kwargs: dict[Any, Any] = dict()
+        self,
+        action: Callable[[Any], Any],
+        delay: float,
+        *,
+        priority: int = 1,
+        arguments: tuple[Any, ...] = (),
+        kwargs: dict[Any, Any] = dict(),
     ) -> int:
         """Schedule a function for execution after a delay.
 
@@ -50,7 +56,15 @@ class Scheduler:
         self._event_id += 1
         return self._event_id - 1
 
-    def run_at(self, action: Callable[[Any], Any], time: float, *, priority: int = 1, arguments: tuple[Any, ...] = (), kwargs: dict[Any, Any] = dict()) -> int:
+    def run_at(
+        self,
+        action: Callable[[Any], Any],
+        time: float,
+        *,
+        priority: int = 1,
+        arguments: tuple[Any, ...] = (),
+        kwargs: dict[Any, Any] = dict(),
+    ) -> int:
         """Schedule a function to be executed at a certain time.
 
         Args:
@@ -110,7 +124,14 @@ class Scheduler:
         self._event_id += 1
         return self._event_id - 1
 
-    def _recurring_event_factory(self, function: Callable[[Any], Any], arguments: tuple[Any, ...], kwargs: dict[Any, Any], scheduling_info: tuple[Any, Any], id: int) -> Callable[[], None]:
+    def _recurring_event_factory(
+        self,
+        function: Callable[[Any], Any],
+        arguments: tuple[Any, ...],
+        kwargs: dict[Any, Any],
+        scheduling_info: tuple[Any, Any],
+        id: int,
+    ) -> Callable[[], None]:
         """Factory for creating recurring events that will reschedule themselves.
 
         Args:

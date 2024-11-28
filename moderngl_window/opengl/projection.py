@@ -1,13 +1,14 @@
 from typing import Optional
 
 import glm
-import numpy as np
 
 
 class Projection3D:
     """3D Projection"""
 
-    def __init__(self, aspect_ratio: float = 16 / 9, fov: float = 75.0, near: float = 1.0, far: float = 100.0):
+    def __init__(
+        self, aspect_ratio: float = 16 / 9, fov: float = 75.0, near: float = 1.0, far: float = 100.0
+    ):
         """Create a 3D projection
 
         Keyword Args:

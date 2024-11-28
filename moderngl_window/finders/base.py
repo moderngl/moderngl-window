@@ -6,7 +6,7 @@ import functools
 import logging
 from collections import namedtuple
 from pathlib import Path
-from typing import Any, Optional
+from typing import Optional
 
 from moderngl_window.conf import settings
 from moderngl_window.exceptions import ImproperlyConfigured
@@ -72,7 +72,7 @@ class BaseFilesystemFinder:
 
             if abspath.exists():
                 logger.debug("found %s", abspath)
-                return Path(abspath) # Needed to please mypy, but is already be a path
+                return Path(abspath)  # Needed to please mypy, but is already be a path
 
         return None
 

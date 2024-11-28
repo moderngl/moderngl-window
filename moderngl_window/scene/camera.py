@@ -37,7 +37,9 @@ class Camera:
         print(camera.projection.matrix)
     """
 
-    def __init__(self, fov: float = 60.0, aspect_ratio: float = 1.0, near: float = 1.0, far: float = 100.0):
+    def __init__(
+        self, fov: float = 60.0, aspect_ratio: float = 1.0, near: float = 1.0, far: float = 100.0
+    ):
         """Initialize camera using a specific projection
 
         Keyword Args:
@@ -124,7 +126,9 @@ class Camera:
         self.right = glm.normalize(glm.cross(self.dir, self._up))
         self.up = glm.normalize(glm.cross(self.right, self.dir))
 
-    def look_at(self, vec: Optional[glm.vec3] = None, pos: Optional[tuple[float, float, float]] = None) -> glm.mat4:
+    def look_at(
+        self, vec: Optional[glm.vec3] = None, pos: Optional[tuple[float, float, float]] = None
+    ) -> glm.mat4:
         """Look at a specific point
 
         Either ``vec`` or ``pos`` needs to be supplied.
@@ -482,7 +486,13 @@ class OrbitCamera(Camera):
         camera.projection.tobytes()
     """
 
-    def __init__(self, target: Union[glm.vec3, tuple[float, float, float]] = (0.0, 0.0, 0.0), radius: float = 2.0, angles: tuple[float, float] = (45.0, -45.0), **kwargs: Any):
+    def __init__(
+        self,
+        target: Union[glm.vec3, tuple[float, float, float]] = (0.0, 0.0, 0.0),
+        radius: float = 2.0,
+        angles: tuple[float, float] = (45.0, -45.0),
+        **kwargs: Any,
+    ):
         """Initialize the camera
 
         Keyword Args:

@@ -16,6 +16,7 @@ TextureAny = Union[
     moderngl.Texture3D,
 ]
 
+
 class Textures(BaseRegistry):
     """Handles texture resources"""
 
@@ -34,7 +35,12 @@ class Textures(BaseRegistry):
             moderngl.TextureArray: texture array if ``layers`` is supplied
         """
         texture = super().load(meta)
-        assert isinstance(texture, moderngl.Texture) or isinstance(texture, moderngl.TextureArray) or isinstance(texture, moderngl.TextureCube) or isinstance(texture, moderngl.Texture3D), f"{meta} did not load a texture. Please correct it"
+        assert (
+            isinstance(texture, moderngl.Texture)
+            or isinstance(texture, moderngl.TextureArray)
+            or isinstance(texture, moderngl.TextureCube)
+            or isinstance(texture, moderngl.Texture3D)
+        ), f"{meta} did not load a texture. Please correct it"
         return texture
 
 

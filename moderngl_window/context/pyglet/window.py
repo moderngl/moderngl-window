@@ -8,9 +8,8 @@ if platform.system() == "Darwin":
     pyglet.options["shadow_window"] = False
 
 pyglet.options["debug_gl"] = False
-
-from pathlib import Path
-from typing import Any, Union
+from pathlib import Path  # noqa
+from typing import Any, Union  # noqa
 
 from moderngl_window.context.base import BaseWindow  # noqa: E402
 from moderngl_window.context.pyglet.keys import Keys  # noqa: E402

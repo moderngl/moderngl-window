@@ -31,7 +31,9 @@ class DataDescription(ResourceDescription):
     default_kind: str = ""
     resource_type = "data"
 
-    def __init__(self, path: Optional[str] = None, kind: Optional[str] = None, **kwargs: Any) -> None:
+    def __init__(
+        self, path: Optional[str] = None, kind: Optional[str] = None, **kwargs: Any
+    ) -> None:
         """Initialize the resource description.
 
         Keyword Args:

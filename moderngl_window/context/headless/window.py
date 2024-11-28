@@ -84,7 +84,15 @@ class Window(BaseWindow):
         assert self._fbo is not None, "No framebuffer defined, did you forget to call create_fbo()?"
         self._fbo.use()
 
-    def clear(self, red: float = 0.0, green: float = 0.0, blue: float = 0.0, alpha: float = 0.0, depth: float = 1.0, viewport: Optional[tuple[int, int, int, int]] = None) -> None:
+    def clear(
+        self,
+        red: float = 0.0,
+        green: float = 0.0,
+        blue: float = 0.0,
+        alpha: float = 0.0,
+        depth: float = 1.0,
+        viewport: Optional[tuple[int, int, int, int]] = None,
+    ) -> None:
         """
         Binds and clears the default framebuffer
 

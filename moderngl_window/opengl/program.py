@@ -36,7 +36,9 @@ class ProgramShaders:
         return moderngl_window.ctx()
 
     @classmethod
-    def from_single(cls: type["ProgramShaders"], meta: ProgramDescription, source: str) -> "ProgramShaders":
+    def from_single(
+        cls: type["ProgramShaders"], meta: ProgramDescription, source: str
+    ) -> "ProgramShaders":
         """Initialize a single glsl string containing all shaders"""
         instance = cls(meta)
         instance.vertex_source = ShaderSource(
@@ -134,7 +136,9 @@ class ProgramShaders:
         return instance
 
     @classmethod
-    def compute_shader(cls: type["ProgramShaders"], meta: ProgramDescription, compute_shader_source: str = "") -> "ProgramShaders":
+    def compute_shader(
+        cls: type["ProgramShaders"], meta: ProgramDescription, compute_shader_source: str = ""
+    ) -> "ProgramShaders":
         instance = cls(meta)
         instance.compute_shader_source = ShaderSource(
             COMPUTE_SHADER,
@@ -157,7 +161,7 @@ class ProgramShaders:
         """
         # Get out varyings
         out_attribs = []
-        
+
         assert self.vertex_source is not None, "There is no vertex_source to use"
 
         # If no fragment shader is present we are doing transform feedback
@@ -299,7 +303,9 @@ class ShaderSource:
         """dict: Defines configured for this shader"""
         return self._defines
 
-    def handle_includes(self, load_source_func: Callable[[Any], Any], depth: int = 0, source_id: int = 0) -> None:
+    def handle_includes(
+        self, load_source_func: Callable[[Any], Any], depth: int = 0, source_id: int = 0
+    ) -> None:
         """Inject includes into the shader source.
         This happens recursively up to a max level in case the users has
         circular includes. We also build up a list of all the included
@@ -321,7 +327,9 @@ class ShaderSource:
                 if line.startswith("#include"):
                     match = re.search(r'#include\s+"?([^"]+)', line)
                     if match is None:
-                        raise ShaderError(f"Could not match '#include\\s+\"?([^\"]+)' in line {line}")
+                        raise ShaderError(
+                            f"Could not match '#include\\s+\"?([^\"]+)' in line {line}"
+                        )
                     path = match[1]
                     current_id += 1
                     _, source = load_source_func(path)

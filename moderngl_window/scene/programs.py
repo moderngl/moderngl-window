@@ -168,8 +168,12 @@ class TextureProgram(MeshProgram):
         assert self.program is not None, "There is no program to draw"
         assert mesh.vao is not None, "There is no vao to render"
         assert mesh.material is not None, "There is no material to render"
-        assert mesh.material.mat_texture is not None, "The material does not have a texture to render"
-        assert mesh.material.mat_texture.texture is not None, "The material texture is not linked to a texture, so it can not be rendered"
+        assert (
+            mesh.material.mat_texture is not None
+        ), "The material does not have a texture to render"
+        assert (
+            mesh.material.mat_texture.texture is not None
+        ), "The material texture is not linked to a texture, so it can not be rendered"
 
         mesh.material.mat_texture.texture.use()
         self.program["m_proj"].write(projection_matrix)
@@ -216,8 +220,12 @@ class TextureVertexColorProgram(MeshProgram):
         assert self.program is not None, "There is no program to draw"
         assert mesh.vao is not None, "There is no vao to render"
         assert mesh.material is not None, "There is no material to render"
-        assert mesh.material.mat_texture is not None, "The material does not have a texture to render"
-        assert mesh.material.mat_texture.texture is not None, "The material texture is not linked to a texture, so it can not be rendered"
+        assert (
+            mesh.material.mat_texture is not None
+        ), "The material does not have a texture to render"
+        assert (
+            mesh.material.mat_texture.texture is not None
+        ), "The material texture is not linked to a texture, so it can not be rendered"
 
         mesh.material.mat_texture.texture.use()
         self.program["m_proj"].write(projection_matrix)
@@ -264,8 +272,12 @@ class TextureLightProgram(MeshProgram):
         assert self.program is not None, "There is no program to draw"
         assert mesh.vao is not None, "There is no vao to render"
         assert mesh.material is not None, "There is no material to render"
-        assert mesh.material.mat_texture is not None, "The material does not have a texture to render"
-        assert mesh.material.mat_texture.texture is not None, "The material texture is not linked to a texture, so it can not be rendered"
+        assert (
+            mesh.material.mat_texture is not None
+        ), "The material does not have a texture to render"
+        assert (
+            mesh.material.mat_texture.texture is not None
+        ), "The material texture is not linked to a texture, so it can not be rendered"
 
         # if mesh.material.double_sided:
         #     self.ctx.disable(moderngl.CULL_FACE)

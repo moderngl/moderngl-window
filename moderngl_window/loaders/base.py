@@ -115,7 +115,9 @@ class BaseLoader:
         """
         return self._find(path, scene.get_finders())
 
-    def _find(self, path: Optional[Union[str, Path]], finders: Iterable[BaseFilesystemFinder]) -> Optional[Path]:
+    def _find(
+        self, path: Optional[Union[str, Path]], finders: Iterable[BaseFilesystemFinder]
+    ) -> Optional[Path]:
         """Find the first occurrance of this path in all finders.
         If the incoming path is an absolute path we assume this
         path exist and return it.

@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING, Any, Optional
 
 import glm
 import moderngl
-import numpy
 
 import moderngl_window as mglw
 from moderngl_window import geometry
@@ -16,9 +15,15 @@ from moderngl_window.resources.programs import programs
 
 from .material import Material
 from .node import Node
-from .programs import (ColorLightProgram, FallbackProgram, MeshProgram,
-                       TextureLightProgram, TextureProgram,
-                       TextureVertexColorProgram, VertexColorProgram)
+from .programs import (
+    ColorLightProgram,
+    FallbackProgram,
+    MeshProgram,
+    TextureLightProgram,
+    TextureProgram,
+    TextureVertexColorProgram,
+    VertexColorProgram,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -147,7 +152,10 @@ class Scene:
             node.draw_bbox(projection_matrix, camera_matrix, self.bbox_program, self.bbox_vao)
 
     def draw_wireframe(
-        self, projection_matrix: Optional[glm.mat4] = None, camera_matrix: Optional[glm.mat4] = None, color: tuple[float, float, float, float] = (0.75, 0.75, 0.75, 1.0)
+        self,
+        projection_matrix: Optional[glm.mat4] = None,
+        camera_matrix: Optional[glm.mat4] = None,
+        color: tuple[float, float, float, float] = (0.75, 0.75, 0.75, 1.0),
     ) -> None:
         """Render the scene in wireframe mode.
 
@@ -173,7 +181,9 @@ class Scene:
 
         self.ctx.wireframe = False
 
-    def apply_mesh_programs(self, mesh_programs: Optional[list[MeshProgram]] = None, clear: bool = True) -> None:
+    def apply_mesh_programs(
+        self, mesh_programs: Optional[list[MeshProgram]] = None, clear: bool = True
+    ) -> None:
         """Applies mesh programs to meshes.
         If not mesh programs are passed in we assign default ones.
 
@@ -224,7 +234,9 @@ class Scene:
         for node in self.root_nodes:
             bbox_min, bbox_max = node.calc_global_bbox(glm.mat4(), bbox_min, bbox_max)
 
-        assert (bbox_max is not None) and (bbox_min is not None), "The bounding are not defined, please make sure your code is correct"
+        assert (bbox_max is not None) and (
+            bbox_min is not None
+        ), "The bounding are not defined, please make sure your code is correct"
 
         self.bbox_min = bbox_min
         self.bbox_max = bbox_max

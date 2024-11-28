@@ -156,7 +156,14 @@ class VAO:
         """moderngl.Context: The actite moderngl context"""
         return mglw.ctx()
 
-    def render(self, program: moderngl.Program, mode: Optional[int] = None, vertices: int = -1, first: int = 0, instances: int = 1) -> None:
+    def render(
+        self,
+        program: moderngl.Program,
+        mode: Optional[int] = None,
+        vertices: int = -1,
+        first: int = 0,
+        instances: int = 1,
+    ) -> None:
         """Render the VAO.
 
         An internal ``moderngl.VertexBuffer`` with compatible buffer bindings
@@ -177,7 +184,15 @@ class VAO:
 
         vao.render(mode, vertices=vertices, first=first, instances=instances)
 
-    def render_indirect(self, program: moderngl.Program, buffer: moderngl.Buffer, mode: Optional[int] = None, count: int = -1, *, first: int = 0) -> None:
+    def render_indirect(
+        self,
+        program: moderngl.Program,
+        buffer: moderngl.Buffer,
+        mode: Optional[int] = None,
+        count: int = -1,
+        *,
+        first: int = 0,
+    ) -> None:
         """
         The render primitive (mode) must be the same as the input primitive of the
         GeometryShader.
@@ -227,7 +242,12 @@ class VAO:
 
         vao.transform(buffer, mode=mode, vertices=vertices, first=first, instances=instances)
 
-    def buffer(self, buffer: Union[moderngl.Buffer, npt.NDArray[Any], bytes], buffer_format: str, attribute_names: Union[list[str], str]) -> moderngl.Buffer:
+    def buffer(
+        self,
+        buffer: Union[moderngl.Buffer, npt.NDArray[Any], bytes],
+        buffer_format: str,
+        attribute_names: Union[list[str], str],
+    ) -> moderngl.Buffer:
         """Register a buffer/vbo for the VAO. This can be called multiple times.
         adding multiple buffers (interleaved or not).
 
@@ -272,7 +292,9 @@ class VAO:
 
         return buffer
 
-    def index_buffer(self, buffer: Union[moderngl.Buffer, npt.NDArray[Any], bytes], index_element_size: int = 4) -> None:
+    def index_buffer(
+        self, buffer: Union[moderngl.Buffer, npt.NDArray[Any], bytes], index_element_size: int = 4
+    ) -> None:
         """Set the index buffer for this VAO.
 
         Args:

@@ -22,7 +22,6 @@ from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.loaders.texture import t2d
 from moderngl_window.meta import SceneDescription, TextureDescription
 from moderngl_window.opengl.vao import VAO
-from moderngl_window.resources.textures import Textures
 from moderngl_window.scene import Material, MaterialTexture, Mesh, Node, Scene
 
 logger = logging.getLogger(__name__)
@@ -154,7 +153,9 @@ class Loader(BaseLoader):
             magic = fd.read(4)
             if magic != GLTF_MAGIC_HEADER:
                 raise ValueError(
-                    "{} has incorrect header {!r} != {!r}".format(self.path, magic, GLTF_MAGIC_HEADER)
+                    "{} has incorrect header {!r} != {!r}".format(
+                        self.path, magic, GLTF_MAGIC_HEADER
+                    )
                 )
 
             version = struct.unpack("<I", fd.read(4))[0]
@@ -299,7 +300,13 @@ class Loader(BaseLoader):
 class GLTFMeta:
     """Container for gltf metadata"""
 
-    def __init__(self, path: Union[Path, str], data: dict[Any, Any], meta: SceneDescription, binary_buffer: Optional[bytes] = None) -> None:
+    def __init__(
+        self,
+        path: Union[Path, str],
+        data: dict[Any, Any],
+        meta: SceneDescription,
+        binary_buffer: Optional[bytes] = None,
+    ) -> None:
         """
         :param file: GLTF file name loaded
         :param data: Metadata (json loaded)
@@ -505,7 +512,9 @@ class GLTFMesh:
 
         return meshes
 
-    def load_indices(self, primitive: Primitives) -> tuple[ComponentType, npt.NDArray[Any]] | tuple[None, None]:
+    def load_indices(
+        self, primitive: Primitives
+    ) -> tuple[ComponentType, npt.NDArray[Any]] | tuple[None, None]:
         """Loads the index buffer / polygon list for a primitive"""
         if primitive.indices is None or primitive.accessor is None:
             return None, None
@@ -541,7 +550,7 @@ class VBOInfo:
     def __init__(
         self,
         buffer: Optional[GLTFBuffer] = None,
-        buffer_view: Optional[GLTFBuffer]=None,
+        buffer_view: Optional[GLTFBuffer] = None,
         byte_length: int = 0,
         byte_offset: int = 0,
         component_type: ComponentType = ComponentType("", 0, 0),
@@ -658,7 +667,9 @@ class GLTFBufferView:
         self.byteStride = data.get("byteStride", 0)
         # Valid: 34962 (ARRAY_BUFFER) and 34963 (ELEMENT_ARRAY_BUFFER) or None
 
-    def read(self, byte_offset: int = 0, dtype: Optional[type[object]] = None, count: int = 0) -> npt.NDArray[Any]:
+    def read(
+        self, byte_offset: int = 0, dtype: Optional[type[object]] = None, count: int = 0
+    ) -> npt.NDArray[Any]:
         data = self.buffer.read(
             byte_offset=byte_offset + self.byteOffset,
             byte_length=self.byteLength,
@@ -713,7 +724,7 @@ class GLTFBuffer:
         with open(str(self.path / (self.uri if self.uri is not None else "")), "rb") as fd:
             self.data = fd.read()
 
-    def read(self, byte_offset: int = 0, byte_length: int = 0) ->  bytes:
+    def read(self, byte_offset: int = 0, byte_length: int = 0) -> bytes:
         self.open()
         return self.data[byte_offset : byte_offset + byte_length]
 

@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Optional, Union
 
 try:
     from PIL import Image
@@ -41,7 +41,11 @@ class PillowLoader(BaseLoader):
             self.image = Image.open(self.meta.resolved_path)
 
             # If the image is animated (like a gif anim) we convert it into a vertical strip
-            if hasattr(self.image, "is_animated") and self.image.is_animated and hasattr(self.image, "n_frames"):
+            if (
+                hasattr(self.image, "is_animated")
+                and self.image.is_animated
+                and hasattr(self.image, "n_frames")
+            ):
                 self.layers = self.image.n_frames
                 anim = Image.new(
                     self.image.palette.mode if self.image.palette is not None else "L",
