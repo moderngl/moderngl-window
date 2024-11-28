@@ -55,7 +55,7 @@ class HeadlessTest(moderngl_window.WindowConfig):
             prog, self.ctx.buffer(vertices), "in_vert", "in_color"
         )
 
-    def render(self, time, frame_time):
+    def on_render(self, time, frame_time):
         """Render one frame, save to png and close it"""
         # Fill currently bound framebuffer with while background
         self.ctx.clear(1, 1, 1, 1)
@@ -73,4 +73,4 @@ class HeadlessTest(moderngl_window.WindowConfig):
 
 
 if __name__ == "__main__":
-    HeadlessTest.run()
+    moderngl_window.run_window_config(HeadlessTest, args=("--window", "headless"))

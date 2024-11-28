@@ -81,7 +81,7 @@ class CubeModel(CameraWindow):
         # if self.scene.diagonal_size > 0:
         #     self.camera.velocity = self.scene.diagonal_size / 5.0
 
-    def render(self, time: float, frame_time: float):
+    def on_render(self, time: float, frame_time: float):
         """Render the scene"""
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
 

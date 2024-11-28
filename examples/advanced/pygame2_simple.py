@@ -152,7 +152,7 @@ class Pygame(moderngl_window.WindowConfig):
             ],
         )
 
-    def render(self, time: float, frame_time: float):
+    def on_render(self, time: float, frame_time: float):
         """Called every frame"""
         self.render_pygame(time)
 

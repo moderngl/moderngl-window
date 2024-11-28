@@ -30,7 +30,7 @@ class Cubes(moderngl_window.WindowConfig):
 
         self.resize(*self.wnd.size)
 
-    def render(self, time, frame_time):
+    def on_render(self, time, frame_time):
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
         rot = glm.mat4(glm.quat(glm.vec3(time, time / 2, time / 3)))
 

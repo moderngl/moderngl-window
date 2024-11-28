@@ -103,7 +103,7 @@ class CubeSimple(moderngl_window.WindowConfig):
             ],
         )
 
-    def render(self, time=0.0, frametime=0.0, target: moderngl.Framebuffer = None):
+    def on_render(self, time=0.0, frametime=0.0, target: moderngl.Framebuffer = None):
         self.ctx.enable_only(moderngl.CULL_FACE | moderngl.DEPTH_TEST)
 
         rotation = glm.mat4(glm.quat(glm.vec3(time, time, time)))
@@ -120,4 +120,4 @@ class CubeSimple(moderngl_window.WindowConfig):
 
 
 if __name__ == "__main__":
-    moderngl_window.run_window_config(CubeSimple)
+    CubeSimple.run()

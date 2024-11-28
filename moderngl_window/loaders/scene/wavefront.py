@@ -64,7 +64,8 @@ class VAOCacheLoader(cache.CacheLoader):
         )
 
         vao = VAO(material.name, mode=moderngl.TRIANGLES)
-        vao.buffer(fd.read(length).encode(), buffer_format, attributes)
+        # FIXME: Are we actually reading from text or byte stream here?
+        vao.buffer(fd.read(length), buffer_format, attributes)
 
         setattr(material, "vao", vao)
         setattr(material, "buffer_format", buffer_format)
@@ -76,7 +77,7 @@ ObjParser.cache_loader_cls = VAOCacheLoader
 
 
 class Loader(BaseLoader):
-    """Loade wavefront/obj files"""
+    """Load wavefront/obj files"""
 
     kind = "wavefront"
     file_extensions = [

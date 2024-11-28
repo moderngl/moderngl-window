@@ -21,9 +21,7 @@ class Test(mglw.WindowConfig):
         super().__init__(**kwargs)
         self.buffer_size = 320, 256
         # Textures
-        self.background_texture = self.load_texture_array(
-            "textures/animated_sprites/giphy.gif"
-        )
+        self.background_texture = self.load_texture_array("textures/animated_sprites/giphy.gif")
         self.background_texture.repeat_x = False
         self.background_texture.repeat_y = False
         self.caveman_texture = self.load_texture_array(
@@ -39,22 +37,18 @@ class Test(mglw.WindowConfig):
         self.quad_fs = geometry.quad_fs()
 
         # Programs
-        self.sprite_program = self.load_program(
-            "programs/animated_sprites/sprite_array.glsl"
-        )
+        self.sprite_program = self.load_program("programs/animated_sprites/sprite_array.glsl")
         self.texture_program = self.load_program("programs/texture.glsl")
 
         # Offscreen buffer
         self.offscreen_texture = self.ctx.texture(self.buffer_size, 4)
         self.offscreen_texture.filter = moderngl.NEAREST, moderngl.NEAREST
-        self.offscreen = self.ctx.framebuffer(
-            color_attachments=[self.offscreen_texture]
-        )
+        self.offscreen = self.ctx.framebuffer(color_attachments=[self.offscreen_texture])
 
         self.projection = glm.ortho(0, 320, 0, 256, -1.0, 1.0)
         self.sprite_program["projection"].write(self.projection)
 
-    def render(self, time, frame_time):
+    def on_render(self, time, frame_time):
         # Render sprite of offscreen
         self.offscreen.use()
         self.ctx.clear(0.5, 0.5, 0.5, 0.0)

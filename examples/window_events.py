@@ -8,6 +8,7 @@ class WindowEvents(moderngl_window.WindowConfig):
     """
     Demonstrates handling mouse, keyboard, render and resize events
     """
+
     gl_version = (3, 3)
     title = "Window Events"
     cursor = True
@@ -17,7 +18,7 @@ class WindowEvents(moderngl_window.WindowConfig):
         super().__init__(**kwargs)
         # self.wnd.exit_key = None
 
-    def render(self, time: float, frametime: float):
+    def on_render(self, time: float, frametime: float):
         self.ctx.clear(
             (math.sin(time) + 1.0) / 2,
             (math.sin(time + 2) + 1.0) / 2,
@@ -28,17 +29,17 @@ class WindowEvents(moderngl_window.WindowConfig):
         if self.wnd.is_key_pressed(self.wnd.keys.SPACE):
             print("User is holding SPACE button")
 
-    def resize(self, width: int, height: int):
+    def on_resize(self, width: int, height: int):
         print("Window was resized. buffer size is {} x {}".format(width, height))
 
-    def close(self):
+    def on_close(self):
         print("Window is closing")
 
-    def iconify(self, iconify: bool):
+    def on_iconify(self, iconify: bool):
         """Window hide/minimize and restore"""
         print("Window was iconified:", iconify)
 
-    def key_event(self, key, action, modifiers):
+    def on_key_event(self, key, action, modifiers):
         keys = self.wnd.keys
 
         # Key presses
@@ -94,7 +95,7 @@ class WindowEvents(moderngl_window.WindowConfig):
             if key == keys.T:
                 title = list(self.wnd.title)
                 random.shuffle(title)
-                self.wnd.title = ''.join(title)
+                self.wnd.title = "".join(title)
 
             # Toggle mouse exclusivity
             if key == keys.M:
@@ -102,31 +103,31 @@ class WindowEvents(moderngl_window.WindowConfig):
 
             # Check number vs. numpad
             if key == keys.NUMBER_0:
-                print('NUMBER 0')
+                print("NUMBER 0")
 
             if key == keys.NUMPAD_0:
-                print('NUMPAD 0')
+                print("NUMPAD 0")
 
-    def mouse_position_event(self, x, y, dx, dy):
+    def on_mouse_position_event(self, x, y, dx, dy):
         print("Mouse position pos={} {} delta={} {}".format(x, y, dx, dy))
 
-    def mouse_drag_event(self, x, y, dx, dy):
+    def on_mouse_drag_event(self, x, y, dx, dy):
         print("Mouse drag pos={} {} delta={} {}".format(x, y, dx, dy))
 
-    def mouse_scroll_event(self, x_offset, y_offset):
+    def on_mouse_scroll_event(self, x_offset, y_offset):
         print("mouse_scroll_event", x_offset, y_offset)
 
-    def mouse_press_event(self, x, y, button):
+    def on_mouse_press_event(self, x, y, button):
         print("Mouse button {} pressed at {}, {}".format(button, x, y))
         print("Mouse states:", self.wnd.mouse_states)
 
-    def mouse_release_event(self, x: int, y: int, button: int):
+    def on_mouse_release_event(self, x: int, y: int, button: int):
         print("Mouse button {} released at {}, {}".format(button, x, y))
         print("Mouse states:", self.wnd.mouse_states)
 
-    def unicode_char_entered(self, char):
+    def on_unicode_char_entered(self, char):
         print("unicode_char_entered:", char)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     moderngl_window.run_window_config(WindowEvents)

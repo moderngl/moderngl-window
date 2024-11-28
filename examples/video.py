@@ -161,9 +161,7 @@ class VideoTest(moderngl_window.WindowConfig):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.player = Player(
-            self.ctx, self.resource_dir / "videos/Lightning - 33049.mp4"
-        )
+        self.player = Player(self.ctx, self.resource_dir / "videos/Lightning - 33049.mp4")
         print("duration   :", self.player.duration)
         print("fps        :", self.player.fps)
         print("video_size :", self.player.video_size)
@@ -173,12 +171,12 @@ class VideoTest(moderngl_window.WindowConfig):
         self.quad = geometry.quad_fs()
         self.program = self.load_program("programs/texture_flipped.glsl")
 
-    def render(self, time, frametime):
+    def on_render(self, time: float, frametime: float):
         self.player.update(math.fmod(time, 5))
         self.player.texture.use(0)
         self.quad.render(self.program)
 
-    def key_event(self, key, action, modifiers):
+    def on_key_event(self, key, action, modifiers):
         keys = self.wnd.keys
 
         # Key presses

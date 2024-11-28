@@ -10,7 +10,7 @@ class CameraWindow(mglw.WindowConfig):
         self.camera = KeyboardCamera(self.wnd.keys, aspect_ratio=self.wnd.aspect_ratio)
         self.camera_enabled = True
 
-    def key_event(self, key, action, modifiers):
+    def on_key_event(self, key, action, modifiers):
         keys = self.wnd.keys
 
         if self.camera_enabled:
@@ -24,11 +24,11 @@ class CameraWindow(mglw.WindowConfig):
             if key == keys.SPACE:
                 self.timer.toggle_pause()
 
-    def mouse_position_event(self, x: int, y: int, dx, dy):
+    def on_mouse_position_event(self, x: int, y: int, dx, dy):
         if self.camera_enabled:
             self.camera.rot_state(-dx, -dy)
 
-    def resize(self, width: int, height: int):
+    def on_resize(self, width: int, height: int):
         self.camera.projection.update(aspect_ratio=self.wnd.aspect_ratio)
 
 
@@ -43,7 +43,7 @@ class OrbitCameraWindow(mglw.WindowConfig):
         self.camera = OrbitCamera(aspect_ratio=self.wnd.aspect_ratio)
         self.camera_enabled = True
 
-    def key_event(self, key, action, modifiers):
+    def on_key_event(self, key, action, modifiers):
         keys = self.wnd.keys
 
         if action == keys.ACTION_PRESS:
@@ -54,15 +54,15 @@ class OrbitCameraWindow(mglw.WindowConfig):
             if key == keys.SPACE:
                 self.timer.toggle_pause()
 
-    def mouse_position_event(self, x: int, y: int, dx, dy):
+    def on_mouse_position_event(self, x: int, y: int, dx, dy):
         if self.camera_enabled:
             self.camera.rot_state(dx, dy)
 
-    def mouse_scroll_event(self, x_offset: float, y_offset: float):
+    def on_mouse_scroll_event(self, x_offset: float, y_offset: float):
         if self.camera_enabled:
             self.camera.zoom_state(y_offset)
 
-    def resize(self, width: int, height: int):
+    def on_resize(self, width: int, height: int):
         self.camera.projection.update(aspect_ratio=self.wnd.aspect_ratio)
 
 
@@ -76,18 +76,18 @@ class OrbitDragCameraWindow(mglw.WindowConfig):
         super().__init__(**kwargs)
         self.camera = OrbitCamera(aspect_ratio=self.wnd.aspect_ratio)
 
-    def key_event(self, key, action, modifiers):
+    def on_key_event(self, key, action, modifiers):
         keys = self.wnd.keys
 
         if action == keys.ACTION_PRESS:
             if key == keys.SPACE:
                 self.timer.toggle_pause()
 
-    def mouse_drag_event(self, x: int, y: int, dx, dy):
+    def on_mouse_drag_event(self, x: int, y: int, dx, dy):
         self.camera.rot_state(dx, dy)
 
-    def mouse_scroll_event(self, x_offset: float, y_offset: float):
+    def on_mouse_scroll_event(self, x_offset: float, y_offset: float):
         self.camera.zoom_state(y_offset)
 
-    def resize(self, width: int, height: int):
+    def on_resize(self, width: int, height: int):
         self.camera.projection.update(aspect_ratio=self.wnd.aspect_ratio)

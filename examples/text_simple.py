@@ -11,7 +11,7 @@ class App(moderngl_window.WindowConfig):
         self.writer = TextWriter2D()
         self.writer.text = "Hello ModernGL!"
 
-    def render(self, time, frame_time):
+    def on_render(self, time, frame_time):
         self.writer.draw((240, 380), size=120)
 
 

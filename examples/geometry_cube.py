@@ -19,7 +19,7 @@ class CubeSimple(CameraWindow):
         self.prog = self.load_program("programs/cube_simple.glsl")
         self.prog["color"].value = 1.0, 1.0, 1.0, 1.0
 
-    def render(self, time: float, frametime: float):
+    def on_render(self, time: float, frametime: float):
         self.ctx.enable_only(moderngl.CULL_FACE | moderngl.DEPTH_TEST)
 
         rotation = glm.mat4(glm.quat(glm.vec3(time, time, time)))

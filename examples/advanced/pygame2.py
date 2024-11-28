@@ -50,7 +50,7 @@ class Pygame(moderngl_window.WindowConfig):
         )
         self.texture_prog["m_model"].write(glm.mat4())
 
-    def render(self, time, frametime):
+    def on_render(self, time, frametime):
         # time = self.wnd.frames / 30
 
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)

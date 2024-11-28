@@ -1,6 +1,7 @@
 """
 Custom usage: window creation and mapping callbacks functions at module level
 """
+
 import math
 import random
 
@@ -14,19 +15,19 @@ window = None
 def main():
     global window
     # Configure to use pyglet window
-    settings.WINDOW['class'] = 'moderngl_window.context.pyglet.Window'
+    settings.WINDOW["class"] = "moderngl_window.context.pyglet.Window"
     window = moderngl_window.create_window_from_settings()
 
     # Map callback functions
-    window.resize_func = resize
-    window.iconify_func = iconify
-    window.key_event_func = key_event
-    window.mouse_position_event_func = mouse_position_event
-    window.mouse_drag_event_func = mouse_drag_event
-    window.mouse_scroll_event_func = mouse_scroll_event
-    window.mouse_press_event_func = mouse_press_event
-    window.mouse_release_event_func = mouse_release_event
-    window.unicode_char_entered_func = unicode_char_entered
+    window.resize_func = on_resize
+    window.iconify_func = on_iconify
+    window.key_event_func = on_key_event
+    window.mouse_position_event_func = on_mouse_position_event
+    window.mouse_drag_event_func = on_mouse_drag_event
+    window.mouse_scroll_event_func = on_mouse_scroll_event
+    window.mouse_press_event_func = on_mouse_press_event
+    window.mouse_release_event_func = on_mouse_release_event
+    window.unicode_char_entered_func = on_unicode_char_entered
 
     timer = Timer()
     timer.start()
@@ -48,22 +49,22 @@ def main():
     window.destroy()
 
 
-def render(time: float, frametime: float):
+def on_render(time: float, frametime: float):
     # We can also check if a key is in press state here
     if window.is_key_pressed(window.keys.SPACE):
         print("User is holding SPACE button")
 
 
-def resize(width: int, height: int):
+def on_resize(width: int, height: int):
     print("Window was resized. buffer size is {} x {}".format(width, height))
 
 
-def iconify(iconify: bool):
+def on_iconify(iconify: bool):
     """Window hide/minimize and restore"""
     print("Window was iconified:", iconify)
 
 
-def key_event(key, action, modifiers):
+def on_key_event(key, action, modifiers):
     keys = window.keys
 
     # Key presses
@@ -103,38 +104,38 @@ def key_event(key, action, modifiers):
         if key == keys.T:
             title = list(window.title)
             random.shuffle(title)
-            window.title = ''.join(title)
+            window.title = "".join(title)
 
         # Toggle mouse exclusivity
         if key == keys.M:
             window.mouse_exclusivity = not window.mouse_exclusivity
 
 
-def mouse_position_event(x, y, dx, dy):
+def on_mouse_position_event(x, y, dx, dy):
     print("Mouse position pos={} {} delta={} {}".format(x, y, dx, dy))
 
 
-def mouse_drag_event(x, y, dx, dy):
+def on_mouse_drag_event(x, y, dx, dy):
     print("Mouse drag pos={} {} delta={} {}".format(x, y, dx, dy))
 
 
-def mouse_scroll_event(x_offset, y_offset):
+def on_mouse_scroll_event(x_offset, y_offset):
     print("mouse_scroll_event", x_offset, y_offset)
 
 
-def mouse_press_event(x, y, button):
+def on_mouse_press_event(x, y, button):
     print("Mouse button {} pressed at {}, {}".format(button, x, y))
     print("Mouse states:", window.mouse_states)
 
 
-def mouse_release_event(x: int, y: int, button: int):
+def on_mouse_release_event(x: int, y: int, button: int):
     print("Mouse button {} released at {}, {}".format(button, x, y))
     print("Mouse states:", window.mouse_states)
 
 
-def unicode_char_entered(char):
+def on_unicode_char_entered(char):
     print("unicode_char_entered:", char)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
