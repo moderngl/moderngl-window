@@ -22,6 +22,7 @@ from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.loaders.texture import t2d
 from moderngl_window.meta import SceneDescription, TextureDescription
 from moderngl_window.opengl.vao import VAO
+from moderngl_window.resources.textures import Textures
 from moderngl_window.scene import Material, MaterialTexture, Mesh, Node, Scene
 
 logger = logging.getLogger(__name__)
@@ -94,9 +95,9 @@ class Loader(BaseLoader):
         super().__init__(meta)
         self.scenes: list[Scene] = []
         self.nodes: list[Node] = []
-        self.meshes: list[Mesh] = []
+        self.meshes: list[list[Mesh]] = []
         self.materials: list[Material] = []
-        self.images: list[Image.Image] = []
+        self.images: list[moderngl.Texture] = []
         self.samplers: list[moderngl.Sampler] = []
         self.textures: list[MaterialTexture] = []
 
@@ -356,8 +357,8 @@ class GLTFMeta:
         # Link accessors to mesh primitives
         for mesh in self.meshes:
             for primitive in mesh.primitives:
-                if getattr(primitive, "indices", None) is not None:
-                    primitive.indices = self.accessors[primitive.indices]
+                if primitive.indices is not None:
+                    primitive.accessor = self.accessors[primitive.indices]
                 for name, value in primitive.attributes.items():
                     primitive.attributes[name] = self.accessors[value]
 
@@ -415,29 +416,28 @@ class GLTFAsset:
     """Asset Information"""
 
     def __init__(self, data: dict[str, str]):
-        self.version = data.get("version")
-        self.generator = data.get("generator")
-        self.copyright = data.get("copyright")
+        self.version = data.get("version", "")
+        self.generator = data.get("generator", "")
+        self.copyright = data.get("copyright", "")
 
 
 class GLTFMesh:
     class Primitives:
-        attributes: dict[str, Any]
-        indices: list[GLTFAccessor]
-        mode: int
-        material: Material
+        mode: int | None
+        accessor: GLTFAccessor | None
 
         def __init__(self, data: dict[str, Any]):
-            self.attributes = data.get("attributes", {})
-            self.indices = data.get("indices", [])
-            self.mode = data.get("mode", 0)
-            self.material = data.get("material")
+            self.attributes: dict[str, Any] = data.get("attributes", {})
+            self.indices = data.get("indices", 0)
+            self.mode = data.get("mode")
+            self.material = data.get("material", 0)
+            self.accessor = None
 
     def __init__(self, data: dict[str, Any], meta: SceneDescription):
 
         self.meta = meta
-        self.name = data.get("name") or ""
-        self.primitives = [GLTFMesh.Primitives(p) for p in data.get("primitives")]
+        self.name = data.get("name", "")
+        self.primitives = [GLTFMesh.Primitives(p) for p in data["primitives"]]
 
     def load(self, materials: list[Material]) -> list[Mesh]:
         name_map = {
@@ -505,12 +505,12 @@ class GLTFMesh:
 
         return meshes
 
-    def load_indices(self, primitive: Primitives) -> tuple[ComponentType, GLTFBuffer] | tuple[None, None]:
+    def load_indices(self, primitive: Primitives) -> tuple[ComponentType, npt.NDArray[Any]] | tuple[None, None]:
         """Loads the index buffer / polygon list for a primitive"""
-        if getattr(primitive, "indices") is None:
+        if primitive.indices is None or primitive.accessor is None:
             return None, None
 
-        _, component_type, buffer = primitive.indices.read()
+        _, component_type, buffer = primitive.accessor.read()
         return component_type, buffer
 
     def prepare_attrib_mapping(self, primitive: Primitives) -> list[VBOInfo]:
@@ -529,10 +529,10 @@ class GLTFMesh:
 
         return buffer_info
 
-    def get_bbox(self, primitive: Primitives) -> tuple[npt.NDArray[Any], npt.NDArray[Any]]:
+    def get_bbox(self, primitive: Primitives) -> tuple[glm.vec3, glm.vec3]:
         """Get the bounding box for the mesh"""
         accessor = primitive.attributes.get("POSITION")
-        return accessor.min, accessor.max
+        return glm.vec3(accessor.min), glm.vec3(accessor.max)
 
 
 class VBOInfo:
@@ -544,7 +544,7 @@ class VBOInfo:
         buffer_view: Optional[GLTFBuffer]=None,
         byte_length: int = 0,
         byte_offset: int = 0,
-        component_type: Optional[ComponentType] = None,
+        component_type: ComponentType = ComponentType("", 0, 0),
         components: int = 0,
         count: int = 0,
     ):
@@ -570,6 +570,7 @@ class VBOInfo:
 
     def create(self) -> tuple[type[object], npt.NDArray[Any]]:
         """Create the VBO"""
+        assert self.buffer is not None, "No buffer defined"
         dtype = NP_COMPONENT_DTYPE[self.component_type.value]
         data = numpy.frombuffer(
             self.buffer.read(byte_length=self.byte_length, byte_offset=self.byte_offset),
@@ -579,6 +580,8 @@ class VBOInfo:
         return dtype, data
 
     def __str__(self) -> str:
+        assert self.buffer is not None, "No buffer defined"
+        assert self.buffer_view is not None, "No buffer_view defined"
         return (
             "VBOInfo<buffer={}, buffer_view={},\n"
             "        length={}, offset={}, count={}\n"
@@ -602,14 +605,14 @@ class VBOInfo:
 class GLTFAccessor:
     def __init__(self, accessor_id: int, data: dict[str, Any]):
         self.id = accessor_id
-        self.bufferViewId = data.get("bufferView") or 0
+        self.bufferViewId = data.get("bufferView", 0)
         self.bufferView: GLTFBufferView
-        self.byteOffset = data.get("byteOffset") or 0
+        self.byteOffset = data.get("byteOffset", 0)
         self.componentType = COMPONENT_TYPE[data["componentType"]]
-        self.count = data.get("count") or 1
+        self.count = data.get("count", 1)
         self.min = numpy.array(data.get("min") or [-0.5, -0.5, -0.5], dtype="f4")
         self.max = numpy.array(data.get("max") or [0.5, 0.5, 0.5], dtype="f4")
-        self.type = data.get("type") or ""
+        self.type = data.get("type", "")
 
     def read(self) -> tuple[int, ComponentType, npt.NDArray[Any]]:
         """
@@ -650,12 +653,12 @@ class GLTFBufferView:
         self.id = view_id
         self.bufferId = data.get("buffer", 0)
         self.buffer: GLTFBuffer
-        self.byteOffset = data.get("byteOffset") or 0
-        self.byteLength = data.get("byteLength") or 0
-        self.byteStride = data.get("byteStride") or 0
+        self.byteOffset = data.get("byteOffset", 0)
+        self.byteLength = data.get("byteLength", 0)
+        self.byteStride = data.get("byteStride", 0)
         # Valid: 34962 (ARRAY_BUFFER) and 34963 (ELEMENT_ARRAY_BUFFER) or None
 
-    def read(self, byte_offset: int = 0, dtype: Optional[type] = None, count: int = 0) -> npt.NDArray[Any]:
+    def read(self, byte_offset: int = 0, dtype: Optional[type[object]] = None, count: int = 0) -> npt.NDArray[Any]:
         data = self.buffer.read(
             byte_offset=byte_offset + self.byteOffset,
             byte_length=self.byteLength,
@@ -676,7 +679,7 @@ class GLTFBufferView:
 
 
 class GLTFBuffer:
-    def __init__(self, buffer_id: str, data: dict[str, str], path: Path):
+    def __init__(self, buffer_id: int, data: dict[str, str], path: Path):
         self.id = buffer_id
         self.path = path
         self.byteLength = data.get("byteLength")
@@ -716,7 +719,7 @@ class GLTFBuffer:
 
 
 class GLTFScene:
-    def __init__(self, data: dict[str, str]):
+    def __init__(self, data: dict[str, list[int]]):
         self.nodes = data["nodes"]
 
 
@@ -764,7 +767,7 @@ class GLTFNode:
 
 class GLTFMaterial:
     def __init__(self, data: dict[str, Any]):
-        self.name = data.get("name")
+        self.name = data["name"]
         # Defaults to true if not defined
         self.doubleSided = data.get("doubleSided") or True
 
@@ -781,7 +784,7 @@ class GLTFImage:
     May be a file, embedded data or pointer to data in bufferview
     """
 
-    def __init__(self, data: dict[str, str]):
+    def __init__(self, data: dict[str, Any]):
         self.uri = data.get("uri")
         self.bufferViewId = data.get("bufferView")
         self.bufferView = None
@@ -817,17 +820,17 @@ class GLTFImage:
 
 
 class GLTFTexture:
-    def __init__(self, data: dict[str, str]):
-        self.sampler = data.get("sampler")
-        self.source = data.get("source")
+    def __init__(self, data: dict[str, int]):
+        self.sampler = data["sampler"]
+        self.source = data["source"]
 
 
 class GLTFSampler:
-    def __init__(self, data: dict[str, str]):
-        self.magFilter = data.get("magFilter")
-        self.minFilter = data.get("minFilter")
-        self.wrapS = data.get("wrapS")
-        self.wrapT = data.get("wrapT")
+    def __init__(self, data: dict[str, int]):
+        self.magFilter = data["magFilter"]
+        self.minFilter = data["minFilter"]
+        self.wrapS = data["wrapS"]
+        self.wrapT = data["wrapT"]
 
 
 class GLTFCamera:
