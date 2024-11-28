@@ -35,7 +35,7 @@ class Timer(BaseTimer):
         if self._start_time is None:
             return 0.0
 
-        if self.is_paused:
+        if self.is_paused and self._pause_time is not None:
             return self._pause_time - self._offset - self._start_time
 
         return time.time() - self._start_time - self._offset

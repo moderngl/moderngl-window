@@ -322,15 +322,13 @@ class Settings:
         """
         self.apply_from_iterable(cls.__dict__.items())
 
-    def apply_from_iterable(self, iterable: Union[Iterable[Any], Generator[Any]]) -> None:
+    def apply_from_iterable(self, iterable: Iterable[tuple[str, Any]]) -> None:
         """
-        Apply (key, value) pairs from an interable or generator
+        Apply (key, value) pairs from an iterable or generator
         """
         if not isinstance(iterable, Iterable) and not isinstance(self, Generator):
             raise ValueError(
-                "Input value is not a generator or interable, but of type: {}".format(
-                    type(iterable)
-                )
+                "Input value is not a generator or iterable, but of type: {}".format(type(iterable))
             )
 
         for name, value in iterable:

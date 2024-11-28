@@ -761,7 +761,7 @@ class GLTFNode:
                 z=self.rotation[2],
                 w=self.rotation[3],
             )
-            self.matrix = self.matrix * glm.mat4(quat)
+            self.matrix = self.matrix * glm.mat4_cast(quat)
 
         if self.scale is not None:
             self.matrix = self.matrix * glm.scale(self.scale)
