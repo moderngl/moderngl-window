@@ -1168,7 +1168,7 @@ class WindowConfig:
         """
 
     def on_close(self) -> None:
-        """Called when the window is closed"""
+        """Called when the window is about to close"""
 
     def on_files_dropped_event(self, x: int, y: int, paths: list[str]) -> None:
         """
