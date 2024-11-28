@@ -10,7 +10,6 @@ import glm
 import moderngl
 from base import CameraWindow
 
-import moderngl_window
 from moderngl_window import geometry
 
 
