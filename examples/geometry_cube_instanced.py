@@ -51,7 +51,7 @@ class CubeSimpleInstanced(CameraWindow):
         )
         self.cube.buffer(self.instance_data, "3f 3f/i", ["in_offset", "in_color"])
 
-    def render(self, time: float, frametime: float) -> None:
+    def on_render(self, time: float, frametime: float) -> None:
         self.ctx.enable_only(moderngl.CULL_FACE | moderngl.DEPTH_TEST)
 
         self.prog["m_proj"].write(self.camera.projection.matrix)

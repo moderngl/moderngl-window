@@ -6,6 +6,8 @@ from imgui_bundle.python_backends import compute_fb_scale
 
 
 class ModernglWindowMixin:
+    io: imgui.IO
+
     def resize(self, width: int, height: int):
         self.io.display_size = self.wnd.size
         self.io.display_framebuffer_scale = compute_fb_scale(self.wnd.size, self.wnd.buffer_size)
@@ -104,7 +106,6 @@ class BaseOpenGLRenderer(object):
 
 
 class ModernGLRenderer(BaseOpenGLRenderer):
-
     VERTEX_SHADER_SRC = """
         #version 330
         uniform mat4 ProjMtx;
@@ -139,10 +140,12 @@ class ModernGLRenderer(BaseOpenGLRenderer):
         self._vao = None
         self._textures = {}
         self.wnd = kwargs.get("wnd")
-        self.ctx = self.wnd.ctx if self.wnd and self.wnd.ctx else kwargs.get("ctx")
+        self.ctx: moderngl.Context = (
+            self.wnd.ctx if self.wnd and self.wnd.ctx else kwargs.get("ctx")
+        )
 
         if not self.ctx:
-            raise ValueError("Missing moderngl context")
+            raise RuntimeError("Missing moderngl context")
 
         assert isinstance(self.ctx, moderngl.Context)
 

@@ -12,7 +12,7 @@ class PyOpenGL(moderngl_window.WindowConfig):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def render(self, time, frametime):
+    def on_render(self, time, frametime):
         GL.glClearColor(
             (math.sin(time) + 1.0) / 2,
             (math.sin(time + 2) + 1.0) / 2,
@@ -22,5 +22,5 @@ class PyOpenGL(moderngl_window.WindowConfig):
         GL.glClear(GL.GL_COLOR_BUFFER_BIT)
 
 
-if __name__ == '__main__':
-    moderngl_window.run_window_config(PyOpenGL)
+if __name__ == "__main__":
+    PyOpenGL.run()

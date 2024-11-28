@@ -34,7 +34,7 @@ class TextureDescription(ResourceDescription):
         flip_y: bool = True,
         mipmap: bool = False,
         mipmap_levels: Optional[tuple[int, int]] = None,
-        anisotropy: float =1.0,
+        anisotropy: float = 1.0,
         image: Optional[Image] = None,
         layers: Optional[int] = None,
         pos_x: Optional[str] = None,

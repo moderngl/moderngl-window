@@ -10,7 +10,6 @@ import glm
 import moderngl
 from base import CameraWindow
 
-import moderngl_window
 from moderngl_window import geometry
 
 
@@ -47,24 +46,18 @@ class ShadowMapping(CameraWindow):
         self.offscreen_quad2 = geometry.quad_2d(size=(0.5, 0.5), pos=(0.25, 0.75))
 
         # Programs
-        self.raw_depth_prog = self.load_program(
-            "programs/shadow_mapping/raw_depth.glsl"
-        )
-        self.basic_light = self.load_program(
-            "programs/shadow_mapping/directional_light.glsl"
-        )
+        self.raw_depth_prog = self.load_program("programs/shadow_mapping/raw_depth.glsl")
+        self.basic_light = self.load_program("programs/shadow_mapping/directional_light.glsl")
         self.basic_light["shadowMap"].value = 0
         self.basic_light["color"].value = 1.0, 1.0, 1.0, 1.0
-        self.shadowmap_program = self.load_program(
-            "programs/shadow_mapping/shadowmap.glsl"
-        )
+        self.shadowmap_program = self.load_program("programs/shadow_mapping/shadowmap.glsl")
         self.texture_prog = self.load_program("programs/texture.glsl")
         self.texture_prog["texture0"].value = 0
         self.sun_prog = self.load_program("programs/cube_simple.glsl")
         self.sun_prog["color"].value = 1, 1, 0, 1
         self.lightpos = 0, 0, 0
 
-    def render(self, time, frametime):
+    def on_render(self, time, frametime):
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
         self.lightpos = glm.vec3(math.sin(time) * 20, 5, math.cos(time) * 20)
         scene_pos = glm.vec3(0, -5, -32)
@@ -105,9 +98,7 @@ class ShadowMapping(CameraWindow):
         # Render the sun position
         self.sun_prog["m_proj"].write(self.camera.projection.matrix)
         self.sun_prog["m_camera"].write(self.camera.matrix)
-        self.sun_prog["m_model"].write(
-            glm.translate(glm.vec3(self.lightpos + scene_pos))
-        )
+        self.sun_prog["m_model"].write(glm.translate(glm.vec3(self.lightpos + scene_pos)))
         self.sun.render(self.sun_prog)
 
         # --- PASS 3: Debug ---
@@ -119,4 +110,4 @@ class ShadowMapping(CameraWindow):
 
 
 if __name__ == "__main__":
-    moderngl_window.run_window_config(ShadowMapping)
+    ShadowMapping.run()

@@ -76,7 +76,6 @@ class ModernglWindowMixin:
 
 
 class ModernGLRenderer(BaseOpenGLRenderer):
-
     VERTEX_SHADER_SRC = """
         #version 330
         uniform mat4 ProjMtx;

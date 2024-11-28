@@ -420,7 +420,7 @@ class BaseWindow:
         DEPRECATED PROPERTY. This is not handled in `WindowConfig.__init__`
 
         This property can also be set.
-        Assinging a WindowConfig instance will automatically
+        Assigning a WindowConfig instance will automatically
         set up the necessary event callback methods::
 
             window.config = window_config_instance
@@ -1112,19 +1112,18 @@ class WindowConfig:
         Look for methods in the class instance and assign them to callbacks.
         This method is call by ``__init__``.
         """
-        self.wnd.render_func = getattr(self, "render", dummy_func)
-        self.wnd.resize_func = getattr(self, "resize", dummy_func)
-        self.wnd.close_func = getattr(self, "close", dummy_func)
-        self.wnd.iconify_func = getattr(self, "iconify", dummy_func)
-        self.wnd.key_event_func = getattr(self, "key_event", dummy_func)
-        self.wnd.mouse_position_event_func = getattr(self, "mouse_position_event", dummy_func)
-        self.wnd.mouse_press_event_func = getattr(self, "mouse_press_event", dummy_func)
-        self.wnd.mouse_release_event_func = getattr(self, "mouse_release_event", dummy_func)
-        self.wnd.mouse_drag_event_func = getattr(self, "mouse_drag_event", dummy_func)
-        self.wnd.mouse_scroll_event_func = getattr(self, "mouse_scroll_event", dummy_func)
-        self.wnd.unicode_char_entered_func = getattr(self, "unicode_char_entered", dummy_func)
-
-        self.wnd.files_dropped_event_func = getattr(self, "files_dropped_event", dummy_func)
+        self.wnd.render_func = getattr(self, "on_render", dummy_func)
+        self.wnd.resize_func = getattr(self, "on_resize", dummy_func)
+        self.wnd.close_func = getattr(self, "on_close", dummy_func)
+        self.wnd.iconify_func = getattr(self, "on_iconify", dummy_func)
+        self.wnd.key_event_func = getattr(self, "on_key_event", dummy_func)
+        self.wnd.mouse_position_event_func = getattr(self, "on_mouse_position_event", dummy_func)
+        self.wnd.mouse_press_event_func = getattr(self, "on_mouse_press_event", dummy_func)
+        self.wnd.mouse_release_event_func = getattr(self, "on_mouse_release_event", dummy_func)
+        self.wnd.mouse_drag_event_func = getattr(self, "on_mouse_drag_event", dummy_func)
+        self.wnd.mouse_scroll_event_func = getattr(self, "on_mouse_scroll_event", dummy_func)
+        self.wnd.unicode_char_entered_func = getattr(self, "on_unicode_char_entered", dummy_func)
+        self.wnd.files_dropped_event_func = getattr(self, "on_files_dropped_event", dummy_func)
 
     @classmethod
     def run(cls: type["WindowConfig"]) -> None:
@@ -1149,16 +1148,16 @@ class WindowConfig:
         """
         pass
 
-    def render(self, time: float, frame_time: float) -> None:
+    def on_render(self, time: float, frame_time: float) -> None:
         """Renders the assigned effect
 
         Args:
             time (float): Current time in seconds
             frame_time (float): Delta time from last frame in seconds
         """
-        raise NotImplementedError("WindowConfig.render not implemented")
+        raise NotImplementedError("WindowConfig.on_render not implemented")
 
-    def resize(self, width: int, height: int) -> None:
+    def on_resize(self, width: int, height: int) -> None:
         """
         Called every time the window is resized
         in case the we need to do internal adjustments.
@@ -1168,10 +1167,10 @@ class WindowConfig:
             height (int): height in buffer size (not window size)
         """
 
-    def close(self) -> None:
-        """Called when the window is closed"""
+    def on_close(self) -> None:
+        """Called when the window is about to close"""
 
-    def files_dropped_event(self, x: int, y: int, paths: list[str]) -> None:
+    def on_files_dropped_event(self, x: int, y: int, paths: list[str]) -> None:
         """
         Called when files dropped onto the window
 
@@ -1181,7 +1180,7 @@ class WindowConfig:
             paths (list): List of file paths dropped
         """
 
-    def iconify(self, iconified: bool) -> None:
+    def on_iconify(self, iconified: bool) -> None:
         """
         Called when the window is minimized/iconified
         or restored from this state
@@ -1190,7 +1189,7 @@ class WindowConfig:
             iconified (bool): If ``True`` the window is iconified/minimized. Otherwise restored.
         """
 
-    def key_event(self, key: Any, action: Any, modifiers: KeyModifiers) -> None:
+    def on_key_event(self, key: Any, action: Any, modifiers: KeyModifiers) -> None:
         """
         Called for every key press and release.
         Depending on the library used, key events may
@@ -1204,45 +1203,45 @@ class WindowConfig:
             modifiers: Modifier state for shift, ctrl and alt
         """
 
-    def mouse_position_event(self, x: int, y: int, dx: int, dy: int) -> None:
+    def on_mouse_position_event(self, x: int, y: int, dx: int, dy: int) -> None:
         """Reports the current mouse cursor position in the window
 
         Args:
-            x (int): X postion of the mouse cursor
+            x (int): X position of the mouse cursor
             y (int): Y position of the mouse cursor
-            dx (int): X delta postion
+            dx (int): X delta position
             dy (int): Y delta position
         """
 
-    def mouse_drag_event(self, x: int, y: int, dx: int, dy: int) -> None:
+    def on_mouse_drag_event(self, x: int, y: int, dx: int, dy: int) -> None:
         """Called when the mouse is moved while a button is pressed.
 
         Args:
-            x (int): X postion of the mouse cursor
+            x (int): X position of the mouse cursor
             y (int): Y position of the mouse cursor
-            dx (int): X delta postion
+            dx (int): X delta position
             dy (int): Y delta position
         """
 
-    def mouse_press_event(self, x: int, y: int, button: int) -> None:
+    def on_mouse_press_event(self, x: int, y: int, button: int) -> None:
         """Called when a mouse button in pressed
 
         Args:
-            x (int): X position the press ocurred
-            y (int): Y position the press ocurred
+            x (int): X position the press occurred
+            y (int): Y position the press occurred
             button (int): 1 = Left button, 2 = right button
         """
 
-    def mouse_release_event(self, x: int, y: int, button: int) -> None:
+    def on_mouse_release_event(self, x: int, y: int, button: int) -> None:
         """Called when a mouse button in released
 
         Args:
-            x (int): X position the release ocurred
-            y (int): Y position the release ocurred
+            x (int): X position the release occurred
+            y (int): Y position the release occurred
             button (int): 1 = Left button, 2 = right button
         """
 
-    def mouse_scroll_event(self, x_offset: float, y_offset: float) -> None:
+    def on_mouse_scroll_event(self, x_offset: float, y_offset: float) -> None:
         """Called when the mouse wheel is scrolled.
 
         Some input devices also support horizontal scrolling,
@@ -1253,7 +1252,7 @@ class WindowConfig:
             y_offset (int): Y scroll offset
         """
 
-    def unicode_char_entered(self, char: str) -> None:
+    def on_unicode_char_entered(self, char: str) -> None:
         """Called when the user entered a unicode character.
 
         Args:

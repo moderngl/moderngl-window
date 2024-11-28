@@ -307,7 +307,6 @@ class Window(BaseWindow):
                 self.resize(event.size[0], event.size[1])
 
             elif event.type == pygame.ACTIVEEVENT:
-
                 # # We might support these in the future
                 # Mouse cursor state
                 # if event.state == 0:

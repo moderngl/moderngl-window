@@ -43,9 +43,7 @@ class CubeVoxel(CameraWindow):
         self.voxel.gen_instance_prog = self.load_program(
             "programs/voxel_cubes/gen_voxel_instance_data.glsl"
         )
-        self.voxel.voxel_light_prog = self.load_program(
-            "programs/voxel_cubes/voxel_light.glsl"
-        )
+        self.voxel.voxel_light_prog = self.load_program("programs/voxel_cubes/voxel_light.glsl")
         self.voxel.voxel_wireframe_prog = self.load_program(
             "programs/voxel_cubes/voxel_wireframe.glsl"
         )
@@ -55,7 +53,7 @@ class CubeVoxel(CameraWindow):
         self.current_layer = 0
         self.fill = False
 
-    def render(self, time, frame_time):
+    def on_render(self, time, frame_time):
         self.ctx.clear()
         # Render the lookup texture in the background
         self.ctx.enable_only(moderngl.NOTHING)
@@ -178,9 +176,7 @@ class Voxel:
     def fill_layer(self, layer: int, value: int):
         x = (layer % 10) * self._size[0]
         y = (layer // 10) * self._size[1]
-        self.voxel_lookup.write(
-            array("B", [value] * 100 * 100), viewport=(x, y, 100, 100)
-        )
+        self.voxel_lookup.write(array("B", [value] * 100 * 100), viewport=(x, y, 100, 100))
 
     # NOTE: These functions can make adding and removing cubes extremely fast
     def add_cubes(self, positions):

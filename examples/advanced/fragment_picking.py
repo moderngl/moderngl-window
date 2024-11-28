@@ -45,7 +45,7 @@ class FragmentPicking(moderngl_window.WindowConfig):
 
         # Load scene cached to speed up loading!
         self.scene = self.load_scene("scenes/fragment_picking/centered.obj", cache=True)
-        # Grab the raw mesh/vertexarray
+        # Grab the raw mesh/vertex array
         self.mesh = self.scene.root_nodes[0].mesh.vao
         self.mesh_texture = self.scene.root_nodes[0].mesh.material.mat_texture.texture
 
@@ -117,7 +117,7 @@ class FragmentPicking(moderngl_window.WindowConfig):
         # Marker geometry
         self.marker_buffer = self.ctx.buffer(
             reserve=self.marker_byte_size * 1000
-        )  # Resever room for 1000 points
+        )  # Reserve room for 1000 points
         self.marker_vao = VAO(name="markers", mode=moderngl.POINTS)
         self.marker_vao.buffer(
             self.marker_buffer, "3f 3f 1f", ["in_position", "in_normal", "temperature"]
@@ -129,7 +129,7 @@ class FragmentPicking(moderngl_window.WindowConfig):
         self.quad_depth = geometry.quad_2d(size=(0.25, 0.25), pos=(0.5, 0.875))
         self.quad_positions = geometry.quad_2d(size=(0.25, 0.25), pos=(0.25, 0.875))
 
-    def render(self, time, frametime):
+    def on_render(self, time: float, frametime: float):
         self.ctx.enable(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
 
         translation = glm.translate(glm.vec3(0, 0, -45 + self.zoom))
@@ -179,12 +179,12 @@ class FragmentPicking(moderngl_window.WindowConfig):
         self.offscreen_viewpos.use()
         self.quad_positions.render(self.texture_program)
 
-    def mouse_drag_event(self, x, y, dx, dy):
+    def on_mouse_drag_event(self, x, y, dx, dy):
         """Pick up mouse drag movements"""
         self.x_rot -= dx / 100
         self.y_rot -= dy / 100
 
-    def mouse_press_event(self, x, y, button):
+    def on_mouse_press_event(self, x, y, button):
         """Attempts to get the view position from a fragment"""
 
         # only care about right mouse button clicks
@@ -193,8 +193,9 @@ class FragmentPicking(moderngl_window.WindowConfig):
 
         # mouse coordinates starts in upper left corner
         # pixel positions starts and lower left corner
-        pos = int(x * self.wnd.pixel_ratio), int(
-            self.wnd.buffer_height - (y * self.wnd.pixel_ratio)
+        pos = (
+            int(x * self.wnd.pixel_ratio),
+            int(self.wnd.buffer_height - (y * self.wnd.pixel_ratio)),
         )
         print("Picking mouse position", x, y)
         print("Viewport position", pos)
@@ -220,10 +221,10 @@ class FragmentPicking(moderngl_window.WindowConfig):
         )
         self.num_markers += 1
 
-    def mouse_scroll_event(self, x_offset, y_offset):
+    def on_mouse_scroll_event(self, x_offset, y_offset):
         self.zoom += y_offset
 
-    def key_event(self, key, action, modifiers):
+    def on_key_event(self, key, action, modifiers):
         keys = self.wnd.keys
 
         # Key presses
@@ -256,4 +257,4 @@ class FragmentPicking(moderngl_window.WindowConfig):
 
 
 if __name__ == "__main__":
-    moderngl_window.run_window_config(FragmentPicking)
+    FragmentPicking.run()

@@ -38,12 +38,12 @@ and access simpler shortcut methods for loading resources.
             self.vao = self.ctx.vertex_array(...)
             self.texture = self.ctx.texture(self.wnd.size, 4)
 
-        def render(self, time, frametime):
+        def on_render(self, time: float, frametime: float):
             # This method is called every frame
             self.vao.render()
 
     # Blocking call entering rendering/event loop
-    mglw.run_window_config(Test)
+    Test.run()
 
 The :py:class:`~moderngl_window.context.base.window.WindowConfig`
 instance will by default receive three external instances in ``__init__``
@@ -125,24 +125,24 @@ Window events
 
 .. code:: python
 
-    def resize(self, width: int, height: int):
+    def on_resize(self, width: int, height: int):
         print("Window was resized. buffer size is {} x {}".format(width, height))
 
-    def close(self):
+    def on_close(self):
         print("The window is closing")
 
-    def iconify(self, iconify: bool):
+    def on_iconify(self, iconify: bool):
         print("Window was iconified:", iconify)
 
 Keyboard input
 --------------
 
-Implement the ``key_event`` and ``unicode_char_entered`` method to handle
+Implement the ``on_key_event`` and ``on_unicode_char_entered`` method to handle
 key events.
 
 .. code:: python
 
-    def key_event(self, key, action, modifiers):
+    def on_key_event(self, key, action, modifiers):
         # Key presses
         if action == self.wnd.keys.ACTION_PRESS:
             if key == self.wnd.keys.SPACE:
@@ -161,7 +161,7 @@ key events.
             if key == self.wnd.keys.SPACE:
                 print("SPACE key was released")
 
-    def unicode_char_entered(self, char: str):
+    def on_unicode_char_entered(self, char: str):
         print('character entered:', char)
 
 
@@ -172,17 +172,17 @@ Implement the ``mouse_*`` methods to handle mouse input.
 
 .. code:: python
 
-    def mouse_position_event(self, x, y, dx, dy):
+    def on_mouse_position_event(self, x, y, dx, dy):
         print("Mouse position:", x, y, dx, dy)
 
-    def mouse_drag_event(self, x, y, dx, dy):
+    def on_mouse_drag_event(self, x, y, dx, dy):
         print("Mouse drag:", x, y, dx, dy)
 
-    def mouse_scroll_event(self, x_offset: float, y_offset: float):
+    def on_mouse_scroll_event(self, x_offset: float, y_offset: float):
         print("Mouse wheel:", x_offset, y_offset)
 
-    def mouse_press_event(self, x, y, button):
+    def on_mouse_press_event(self, x, y, button):
         print("Mouse button {} pressed at {}, {}".format(button, x, y))
 
-    def mouse_release_event(self, x: int, y: int, button: int):
+    def on_mouse_release_event(self, x: int, y: int, button: int):
         print("Mouse button {} released at {}, {}".format(button, x, y))

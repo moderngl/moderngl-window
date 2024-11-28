@@ -57,9 +57,7 @@ class SSAODemo(OrbitDragCameraWindow):
         self.ssao_buffer = self.ctx.framebuffer(color_attachments=[self.ssao_occlusion])
 
         # Generate the blurred SSAO framebuffer.
-        self.ssao_blurred_occlusion = self.ctx.texture(
-            self.wnd.buffer_size, 1, dtype="f1"
-        )
+        self.ssao_blurred_occlusion = self.ctx.texture(self.wnd.buffer_size, 1, dtype="f1")
         self.ssao_blurred_buffer = self.ctx.framebuffer(
             color_attachments=[self.ssao_blurred_occlusion]
         )
@@ -93,9 +91,7 @@ class SSAODemo(OrbitDragCameraWindow):
         # Generate SSAO samples (in tangent space coordinates, with z along the normal).
         self.n_ssao_samples = 64  # If you change this number, also change ssao.glsl.
         self.ssao_std_dev = 0.1
-        self.ssao_samples = np.random.normal(
-            0.0, self.ssao_std_dev, (self.n_ssao_samples, 3)
-        )
+        self.ssao_samples = np.random.normal(0.0, self.ssao_std_dev, (self.n_ssao_samples, 3))
         self.ssao_samples[:, 2] = np.abs(self.ssao_samples[:, 2])
         self.ssao_program["samples"].write(self.ssao_samples.ravel().astype("f4"))
 
@@ -118,7 +114,7 @@ class SSAODemo(OrbitDragCameraWindow):
             print(self.wnd.ctx.error)
         self.imgui = ModernglWindowRenderer(self.wnd)
 
-    def render(self, time: float, frametime: float):
+    def on_render(self, time: float, frametime: float):
         self.average_frame_time = (
             self.frame_time_decay_factor * self.average_frame_time
             + (1.0 - self.frame_time_decay_factor) * frametime
@@ -167,16 +163,12 @@ class SSAODemo(OrbitDragCameraWindow):
         self.ctx.screen.clear(1.0, 1.0, 1.0)
         self.ctx.screen.use()
         self.shading_program["m_camera_inverse"].write(glm.inverse(camera_matrix))
-        self.shading_program["m_projection_inverse"].write(
-            glm.inverse(projection_matrix)
-        )
+        self.shading_program["m_projection_inverse"].write(glm.inverse(projection_matrix))
         self.shading_program["v_camera_pos"].value = camera_pos
         self.shading_program["camera_pos"].value = camera_pos
         self.shading_program["light_pos"].value = camera_pos
         self.shading_program["base_color"].value = tuple(self.base_color)
-        self.shading_program["material_properties"].value = tuple(
-            self.material_properties
-        )
+        self.shading_program["material_properties"].value = tuple(self.material_properties)
         self.shading_program["render_mode"].value = self.render_mode
         self.g_view_z.use(location=0)
         self.g_normal.use(location=1)
@@ -194,18 +186,11 @@ class SSAODemo(OrbitDragCameraWindow):
         imgui.begin("Debug Panel", False)
         imgui.text(f"Frame time: {1000.0 * self.average_frame_time:.1f} ms")
         imgui.text(f"FPS: {1.0 / self.average_frame_time:.1f}")
-        _, self.render_mode = imgui.combo(
-            "render mode", self.render_mode, self.render_modes
-        )
-        _, self.ssao_z_offset = imgui.slider_float(
-            "SSAO z-offset", self.ssao_z_offset, -0.3, 0.3
-        )
+        _, self.render_mode = imgui.combo("render mode", self.render_mode, self.render_modes)
+        _, self.ssao_z_offset = imgui.slider_float("SSAO z-offset", self.ssao_z_offset, -0.3, 0.3)
         _, self.ssao_blur = imgui.checkbox("blur occlusion texture", self.ssao_blur)
 
-        _, self.base_color = imgui.color_edit3(
-            "color",
-            self.base_color
-        )
+        _, self.base_color = imgui.color_edit3("color", self.base_color)
         _, self.material_properties[0] = imgui.slider_float(
             "ambient", self.material_properties[0], 0.0, 1.0
         )
@@ -223,30 +208,30 @@ class SSAODemo(OrbitDragCameraWindow):
         imgui.render()
         self.imgui.render(imgui.get_draw_data())
 
-    def mouse_position_event(self, x, y, dx, dy):
+    def on_mouse_position_event(self, x, y, dx, dy):
         self.imgui.mouse_position_event(x, y, dx, dy)
 
-    def mouse_drag_event(self, x: int, y: int, dx, dy):
+    def on_mouse_drag_event(self, x: int, y: int, dx, dy):
         self.imgui.mouse_drag_event(x, y, dx, dy)
         if not self.imgui.io.want_capture_mouse:
-            super().mouse_drag_event(x, y, dx, dy)
+            super().on_mouse_drag_event(x, y, dx, dy)
 
-    def mouse_scroll_event(self, x_offset, y_offset):
+    def on_mouse_scroll_event(self, x_offset, y_offset):
         self.imgui.mouse_scroll_event(x_offset, y_offset)
         if not self.imgui.io.want_capture_mouse:
-            super().mouse_scroll_event(x_offset, y_offset)
+            super().on_mouse_scroll_event(x_offset, y_offset)
 
-    def mouse_press_event(self, x, y, button):
+    def on_mouse_press_event(self, x, y, button):
         self.imgui.mouse_press_event(x, y, button)
 
-    def mouse_release_event(self, x, y, button):
+    def on_mouse_release_event(self, x, y, button):
         self.imgui.mouse_release_event(x, y, button)
 
-    def key_event(self, key, action, modifiers):
+    def on_key_event(self, key, action, modifiers):
         self.imgui.key_event(key, action, modifiers)
         if not self.imgui.io.want_capture_keyboard:
-            super().key_event(key, action, modifiers)
+            super().on_key_event(key, action, modifiers)
 
 
 if __name__ == "__main__":
-    moderngl_window.run_window_config(SSAODemo)
+    SSAODemo.run()

@@ -58,7 +58,7 @@ class ModifyParser(moderngl_window.WindowConfig):
             help="Override the window title",
         )
 
-    def render(self, time, frame_time):
+    def on_render(self, time, frame_time):
         # Placeholder content
         self.ctx.clear(
             (math.sin(time) + 1.0) / 2,

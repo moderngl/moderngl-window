@@ -1,3 +1,7 @@
+"""
+Press and drag the mouse to scroll the texture
+"""
+
 from pathlib import Path
 
 import moderngl_window
@@ -7,8 +11,7 @@ resources.register_dir((Path(__file__).parent / "resources").resolve())
 
 
 class QuadFullscreenScroll(moderngl_window.WindowConfig):
-    """Taking texture offset from mouse"""
-
+    title = "Quad Fullscreen Scroll"
     aspect_ratio = None
 
     def __init__(self, **kwargs):
@@ -18,7 +21,7 @@ class QuadFullscreenScroll(moderngl_window.WindowConfig):
         self.prog = self.load_program("programs/texture_mouse_scroll.glsl")
         self.mouse_pos = 0, 0
 
-    def render(self, time: float, frame_time: float):
+    def on_render(self, time: float, frame_time: float):
         self.ctx.clear()
 
         self.texture.use(location=0)
@@ -29,10 +32,10 @@ class QuadFullscreenScroll(moderngl_window.WindowConfig):
         )
         self.quad.render(self.prog)
 
-    def mouse_position_event(self, x, y, dx, dy):
+    def on_mouse_drag_event(self, x, y, dx, dy):
         self.mouse_pos = self.mouse_pos[0] + dx, self.mouse_pos[1] + dy
         print(self.mouse_pos)
 
 
 if __name__ == "__main__":
-    moderngl_window.run_window_config(QuadFullscreenScroll)
+    QuadFullscreenScroll.run()

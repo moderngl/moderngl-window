@@ -15,7 +15,7 @@ class CubeSimpleInstancedScheduler(moderngl_window.WindowConfig):
         # create a instance of the Scheduler and tell it to use the windows internal timer
         # if we dont pass a timer `time.time()` will be used.
         # by using the internal Timer class the pause and time setting functions
-        # will effect our events aswell.
+        # will effect our events as well.
         self.scheduler = Scheduler(self.timer)
 
         # change the color every 1/2 seconds
@@ -23,9 +23,7 @@ class CubeSimpleInstancedScheduler(moderngl_window.WindowConfig):
         # cancel the color changing event after 2 seconds using a priority of 2
         self.scheduler.cancel(color_changing_event, delay=2)
         # restart it after another 2 seconds (4 seconds total)
-        color_changing_event = self.scheduler.run_every(
-            self.change_color, 1 / 2, initial_delay=4
-        )
+        color_changing_event = self.scheduler.run_every(self.change_color, 1 / 2, initial_delay=4)
 
         # after 5 seconds change the window title
         self.scheduler.run_once(self.change_title, 5, arguments=("Changed title",))
@@ -36,7 +34,7 @@ class CubeSimpleInstancedScheduler(moderngl_window.WindowConfig):
     def change_color(self):
         self.clear_color = (random.random(), random.random(), random.random(), 0)
 
-    def render(self, time: float, frametime: float):
+    def on_render(self, time: float, frametime: float):
         self.scheduler.execute()
 
 

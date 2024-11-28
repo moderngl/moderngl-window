@@ -14,11 +14,11 @@ class App(moderngl_window.WindowConfig):
         self.mode = "normal"  # normal / quit
         self.block_close = True
 
-    def render(self, time, frame_time):
+    def on_render(self, time, frame_time):
         if self.mode == "quit":
             self.writer_quit.draw((240, 380), size=120)
 
-    def key_event(self, key, action, modifiers):
+    def on_key_event(self, key, action, modifiers):
         keys = self.wnd.keys
         if self.mode == "quit":
             if key == keys.Y:
@@ -28,7 +28,7 @@ class App(moderngl_window.WindowConfig):
                 self.block_close = True
                 self.mode = "normal"
 
-    def close(self, *args):
+    def on_close(self, *args):
         if self.block_close:
             self.mode = "quit"
             self.wnd.is_closing = False

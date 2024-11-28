@@ -64,7 +64,6 @@ class BufferInfo:
         formats = []
         attrs = []
         for attrib_format, attrib in zip(self.attrib_formats, self.attributes):
-
             if attrib not in attributes:
                 formats.append(attrib_format.pad_str())
                 continue
@@ -92,7 +91,7 @@ class VAO:
     Represents a vertex array object.
 
     This is a wrapper class over ``moderngl.VertexArray`` to make interactions
-    with programs/shaders simpler. Named buffers are added correspoding with
+    with programs/shaders simpler. Named buffers are added corresponding with
     attribute names in a vertex shader. When rendering the VAO an internal
     ``moderngl.VertextArray`` is created automatically mapping the named buffers
     compatible with the supplied program. This program is cached internally.
@@ -153,7 +152,7 @@ class VAO:
 
     @property
     def ctx(self) -> moderngl.Context:
-        """moderngl.Context: The actite moderngl context"""
+        """moderngl.Context: The active moderngl context"""
         return mglw.ctx()
 
     def render(
@@ -339,7 +338,6 @@ class VAO:
 
         # Make sure all attributes are covered
         for attrib_name in program_attributes:
-
             # Do we have a buffer mapping to this attribute?
             if not sum(buffer.has_attribute(attrib_name) for buffer in self._buffers):
                 raise VAOError(

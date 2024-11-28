@@ -18,8 +18,8 @@ class VolumetricTetrahedralMesh(CameraWindow):
 
     An example rendering a volumetric mesh of the format:
     ``[[p1, p2, p3, p4], [p1, p2, p3, p4], ..]``
-    were ```px``` represent a 3d point in a tetraherdon.
-    A geometry shader calculates and emits the tetraherdons
+    were ```px``` represent a 3d point in a tetrahedron.
+    A geometry shader calculates and emits the tetrahedrons
     as triangles and calculate normals on the fly while rendering data.
 
     This helps us avoid doing this expensive operation
@@ -90,8 +90,7 @@ class VolumetricTetrahedralMesh(CameraWindow):
         self.query = self.ctx.query(samples=True, any_samples=True, time=True, primitives=True)
         self.total_elapsed = 0
 
-    def render(self, time, frametime):
-
+    def on_render(self, time: float, frametime: float):
         # Render background
         self.ctx.wireframe = False
         if not self.with_blending:
@@ -133,8 +132,8 @@ class VolumetricTetrahedralMesh(CameraWindow):
 
         self.total_elapsed = self.query.elapsed
 
-    def key_event(self, key, action, modifiers):
-        super().key_event(key, action, modifiers)
+    def on_key_event(self, key, action, modifiers):
+        super().on_key_event(key, action, modifiers)
         keys = self.wnd.keys
 
         if action == keys.ACTION_PRESS:
@@ -148,7 +147,7 @@ class VolumetricTetrahedralMesh(CameraWindow):
                     self.mesh_color = 0.0, 0.8, 0.0
                     self.line_color = 0.0, 0.0, 0.0
 
-    def mouse_scroll_event(self, x_offset, y_offset):
+    def on_mouse_scroll_event(self, x_offset, y_offset):
         if y_offset > 0:
             self.threshold += 0.01
         else:
@@ -156,7 +155,7 @@ class VolumetricTetrahedralMesh(CameraWindow):
 
         self.threshold = max(min(self.threshold, 1.0), 0.0)
 
-    def close(self):
+    def on_close(self):
         # 1 s = 1000000000 ns
         # 1 s = 1000000 μs
         avg = self.total_elapsed / self.wnd.frames

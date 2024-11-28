@@ -441,7 +441,6 @@ class GLTFMesh:
             self.accessor = None
 
     def __init__(self, data: dict[str, Any], meta: SceneDescription):
-
         self.meta = meta
         self.name = data.get("name", "")
         self.primitives = [GLTFMesh.Primitives(p) for p in data["primitives"]]
@@ -462,7 +461,6 @@ class GLTFMesh:
         # Read all primitives as separate meshes for now
         # According to the spec they can have different materials and vertex format
         for primitive in self.primitives:
-
             vao = VAO(self.name, mode=primitive.mode or moderngl.TRIANGLES)
 
             # Index buffer
@@ -761,7 +759,7 @@ class GLTFNode:
                 z=self.rotation[2],
                 w=self.rotation[3],
             )
-            self.matrix = self.matrix * glm.mat4(quat)
+            self.matrix = self.matrix * glm.mat4_cast(quat)
 
         if self.scale is not None:
             self.matrix = self.matrix * glm.scale(self.scale)

@@ -8,7 +8,7 @@ from moderngl_window.context.base import BaseWindow
 
 
 def swap_buffers(self):
-    """Swapbuffers closing window after 3 frames"""
+    """Swap buffers closing window after 3 frames"""
     self._frames += 1
     if self._frames > 3:
         self.close()
@@ -19,7 +19,7 @@ class Config(mglw.WindowConfig):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def render(self, time: float, frame_time: float):
+    def on_render(self, time: float, frame_time: float):
         pass
 
 

@@ -1,4 +1,3 @@
-# flake8: noqa E741
 from typing import Any
 
 

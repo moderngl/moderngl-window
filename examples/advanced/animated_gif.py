@@ -1,3 +1,14 @@
+"""
+Loads two gif files into texture arrays and renders them into an offscreen buffer
+that is then displayed on the screen using nearest neighbor filtering.
+
+Possible improvements:
+- Make the example configurable to load any gif file(s)
+- Load the raw byte data for each frame and instead use a palette texture to
+  reduce the memory footprint
+- Take the gif transparency key into account?
+"""
+
 from pathlib import Path
 
 import glm
@@ -6,12 +17,8 @@ import moderngl
 import moderngl_window as mglw
 from moderngl_window import geometry
 
-# from moderngl_window.conf import settings
-# settings.SCREENSHOT_PATH = 'screenshots'
-# from moderngl_window import screenshot
 
-
-class Test(mglw.WindowConfig):
+class AnimatedGif(mglw.WindowConfig):
     title = "Animated Sprite"
     resource_dir = (Path(__file__) / "../../resources").resolve()
     aspect_ratio = 320 / 256
@@ -21,13 +28,12 @@ class Test(mglw.WindowConfig):
         super().__init__(**kwargs)
         self.buffer_size = 320, 256
         # Textures
-        self.background_texture = self.load_texture_array(
-            "textures/animated_sprites/giphy.gif"
-        )
+        self.background_texture = self.load_texture_array("textures/animated_sprites/giphy.gif")
         self.background_texture.repeat_x = False
         self.background_texture.repeat_y = False
         self.caveman_texture = self.load_texture_array(
-            "textures/animated_sprites/player_2.gif", layers=35
+            "textures/animated_sprites/player_2.gif",
+            layers=35,  # Number of frames in the gif
         )
         self.caveman_texture.repeat_x = False
         self.caveman_texture.repeat_y = False
@@ -39,22 +45,18 @@ class Test(mglw.WindowConfig):
         self.quad_fs = geometry.quad_fs()
 
         # Programs
-        self.sprite_program = self.load_program(
-            "programs/animated_sprites/sprite_array.glsl"
-        )
+        self.sprite_program = self.load_program("programs/animated_sprites/sprite_array.glsl")
         self.texture_program = self.load_program("programs/texture.glsl")
 
         # Offscreen buffer
         self.offscreen_texture = self.ctx.texture(self.buffer_size, 4)
         self.offscreen_texture.filter = moderngl.NEAREST, moderngl.NEAREST
-        self.offscreen = self.ctx.framebuffer(
-            color_attachments=[self.offscreen_texture]
-        )
+        self.offscreen = self.ctx.framebuffer(color_attachments=[self.offscreen_texture])
 
         self.projection = glm.ortho(0, 320, 0, 256, -1.0, 1.0)
         self.sprite_program["projection"].write(self.projection)
 
-    def render(self, time, frame_time):
+    def on_render(self, time, frame_time):
         # Render sprite of offscreen
         self.offscreen.use()
         self.ctx.clear(0.5, 0.5, 0.5, 0.0)
@@ -75,10 +77,7 @@ class Test(mglw.WindowConfig):
         self.offscreen_texture.use(location=0)
         self.quad_fs.render(self.texture_program)
 
-        # if self.wnd.frames < 100:
-        #     screenshot.create(self.ctx.screen)
-
-    def render_sprite(self, texture, blend=False, frame=0, position=(0, 0)):
+    def render_sprite(self, texture: moderngl.TextureArray, blend=False, frame=0, position=(0, 0)):
         if blend:
             self.ctx.enable(moderngl.BLEND)
 
@@ -92,5 +91,4 @@ class Test(mglw.WindowConfig):
 
 
 if __name__ == "__main__":
-    mglw.run_window_config(Test)
-    # Test.run()
+    AnimatedGif.run()

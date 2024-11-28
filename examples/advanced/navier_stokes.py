@@ -60,22 +60,12 @@ class NavierStokes2D(moderngl_window.WindowConfig):
         self.walls_texture = self.ctx.texture(size, 1, dtype="f4")
         self.difference_texture = self.ctx.texture(size, 1, dtype="f4")
 
-        self.momentum_fbo_1 = self.ctx.framebuffer(
-            color_attachments=[self.momentum_texture_1]
-        )
-        self.momentum_fbo_2 = self.ctx.framebuffer(
-            color_attachments=[self.momentum_texture_2]
-        )
-        self.pressure_fbo_1 = self.ctx.framebuffer(
-            color_attachments=[self.pressure_texture_1]
-        )
-        self.pressure_fbo_2 = self.ctx.framebuffer(
-            color_attachments=[self.pressure_texture_2]
-        )
+        self.momentum_fbo_1 = self.ctx.framebuffer(color_attachments=[self.momentum_texture_1])
+        self.momentum_fbo_2 = self.ctx.framebuffer(color_attachments=[self.momentum_texture_2])
+        self.pressure_fbo_1 = self.ctx.framebuffer(color_attachments=[self.pressure_texture_1])
+        self.pressure_fbo_2 = self.ctx.framebuffer(color_attachments=[self.pressure_texture_2])
         self.walls_fbo = self.ctx.framebuffer(color_attachments=[self.walls_texture])
-        self.difference_fbo = self.ctx.framebuffer(
-            color_attachments=[self.difference_texture]
-        )
+        self.difference_fbo = self.ctx.framebuffer(color_attachments=[self.difference_texture])
 
         # programs
         self.texture_prog = self.load_program("programs/navier-stokes/texture.glsl")
@@ -134,7 +124,7 @@ class NavierStokes2D(moderngl_window.WindowConfig):
         self.drop_prog["write_value"].value = 1.0
         self.drop_geometry.render(self.drop_prog)
 
-    def render(self, time, frame_time):
+    def on_render(self, time: float, frame_time: float):
         # calculate momentum
         self.momentum_fbo_1.use()
         self.momentum_texture_2.use(location=0)
@@ -189,19 +179,19 @@ class NavierStokes2D(moderngl_window.WindowConfig):
             self.pressure_fbo_1,
         )
 
-    def mouse_press_event(self, x, y, button):
+    def on_mouse_press_event(self, x, y, button):
         if button == self.wnd.mouse.left:
             self.drop(x, y)
         elif button == self.wnd.mouse.right:
             self.wall(x, y)
 
-    def mouse_drag_event(self, x, y, dx, dy):
+    def on_mouse_drag_event(self, x, y, dx, dy):
         if self.wnd.mouse_states.left:
             self.drop(x, y)
         elif self.wnd.mouse_states.right:
             self.wall(x, y)
 
-    def key_event(self, key, action, modifiers):
+    def on_key_event(self, key, action, modifiers):
         keys = self.wnd.keys
 
         if action == keys.ACTION_PRESS:
@@ -210,4 +200,4 @@ class NavierStokes2D(moderngl_window.WindowConfig):
 
 
 if __name__ == "__main__":
-    moderngl_window.run_window_config(NavierStokes2D)
+    NavierStokes2D.run()

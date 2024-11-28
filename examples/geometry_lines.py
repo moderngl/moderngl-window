@@ -12,7 +12,7 @@ class LinesDemo(CameraWindow):
     """Rendering thick lines with geometry shader
 
     Example is basic and incomplete, but shows how
-    one could use the geometry shader to create thick lines.
+    one could use the geometry shader to create simple thick lines.
     """
 
     gl_version = (3, 3)
@@ -41,9 +41,7 @@ class LinesDemo(CameraWindow):
                 yield 1.0 - i * 2.0 / N
                 yield 0.0
 
-        buffer = self.ctx.buffer(
-            numpy.fromiter(gen_lines(), dtype="f4", count=N * 6).tobytes()
-        )
+        buffer = self.ctx.buffer(numpy.fromiter(gen_lines(), dtype="f4", count=N * 6).tobytes())
         self.lines = self.ctx.vertex_array(
             self.prog,
             [
@@ -51,7 +49,7 @@ class LinesDemo(CameraWindow):
             ],
         )
 
-    def render(self, time, frametime):
+    def on_render(self, time: float, frametime: float):
         # self.ctx.enable_only(moderngl.DEPTH_TEST)
 
         self.prog["m_proj"].write(self.camera.projection.matrix)

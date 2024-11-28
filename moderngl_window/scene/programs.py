@@ -153,7 +153,7 @@ class ColorLightProgram(MeshProgram):
 class TextureProgram(MeshProgram):
     """Plan textured"""
 
-    def __init__(self, program: moderngl.Program = None, **kwargs: Any) -> None:
+    def __init__(self, program: Optional[moderngl.Program] = None, **kwargs: Any) -> None:
         super().__init__(program=None)
         self.program = programs.load(ProgramDescription(path="scene_default/texture.glsl"))
 

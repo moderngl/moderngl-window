@@ -2,6 +2,19 @@
 
 ## 3.0.0
 
+* All callback functions now has an `on_` prefix meaning existing code will need updating. The old names was somewhat unambiguous and was a source of confusion. It also makes it easier to separate the callback functions from other methods.
+  * `render` -> `on_render`
+  * `resize` -> `on_resize`
+  * `close` -> `on_close`
+  * `iconify` -> `on_iconify`
+  * `key_event` -> `on_key_event`
+  * `mouse_position_event` -> `on_mouse_position_event`
+  * `mouse_press_event` -> `on_mouse_press_event`
+  * `mouse_release_event` -> `on_mouse_release_event`
+  * `mouse_drag_event` -> `on_mouse_drag_event`
+  * `mouse_scroll_event` -> `on_mouse_scroll_event`
+  * `unicode_char_entered` -> `on_unicode_char_entered`
+  * `files_dropped_event` -> `on_files_dropped_event`
 * Pyrr is now replaced with PyGLM
 * imgui is replaced with imgui-bundle
 * Numpy version is no longer restricted
