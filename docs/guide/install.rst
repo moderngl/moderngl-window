@@ -26,11 +26,19 @@ Optional dependencies for loaders::
     # STL loading
     pip install moderngl-window[trimesh]
 
+imgui::
+
+    # imgui-bundle
+    pip install moderngl-window[imgui]
+
 Installing dependencies for window types::
 
+    pip install moderngl-window[glfw]
+    pip install moderngl-window[pygame-ce]
+    pip install moderngl-window[pygame]
+    pip install moderngl-window[tk]
     pip install moderngl-window[PySide2]
     pip install moderngl-window[pyqt5]
-    pip install moderngl-window[glfw]
     pip install moderngl-window[PySDL2]
 
 Installing optional dependencies this way should ensure
@@ -78,6 +86,6 @@ Running tests
 
 Assuming dev requirements are installed.
 
-Run tests with ``tox``::
+Run tests with ``pytest``::
 
-    pytest
+    pytest tests
