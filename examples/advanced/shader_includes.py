@@ -31,4 +31,4 @@ class ShaderInclude(mglw.WindowConfig):
 
 
 if __name__ == "__main__":
-    mglw.run_window_config(ShaderInclude)
+    ShaderInclude.run()

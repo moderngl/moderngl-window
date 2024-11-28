@@ -12,7 +12,7 @@ class BasicWindowConfig(moderngl_window.WindowConfig):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def on_render(self, time, frametime):
+    def on_render(self, time: float, frametime: float):
         self.ctx.clear(
             (math.sin(time) + 1.0) / 2,
             (math.sin(time + 2) + 1.0) / 2,

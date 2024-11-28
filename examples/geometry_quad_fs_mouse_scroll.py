@@ -38,4 +38,4 @@ class QuadFullscreenScroll(moderngl_window.WindowConfig):
 
 
 if __name__ == "__main__":
-    moderngl_window.run_window_config(QuadFullscreenScroll)
+    QuadFullscreenScroll.run()
