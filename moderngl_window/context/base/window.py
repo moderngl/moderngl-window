@@ -20,7 +20,7 @@ from moderngl_window.timers.base import BaseTimer
 try:
     from pygame.event import Event
 except ModuleNotFoundError:
-    pass
+    Event = Any
 
 FuncAny = Callable[[Any], Any]
 
