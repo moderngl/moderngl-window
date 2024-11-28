@@ -5,13 +5,14 @@ Relies on the PyAV library to decode video frames and display them using a textu
 """
 
 import math
-from typing import Union
 from pathlib import Path
+from typing import Union
 
+import av
 import moderngl
+
 import moderngl_window
 from moderngl_window import geometry
-import av
 
 
 class Decoder:

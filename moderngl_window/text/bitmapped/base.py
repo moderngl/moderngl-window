@@ -1,6 +1,6 @@
-import moderngl_window
+from typing import Any, Generator, Optional, Union
 
-from typing import Union, Any, Generator, Optional
+import moderngl_window
 
 
 class FontMeta:

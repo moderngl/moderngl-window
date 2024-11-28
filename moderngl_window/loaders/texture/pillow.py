@@ -1,16 +1,16 @@
 import logging
-from typing import Any, Union, Optional
 from pathlib import Path
+from typing import Any, Optional, Union
 
 try:
     from PIL import Image
 except ImportError as ex:
     raise ImportError("Texture loader 'PillowLoader' requires Pillow: {}".format(ex))
 
+from moderngl_window.exceptions import ImproperlyConfigured
 from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.meta.base import ResourceDescription
 from moderngl_window.meta.texture import TextureDescription
-from moderngl_window.exceptions import ImproperlyConfigured
 from moderngl_window.resources.textures import TextureAny
 
 logger = logging.getLogger(__name__)

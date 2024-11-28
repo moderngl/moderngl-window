@@ -1,9 +1,10 @@
 import logging
-from pathlib import Path
 from collections.abc import Iterable
-from typing import Any, Union, Optional
+from pathlib import Path
+from typing import Any, Optional, Union
 
 import moderngl
+
 import moderngl_window as mglw
 from moderngl_window.finders import data, program, scene, texture
 from moderngl_window.finders.base import BaseFilesystemFinder

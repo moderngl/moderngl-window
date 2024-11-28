@@ -2,12 +2,12 @@ from pathlib import Path
 
 import glm
 import moderngl
-from imgui_bundle import imgui
 import numpy as np
+from base import OrbitDragCameraWindow
+from imgui_bundle import imgui
 
 import moderngl_window
 from moderngl_window.integrations.imgui_bundle import ModernglWindowRenderer
-from base import OrbitDragCameraWindow
 
 
 class SSAODemo(OrbitDragCameraWindow):

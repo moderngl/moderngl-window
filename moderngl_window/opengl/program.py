@@ -2,10 +2,11 @@
 Helper classes for loading shader
 """
 
-from typing import Any, Callable, Union, Optional
 import re
+from typing import Any, Callable, Optional, Union
 
 import moderngl
+
 import moderngl_window
 from moderngl_window.meta import ProgramDescription as ProgramDescription
 

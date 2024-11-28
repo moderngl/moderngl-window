@@ -1,12 +1,12 @@
 import time
+from typing import Any, Optional, Union
+
 import glm
-
 from glm import cos, radians, sin
-from typing import Optional, Union, Any
 
-from moderngl_window.utils.keymaps import QWERTY, KeyMapFactory
-from moderngl_window.opengl.projection import Projection3D
 from moderngl_window.context.base import BaseKeys
+from moderngl_window.opengl.projection import Projection3D
+from moderngl_window.utils.keymaps import QWERTY, KeyMapFactory
 
 # Direction Definitions
 RIGHT = 1

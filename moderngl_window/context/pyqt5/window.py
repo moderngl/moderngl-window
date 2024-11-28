@@ -1,10 +1,11 @@
-from PyQt5 import QtCore, QtOpenGL, QtWidgets, QtGui
+from pathlib import Path
+from typing import Any
+
+from PyQt5 import QtCore, QtGui, QtOpenGL, QtWidgets
 
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.pyqt5.keys import Keys
 
-from typing import Any
-from pathlib import Path
 
 class Window(BaseWindow):
     """

@@ -1,7 +1,7 @@
-from moderngl_window.loaders.base import BaseLoader
-from moderngl_window.finders import texture
 from pathlib import Path
 
+from moderngl_window.finders import texture
+from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.meta.base import ResourceDescription
 from moderngl_window.meta.texture import TextureDescription
 

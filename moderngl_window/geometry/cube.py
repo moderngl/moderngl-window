@@ -1,8 +1,9 @@
+from typing import Optional
+
 import numpy
 
-from moderngl_window.opengl.vao import VAO
 from moderngl_window.geometry import AttributeNames
-from typing import Optional
+from moderngl_window.opengl.vao import VAO
 
 
 def cube(

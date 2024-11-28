@@ -3,6 +3,7 @@ Custom usage: window creation and mapping callbacks functions at module level
 """
 import math
 import random
+
 import moderngl_window
 from moderngl_window.conf import settings
 from moderngl_window.timers.clock import Timer

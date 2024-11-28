@@ -5,13 +5,11 @@ Bag of settings values
 # pylint: disable = invalid-name
 import importlib
 import os
-
-from types import ModuleType as Module
-from collections.abc import Iterable, Generator
-from pprint import pformat
-from typing import Any, Union, Optional
 import pathlib
-
+from collections.abc import Generator, Iterable
+from pprint import pformat
+from types import ModuleType as Module
+from typing import Any, Optional, Union
 
 from moderngl_window.conf import default
 from moderngl_window.exceptions import ImproperlyConfigured

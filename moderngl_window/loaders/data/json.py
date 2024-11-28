@@ -1,10 +1,9 @@
 import json
 import logging
-
-from moderngl_window.loaders.base import BaseLoader
-from moderngl_window.exceptions import ImproperlyConfigured
-
 from typing import Any
+
+from moderngl_window.exceptions import ImproperlyConfigured
+from moderngl_window.loaders.base import BaseLoader
 
 logger = logging.getLogger(__name__)
 

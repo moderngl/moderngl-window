@@ -1,6 +1,7 @@
 from importlib import import_module
 from typing import Any, Callable
 
+
 def import_string(dotted_path: str) -> Any:
     """
     Import a dotted module path and return the attribute/class designated by the

@@ -1,13 +1,13 @@
+from pathlib import Path
+from typing import Any
+
 import pygame
+import pygame._sdl2
 import pygame.display
 import pygame.event
-import pygame._sdl2
 
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.pygame2.keys import Keys
-
-from typing import Any
-from pathlib import Path
 
 
 class Window(BaseWindow):

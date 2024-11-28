@@ -1,8 +1,10 @@
-import moderngl
 from pathlib import Path
+
+import glm
+import moderngl
+
 import moderngl_window as mglw
 from moderngl_window import geometry
-import glm
 
 # from moderngl_window.conf import settings
 # settings.SCREENSHOT_PATH = 'screenshots'

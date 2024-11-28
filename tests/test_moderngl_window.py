@@ -1,6 +1,8 @@
 import sys
 from unittest import TestCase, mock
+
 import moderngl
+
 import moderngl_window as mglw
 from moderngl_window.context.base import BaseWindow
 

@@ -1,7 +1,8 @@
 import time
 from unittest import TestCase
-from moderngl_window.utils.scheduler import Scheduler
+
 from moderngl_window.timers.clock import Timer
+from moderngl_window.utils.scheduler import Scheduler
 
 
 class SchedulingTestCase(TestCase):

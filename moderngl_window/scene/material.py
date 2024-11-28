@@ -1,6 +1,6 @@
-import moderngl
-
 from typing import Optional
+
+import moderngl
 
 
 class MaterialTexture:

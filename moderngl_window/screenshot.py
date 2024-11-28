@@ -1,10 +1,11 @@
 import logging
 import os
 from datetime import datetime
-from typing import Union, Optional
+from typing import Optional, Union
 
 import moderngl
 from PIL import Image
+
 from moderngl_window.conf import settings
 
 logger = logging.getLogger(__name__)

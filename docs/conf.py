@@ -14,10 +14,9 @@
 #
 # import os
 import sys
-
+from typing import Any
 # sys.path.insert(0, os.path.abspath('.'))
 from unittest.mock import MagicMock
-from typing import Any
 
 
 # Mock modules

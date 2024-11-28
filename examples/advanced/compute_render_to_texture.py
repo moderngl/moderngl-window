@@ -1,5 +1,7 @@
-import moderngl as mgl
 from pathlib import Path
+
+import moderngl as mgl
+
 import moderngl_window as mglw
 from moderngl_window import geometry
 

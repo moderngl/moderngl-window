@@ -1,24 +1,21 @@
-from argparse import ArgumentParser, Namespace
-from functools import wraps
-from pathlib import Path
 import logging
 import sys
 import weakref
-from typing import Any, Callable, Union, Optional
+from argparse import ArgumentParser, Namespace
+from functools import wraps
+from pathlib import Path
+from typing import Any, Callable, Optional, Union
 
 import moderngl
-from moderngl_window.context.base import KeyModifiers, BaseKeys
-from moderngl_window.timers.base import BaseTimer
+
 from moderngl_window import resources
+from moderngl_window.context.base import BaseKeys, KeyModifiers
 from moderngl_window.geometry.attributes import AttributeNames
-from moderngl_window.meta import (
-    TextureDescription,
-    ProgramDescription,
-    SceneDescription,
-    DataDescription,
-)
 from moderngl_window.loaders.texture.icon import IconLoader
+from moderngl_window.meta import (DataDescription, ProgramDescription,
+                                  SceneDescription, TextureDescription)
 from moderngl_window.scene import Scene
+from moderngl_window.timers.base import BaseTimer
 
 try:
     from pygame.event import Event

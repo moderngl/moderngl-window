@@ -1,9 +1,11 @@
-import numpy
+from typing import Optional
 
 import moderngl
-from moderngl_window.opengl.vao import VAO
+import numpy
+
 from moderngl_window.geometry import AttributeNames
-from typing import Optional
+from moderngl_window.opengl.vao import VAO
+
 
 def bbox(size: tuple[float, float, float] = (1.0, 1.0, 1.0), name: Optional[str] = None, attr_names: type[AttributeNames] = AttributeNames) -> VAO:
     """

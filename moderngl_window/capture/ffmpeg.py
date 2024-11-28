@@ -1,8 +1,10 @@
-from .base import BaseVideoCapture
 import subprocess
+from typing import Any, Optional
+
 import moderngl
 
-from typing import Any, Optional
+from .base import BaseVideoCapture
+
 
 class FFmpegCapture(BaseVideoCapture):
     """

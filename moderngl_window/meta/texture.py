@@ -1,5 +1,7 @@
-from PIL.Image import Image
 from typing import Any, Optional
+
+from PIL.Image import Image
+
 from moderngl_window.meta.base import ResourceDescription
 
 

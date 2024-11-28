@@ -1,2 +1,2 @@
-from .keys import Keys, GLFW_key  # noqa
+from .keys import GLFW_key, Keys  # noqa
 from .window import Window  # noqa

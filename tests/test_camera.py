@@ -1,11 +1,12 @@
 from unittest import TestCase
-import numpy as np
-import glm
 
+import glm
+import numpy as np
+
+from moderngl_window.context.base.keys import BaseKeys, KeyModifiers
+from moderngl_window.opengl.projection import Projection3D
 from moderngl_window.scene import Camera, KeyboardCamera
 from moderngl_window.scene import camera as cam
-from moderngl_window.opengl.projection import Projection3D
-from moderngl_window.context.base.keys import BaseKeys, KeyModifiers
 
 
 class CameraTest(TestCase):

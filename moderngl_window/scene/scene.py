@@ -2,33 +2,28 @@
 Wrapper for a loaded scene with properties.
 """
 
-from typing import TYPE_CHECKING, Any, Optional
 import logging
-import numpy
+from typing import TYPE_CHECKING, Any, Optional
+
 import glm
-
 import moderngl
-import moderngl_window as mglw
-from moderngl_window.resources.programs import programs
-from moderngl_window.meta import ProgramDescription
-from moderngl_window import geometry
+import numpy
 
-from .programs import (
-    FallbackProgram,
-    VertexColorProgram,
-    ColorLightProgram,
-    MeshProgram,
-    TextureProgram,
-    TextureVertexColorProgram,
-    TextureLightProgram,
-)
-from .node import Node
+import moderngl_window as mglw
+from moderngl_window import geometry
+from moderngl_window.meta import ProgramDescription
+from moderngl_window.resources.programs import programs
+
 from .material import Material
+from .node import Node
+from .programs import (ColorLightProgram, FallbackProgram, MeshProgram,
+                       TextureLightProgram, TextureProgram,
+                       TextureVertexColorProgram, VertexColorProgram)
 
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
-    from moderngl_window.scene import Node, Material, Camera, Mesh
+    from moderngl_window.scene import Camera, Material, Mesh, Node
 
 
 class Scene:

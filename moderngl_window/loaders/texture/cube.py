@@ -1,12 +1,12 @@
 from collections import namedtuple
-from typing import Optional, Any
-
-from moderngl_window.loaders.texture.pillow import PillowLoader, image_data
-from moderngl_window.exceptions import ImproperlyConfigured
-from moderngl_window.meta.base import ResourceDescription
-from moderngl_window.meta.texture import TextureDescription
+from typing import Any, Optional
 
 import moderngl
+
+from moderngl_window.exceptions import ImproperlyConfigured
+from moderngl_window.loaders.texture.pillow import PillowLoader, image_data
+from moderngl_window.meta.base import ResourceDescription
+from moderngl_window.meta.texture import TextureDescription
 
 FaceInfo = namedtuple("FaceInfo", ["width", "height", "data", "components"])
 

@@ -1,8 +1,8 @@
 import ctypes
 
+import moderngl
 from imgui_bundle import imgui
 from imgui_bundle.python_backends import compute_fb_scale
-import moderngl
 
 
 class ModernglWindowMixin:

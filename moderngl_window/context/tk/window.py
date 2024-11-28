@@ -1,11 +1,11 @@
 import tkinter
+from pathlib import Path
+from typing import Any
+
+from pyopengltk import OpenGLFrame
 
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.tk.keys import Keys
-from pyopengltk import OpenGLFrame
-
-from typing import Any
-from pathlib import Path
 
 
 class Window(BaseWindow):

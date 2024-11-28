@@ -1,8 +1,9 @@
 import struct
 from pathlib import Path
 
-import moderngl
 import glm
+import moderngl
+
 import moderngl_window
 from moderngl_window import geometry
 from moderngl_window.opengl.projection import Projection3D

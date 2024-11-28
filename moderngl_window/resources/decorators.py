@@ -1,7 +1,7 @@
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Generator, Union
 
-from contextlib import contextmanager
 from moderngl_window.conf import settings
 
 

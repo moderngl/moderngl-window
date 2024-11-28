@@ -8,9 +8,9 @@ from typing import Any, Generator
 
 from moderngl_window.conf import settings
 from moderngl_window.exceptions import ImproperlyConfigured
-from moderngl_window.utils.module_loading import import_string
-from moderngl_window.meta.base import ResourceDescription
 from moderngl_window.loaders.base import BaseLoader
+from moderngl_window.meta.base import ResourceDescription
+from moderngl_window.utils.module_loading import import_string
 
 
 class BaseRegistry:

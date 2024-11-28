@@ -1,9 +1,11 @@
-import numpy
+from typing import Optional
 
 import moderngl
-from moderngl_window.opengl.vao import VAO
+import numpy
+
 from moderngl_window.geometry.attributes import AttributeNames
-from typing import Optional
+from moderngl_window.opengl.vao import VAO
+
 
 def quad_fs(attr_names: type[AttributeNames] = AttributeNames, normals: bool = True, uvs: bool = True, name: Optional[str] = None) -> VAO:
     """

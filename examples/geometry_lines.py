@@ -1,10 +1,11 @@
 from pathlib import Path
-import glm
-import numpy
 
+import glm
 import moderngl
-import moderngl_window
+import numpy
 from base import CameraWindow
+
+import moderngl_window
 
 
 class LinesDemo(CameraWindow):

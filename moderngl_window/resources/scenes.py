@@ -2,9 +2,9 @@
 Scene Registry
 """
 
+from moderngl_window.meta import ResourceDescription, SceneDescription
 from moderngl_window.resources.base import BaseRegistry
 from moderngl_window.scene import Scene
-from moderngl_window.meta import SceneDescription, ResourceDescription
 
 
 class Scenes(BaseRegistry):

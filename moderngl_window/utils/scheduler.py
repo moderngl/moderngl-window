@@ -1,6 +1,7 @@
 import sched
 import time
 from typing import Any, Callable
+
 from moderngl_window.timers.base import BaseTimer
 
 

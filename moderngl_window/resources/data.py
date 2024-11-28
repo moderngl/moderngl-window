@@ -3,8 +3,9 @@ Registry general data files
 """
 
 from typing import Any
-from moderngl_window.resources.base import BaseRegistry
+
 from moderngl_window.meta import DataDescription, ResourceDescription
+from moderngl_window.resources.base import BaseRegistry
 
 
 class DataFiles(BaseRegistry):

@@ -9,6 +9,7 @@ https://github.com/pythonarcade/arcade/blob/development/arcade/texture_atlas.py
 """
 
 import moderngl
+
 from .base import BaseImage
 
 

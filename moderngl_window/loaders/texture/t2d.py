@@ -1,4 +1,5 @@
 import logging
+
 import moderngl
 
 from moderngl_window.loaders.texture.pillow import PillowLoader, image_data

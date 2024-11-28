@@ -1,9 +1,11 @@
-import numpy
+from typing import TYPE_CHECKING, Any, Optional, Union
+
 import glm
 import moderngl
+import numpy
 
-from typing import Optional, Union, Any, TYPE_CHECKING
 from moderngl_window.opengl.vao import VAO
+
 from .material import Material
 
 if TYPE_CHECKING:

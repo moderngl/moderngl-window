@@ -1,25 +1,22 @@
+import io
 import logging
 import os
-import io
-
-import numpy
-
 from pathlib import Path
 
+import moderngl
+import numpy
 import pywavefront
 from pywavefront import cache
 from pywavefront.obj import ObjParser
 
-import moderngl
-from moderngl_window.loaders.base import BaseLoader
-from moderngl_window.opengl.vao import VAO
 from moderngl_window import resources
-from moderngl_window.resources.decorators import texture_dirs
-from moderngl_window.meta import SceneDescription, TextureDescription
-from moderngl_window.scene import Material, MaterialTexture, Mesh, Node, Scene
 from moderngl_window.exceptions import ImproperlyConfigured
 from moderngl_window.geometry.attributes import AttributeNames
-
+from moderngl_window.loaders.base import BaseLoader
+from moderngl_window.meta import SceneDescription, TextureDescription
+from moderngl_window.opengl.vao import VAO
+from moderngl_window.resources.decorators import texture_dirs
+from moderngl_window.scene import Material, MaterialTexture, Mesh, Node, Scene
 
 logger = logging.getLogger(__name__)
 

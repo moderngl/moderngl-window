@@ -1,11 +1,11 @@
-import numpy
-import moderngl
-import moderngl_window as mglw
-from moderngl_window.opengl import types
-
 from typing import Any, Optional, Union
+
+import moderngl
+import numpy
 import numpy.typing as npt
 
+import moderngl_window as mglw
+from moderngl_window.opengl import types
 
 # For sanity checking draw modes when creating the VAO
 DRAW_MODES = {

@@ -8,6 +8,7 @@ import glm
 import moderngl
 
 from moderngl_window.opengl.vao import VAO
+
 from .camera import Camera
 from .mesh import Mesh
 

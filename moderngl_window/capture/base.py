@@ -1,8 +1,9 @@
+import datetime
 import os
 from typing import Any, Optional, Union
 
-import datetime
 import moderngl
+
 from moderngl_window.timers.clock import Timer
 
 

@@ -1,8 +1,7 @@
 from pathlib import Path
 
 import moderngl_window
-from moderngl_window import geometry
-from moderngl_window import resources
+from moderngl_window import geometry, resources
 
 resources.register_dir((Path(__file__).parent / "resources").resolve())
 

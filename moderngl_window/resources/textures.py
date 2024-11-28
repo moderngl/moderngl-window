@@ -3,9 +3,11 @@ Shader Registry
 """
 
 from typing import Union
+
 import moderngl
+
+from moderngl_window.meta import ResourceDescription, TextureDescription
 from moderngl_window.resources.base import BaseRegistry
-from moderngl_window.meta import TextureDescription, ResourceDescription
 
 TextureAny = Union[
     moderngl.Texture,

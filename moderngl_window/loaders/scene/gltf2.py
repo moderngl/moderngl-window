@@ -1,29 +1,28 @@
 # Spec: https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#asset
 from __future__ import annotations
+
 import base64
 import io
 import json
 import logging
 import struct
 from collections import namedtuple
+from pathlib import Path
+from typing import Any, Optional, Union
 
+import glm
+import moderngl
 import numpy
 import numpy.typing as npt
 from PIL import Image
-import glm
 
-from pathlib import Path
-from typing import Optional, Any, Union
-
-import moderngl
 import moderngl_window
-
+from moderngl_window.exceptions import ImproperlyConfigured
 from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.loaders.texture import t2d
-from moderngl_window.opengl.vao import VAO
 from moderngl_window.meta import SceneDescription, TextureDescription
+from moderngl_window.opengl.vao import VAO
 from moderngl_window.scene import Material, MaterialTexture, Mesh, Node, Scene
-from moderngl_window.exceptions import ImproperlyConfigured
 
 logger = logging.getLogger(__name__)
 

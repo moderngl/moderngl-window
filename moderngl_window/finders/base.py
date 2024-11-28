@@ -4,7 +4,6 @@ Base finders
 
 import functools
 import logging
-
 from collections import namedtuple
 from pathlib import Path
 from typing import Any, Optional

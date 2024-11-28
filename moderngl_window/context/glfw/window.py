@@ -1,11 +1,12 @@
-import glfw
-
-from PIL import Image
-from typing import Any
 from pathlib import Path
+from typing import Any
+
+import glfw
+from PIL import Image
 
 from moderngl_window.context.base import BaseWindow
-from moderngl_window.context.glfw.keys import Keys, GLFW_key
+from moderngl_window.context.glfw.keys import GLFW_key, Keys
+
 
 class Window(BaseWindow):
     """

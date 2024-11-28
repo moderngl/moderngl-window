@@ -1,8 +1,8 @@
 from headless import HeadlessTestCase
 
+from moderngl_window import geometry
 from moderngl_window.geometry import AttributeNames
 from moderngl_window.opengl.vao import BufferInfo
-from moderngl_window import geometry
 
 
 class GeomtryTestCase(HeadlessTestCase):

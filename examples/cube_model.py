@@ -1,9 +1,10 @@
 from pathlib import Path
-import glm
 
+import glm
 import moderngl
-import moderngl_window
 from base import CameraWindow
+
+import moderngl_window
 
 
 class CubeModel(CameraWindow):

@@ -1,6 +1,7 @@
 import moderngl
-from moderngl_window.resources.base import BaseRegistry
+
 from moderngl_window.meta import ProgramDescription, ResourceDescription
+from moderngl_window.resources.base import BaseRegistry
 
 
 class Programs(BaseRegistry):

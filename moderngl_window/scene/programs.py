@@ -1,18 +1,17 @@
 from __future__ import annotations
 
 import os
+from typing import Any, Optional
 
 import glm
 import moderngl
+
 import moderngl_window
-
 from moderngl_window.conf import settings
-from moderngl_window.resources.programs import programs
 from moderngl_window.meta import ProgramDescription
+from moderngl_window.resources.programs import programs
+
 from .mesh import Mesh
-
-from typing import Any, Optional
-
 
 settings.PROGRAM_DIRS.append(os.path.join(os.path.dirname(__file__), "programs"))
 

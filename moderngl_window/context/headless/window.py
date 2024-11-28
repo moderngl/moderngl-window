@@ -1,9 +1,10 @@
+from pathlib import Path
+from typing import Any, Optional
+
 import moderngl
+
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.headless.keys import Keys
-
-from typing import Any, Optional
-from pathlib import Path
 
 
 class Window(BaseWindow):

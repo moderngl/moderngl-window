@@ -1,9 +1,8 @@
 import glm
+from base import CameraWindow
 
 import moderngl_window
 from moderngl_window import geometry
-
-from base import CameraWindow
 
 
 class GeometryBbox(CameraWindow):

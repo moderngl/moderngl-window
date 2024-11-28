@@ -1,7 +1,7 @@
-from moderngl_window.finders import base
-from moderngl_window.conf import settings
-
 from collections.abc import Iterator
+
+from moderngl_window.conf import settings
+from moderngl_window.finders import base
 
 
 class FilesystemFinder(base.BaseFilesystemFinder):

@@ -1,6 +1,7 @@
 import math
-import moderngl_window
 import random
+
+import moderngl_window
 
 
 class WindowEvents(moderngl_window.WindowConfig):

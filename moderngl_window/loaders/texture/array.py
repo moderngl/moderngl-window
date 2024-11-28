@@ -1,9 +1,10 @@
-from moderngl_window.loaders.texture.pillow import PillowLoader, image_data
+import moderngl
+
 from moderngl_window.exceptions import ImproperlyConfigured
+from moderngl_window.loaders.texture.pillow import PillowLoader, image_data
 from moderngl_window.meta.base import ResourceDescription
 from moderngl_window.meta.texture import TextureDescription
 
-import moderngl
 
 class Loader(PillowLoader):
     kind = "array"

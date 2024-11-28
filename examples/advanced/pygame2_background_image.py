@@ -7,8 +7,10 @@ color value and alpha blend a pygame surface on top.
 """
 import math
 from pathlib import Path
-import pygame
+
 import moderngl
+import pygame
+
 import moderngl_window
 from moderngl_window import geometry
 

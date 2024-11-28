@@ -1,6 +1,7 @@
 from typing import Any, Optional
-from moderngl_window.meta.base import ResourceDescription
+
 from moderngl_window.geometry.attributes import AttributeNames
+from moderngl_window.meta.base import ResourceDescription
 
 
 class SceneDescription(ResourceDescription):

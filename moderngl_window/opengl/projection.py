@@ -1,7 +1,7 @@
-import numpy as np
-import glm
-
 from typing import Optional
+
+import glm
+import numpy as np
 
 
 class Projection3D:

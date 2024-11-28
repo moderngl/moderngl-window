@@ -8,16 +8,17 @@ import logging
 import os
 import sys
 import weakref
-
 from pathlib import Path
 from typing import Any, Optional
 
 import moderngl
-from moderngl_window.context.base import WindowConfig, BaseWindow
-from moderngl_window.timers.clock import Timer
+
 from moderngl_window.conf import settings
+from moderngl_window.context.base import BaseWindow, WindowConfig
+from moderngl_window.timers.clock import Timer
+from moderngl_window.utils.keymaps import (AZERTY, QWERTY, KeyMap,  # noqa
+                                           KeyMapFactory)
 from moderngl_window.utils.module_loading import import_string
-from moderngl_window.utils.keymaps import KeyMapFactory, KeyMap, QWERTY, AZERTY  # noqa
 
 __version__ = "3.0.0"
 

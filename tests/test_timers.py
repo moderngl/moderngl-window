@@ -1,5 +1,6 @@
 import time
 from unittest import TestCase
+
 from moderngl_window.timers import clock
 
 

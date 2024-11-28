@@ -1,12 +1,11 @@
 import math
-
-import numpy
+from typing import Any, Optional
 
 import moderngl as mlg
-from moderngl_window.opengl.vao import VAO
-from moderngl_window.geometry import AttributeNames
+import numpy
 
-from typing import Any, Optional
+from moderngl_window.geometry import AttributeNames
+from moderngl_window.opengl.vao import VAO
 
 
 def sphere(

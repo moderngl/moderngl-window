@@ -1,11 +1,12 @@
 from pathlib import Path
-import numpy as np
-import glm
 
+import glm
 import moderngl
-from moderngl_window.opengl.vao import VAO
-from moderngl_window import geometry
+import numpy as np
 from base import CameraWindow
+
+from moderngl_window import geometry
+from moderngl_window.opengl.vao import VAO
 
 
 class VolumetricTetrahedralMesh(CameraWindow):

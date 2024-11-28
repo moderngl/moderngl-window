@@ -15,13 +15,14 @@ The point of this example is to :
 * We can reduce a voxel volume dramatically by just inspecting neighbors
 """
 
-from pathlib import Path
 from array import array
+from pathlib import Path
 
-import moderngl
-from moderngl_window import geometry
-from base import CameraWindow
 import glm
+import moderngl
+from base import CameraWindow
+
+from moderngl_window import geometry
 
 
 class CubeVoxel(CameraWindow):

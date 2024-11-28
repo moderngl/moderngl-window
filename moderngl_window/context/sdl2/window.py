@@ -1,13 +1,13 @@
-from ctypes import c_int, c_char_p
+from ctypes import c_char_p, c_int
+from pathlib import Path
+from typing import Any
+
 import sdl2
 import sdl2.ext
 import sdl2.video
 
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.sdl2.keys import Keys
-
-from typing import Any
-from pathlib import Path
 
 
 class Window(BaseWindow):

@@ -2,6 +2,7 @@ from pathlib import Path
 
 import moderngl
 from headless import WindowConfigTestCase
+
 from moderngl_window import WindowConfig
 from moderngl_window.scene import Scene
 

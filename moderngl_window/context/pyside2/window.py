@@ -1,6 +1,7 @@
-from PySide2 import QtCore, QtOpenGL, QtWidgets, QtGui
-from typing import Any
 from pathlib import Path
+from typing import Any
+
+from PySide2 import QtCore, QtGui, QtOpenGL, QtWidgets
 
 from moderngl_window.context.base import BaseWindow
 from moderngl_window.context.pyside2.keys import Keys

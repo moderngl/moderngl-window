@@ -1,11 +1,12 @@
-from typing import Union, Optional
-from pathlib import Path
-
 import logging
+from pathlib import Path
+from typing import Optional, Union
+
 import moderngl
+
+from moderngl_window.exceptions import ImproperlyConfigured
 from moderngl_window.loaders.base import BaseLoader
 from moderngl_window.opengl import program
-from moderngl_window.exceptions import ImproperlyConfigured
 
 logger = logging.getLogger(__name__)
 

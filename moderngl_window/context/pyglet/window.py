@@ -1,4 +1,5 @@
 import platform
+
 import pyglet
 
 # On OS X we need to disable the shadow context
@@ -8,11 +9,11 @@ if platform.system() == "Darwin":
 
 pyglet.options["debug_gl"] = False
 
-from moderngl_window.context.pyglet.keys import Keys  # noqa: E402
-from moderngl_window.context.base import BaseWindow  # noqa: E402
-
-from typing import Any, Union
 from pathlib import Path
+from typing import Any, Union
+
+from moderngl_window.context.base import BaseWindow  # noqa: E402
+from moderngl_window.context.pyglet.keys import Keys  # noqa: E402
 
 
 class Window(BaseWindow):

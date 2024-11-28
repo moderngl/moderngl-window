@@ -1,17 +1,14 @@
-import numpy
-import glm
-
 from pathlib import Path
 from typing import Optional
 
+import glm
 import moderngl
-from moderngl_window.opengl.vao import VAO
+import numpy
+
 from moderngl_window import resources
-from moderngl_window.meta import (
-    DataDescription,
-    TextureDescription,
-    ProgramDescription,
-)
+from moderngl_window.meta import (DataDescription, ProgramDescription,
+                                  TextureDescription)
+from moderngl_window.opengl.vao import VAO
 
 from .base import BaseText, FontMeta
 

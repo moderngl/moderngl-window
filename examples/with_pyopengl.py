@@ -1,6 +1,8 @@
 import math
-import moderngl_window
+
 from OpenGL import GL
+
+import moderngl_window
 
 
 class PyOpenGL(moderngl_window.WindowConfig):
