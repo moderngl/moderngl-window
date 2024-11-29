@@ -5,4 +5,5 @@
 moderngl_window.screenshot
 ==========================
 
-.. autofunction:: create
+.. automodule:: moderngl_window.screenshot
+    :members:
