@@ -200,10 +200,6 @@ class Node:
         for child in self._children:
             bbox_min, bbox_max = child.calc_global_bbox(view_matrix, bbox_min, bbox_max)
 
-        assert (bbox_max is not None) and (
-            bbox_min is not None
-        ), "The bounding are not defined, please make sure your code is correct"
-
         return bbox_min, bbox_max
 
     def calc_model_mat(self, model_matrix: glm.mat4) -> None:

@@ -88,7 +88,6 @@ def activate_context(
     ContextRefs.WINDOW = window
     ContextRefs.CONTEXT = ctx
     if ctx is None:
-        assert window is not None, "The window parameter can not be None if ctx is None"
         ContextRefs.CONTEXT = window.ctx
 
 
@@ -123,9 +122,9 @@ def get_window_cls(window: str = "") -> type[BaseWindow]:
     logger.info("Attempting to load window class: %s", window)
     win = import_string(window)
 
-    assert issubclass(
-        win, BaseWindow
-    ), f"{win} is not derived from moderngl_window.context.base.BaseWindow"
+    # assert issubclass(
+    #     win, BaseWindow
+    # ), f"{win} is not derived from moderngl_window.context.base.BaseWindow"
     return win
 
 

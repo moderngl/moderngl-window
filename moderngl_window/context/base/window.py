@@ -1292,7 +1292,7 @@ class WindowConfig:
         Returns:
             moderngl.Texture: Texture instance
         """
-        texture = resources.textures.load(
+        return resources.textures.load(
             TextureDescription(
                 path=path,
                 flip=flip,
@@ -1304,10 +1304,6 @@ class WindowConfig:
                 **kwargs,
             )
         )
-        assert isinstance(
-            texture, moderngl.Texture
-        ), f"There was an error when loading the texture, {type(texture)} is not a moderngl.Texture"
-        return texture
 
     def load_texture_array(
         self,
@@ -1346,7 +1342,7 @@ class WindowConfig:
         if "kind" not in kwargs:
             kwargs["kind"] = "array"
 
-        texture = resources.textures.load(
+        return resources.textures.load(
             TextureDescription(
                 path=path,
                 layers=layers,
@@ -1357,10 +1353,6 @@ class WindowConfig:
                 **kwargs,
             )
         )
-        assert isinstance(
-            texture, moderngl.TextureArray
-        ), f"Error when loading the texture, {type(texture)} is not a moderngl.TextureArray"
-        return texture
 
     def load_texture_cube(
         self,
@@ -1403,7 +1395,7 @@ class WindowConfig:
         Returns:
             moderngl.TextureCube: Texture instance
         """
-        texture = resources.textures.load(
+        return resources.textures.load(
             TextureDescription(
                 pos_x=pos_x,
                 pos_y=pos_y,
@@ -1421,11 +1413,6 @@ class WindowConfig:
                 **kwargs,
             )
         )
-
-        assert isinstance(
-            texture, moderngl.TextureCube
-        ), f"Error when loading the texture. {type(texture)} is not a moderngl.TextureCube"
-        return texture
 
     def load_program(
         self,
@@ -1460,7 +1447,7 @@ class WindowConfig:
         Returns:
             moderngl.Program: The program instance
         """
-        prog = resources.programs.load(
+        return resources.programs.load(
             ProgramDescription(
                 path=path,
                 vertex_shader=vertex_shader,
@@ -1472,11 +1459,6 @@ class WindowConfig:
                 varyings=varyings,
             )
         )
-
-        assert isinstance(
-            prog, moderngl.Program
-        ), f"There was an error when loading the program, {type(prog)} is not a moderngl.Program"
-        return prog
 
     def load_compute_shader(
         self, path: str, defines: Optional[dict[str, Any]] = None, **kwargs: Any
@@ -1490,14 +1472,9 @@ class WindowConfig:
         Returns:
             moderngl.ComputeShader: The compute shader
         """
-        shader = resources.programs.load(
+        return resources.programs.load(
             ProgramDescription(compute_shader=path, defines=defines, **kwargs)
         )
-
-        assert isinstance(
-            shader, moderngl.ComputeShader
-        ), f"Error loading compute shader. {type(shader)} is not a moderngl.ComputeShader"
-        return shader
 
     def load_text(self, path: str, **kwargs: Any) -> str:
         """Load a text file.
@@ -1518,12 +1495,7 @@ class WindowConfig:
         if "kind" not in kwargs:
             kwargs["kind"] = "text"
 
-        text = resources.data.load(DataDescription(path=path, **kwargs))
-
-        assert isinstance(
-            text, str
-        ), f"There was an error when loading the text, {type(text)} is not a string"
-        return text
+        return resources.data.load(DataDescription(path=path, **kwargs))
 
     def load_json(self, path: str, **kwargs: Any) -> dict[str, Any]:
         """Load a json file
@@ -1544,12 +1516,7 @@ class WindowConfig:
         if "kind" not in kwargs:
             kwargs["kind"] = "json"
 
-        json = resources.data.load(DataDescription(path=path, **kwargs))
-
-        assert isinstance(
-            json, dict
-        ), f"There was an error when loading the Texture, {type(json)} is not a dictionnary"
-        return json
+        return resources.data.load(DataDescription(path=path, **kwargs))
 
     def load_binary(self, path: str, **kwargs: Any) -> bytes:
         """Load a file in binary mode.
@@ -1570,12 +1537,7 @@ class WindowConfig:
         if "kind" not in kwargs:
             kwargs["kind"] = "binary"
 
-        binary = resources.data.load(DataDescription(path=path, kind="binary"))
-
-        assert isinstance(
-            binary, bytes
-        ), f"There was an error when loading the binary, {type(binary)} is not a binary file"
-        return binary
+        return resources.data.load(DataDescription(path=path, kind="binary"))
 
     def load_scene(
         self,
@@ -1600,7 +1562,7 @@ class WindowConfig:
         Returns:
             Scene: The scene instance
         """
-        scene = resources.scenes.load(
+        return resources.scenes.load(
             SceneDescription(
                 path=path,
                 cache=cache,
@@ -1609,11 +1571,6 @@ class WindowConfig:
                 **kwargs,
             )
         )
-
-        assert isinstance(
-            scene, Scene
-        ), f"There was an error when loading the scene, {type(scene)} is not a Scene"
-        return scene
 
 
 def dummy_func(*args: Any, **kwargs: Any) -> None:

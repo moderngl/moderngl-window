@@ -115,8 +115,6 @@ class ModernGLRenderer(BaseOpenGLRenderer):
         if not self.ctx:
             raise ValueError("Missing moderngl context")
 
-        assert isinstance(self.ctx, moderngl.Context)
-
         super().__init__()
 
         if hasattr(self, "wnd") and self.wnd:

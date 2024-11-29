@@ -31,6 +31,10 @@ class CameraWindow(mglw.WindowConfig):
     def on_resize(self, width: int, height: int):
         self.camera.projection.update(aspect_ratio=self.wnd.aspect_ratio)
 
+    def on_mouse_scroll_event(self, x_offset: float, y_offset: float) -> None:
+        velocity = self.camera.velocity + y_offset
+        self.camera.velocity = max(velocity, 1.0)
+
 
 class OrbitCameraWindow(mglw.WindowConfig):
     """Base class with built in 3D orbit camera support

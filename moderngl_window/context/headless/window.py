@@ -30,7 +30,8 @@ class Window(BaseWindow):
     @property
     def fbo(self) -> moderngl.Framebuffer:
         """moderngl.Framebuffer: The default framebuffer"""
-        assert self._fbo is not None, "No default framebuffer defined"
+        if self._fbo is None:
+            raise RuntimeError("No framebuffer created yet")
         return self._fbo
 
     def init_mgl_context(self) -> None:
@@ -81,7 +82,8 @@ class Window(BaseWindow):
 
     def use(self) -> None:
         """Bind the window's framebuffer"""
-        assert self._fbo is not None, "No framebuffer defined, did you forget to call create_fbo()?"
+        if self._fbo is None:
+            raise RuntimeError("No framebuffer created yet")
         self._fbo.use()
 
     def clear(
