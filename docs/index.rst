@@ -33,7 +33,7 @@ creation and resource loading simple.
    reference/screenshot.rst
    reference/context/index
    reference/geometry
-   reference/loaders/index
+   reference/loaders
    reference/meta/index
    reference/finders/index
    reference/opengl/index
