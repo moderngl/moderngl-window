@@ -104,7 +104,7 @@ pytest
 
 ```bash
 pip install -e .[dev]
-sphinx-build -b html docs docs/_build
+sphinx-build -b html docs build/docs
 ```
 
 ## Contributing

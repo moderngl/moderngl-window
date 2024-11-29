@@ -12,17 +12,17 @@ Methods
 
 .. automethod:: WindowConfig.__init__
 .. automethod:: WindowConfig.run
-.. automethod:: WindowConfig.render
-.. automethod:: WindowConfig.resize
-.. automethod:: WindowConfig.close
 .. automethod:: WindowConfig.add_arguments
-.. automethod:: WindowConfig.key_event
-.. automethod:: WindowConfig.mouse_position_event
-.. automethod:: WindowConfig.mouse_press_event
-.. automethod:: WindowConfig.mouse_release_event
-.. automethod:: WindowConfig.mouse_drag_event
-.. automethod:: WindowConfig.mouse_scroll_event
-.. automethod:: WindowConfig.unicode_char_entered
+.. automethod:: WindowConfig.on_render
+.. automethod:: WindowConfig.on_resize
+.. automethod:: WindowConfig.on_close
+.. automethod:: WindowConfig.on_key_event
+.. automethod:: WindowConfig.on_mouse_position_event
+.. automethod:: WindowConfig.on_mouse_press_event
+.. automethod:: WindowConfig.on_mouse_release_event
+.. automethod:: WindowConfig.on_mouse_drag_event
+.. automethod:: WindowConfig.on_mouse_scroll_event
+.. automethod:: WindowConfig.on_unicode_char_entered
 .. automethod:: WindowConfig.load_texture_2d
 .. automethod:: WindowConfig.load_texture_array
 .. automethod:: WindowConfig.load_texture_cube
