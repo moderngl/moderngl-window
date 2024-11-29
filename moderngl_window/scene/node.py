@@ -40,7 +40,7 @@ class Node:
         # Local node matrix
         self._matrix = matrix
         # Global matrix
-        self._matrix_global: Optional[glm.mat4] = None
+        self._matrix_global = glm.mat4(1.0)
 
         self._children: list["Node"] = []
 
@@ -202,22 +202,22 @@ class Node:
 
         return bbox_min, bbox_max
 
-    def calc_model_mat(self, model_matrix: glm.mat4) -> None:
+    def calc_model_mat(self, parent_matrix: glm.mat4) -> None:
         """Calculate the model matrix related to all parents.
 
         Args:
-            model_matrix (numpy.ndarray): model matrix
+            parent_matrix: Matrix for parent node
         """
         if self._matrix is not None:
-            self._matrix_global = self._matrix * model_matrix
+            self._matrix_global = parent_matrix * self._matrix
 
             for child in self._children:
                 child.calc_model_mat(self._matrix_global)
         else:
-            self._matrix_global = model_matrix
+            self._matrix_global = parent_matrix
 
             for child in self._children:
-                child.calc_model_mat(model_matrix)
+                child.calc_model_mat(parent_matrix)
 
     def __repr__(self) -> str:
         return "<Node name={}>".format(self.name)

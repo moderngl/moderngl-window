@@ -266,11 +266,8 @@ class Loader(BaseLoader):
     def load_node(self, meta: GLTFNode, parent: Optional[Node] = None) -> Node:
         """Load a single node"""
         # Create the node
-        node = Node(name=meta.name)
+        node = Node(name=meta.name, matrix=meta.matrix)
         self.scene.nodes.append(node)
-
-        if meta.matrix is not None:
-            node.matrix = glm.mat4(meta.matrix)
 
         if meta.mesh is not None:
             # Since we split up meshes with multiple primitives, this can be a list
@@ -736,21 +733,21 @@ class GLTFNode:
     def __init__(self, data: dict[str, Any]) -> None:
         self.name = data.get("name")
         self.children = data.get("children")
-        self.matrix = data.get("matrix")
         self.mesh = data.get("mesh")
         self.camera = data.get("camera")
+
+        _matrix = data.get("matrix")
+        self.matrix = glm.mat4(*_matrix) if _matrix is not None else glm.mat4()
 
         self.translation = data.get("translation")
         self.rotation = data.get("rotation")
         self.scale = data.get("scale")
 
-        if self.matrix is not None:
-            self.matrix = glm.mat4(*self.matrix)
-        else:
-            self.matrix = glm.mat4()
-
-        if self.translation is not None:
-            self.matrix = self.matrix * glm.translate(glm.vec3(*self.translation))
+        trans_mat = (
+            glm.translate(glm.vec3(*self.translation))
+            if self.translation is not None
+            else glm.mat4()
+        )
 
         if self.rotation is not None:
             quat = glm.quat(
@@ -759,10 +756,13 @@ class GLTFNode:
                 z=self.rotation[2],
                 w=self.rotation[3],
             )
-            self.matrix = self.matrix * glm.mat4_cast(quat)
+            rot_mat = glm.mat4_cast(quat)
+        else:
+            rot_mat = glm.mat4()
 
-        if self.scale is not None:
-            self.matrix = self.matrix * glm.scale(self.scale)
+        scale_mat = glm.scale(self.scale) if self.scale is not None else glm.mat4()
+
+        self.matrix = self.matrix * trans_mat * rot_mat * scale_mat
 
     @property
     def has_children(self) -> bool:

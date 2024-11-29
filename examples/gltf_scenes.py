@@ -26,19 +26,19 @@ class CubeModel(CameraWindow):
 
         # --- glTF-Sample-Models ---
         # self.scene = self.load_scene("2CylinderEngine/glTF-Binary/2CylinderEngine.glb")
-        # self.scene = self.load_scene('CesiumMilkTruck/glTF-Embedded/CesiumMilkTruck.gltf')
+        # self.scene = self.load_scene("CesiumMilkTruck/glTF-Embedded/CesiumMilkTruck.gltf")
         # self.scene = self.load_scene("CesiumMilkTruck/glTF-Binary/CesiumMilkTruck.glb")
         # self.scene = self.load_scene("CesiumMilkTruck/glTF/CesiumMilkTruck.gltf")
-        # self.scene = self.load_scene("Sponza/glTF/Sponza.gltf")
+        self.scene = self.load_scene("Sponza/glTF/Sponza.gltf")
         # self.scene = self.load_scene("Lantern/glTF-Binary/Lantern.glb")
         # self.scene = self.load_scene("Buggy/glTF-Binary/Buggy.glb")
-        self.scene = self.load_scene("VC/glTF-Binary/VC.glb")
-        # self.scene = self.load_scene('DamagedHelmet/glTF-Binary/DamagedHelmet.glb')
+        # self.scene = self.load_scene("VC/glTF-Binary/VC.glb")
+        # self.scene = self.load_scene("DamagedHelmet/glTF-Binary/DamagedHelmet.glb")
         # self.scene = self.load_scene("BoxInterleaved/glTF/BoxInterleaved.gltf")
         # self.scene = self.load_scene("OrientationTest/glTF/OrientationTest.gltf")
         # self.scene = self.load_scene("AntiqueCamera/glTF/AntiqueCamera.gltf")
         # self.scene = self.load_scene("BoomBox/glTF/BoomBox.gltf")
-        # self.scene = self.load_scene('Box/glTF/Box.gltf')
+        # self.scene = self.load_scene("Box/glTF/Box.gltf")
         # self.scene = self.load_scene("BoxTextured/glTF/BoxTextured.gltf")
         # self.scene = self.load_scene(
         #     "BoxTexturedNonPowerOfTwo/glTF/BoxTexturedNonPowerOfTwo.gltf"
@@ -50,20 +50,14 @@ class CubeModel(CameraWindow):
         # self.scene = self.load_scene("Fox/glTF/Fox.gltf")
         # self.scene = self.load_scene("GearboxAssy/glTF/GearboxAssy.gltf")
         # self.scene = self.load_scene("ReciprocatingSaw/glTF/ReciprocatingSaw.gltf")
-        # self.scene = self.load_scene('RiggedFigure/glTF/RiggedFigure.gltf')
+        # self.scene = self.load_scene("RiggedFigure/glTF/RiggedFigure.gltf")
         # self.scene = self.load_scene("RiggedSimple/glTF/RiggedSimple.gltf")
         # self.scene = self.load_scene("SciFiHelmet/glTF/SciFiHelmet.gltf")
         # self.scene = self.load_scene("SimpleMeshes/glTF/SimpleMeshes.gltf")
-        # self.scene = self.load_scene(
-        #     "SimpleSparseAccessor/glTF/SimpleSparseAccessor.gltf"
-        # )
+        # self.scene = self.load_scene("SimpleSparseAccessor/glTF/SimpleSparseAccessor.gltf")
         # self.scene = self.load_scene("Suzanne/glTF/Suzanne.gltf")
-        # self.scene = self.load_scene(
-        #     "TextureCoordinateTest/glTF/TextureCoordinateTest.gltf"
-        # )
-        # self.scene = self.load_scene(
-        #     "TextureSettingsTest/glTF/TextureSettingsTest.gltf"
-        # )
+        # self.scene = self.load_scene("TextureCoordinateTest/glTF/TextureCoordinateTest.gltf")
+        # self.scene = self.load_scene("TextureSettingsTest/glTF/TextureSettingsTest.gltf")
         # self.scene = self.load_scene("VertexColorTest/glTF/VertexColorTest.gltf")
         # self.scene = self.load_scene("WaterBottle/glTF/WaterBottle.gltf")
 
@@ -96,12 +90,12 @@ class CubeModel(CameraWindow):
         )
 
         # Draw bounding boxes
-        self.scene.draw_bbox(
-            projection_matrix=self.camera.projection.matrix,
-            camera_matrix=camera_matrix,
-            children=True,
-            color=(0.75, 0.75, 0.75),
-        )
+        # self.scene.draw_bbox(
+        #     projection_matrix=self.camera.projection.matrix,
+        #     camera_matrix=camera_matrix,
+        #     children=True,
+        #     color=(0.75, 0.75, 0.75),
+        # )
 
         # self.scene.draw_wireframe(
         #     projection_matrix=self.camera.projection.matrix,
