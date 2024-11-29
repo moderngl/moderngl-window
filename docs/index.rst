@@ -35,7 +35,7 @@ creation and resource loading simple.
    reference/geometry
    reference/loaders
    reference/meta/index
-   reference/finders/index
+   reference/finders
    reference/opengl/index
    reference/resources/index
    reference/timers/index
