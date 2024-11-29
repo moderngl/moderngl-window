@@ -101,18 +101,28 @@ class BaseWindow:
     ) -> None:
         """Initialize a window instance.
 
-        Args:
-            title (str): The window title
-            gl_version (tuple): Major and minor version of the opengl context to create
-            size (tuple): Window size x, y
-            resizable (bool): Should the window be resizable?
-            visible (bool): Should the window be visible when created?
-            fullscreen (bool): Open window in fullscreen mode
-            vsync (bool): Enable/disable vsync
-            aspect_ratio (float): The desired fixed aspect ratio. Can be set to ``None`` to make
-                                  aspect ratio be based on the actual window size.
-            samples (int): Number of MSAA samples for the default framebuffer
-            cursor (bool): Enable/disable displaying the cursor inside the window
+        Keyword Args:
+            title:
+                The window title
+            gl_version:
+                Major and minor version of the opengl context to create
+            size:
+                indow size x, y
+            resizable:
+                Should the window be resizable?
+            visible:
+                Should the window be visible when created?
+            fullscreen:
+                Open window in fullscreen mode
+            vsync:
+                Enable/disable vsync
+            aspect_ratio:
+                The desired fixed aspect ratio. Can be set to ``None`` to make
+                aspect ratio be based on the actual window size.
+            samples:
+                Number of MSAA samples for the default framebuffer
+            cursor:
+                Enable/disable displaying the cursor inside the window
         """
         # Window parameters
         self._title = title
