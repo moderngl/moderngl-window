@@ -163,7 +163,7 @@ class Window(BaseWindow):
     def _set_icon(self, icon_path: Path) -> None:
         self._tk.iconphoto(False, tkinter.PhotoImage(file=icon_path))
 
-    def tk_key_press(self, event: tkinter.Event[Any]) -> None:
+    def tk_key_press(self, event: tkinter.Event) -> None:
         """Handle all queued key press events in tkinter dispatching events to standard methods"""
         self._key_event_func(event.keysym, self.keys.ACTION_PRESS, self._modifiers)
 
@@ -177,7 +177,7 @@ class Window(BaseWindow):
         if self._fs_key is not None and event.keysym == self._fs_key:
             self.fullscreen = not self.fullscreen
 
-    def tk_key_release(self, event: tkinter.Event[Any]) -> None:
+    def tk_key_release(self, event: tkinter.Event) -> None:
         """Handle all queued key release events in tkinter dispatching events to standard methods
 
         Args:
@@ -186,7 +186,7 @@ class Window(BaseWindow):
         self._handle_modifiers(event, False)
         self._key_event_func(event.keysym, self.keys.ACTION_RELEASE, self._modifiers)
 
-    def tk_mouse_motion(self, event: tkinter.Event[Any]) -> None:
+    def tk_mouse_motion(self, event: tkinter.Event) -> None:
         """Handle and translate tkinter mouse position events
 
         Args:
@@ -200,7 +200,7 @@ class Window(BaseWindow):
         else:
             self._mouse_position_event_func(x, y, dx, dy)
 
-    def tk_mouse_button_press(self, event: tkinter.Event[Any]) -> None:
+    def tk_mouse_button_press(self, event: tkinter.Event) -> None:
         """Handle tkinter mouse press events.
 
         Args:
@@ -214,7 +214,7 @@ class Window(BaseWindow):
         self._handle_mouse_button_state_change(button, True)
         self._mouse_press_event_func(event.x, event.y, button)
 
-    def tk_mouse_button_release(self, event: tkinter.Event[Any]) -> None:
+    def tk_mouse_button_release(self, event: tkinter.Event) -> None:
         """Handle tkinter mouse press events.
 
         Args:
@@ -228,7 +228,7 @@ class Window(BaseWindow):
         self._handle_mouse_button_state_change(button, False)
         self._mouse_release_event_func(event.x, event.y, button)
 
-    def tk_mouse_wheel(self, event: tkinter.Event[Any]) -> None:
+    def tk_mouse_wheel(self, event: tkinter.Event) -> None:
         """Handle mouse wheel event.
 
         Args:
@@ -237,7 +237,7 @@ class Window(BaseWindow):
         self._handle_modifiers(event, True)
         self._mouse_scroll_event_func(0, event.delta / 120.0)
 
-    def _handle_modifiers(self, event: tkinter.Event[Any], press: bool) -> None:
+    def _handle_modifiers(self, event: tkinter.Event, press: bool) -> None:
         """Update internal key modifiers
 
         Args:
@@ -251,7 +251,7 @@ class Window(BaseWindow):
         elif event.keysym in ["Alt_L", "Alt_R"]:
             self._modifiers.alt = press
 
-    def tk_resize(self, event: tkinter.Event[Any]) -> None:
+    def tk_resize(self, event: tkinter.Event) -> None:
         """tkinter specific window resize event.
         Forwards resize events to the configured resize function.
 
@@ -275,10 +275,10 @@ class Window(BaseWindow):
         self._close_func()
         self._close = True
 
-    def tk_map(self, event: tkinter.Event[Any]) -> None:
+    def tk_map(self, event: tkinter.Event) -> None:
         self._iconify_func(False)
 
-    def tk_unmap(self, event: tkinter.Event[Any]) -> None:
+    def tk_unmap(self, event: tkinter.Event) -> None:
         self._iconify_func(True)
 
     def destroy(self) -> None:
@@ -298,11 +298,11 @@ class ModernglTkWindow(OpenGLFrame):
         """pyopengltk's user code for initialization."""
         pass
 
-    def tkResize(self, event: tkinter.Event[Any]) -> None:
+    def tkResize(self, event: tkinter.Event) -> None:
         """Should never be called. Event overridden."""
         raise ValueError("tkResize should never be called. The event is overridden.")
 
-    def tkMap(self, event: tkinter.Event[Any]) -> None:
+    def tkMap(self, event: tkinter.Event) -> None:
         """Called when frame goes onto the screen"""
         # Only create context once
         # In a window like this we are not likely to lose the context

@@ -935,22 +935,22 @@ class WindowConfig:
                 super().__init__(**kwargs)
                 # Do other initialization here
 
-            def render(self, time: float, frametime: float):
+            def on_render(self, time: float, frametime: float):
                 # Render stuff here with ModernGL
 
-            def resize(self, width: int, height: int):
+            def on_resize(self, width: int, height: int):
                 print("Window was resized. buffer size is {} x {}".format(width, height))
 
-            def mouse_position_event(self, x, y, dx, dy):
+            def on_mouse_position_event(self, x, y, dx, dy):
                 print("Mouse position:", x, y)
 
-            def mouse_press_event(self, x, y, button):
+            def on_mouse_press_event(self, x, y, button):
                 print("Mouse button {} pressed at {}, {}".format(button, x, y))
 
-            def mouse_release_event(self, x: int, y: int, button: int):
+            def on_mouse_release_event(self, x: int, y: int, button: int):
                 print("Mouse button {} released at {}, {}".format(button, x, y))
 
-            def key_event(self, key, action, modifiers):
+            def on_key_event(self, key, action, modifiers):
                 print(key, action, modifiers)
     """
 
