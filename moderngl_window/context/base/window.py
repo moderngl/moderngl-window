@@ -688,14 +688,15 @@ class BaseWindow:
         Convert window coordinates to top-left coordinate space.
         The default origin is the top left corner of the window.
 
-        Args :
+        - If you are converting from bottom origin coordinates use x_flipped=True
+        - If you are converting from right origin coordinates use y_flipped=True
+
+        Args:
             x_flipped (bool) - if the input x origin is flipped
             y_flipped (bool) - if the input y origin is flipped
         Returns:
             tuple (x, y) of converted window coordinates
 
-        If you are converting from bottom origin coordinates use x_flipped=True
-        If you are converting from right origin coordinates use y_flipped=True
         """
         if not y_flipped and not x_flipped:
             return (x, y)

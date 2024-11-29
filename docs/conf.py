@@ -74,6 +74,8 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
+    "sphinx_rtd_theme",  # Read the Docs theme
+    # "sphinx_rtd_dark_mode",  # Dark mode for the RTD theme
 ]
 
 # Add any paths that contain templates here, relative to this directory.
