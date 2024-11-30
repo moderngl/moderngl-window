@@ -19,12 +19,7 @@ from moderngl_window.meta import (
     TextureDescription,
 )
 from moderngl_window.scene import Scene
-from moderngl_window.timers.base import BaseTimer
-
-try:
-    from pygame.event import Event
-except ModuleNotFoundError:
-    Event = Any
+from moderngl_window.timers import BaseTimer, Timer
 
 FuncAny = Callable[[Any], Any]
 
@@ -157,7 +152,7 @@ class BaseWindow:
         self._files_dropped_event_func: Callable[[int, int, list[Union[str, Path]]], None] = (
             dummy_func
         )
-        self._on_generic_event_func: Callable[[Event], None] = dummy_func
+        self._on_generic_event_func: Callable = dummy_func
 
         # Internal states
         self._ctx: moderngl.Context
@@ -897,7 +892,7 @@ class BaseWindow:
     @property
     def on_generic_event_func(
         self,
-    ) -> Union[Callable[[int, int, int, int], None], Callable[[Event], None]]:
+    ) -> Union[Callable[[int, int, int, int], None], None]:
         """
         callable: Get or set the on_generic_event callable
         used to funnel all non-processed events
@@ -906,7 +901,7 @@ class BaseWindow:
 
     @on_generic_event_func.setter
     @require_callable
-    def on_generic_event_func(self, func: Callable[[Event], None]) -> None:
+    def on_generic_event_func(self, func: Callable) -> None:
         self._on_generic_event_func = func
 
 
@@ -1114,7 +1109,7 @@ class WindowConfig:
 
         self.ctx = ctx
         self.wnd = wnd
-        self.timer = timer
+        self.timer: BaseTimer = timer or Timer()
 
         self.assign_event_callbacks()
 

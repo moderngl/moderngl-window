@@ -197,6 +197,25 @@ def run_window_config(
         timer: A custom timer instance
         args: Override sys.args
     """
+    config = create_window_config_instance(config_cls, timer=timer, args=args)
+    run_window_config_instance(config)
+
+
+def create_window_config_instance(
+    config_cls: type[WindowConfig], timer: Optional[Timer] = None, args: Any = None
+) -> WindowConfig:
+    """
+    Create and initialize a instance of a WindowConfig class.
+    Quite a bit of boilerplate is required to create a WindowConfig instance
+    and this function aims to simplify that.
+
+    Args:
+        window_config: The WindowConfig class to create an instance of
+    Keyword Args:
+        kwargs: Arguments to pass to the WindowConfig constructor
+    Returns:
+        An instance of the WindowConfig class
+    """
     setup_basic_logging(config_cls.log_level)
     parser = create_parser()
     config_cls.add_arguments(parser)
@@ -237,10 +256,22 @@ def run_window_config(
     window._config = weakref.ref(config)
 
     # Swap buffers once before staring the main loop.
-    # This can trigged additional resize events reporting
+    # This can trigger additional resize events reporting
     # a more accurate buffer size
     window.swap_buffers()
     window.set_default_viewport()
+    return config
+
+
+def run_window_config_instance(config: WindowConfig) -> None:
+    """
+    Run an WindowConfig instance entering a blocking main loop.
+
+    Args:
+        window_config: The WindowConfig instance
+    """
+    window = config.wnd
+    timer = config.timer
 
     timer.start()
 
@@ -254,6 +285,7 @@ def run_window_config(
         window.use()
 
         window.render(current_time, delta)
+
         if not window.is_closing:
             window.swap_buffers()
 
