@@ -13,3 +13,8 @@
     :members:
     :inherited-members:
     :show-inheritance:
+
+
+.. autoclass:: moderngl_window.context.base.BaseKeys
+    :members:
+    :undoc-members:
