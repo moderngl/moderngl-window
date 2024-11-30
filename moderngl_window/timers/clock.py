@@ -13,6 +13,8 @@ class Timer(BaseTimer):
         self._pause_time: Optional[float] = None
         self._last_frame = 0.0
         self._offset = 0.0
+        self._frames = 0  # similar to ticks
+        self._fps = 0.0
 
     @property
     def is_paused(self) -> bool:
@@ -47,6 +49,22 @@ class Timer(BaseTimer):
 
         self._offset += self.time - value
 
+    @property
+    def fps_average(self) -> float:
+        """The average fps since the timer was started"""
+        if self._frames == 0:
+            return 0.0
+        return self._frames / self.time
+
+    @property
+    def fps(self) -> float:
+        """Get or set the current frames per second.
+
+        Returns:
+            float: The current frames per second
+        """
+        return self._fps
+
     def next_frame(self) -> tuple[float, float]:
         """
         Get the time and frametime for the next frame.
@@ -55,8 +73,10 @@ class Timer(BaseTimer):
         Returns:
             tuple[float, float]: current time and frametime
         """
+        self._frames += 1
         current = self.time
         delta, self._last_frame = current - self._last_frame, current
+        self._fps = 1.0 / delta
         return current, delta
 
     def start(self) -> None:

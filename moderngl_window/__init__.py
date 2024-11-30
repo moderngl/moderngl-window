@@ -292,7 +292,7 @@ def run_window_config_instance(config: WindowConfig) -> None:
     _, duration = timer.stop()
     window.destroy()
     if duration > 0:
-        logger.info("Duration: {0:.2f}s @ {1:.2f} FPS".format(duration, window.frames / duration))
+        logger.info("Duration: {0:.2f}s @ {1:.2f} FPS".format(duration, timer.fps_average))
 
 
 def create_parser() -> argparse.ArgumentParser:
