@@ -38,7 +38,7 @@ creation and resource loading simple.
    reference/finders
    reference/opengl/index
    reference/resources
-   reference/timers/index
+   reference/timers
    reference/utils/index
    reference/scene
 
