@@ -18,6 +18,9 @@
 * Pyrr is now replaced with PyGLM
 * imgui is replaced with imgui-bundle
 * Numpy version is no longer restricted
+* Type annotation improvements
+* Python 3.13 support
+* Other modernizations in the project
 
 ## 2.4.6
 
