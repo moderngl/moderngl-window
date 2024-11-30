@@ -43,6 +43,12 @@ MOCK_MODULES = [
     "pywavefront",
     "pywavefront.obj",
     "trimesh",
+    "pygame",
+    "pygame._sdl2",
+    "pygame.display",
+    "pygame.event",
+    "pyopengltk",
+    "pyopengltk.OpenGLFrame",
 ]
 
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)

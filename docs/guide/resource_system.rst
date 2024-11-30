@@ -137,7 +137,7 @@ Textures
     textures.load(TextureDescription(path='wood.png', flip=True, mipmap=True, anisotropy=16.0))
 
     # Load a texture array containing 10 vertically stacked tile textures
-    textures.load(TextureDescription(path='tiles.png', layers=10, mipmap=True, anisotrpy=8.0))
+    textures.load(TextureDescription(path='tiles.png', layers=10, mipmap=True, anisotropy=8.0))
 
 Programs
 ~~~~~~~~

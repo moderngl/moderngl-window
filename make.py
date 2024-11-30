@@ -25,11 +25,18 @@ def lint():
     subprocess.run("ruff check", shell=True)
 
 
+def test():
+    """Run tests"""
+    print("Running tests...")
+    subprocess.run("pytest tests/", shell=True)
+
+
 def run(args: list[str]):
     commands = {
         "html": docs,
         "lint": lint,
         "clean": clean,
+        "test": test,
     }
     if len(args) == 0:
         print("Usage: make.py <command>")

@@ -101,18 +101,28 @@ class BaseWindow:
     ) -> None:
         """Initialize a window instance.
 
-        Args:
-            title (str): The window title
-            gl_version (tuple): Major and minor version of the opengl context to create
-            size (tuple): Window size x, y
-            resizable (bool): Should the window be resizable?
-            visible (bool): Should the window be visible when created?
-            fullscreen (bool): Open window in fullscreen mode
-            vsync (bool): Enable/disable vsync
-            aspect_ratio (float): The desired fixed aspect ratio. Can be set to ``None`` to make
-                                  aspect ratio be based on the actual window size.
-            samples (int): Number of MSAA samples for the default framebuffer
-            cursor (bool): Enable/disable displaying the cursor inside the window
+        Keyword Args:
+            title:
+                The window title
+            gl_version:
+                Major and minor version of the opengl context to create
+            size:
+                indow size x, y
+            resizable:
+                Should the window be resizable?
+            visible:
+                Should the window be visible when created?
+            fullscreen:
+                Open window in fullscreen mode
+            vsync:
+                Enable/disable vsync
+            aspect_ratio:
+                The desired fixed aspect ratio. Can be set to ``None`` to make
+                aspect ratio be based on the actual window size.
+            samples:
+                Number of MSAA samples for the default framebuffer
+            cursor:
+                Enable/disable displaying the cursor inside the window
         """
         # Window parameters
         self._title = title
@@ -925,22 +935,22 @@ class WindowConfig:
                 super().__init__(**kwargs)
                 # Do other initialization here
 
-            def render(self, time: float, frametime: float):
+            def on_render(self, time: float, frametime: float):
                 # Render stuff here with ModernGL
 
-            def resize(self, width: int, height: int):
+            def on_resize(self, width: int, height: int):
                 print("Window was resized. buffer size is {} x {}".format(width, height))
 
-            def mouse_position_event(self, x, y, dx, dy):
+            def on_mouse_position_event(self, x, y, dx, dy):
                 print("Mouse position:", x, y)
 
-            def mouse_press_event(self, x, y, button):
+            def on_mouse_press_event(self, x, y, button):
                 print("Mouse button {} pressed at {}, {}".format(button, x, y))
 
-            def mouse_release_event(self, x: int, y: int, button: int):
+            def on_mouse_release_event(self, x: int, y: int, button: int):
                 print("Mouse button {} released at {}, {}".format(button, x, y))
 
-            def key_event(self, key, action, modifiers):
+            def on_key_event(self, key, action, modifiers):
                 print(key, action, modifiers)
     """
 

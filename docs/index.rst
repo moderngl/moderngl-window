@@ -9,9 +9,9 @@ Welcome to moderngl-window's documentation!
 A cross platform helper library for ModernGL making window
 creation and resource loading simple.
 
-.. Note:: Please report documentation improvements/issues on github. 
-   
-   Writing documentation is difficult and we can't do it without you. 
+.. Note:: Please report documentation improvements/issues on github.
+
+   Writing documentation is difficult and we can't do it without you.
    Pull requests with documentation improvements are also greatly appreciated.
 
 .. toctree::
@@ -33,14 +33,14 @@ creation and resource loading simple.
    reference/screenshot.rst
    reference/context/index
    reference/geometry
-   reference/loaders/index
-   reference/meta/index
-   reference/finders/index
+   reference/loaders
+   reference/meta
+   reference/finders
    reference/opengl/index
-   reference/resources/index
-   reference/timers/index
+   reference/resources
+   reference/timers
    reference/utils/index
-   reference/scene/index
+   reference/scene
 
 
 Indices and tables

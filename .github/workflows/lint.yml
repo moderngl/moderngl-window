@@ -27,7 +27,7 @@ jobs:
       - name: Lint with ruff
         run: |
           ruff check
-      - name: Test with pytest
-        run: |
-          # TODO: Figure out if we can run headless tests
-          pytest tests/test_docs.py
+      # - name: Test with pytest
+      #   run: |
+      #     # TODO: Figure out if we can run headless tests
+      #     pytest tests/test_docs.py
