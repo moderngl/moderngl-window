@@ -40,7 +40,7 @@ creation and resource loading simple.
    reference/resources
    reference/timers/index
    reference/utils/index
-   reference/scene/index
+   reference/scene
 
 
 Indices and tables
