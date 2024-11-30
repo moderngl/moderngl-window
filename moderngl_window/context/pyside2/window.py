@@ -361,10 +361,12 @@ class Window(BaseWindow):
 
     def show_event(self, event: QtCore.QEvent) -> None:
         """The standard Qt show event"""
+        self._visible = True
         self._iconify_func(False)
 
     def hide_event(self, event: QtCore.QEvent) -> None:
         """The standard Qt hide event"""
+        self._visible = False
         self._iconify_func(True)
 
     def destroy(self) -> None:

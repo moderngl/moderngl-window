@@ -276,9 +276,11 @@ class Window(BaseWindow):
         self._close = True
 
     def tk_map(self, event: tkinter.Event) -> None:
+        self._visible = True
         self._iconify_func(False)
 
     def tk_unmap(self, event: tkinter.Event) -> None:
+        self._visible = False
         self._iconify_func(True)
 
     def destroy(self) -> None:

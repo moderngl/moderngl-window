@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.0.1
+
+* Timers now have `fps` and `fps_average` properties for obtaining the current and average frame rate
+* Added `WindowConfig.hidden_window_framerate_limit` limiting framerate when the window is hidden.
+  The default value is currently 30 fps. This can be disabled by setting the value to 0.
+  This change combats framerate spikes in the thousands when the window is minimized eating up
+  battery life and resources.
+* `run_window_config` was split into `create_window_config_instance` and `run_window_config_instance`
+  making customization easier. `run_window_config` will still behave as before.
+* Minimized / iconified windows are now framerate capped
+* Some doc improvements
+
 ## 3.0.0
 
 * All callback functions now has an `on_` prefix meaning existing code will need updating. The old names was somewhat unambiguous and was a source of confusion. It also makes it easier to separate the callback functions from other methods.

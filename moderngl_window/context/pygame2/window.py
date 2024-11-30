@@ -325,8 +325,10 @@ class Window(BaseWindow):
                 # Window iconify state
                 if getattr(event, "state", None) == 2:
                     if event.gain:
+                        self._visible = True
                         self._iconify_func(False)
                     else:
+                        self._visible = False
                         self._iconify_func(True)
 
             # This is also a problem on linux, but is too disruptive during resize events

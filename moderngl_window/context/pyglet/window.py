@@ -357,10 +357,12 @@ class Window(BaseWindow):
 
     def on_show(self) -> None:
         """Called when window first appear or restored from hidden state"""
+        self._visible = True
         self._iconify_func(False)
 
     def on_hide(self) -> None:
         """Called when window is minimized"""
+        self._visible = False
         self._iconify_func(True)
 
     def on_file_drop(self, x: int, y: int, paths: list[Union[str, Path]]) -> None:

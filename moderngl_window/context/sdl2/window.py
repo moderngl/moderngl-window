@@ -311,8 +311,10 @@ class Window(BaseWindow):
                 ]:
                     self.resize(event.window.data1, event.window.data2)
                 elif event.window.event == sdl2.SDL_WINDOWEVENT_MINIMIZED:
+                    self._visible = False
                     self._iconify_func(True)
                 elif event.window.event == sdl2.SDL_WINDOWEVENT_RESTORED:
+                    self._visible = True
                     self._iconify_func(False)
 
     def close(self) -> None:

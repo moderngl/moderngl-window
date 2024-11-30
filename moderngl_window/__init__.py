@@ -2,11 +2,11 @@
 General helper functions aiding in the boostrapping of this library.
 """
 
-# pylint: disable = redefined-outer-name, too-few-public-methods
 import argparse
 import logging
 import os
 import sys
+import time
 import weakref
 from pathlib import Path
 from typing import Any, Optional
@@ -19,7 +19,7 @@ from moderngl_window.timers.clock import Timer
 from moderngl_window.utils.keymaps import AZERTY, QWERTY, KeyMap, KeyMapFactory  # noqa
 from moderngl_window.utils.module_loading import import_string
 
-__version__ = "3.0.0"
+__version__ = "3.0.1"
 
 IGNORE_DIRS = [
     "__pycache__",
@@ -277,6 +277,13 @@ def run_window_config_instance(config: WindowConfig) -> None:
 
     while not window.is_closing:
         current_time, delta = timer.next_frame()
+
+        # Framerate  limit for hidden windows
+        if not window.visible and config.hidden_window_framerate_limit > 0:
+            expected_delta_time = 1.0 / config.hidden_window_framerate_limit
+            sleep_time = expected_delta_time - delta
+            if sleep_time > 0:
+                time.sleep(sleep_time)
 
         if config.clear_color is not None:
             window.clear(*config.clear_color)

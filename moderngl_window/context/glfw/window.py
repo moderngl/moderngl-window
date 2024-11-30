@@ -397,6 +397,7 @@ class Window(BaseWindow):
             window: The window
             iconified (int): 1 = minimized, 0 = restored.
         """
+        self._visible = iconified == 0
         self._iconify_func(True if iconified == 1 else False)
 
     def glfw_window_close(self, window: Any) -> None:

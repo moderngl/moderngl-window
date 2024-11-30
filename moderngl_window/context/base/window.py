@@ -1070,6 +1070,17 @@ class WindowConfig:
         # Default value
         resource_dir = None
     """
+    hidden_window_framerate_limit = 30
+    """
+    The framerate limit for hidden windows. This is useful for windows that
+    should not render at full speed when hidden. On some platforms the
+    render loop can spike to thousands of frames per second when hidden
+    eating up battery life on laptops.
+
+    A value less than 0 will disable the framerate limit. Otherwise the
+    the value is a suggested limit in frames per second.
+    """
+
     log_level = logging.INFO
     """
     Sets the log level for this library using the standard `logging` module.
