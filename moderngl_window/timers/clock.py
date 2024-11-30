@@ -58,11 +58,7 @@ class Timer(BaseTimer):
 
     @property
     def fps(self) -> float:
-        """Get or set the current frames per second.
-
-        Returns:
-            float: The current frames per second
-        """
+        """Get the current frames per second."""
         return self._fps
 
     def next_frame(self) -> tuple[float, float]:
