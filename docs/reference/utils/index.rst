@@ -5,3 +5,5 @@ moderngl_window.utils
    :maxdepth: 1
 
    scheduler
+   keymaps
+   module_loading
