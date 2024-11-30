@@ -7,9 +7,9 @@
   The default value is currently 30 fps. This can be disabled by setting the value to 0.
   This change combats framerate spikes in the thousands when the window is minimized eating up
   battery life and resources.
+* `WindowConfig.init_mgl_context` can now be implemented to completely override context creation.
 * `run_window_config` was split into `create_window_config_instance` and `run_window_config_instance`
   making customization easier. `run_window_config` will still behave as before.
-* Minimized / iconified windows are now framerate capped
 * Some doc improvements
 
 ## 3.0.0

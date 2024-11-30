@@ -92,6 +92,7 @@ class BaseWindow:
         samples: int = 0,
         cursor: bool = True,
         backend: Optional[str] = None,
+        context_creation_func: Optional[Callable] = None,
         **kwargs: Any,
     ) -> None:
         """Initialize a window instance.
@@ -118,6 +119,11 @@ class BaseWindow:
                 Number of MSAA samples for the default framebuffer
             cursor:
                 Enable/disable displaying the cursor inside the window
+            backend:
+                The context backend to use. For example ``egl`` for EGL
+            context_creation_func:
+                A callable returning a ModernGL context. This can be used to
+                create a custom context.
         """
         # Window parameters
         self._title = title
@@ -133,6 +139,7 @@ class BaseWindow:
         self._cursor = cursor
         self._backend = backend
         self._headless = False
+        self._context_creation_func = context_creation_func
 
         self._exit_key = self.keys.ESCAPE
         self._fs_key = self.keys.F11
@@ -183,7 +190,10 @@ class BaseWindow:
         Keyword Args:
             ctx: An optional custom ModernGL context
         """
-        self._ctx = moderngl.create_context(require=self.gl_version_code)
+        if self._context_creation_func:
+            self._ctx = self._context_creation_func()
+        if self._ctx is None:
+            self._ctx = moderngl.create_context(require=self.gl_version_code)
         err = self._ctx.error
         if err != "GL_NO_ERROR":
             logger.info("Consumed the following error during context creation: %s", err)
@@ -420,11 +430,8 @@ class BaseWindow:
 
     @property
     def config(self) -> Optional["WindowConfig"]:
-        """Get the current WindowConfig instance
+        """Get or det the current WindowConfig instance
 
-        DEPRECATED PROPERTY. This is not handled in `WindowConfig.__init__`
-
-        This property can also be set.
         Assigning a WindowConfig instance will automatically
         set up the necessary event callback methods::
 
@@ -1164,6 +1171,16 @@ class WindowConfig:
             parser (ArgumentParser): The default argument parser.
         """
         pass
+
+    @classmethod
+    def init_mgl_context(cls) -> Optional[moderngl.Context]:
+        """
+        Can be implemented to control the creation of the moderngl context.
+
+        The window calls this method first during context creation.
+        If not context is returned the window will create its own.
+        """
+        return None
 
     def on_render(self, time: float, frame_time: float) -> None:
         """Renders the assigned effect

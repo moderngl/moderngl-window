@@ -427,7 +427,9 @@ class ReloadableProgram:
     def ctx(self) -> moderngl.Context:
         return self.program.ctx
 
-    def __getitem__(self, key: Any) -> Union[
+    def __getitem__(
+        self, key: Any
+    ) -> Union[
         moderngl.Uniform,
         moderngl.UniformBlock,
         moderngl.Subroutine,

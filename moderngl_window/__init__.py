@@ -244,6 +244,7 @@ def create_window_config_instance(
         samples=values.samples if values.samples is not None else config_cls.samples,
         cursor=show_cursor if show_cursor is not None else True,
         backend=values.backend,
+        context_creation_func=config_cls.init_mgl_context,
     )
     window.print_context_info()
     activate_context(window=window)
