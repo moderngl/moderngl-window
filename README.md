@@ -96,15 +96,15 @@ $ pip install -e .[dev]
 
 With dev requirements installed:
 
-```
-pytest
+```bash
+python make.py test
 ```
 
 ## Building Docs
 
 ```bash
 pip install -e .[dev]
-sphinx-build -b html docs build/docs
+python make.py html
 ```
 
 ## Contributing

@@ -88,4 +88,7 @@ Assuming dev requirements are installed.
 
 Run tests with ``pytest``::
 
-    pytest tests
+    python make.py test
+
+The ``make.py`` script contains various tooling. Run ``python make.py`` to
+see all available commands.
