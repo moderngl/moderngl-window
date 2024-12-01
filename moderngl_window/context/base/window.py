@@ -92,7 +92,7 @@ class BaseWindow:
         samples: int = 0,
         cursor: bool = True,
         backend: Optional[str] = None,
-        context_creation_func: Optional[Callable] = None,
+        context_creation_func: Optional[Callable[[], Optional[moderngl.Context]]] = None,
         **kwargs: Any,
     ) -> None:
         """Initialize a window instance.
@@ -190,10 +190,13 @@ class BaseWindow:
         Keyword Args:
             ctx: An optional custom ModernGL context
         """
+        ctx: Optional[moderngl.Context] = None
         if self._context_creation_func:
-            self._ctx = self._context_creation_func()
-        if self._ctx is None:
-            self._ctx = moderngl.create_context(require=self.gl_version_code)
+            ctx = self._context_creation_func()
+        if ctx is None:
+            ctx = moderngl.create_context(require=self.gl_version_code)
+        self._ctx = ctx
+
         err = self._ctx.error
         if err != "GL_NO_ERROR":
             logger.info("Consumed the following error during context creation: %s", err)

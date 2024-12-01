@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.2
+
+* Fixed an issue causing `BaseWindow.init_mgl_context` to fail if no context
+  creation callback was provided.
+
 ## 3.0.1
 
 * Timers now have `fps` and `fps_average` properties for obtaining the current and average frame rate
