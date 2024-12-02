@@ -15,6 +15,7 @@ from moderngl_window import geometry
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
+
 class VideoDecoder:
     """Handles video decoding using PyAV."""
 
@@ -235,8 +236,6 @@ class VideoPlayerWindow(moderngl_window.WindowConfig):
             # Get FPS values with safety checks
             fps_avg = self.timer.fps_average if self.timer.time > 0 else 0.0
 
-            
-
             logger.debug(
                 "Movie Target FPS: %.1f | Window FPS: %.1f | Frame: %d/%d | Time: %.2f/%.2f | Frame Diff: %d | Paused: %s",
                 self.player.fps,
@@ -246,7 +245,7 @@ class VideoPlayerWindow(moderngl_window.WindowConfig):
                 self.timer.time,
                 self.player.duration,
                 self.player.target_frame - self.player.current_frame,
-                self.player.is_paused
+                self.player.is_paused,
             )
             self._last_print_time = time
 
