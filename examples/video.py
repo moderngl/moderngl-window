@@ -5,12 +5,10 @@ Requires: pip install av
 
 import logging
 from pathlib import Path
-import time
-from typing import Union
+from typing import Union, Literal
 
 import av
 import moderngl
-import pyglet
 import moderngl_window
 from moderngl_window import geometry
 
@@ -78,6 +76,16 @@ class VideoDecoder:
         """Total number of frames in video."""
         return int(self.duration * self.framerate)
 
+    def __enter__(self):
+        return self
+        
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.container.close()
+        
+    def close(self):
+        """Explicitly close the video container."""
+        self.container.close()
+
 
 class VideoPlayer:
     """Handles video playback and rendering using ModernGL."""
@@ -118,10 +126,10 @@ class VideoPlayer:
     def texture(self) -> moderngl.Texture:
         return self._texture
 
-    def update(self, time: float) -> None:
+    def update(self, time: float) -> bool:
         """Update video playback state."""
         if self._paused:
-            return
+            return False
 
         self._target_frame = int(time * self.fps)
         frame_diff = self._target_frame - self._current_frame
@@ -129,13 +137,13 @@ class VideoPlayer:
         # Check if we've reached the end
         if self._current_frame >= self.frames:
             self.seek(0)
-            return True  # Signal that we've reached the end
+            return True
 
         # Handle falling behind
         if frame_diff > self.FRAME_DIFF_THRESHOLD:
             self._behind_count += 1
             skip_to = min(self._target_frame - self.SKIP_OFFSET, self.frames - 1)
-
+            
             if self._behind_count > self.MAX_BEHIND_COUNT:
                 self._decoder.seek(skip_to / self.fps)
                 self._frames = self._decoder.get_frames()
@@ -160,7 +168,7 @@ class VideoPlayer:
                     self.seek(0)
                     return True
 
-        return False  # Video hasn't ended
+        return False
 
     def seek(self, time: float) -> None:
         """Seek to specified time position."""
@@ -195,21 +203,16 @@ class VideoPlayerWindow(moderngl_window.WindowConfig):
     title = "Video Player"
     resource_dir = Path(__file__).parent.resolve() / "resources"
     vsync = True
-    seek_time = 5.0  # Seconds to seek when using arrow keys
-    frame_history_size = 60  # Number of frames to keep for FPS calculation
-    video_file = "Lightning - 33049.mp4"  # Default video file name
+    seek_time = 1.0  # Seconds to seek when using arrow keys
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
         # Initialize video player
-        video_path = self.resource_dir / "videos" / self.video_file
+        video_path = self.resource_dir / "videos" /  "Lightning - 33049.mp4"
+        # video_path = r"C:\Users\Leo Mintech\Downloads\Countdown_Overlay_Timer_10_Minutes.mp4"
 
-        try:
-            self.player = VideoPlayer(self.ctx, video_path)
-        except FileNotFoundError as e:
-            logger.error(f"Failed to load video: {e}")
-            raise SystemExit(1)
+        self.player = VideoPlayer(self.ctx, video_path)
 
         # Setup rendering
         self.quad = geometry.quad_fs()
@@ -244,6 +247,17 @@ class VideoPlayerWindow(moderngl_window.WindowConfig):
             )
             self._last_print_time = time
 
+    def _handle_seek(self, direction: Literal["forward", "backward"]) -> None:
+        """Handle seeking in video. direction: 'forward' or 'backward'"""
+        seek_amount = self.seek_time if direction == "forward" else -self.seek_time
+        new_time = max(0, min(self.player.duration, self.timer.time + seek_amount))
+        
+        if self.timer.is_paused:
+            self.player.seek(new_time)
+        else:
+            self.timer.time = new_time
+            self.player.seek(new_time)
+
     def on_key_event(self, key, action, modifiers) -> None:
         """Handle keyboard input."""
         super().on_key_event(key, action, modifiers)
@@ -251,23 +265,9 @@ class VideoPlayerWindow(moderngl_window.WindowConfig):
 
         if action == keys.ACTION_PRESS:
             if key == keys.LEFT:
-                new_time = max(0, self.timer.time - self.seek_time)
-                if self.timer.is_paused:
-                    # When paused, just seek the video without updating timer
-                    self.player.seek(new_time)
-                else:
-                    self.timer.time = new_time
-                    self.player.seek(new_time)
-
+                self._handle_seek("backward")
             elif key == keys.RIGHT:
-                new_time = min(self.player.duration, self.timer.time + self.seek_time)
-                if self.timer.is_paused:
-                    # When paused, just seek the video without updating timer
-                    self.player.seek(new_time)
-                else:
-                    self.timer.time = new_time
-                    self.player.seek(new_time)
-
+                self._handle_seek("forward")
             elif key == keys.SPACE:
                 self.timer.toggle_pause()
                 self.player.toggle_pause()
