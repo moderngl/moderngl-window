@@ -13,7 +13,7 @@ import moderngl_window
 from moderngl_window import geometry
 
 logger = logging.getLogger(__name__)
-
+logging.basicConfig(level=logging.DEBUG)
 
 class VideoDecoder:
     """Handles video decoding using PyAV."""
@@ -204,6 +204,7 @@ class VideoPlayerWindow(moderngl_window.WindowConfig):
     resource_dir = Path(__file__).parent.resolve() / "resources"
     vsync = True
     seek_time = 1.0  # Seconds to seek when using arrow keys
+    log_level = logging.DEBUG
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -234,15 +235,18 @@ class VideoPlayerWindow(moderngl_window.WindowConfig):
             # Get FPS values with safety checks
             fps_avg = self.timer.fps_average if self.timer.time > 0 else 0.0
 
-            print(
-                f"\rMovie Target FPS: {self.player.fps:.1f} | "
-                f"Window FPS: {fps_avg:.1f} | "
-                f"Frame: {self.player.current_frame}/{self.player.frames} | "
-                f"Time: {self.timer.time:.2f}/{self.player.duration:.2f} | "
-                f"Frame Diff: {self.player.target_frame - self.player.current_frame} | "
-                f"Paused: {self.player.is_paused}",
-                end="",
-                flush=True,
+            
+
+            logger.debug(
+                "Movie Target FPS: %.1f | Window FPS: %.1f | Frame: %d/%d | Time: %.2f/%.2f | Frame Diff: %d | Paused: %s",
+                self.player.fps,
+                fps_avg,
+                self.player.current_frame,
+                self.player.frames,
+                self.timer.time,
+                self.player.duration,
+                self.player.target_frame - self.player.current_frame,
+                self.player.is_paused
             )
             self._last_print_time = time
 
