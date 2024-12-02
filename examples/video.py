@@ -210,7 +210,6 @@ class VideoPlayerWindow(moderngl_window.WindowConfig):
 
         # Initialize video player
         video_path = self.resource_dir / "videos" / "Lightning - 33049.mp4"
-        # video_path = r"C:\Users\Leo Mintech\Downloads\Countdown_Overlay_Timer_10_Minutes.mp4"
 
         self.player = VideoPlayer(self.ctx, video_path)
 
