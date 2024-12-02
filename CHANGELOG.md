@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.0.3
+
+* Fixed a potential division by zero issue in timers
+* Fixed the video player example
+
+Thanks to @Leterax for the contributions to this release.
+
 ## 3.0.2
 
 * Fixed an issue causing `BaseWindow.init_mgl_context` to fail if no context
