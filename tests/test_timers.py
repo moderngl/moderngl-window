@@ -30,3 +30,15 @@ class TimerTestCase(TestCase):
         t, real_t = timer.stop()
         self.assertTrue(t == 0)
         self.assertTrue(real_t == 0)
+
+    def test_zero_delta(self) -> None:
+        """Test that timer handles zero delta gracefully"""
+        timer = clock.Timer()
+        timer.start()
+        # Force a zero delta by setting the same time twice
+        timer.time = 1.0
+        timer.next_frame()
+        timer.time = 1.0
+        timer.next_frame()
+        # FPS should be 0 when delta is 0 to avoid division by zero
+        self.assertEqual(timer.fps, 0)

@@ -72,7 +72,13 @@ class Timer(BaseTimer):
         self._frames += 1
         current = self.time
         delta, self._last_frame = current - self._last_frame, current
-        self._fps = 1.0 / delta
+
+        # Avoid division by zero on first frame
+        if delta > 0:
+            self._fps = 1.0 / delta
+        else:
+            self._fps = 0.0
+
         return current, delta
 
     def start(self) -> None:
