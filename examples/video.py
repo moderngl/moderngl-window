@@ -78,10 +78,10 @@ class VideoDecoder:
 
     def __enter__(self):
         return self
-        
+
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.container.close()
-        
+
     def close(self):
         """Explicitly close the video container."""
         self.container.close()
@@ -143,7 +143,7 @@ class VideoPlayer:
         if frame_diff > self.FRAME_DIFF_THRESHOLD:
             self._behind_count += 1
             skip_to = min(self._target_frame - self.SKIP_OFFSET, self.frames - 1)
-            
+
             if self._behind_count > self.MAX_BEHIND_COUNT:
                 self._decoder.seek(skip_to / self.fps)
                 self._frames = self._decoder.get_frames()
@@ -209,7 +209,7 @@ class VideoPlayerWindow(moderngl_window.WindowConfig):
         super().__init__(**kwargs)
 
         # Initialize video player
-        video_path = self.resource_dir / "videos" /  "Lightning - 33049.mp4"
+        video_path = self.resource_dir / "videos" / "Lightning - 33049.mp4"
         # video_path = r"C:\Users\Leo Mintech\Downloads\Countdown_Overlay_Timer_10_Minutes.mp4"
 
         self.player = VideoPlayer(self.ctx, video_path)
@@ -251,7 +251,7 @@ class VideoPlayerWindow(moderngl_window.WindowConfig):
         """Handle seeking in video. direction: 'forward' or 'backward'"""
         seek_amount = self.seek_time if direction == "forward" else -self.seek_time
         new_time = max(0, min(self.player.duration, self.timer.time + seek_amount))
-        
+
         if self.timer.is_paused:
             self.player.seek(new_time)
         else:
