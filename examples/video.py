@@ -237,7 +237,8 @@ class VideoPlayerWindow(moderngl_window.WindowConfig):
             fps_avg = self.timer.fps_average if self.timer.time > 0 else 0.0
 
             logger.debug(
-                "Movie Target FPS: %.1f | Window FPS: %.1f | Frame: %d/%d | Time: %.2f/%.2f | Frame Diff: %d | Paused: %s",
+                "Movie Target FPS: %.1f | Window FPS: %.1f | Frame: %d/%d | \
+                Time: %.2f/%.2f | Frame Diff: %d | Paused: %s",
                 self.player.fps,
                 fps_avg,
                 self.player.current_frame,
