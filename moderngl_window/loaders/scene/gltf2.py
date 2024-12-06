@@ -78,7 +78,10 @@ class Loader(BaseLoader):
     ]
     #: Supported GLTF extensions
     #: https://github.com/KhronosGroup/glTF/tree/master/extensions
-    supported_extensions: list[str] = []
+    supported_extensions: list[str] = [
+        "KHR_draco_mesh_compression",
+        "KHR_materials_unlit",
+    ]
 
     meta: SceneDescription
 
@@ -361,6 +364,12 @@ class GLTFMeta:
         # Link accessors to mesh primitives
         for mesh in self.meshes:
             for primitive in mesh.primitives:
+                # Link the bufferview for draco compressed buffers
+                if primitive.extensions.get("KHR_draco_mesh_compression"):
+                    ext = primitive.extensions["KHR_draco_mesh_compression"]
+                    buffer_view_id = ext["bufferView"]
+                    ext["bufferView"] = self.buffer_views[buffer_view_id]
+
                 if primitive.indices is not None:
                     primitive.accessor = self.accessors[primitive.indices]
                 for name, value in primitive.attributes.items():
@@ -392,12 +401,12 @@ class GLTFMeta:
         if extReq is not None:
             for ext in extReq:
                 if ext not in supported:
-                    raise ValueError(f"Extension {ext} not supported")
+                    raise ValueError(f"Extension '{ext}' not supported")
         extUse = self.data.get("extensionsUsed")
         if extUse is not None:
             for ext in extUse:
                 if ext not in supported:
-                    raise ValueError("Extension {ext} not supported")
+                    raise ValueError(f"Extension '{ext}' not supported")
 
     def buffers_exist(self) -> None:
         """Checks if the bin files referenced exist"""
@@ -408,7 +417,7 @@ class GLTFMeta:
             path = self.path.parent / buff.uri
             if not path.exists():
                 raise FileNotFoundError(
-                    "Buffer {} referenced in {} not found".format(path, self.path)
+                    f"Buffer {path} referenced in {self.path} not found"
                 )
 
     def images_exist(self) -> None:
@@ -427,15 +436,13 @@ class GLTFAsset:
 
 class GLTFMesh:
     class Primitives:
-        mode: int | None
-        accessor: GLTFAccessor | None
-
         def __init__(self, data: dict[str, Any]):
             self.attributes: dict[str, Any] = data.get("attributes")
-            self.indices = data.get("indices")
-            self.mode = data.get("mode")
+            self.indices: int = data.get("indices")
+            self.mode: int = data.get("mode")
             self.material = data.get("material")
-            self.accessor = None
+            self.extensions = data.get("extensions", {})
+            self.accessor: GLTFAccessor
 
     def __init__(self, data: dict[str, Any], meta: SceneDescription):
         self.meta = meta
@@ -453,57 +460,125 @@ class GLTFMesh:
             "COLOR_0": self.meta.attr_names.COLOR_0,
         }
 
-        meshes = []
+        ctx = moderngl_window.ctx()
+        meshes: list[Mesh] = []
 
+        # FIXME: Split this up in methods
         # Read all primitives as separate meshes for now
         # According to the spec they can have different materials and vertex format
         for primitive in self.primitives:
-            vao = VAO(self.name, mode=primitive.mode or moderngl.TRIANGLES)
+            # Handle draco compressed meshes
+            if primitive.extensions.get("KHR_draco_mesh_compression"):
+                buffer_view = primitive.extensions["KHR_draco_mesh_compression"]["bufferView"]
+                data = buffer_view.read_raw()
+                try:
+                    import DracoPy
+                except ImportError:
+                    raise ImportError("DracoPy is required to load draco compressed meshes")
+                mesh = DracoPy.decode(data)
 
-            # Index buffer
-            component_type, index_vbo = self.load_indices(primitive)
-            if index_vbo is not None:
-                vao.index_buffer(
-                    moderngl_window.ctx().buffer(index_vbo.tobytes()),
-                    index_element_size=component_type.size,
-                )
+                attributes = {
+                    'POSITION': {
+                        'name': name_map["POSITION"],
+                        'components': 3,
+                        'type': 5126,
+                    }
+                }
 
-            attributes = {}
-            vbos = self.prepare_attrib_mapping(primitive)
+                vao = VAO(self.name, mode=primitive.mode or moderngl.TRIANGLES)
+                if mesh.faces is not None and mesh.faces.any():
+                    vao.index_buffer(ctx.buffer(mesh.faces.astype("i4")))
 
-            for vbo_info in vbos:
-                dtype, buffer = vbo_info.create()
-                vao.buffer(
-                    buffer,
-                    " ".join(
-                        [
-                            "{}{}".format(attr[1], DTYPE_BUFFER_TYPE[dtype])
-                            for attr in vbo_info.attributes
-                        ]
-                    ),
-                    [name_map[attr[0]] for attr in vbo_info.attributes],
-                )
+                vao.buffer(mesh.points.astype("f4"), "3f", name_map["POSITION"])
 
-                for attr in vbo_info.attributes:
-                    attributes[attr[0]] = {
-                        "name": name_map[attr[0]],
-                        "components": attr[1],
-                        "type": vbo_info.component_type.value,
+                if mesh.tex_coord is not None and mesh.tex_coord.any():
+                    vao.buffer(
+                        ctx.buffer(mesh.tex_coord.astype("f4")),
+                        "2f",
+                        name_map["TEXCOORD_0"],
+                    )
+                    attributes["TEXCOORD_0"] = {
+                        'name': name_map["TEXCOORD_0"],
+                        'components': 2,
+                        'type': 5126,
+                    }
+                if mesh.normals is not None and mesh.normals.any():
+                    vao.buffer(ctx.buffer(mesh.normals.astype("f4")), "3f", name_map["NORMAL"])
+                    attributes["NORMAL"] = {
+                        'name': name_map["NORMAL"],
+                        'components': 3,
+                        'type': 5126,
+                    }
+                if mesh.colors is not None and mesh.colors.any():
+                    vao.buffer(ctx.buffer(mesh.colors.astype("f4")), "4f", name_map["COLOR_0"])
+                    attributes["COLOR_0"] = {
+                        'name': name_map["COLOR_0"],
+                        'components': 4,
+                        'type': 5126,
                     }
 
-            bbox_min, bbox_max = self.get_bbox(primitive)
-            meshes.append(
-                Mesh(
-                    self.name,
-                    vao=vao,
-                    attributes=attributes,
-                    material=(
-                        materials[primitive.material] if primitive.material is not None else None
-                    ),
-                    bbox_min=bbox_min,
-                    bbox_max=bbox_max,
+                bbox_min, bbox_max = self.get_bbox(primitive)
+                meshes.append(
+                    Mesh(
+                        self.name,
+                        vao=vao,
+                        attributes=attributes,
+                        material=(
+                            materials[primitive.material]
+                            if primitive.material is not None else None
+                        ),
+                        bbox_min=bbox_min,
+                        bbox_max=bbox_max,
+                    )
                 )
-            )
+            else:
+                vao = VAO(self.name, mode=primitive.mode or moderngl.TRIANGLES)
+
+                # Index buffer
+                component_type, index_vbo = self.load_indices(primitive)
+                if index_vbo is not None:
+                    vao.index_buffer(
+                        ctx.buffer(index_vbo.tobytes()),
+                        index_element_size=component_type.size,
+                    )
+
+                attributes = {}
+                vbos = self.prepare_attrib_mapping(primitive)
+
+                for vbo_info in vbos:
+                    dtype, buffer = vbo_info.create()
+                    vao.buffer(
+                        buffer,
+                        " ".join(
+                            [
+                                "{}{}".format(attr[1], DTYPE_BUFFER_TYPE[dtype])
+                                for attr in vbo_info.attributes
+                            ]
+                        ),
+                        [name_map[attr[0]] for attr in vbo_info.attributes],
+                    )
+
+                    for attr in vbo_info.attributes:
+                        attributes[attr[0]] = {
+                            "name": name_map[attr[0]],
+                            "components": attr[1],
+                            "type": vbo_info.component_type.value,
+                        }
+
+                bbox_min, bbox_max = self.get_bbox(primitive)
+                meshes.append(
+                    Mesh(
+                        self.name,
+                        vao=vao,
+                        attributes=attributes,
+                        material=(
+                            materials[primitive.material]
+                            if primitive.material is not None else None
+                        ),
+                        bbox_min=bbox_min,
+                        bbox_max=bbox_max,
+                    )
+                )
 
         return meshes
 
@@ -614,14 +689,17 @@ class GLTFAccessor:
         self.byteOffset = data.get("byteOffset", 0)
         self.componentType = COMPONENT_TYPE[data["componentType"]]
         self.count = data.get("count", 1)
+        self.type: str = data.get("type", "")
+
         self.min = numpy.array(data.get("min") or [-0.5, -0.5, -0.5], dtype="f4")
         self.max = numpy.array(data.get("max") or [0.5, 0.5, 0.5], dtype="f4")
-        self.type = data.get("type", "")
 
     def read(self) -> tuple[int, ComponentType, npt.NDArray[Any]]:
         """
         Reads buffer data
-        :return: component count, component type, data
+
+        Return:
+            component count, component type, data
         """
         # ComponentType helps us determine the datatype
         dtype = NP_COMPONENT_DTYPE[self.componentType.value]
@@ -635,10 +713,19 @@ class GLTFAccessor:
             ),
         )
 
+    def read_raw(self) -> bytes:
+        """
+        Read the raw bytes. Useful for draco compressed meshes or any data that
+        is not a simple vertex buffer.
+        """
+        return self.bufferView.read_raw(byte_offset=self.byteOffset)
+
     def info(self) -> tuple[GLTFBuffer, GLTFBufferView, int, int, ComponentType, int, int]:
         """
         Get underlying buffer info for this accessor
-        :return: buffer, byte_length, byte_offset, component_type, count
+
+        Return:
+            buffer, byte_length, byte_offset, component_type, count
         """
         buffer, byte_length, byte_offset = self.bufferView.info(byte_offset=self.byteOffset)
         return (
@@ -649,6 +736,11 @@ class GLTFAccessor:
             self.componentType,
             ACCESSOR_TYPE[self.type],
             self.count,
+        )
+
+    def __str__(self) -> str:
+        return "Accessor<id={}, bufferView={}, byteOffset={}, componentType={}, count={}>".format(
+            self.id, self.bufferViewId, self.byteOffset, self.componentType.name, self.count
         )
 
 
@@ -672,8 +764,11 @@ class GLTFBufferView:
         vbo = numpy.frombuffer(data, count=count, dtype=dtype)
         return vbo
 
-    def read_raw(self) -> bytes:
-        return self.buffer.read(byte_length=self.byteLength, byte_offset=self.byteOffset)
+    def read_raw(self, byte_offset: int = 0) -> bytes:
+        return self.buffer.read(
+            byte_offset=self.byteOffset + byte_offset,
+            byte_length=self.byteLength,
+        )
 
     def info(self, byte_offset: int = 0) -> tuple[GLTFBuffer, int, int]:
         """
@@ -682,6 +777,11 @@ class GLTFBufferView:
         :return: buffer, byte_length, byte_offset
         """
         return self.buffer, self.byteLength, byte_offset + self.byteOffset
+
+    def __str__(self) -> str:
+        return "BufferView<id={}, buffer={}, byteOffset={}, byteLength={}>".format(
+            self.id, self.bufferId, self.byteOffset, self.byteLength
+        )
 
 
 class GLTFBuffer:
@@ -743,11 +843,8 @@ class GLTFNode:
         self.rotation = data.get("rotation")
         self.scale = data.get("scale")
 
-        trans_mat = (
-            glm.translate(glm.vec3(*self.translation))
-            if self.translation is not None
-            else glm.mat4()
-        )
+        if self.translation is not None:
+            self.matrix = glm.translate(self.matrix, glm.vec3(*self.translation))
 
         if self.rotation is not None:
             quat = glm.quat(
@@ -756,13 +853,10 @@ class GLTFNode:
                 z=self.rotation[2],
                 w=self.rotation[3],
             )
-            rot_mat = glm.mat4_cast(quat)
-        else:
-            rot_mat = glm.mat4()
+            self.matrix = self.matrix * glm.mat4_cast(quat)
 
-        scale_mat = glm.scale(self.scale) if self.scale is not None else glm.mat4()
-
-        self.matrix = self.matrix * trans_mat * rot_mat * scale_mat
+        if self.scale is not None:
+            self.matrix = glm.scale(self.matrix, glm.vec3(*self.scale))
 
     @property
     def has_children(self) -> bool:

@@ -4,11 +4,10 @@ import glm
 import moderngl
 from base import CameraWindow
 
-import moderngl_window as mglw
 from moderngl_window.scene.camera import KeyboardCamera
 
 
-class CubeModel(CameraWindow):
+class GLTFTest(CameraWindow):
     """
     In oder for this example to work you need to clone the gltf
     model samples repository and ensure resource_dir is set correctly:
@@ -19,10 +18,15 @@ class CubeModel(CameraWindow):
     window_size = 1280, 720
     aspect_ratio = None
     resource_dir = Path(__file__, "../../../glTF-Sample-Models/2.0").resolve()
+    # resource_dir = Path(__file__, "../../tmp/issue_with_draco").resolve()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.wnd.mouse_exclusivity = True
+
+        # self.scene = self.load_scene(
+        #   "0147_858530.6583696686_-5537397.529199226_3036197.2162786936.glb", kind="gltf"
+        # )
 
         # --- glTF-Sample-Models ---
         # self.scene = self.load_scene("2CylinderEngine/glTF-Binary/2CylinderEngine.glb")
@@ -61,6 +65,12 @@ class CubeModel(CameraWindow):
         # self.scene = self.load_scene("VertexColorTest/glTF/VertexColorTest.gltf")
         # self.scene = self.load_scene("WaterBottle/glTF/WaterBottle.gltf")
 
+        # --- Draco compressed ---
+        # self.scene = self.load_scene("Box/glTF-Draco/Box.gltf")
+        # self.scene = self.load_scene("Buggy/glTF-Draco/Buggy.gltf")
+        # self.scene = self.load_scene("2CylinderEngine/glTF-Draco/2CylinderEngine.gltf")
+        # self.scene = self.load_scene("CesiumMilkTruck/glTF-Draco/CesiumMilkTruck.gltf")
+
         self.camera = KeyboardCamera(
             self.wnd.keys,
             fov=75.0,
@@ -75,34 +85,35 @@ class CubeModel(CameraWindow):
         # if self.scene.diagonal_size > 0:
         #     self.camera.velocity = self.scene.diagonal_size / 5.0
 
+        self.camera.position = (
+            self.scene.get_center()
+            + glm.vec3(0.0, 0.0, self.scene.diagonal_size / 1.75)
+        )
+
     def on_render(self, time: float, frame_time: float):
         """Render the scene"""
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
 
-        # Move camera in on the z axis slightly by default
-        translation = glm.translate(glm.vec3(0, 0, -1.5))
-        camera_matrix = self.camera.matrix * translation
-
         self.scene.draw(
             projection_matrix=self.camera.projection.matrix,
-            camera_matrix=camera_matrix,
+            camera_matrix=self.camera.matrix,
             time=time,
         )
 
-        # Draw bounding boxes
+        # # Draw bounding boxes
         # self.scene.draw_bbox(
         #     projection_matrix=self.camera.projection.matrix,
-        #     camera_matrix=camera_matrix,
+        #     camera_matrix=self.camera.matrix,
         #     children=True,
         #     color=(0.75, 0.75, 0.75),
         # )
 
         # self.scene.draw_wireframe(
         #     projection_matrix=self.camera.projection.matrix,
-        #     camera_matrix=camera_matrix,
+        #     camera_matrix=self.camera.matrix,
         #     color=(1, 1, 1, 1),
         # )
 
 
 if __name__ == "__main__":
-    mglw.run_window_config(CubeModel)
+    GLTFTest.run()
