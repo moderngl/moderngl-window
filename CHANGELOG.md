@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.0
+
+* Support for daco compressed meshes in glTF2 files
+
 ## 3.0.3
 
 * Fixed a potential division by zero issue in timers
