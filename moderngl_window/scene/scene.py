@@ -97,8 +97,8 @@ class Scene:
 
     def draw(
         self,
-        projection_matrix: Optional[glm.mat4] = None,
-        camera_matrix: Optional[glm.mat4] = None,
+        projection_matrix: Optional[glm.mat4],
+        camera_matrix: Optional[glm.mat4],
         time: float = 0.0,
     ) -> None:
         """Draw all the nodes in the scene.
@@ -229,19 +229,20 @@ class Scene:
 
     def calc_scene_bbox(self) -> None:
         """Calculate scene bbox"""
-        bbox_min: Optional[glm.vec3] = None
-        bbox_max: Optional[glm.vec3] = None
+        bbox_min: glm.vec3 | None = None
+        bbox_max: glm.vec3 | None = None
+
         for node in self.root_nodes:
             bbox_min, bbox_max = node.calc_global_bbox(glm.mat4(), bbox_min, bbox_max)
-
-        assert (bbox_max is not None) and (
-            bbox_min is not None
-        ), "The bounding are not defined, please make sure your code is correct"
 
         self.bbox_min = bbox_min
         self.bbox_max = bbox_max
 
         self.diagonal_size = glm.length(self.bbox_max - self.bbox_min)
+
+    def get_center(self) -> glm.vec3:
+        """Calculate the center of the scene using bounding boxes"""
+        return self.bbox_min + (self.bbox_max - self.bbox_min) / 2.0
 
     def prepare(self) -> None:
         """prepare the scene for rendering.

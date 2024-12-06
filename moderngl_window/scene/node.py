@@ -104,8 +104,8 @@ class Node:
 
     def draw(
         self,
-        projection_matrix: Optional[glm.mat4],
-        camera_matrix: Optional[glm.mat4],
+        projection_matrix: glm.mat4,
+        camera_matrix: glm.mat4,
         time: float = 0.0,
     ) -> None:
         """Draw node and children.
@@ -182,7 +182,7 @@ class Node:
             child.draw_wireframe(projection_matrix, self._matrix_global, program)
 
     def calc_global_bbox(
-        self, view_matrix: glm.mat4, bbox_min: Optional[glm.vec3], bbox_max: Optional[glm.vec3]
+        self, view_matrix: glm.mat4, bbox_min: glm.vec3 | None, bbox_max: glm.vec3 | None
     ) -> tuple[glm.vec3, glm.vec3]:
         """Recursive calculation of scene bbox.
 

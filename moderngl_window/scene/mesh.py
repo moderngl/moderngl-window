@@ -51,9 +51,9 @@ class Mesh:
 
     def draw(
         self,
-        projection_matrix: Optional[glm.mat4] = None,
-        model_matrix: Optional[glm.mat4] = None,
-        camera_matrix: Optional[glm.mat4] = None,
+        projection_matrix: glm.mat4,
+        model_matrix: glm.mat4,
+        camera_matrix: glm.mat4,
         time: float = 0.0,
     ) -> None:
         """Draw the mesh using the assigned mesh program
@@ -64,11 +64,6 @@ class Mesh:
             camera_matrix (bytes): camera_matrix
         """
         if self.mesh_program is not None:
-            assert (
-                projection_matrix is not None
-            ), "Can not draw, there is no projection matrix to use"
-            assert model_matrix is not None, "Can not draw, there is no model matrix to use"
-            assert camera_matrix is not None, "Can not draw, there is no camera matrix to use"
             self.mesh_program.draw(
                 self,
                 projection_matrix=projection_matrix,
@@ -125,7 +120,7 @@ class Mesh:
         self.attributes[attr_type] = {"name": name, "components": components}
 
     def calc_global_bbox(
-        self, view_matrix: glm.mat4, bbox_min: Optional[glm.vec3], bbox_max: Optional[glm.vec3]
+        self, view_matrix: glm.mat4, bbox_min: glm.vec3 | None, bbox_max: glm.vec3 | None
     ) -> tuple[glm.vec3, glm.vec3]:
         """Calculates the global bounding.
 
