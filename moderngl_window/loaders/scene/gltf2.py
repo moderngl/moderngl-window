@@ -471,7 +471,10 @@ class GLTFMesh:
             if primitive.extensions.get("KHR_draco_mesh_compression"):
                 buffer_view = primitive.extensions["KHR_draco_mesh_compression"]["bufferView"]
                 data = buffer_view.read_raw()
-                import DracoPy
+                try:
+                    import DracoPy
+                except ImportError:
+                    raise ImportError("DracoPy is required to load draco compressed meshes")
                 mesh = DracoPy.decode(data)
 
                 attributes = {
