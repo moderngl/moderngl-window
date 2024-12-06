@@ -33,7 +33,7 @@ class GLTFTest(CameraWindow):
         # self.scene = self.load_scene("CesiumMilkTruck/glTF-Embedded/CesiumMilkTruck.gltf")
         # self.scene = self.load_scene("CesiumMilkTruck/glTF-Binary/CesiumMilkTruck.glb")
         # self.scene = self.load_scene("CesiumMilkTruck/glTF/CesiumMilkTruck.gltf")
-        # self.scene = self.load_scene("Sponza/glTF/Sponza.gltf")
+        self.scene = self.load_scene("Sponza/glTF/Sponza.gltf")
         # self.scene = self.load_scene("Lantern/glTF-Binary/Lantern.glb")
         # self.scene = self.load_scene("Buggy/glTF-Binary/Buggy.glb")
         # self.scene = self.load_scene("VC/glTF-Binary/VC.glb")
@@ -67,7 +67,9 @@ class GLTFTest(CameraWindow):
 
         # --- Draco compressed ---
         # self.scene = self.load_scene("Box/glTF-Draco/Box.gltf")
-        self.scene = self.load_scene("Buggy/glTF-Draco/Buggy.gltf")
+        # self.scene = self.load_scene("Buggy/glTF-Draco/Buggy.gltf")
+        # self.scene = self.load_scene("2CylinderEngine/glTF-Draco/2CylinderEngine.gltf")
+        # self.scene = self.load_scene("CesiumMilkTruck/glTF-Draco/CesiumMilkTruck.gltf")
 
         self.camera = KeyboardCamera(
             self.wnd.keys,
@@ -85,7 +87,7 @@ class GLTFTest(CameraWindow):
 
         self.camera.position = (
             self.scene.get_center()
-            + glm.vec3(0.0, 0.0, self.scene.diagonal_size / 2.0)
+            + glm.vec3(0.0, 0.0, self.scene.diagonal_size / 1.75)
         )
 
     def on_render(self, time: float, frame_time: float):

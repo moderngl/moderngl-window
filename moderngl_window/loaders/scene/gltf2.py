@@ -364,6 +364,12 @@ class GLTFMeta:
         # Link accessors to mesh primitives
         for mesh in self.meshes:
             for primitive in mesh.primitives:
+                # Link the bufferview for draco compressed buffers
+                if primitive.extensions.get("KHR_draco_mesh_compression"):
+                    ext = primitive.extensions["KHR_draco_mesh_compression"]
+                    buffer_view_id = ext["bufferView"]
+                    ext["bufferView"] = self.buffer_views[buffer_view_id]
+
                 if primitive.indices is not None:
                     primitive.accessor = self.accessors[primitive.indices]
                 for name, value in primitive.attributes.items():
@@ -395,12 +401,12 @@ class GLTFMeta:
         if extReq is not None:
             for ext in extReq:
                 if ext not in supported:
-                    raise ValueError(f"Extension {ext} not supported")
+                    raise ValueError(f"Extension '{ext}' not supported")
         extUse = self.data.get("extensionsUsed")
         if extUse is not None:
             for ext in extUse:
                 if ext not in supported:
-                    raise ValueError("Extension {ext} not supported")
+                    raise ValueError(f"Extension '{ext}' not supported")
 
     def buffers_exist(self) -> None:
         """Checks if the bin files referenced exist"""
@@ -411,7 +417,7 @@ class GLTFMeta:
             path = self.path.parent / buff.uri
             if not path.exists():
                 raise FileNotFoundError(
-                    "Buffer {} referenced in {} not found".format(path, self.path)
+                    f"Buffer {path} referenced in {self.path} not found"
                 )
 
     def images_exist(self) -> None:
@@ -457,12 +463,14 @@ class GLTFMesh:
         ctx = moderngl_window.ctx()
         meshes: list[Mesh] = []
 
+        # FIXME: Split this up in methods
         # Read all primitives as separate meshes for now
         # According to the spec they can have different materials and vertex format
         for primitive in self.primitives:
             # Handle draco compressed meshes
             if primitive.extensions.get("KHR_draco_mesh_compression"):
-                data = primitive.accessor.read_raw()
+                buffer_view = primitive.extensions["KHR_draco_mesh_compression"]["bufferView"]
+                data = buffer_view.read_raw()
                 import DracoPy
                 mesh = DracoPy.decode(data)
 
@@ -678,9 +686,10 @@ class GLTFAccessor:
         self.byteOffset = data.get("byteOffset", 0)
         self.componentType = COMPONENT_TYPE[data["componentType"]]
         self.count = data.get("count", 1)
+        self.type: str = data.get("type", "")
+
         self.min = numpy.array(data.get("min") or [-0.5, -0.5, -0.5], dtype="f4")
         self.max = numpy.array(data.get("max") or [0.5, 0.5, 0.5], dtype="f4")
-        self.type = data.get("type", "")
 
     def read(self) -> tuple[int, ComponentType, npt.NDArray[Any]]:
         """
@@ -706,7 +715,7 @@ class GLTFAccessor:
         Read the raw bytes. Useful for draco compressed meshes or any data that
         is not a simple vertex buffer.
         """
-        return self.bufferView.read_raw()
+        return self.bufferView.read_raw(byte_offset=self.byteOffset)
 
     def info(self) -> tuple[GLTFBuffer, GLTFBufferView, int, int, ComponentType, int, int]:
         """
@@ -724,6 +733,11 @@ class GLTFAccessor:
             self.componentType,
             ACCESSOR_TYPE[self.type],
             self.count,
+        )
+
+    def __str__(self) -> str:
+        return "Accessor<id={}, bufferView={}, byteOffset={}, componentType={}, count={}>".format(
+            self.id, self.bufferViewId, self.byteOffset, self.componentType.name, self.count
         )
 
 
@@ -747,8 +761,11 @@ class GLTFBufferView:
         vbo = numpy.frombuffer(data, count=count, dtype=dtype)
         return vbo
 
-    def read_raw(self) -> bytes:
-        return self.buffer.read(byte_length=self.byteLength, byte_offset=self.byteOffset)
+    def read_raw(self, byte_offset: int = 0) -> bytes:
+        return self.buffer.read(
+            byte_offset=self.byteOffset + byte_offset,
+            byte_length=self.byteLength,
+        )
 
     def info(self, byte_offset: int = 0) -> tuple[GLTFBuffer, int, int]:
         """
@@ -757,6 +774,11 @@ class GLTFBufferView:
         :return: buffer, byte_length, byte_offset
         """
         return self.buffer, self.byteLength, byte_offset + self.byteOffset
+
+    def __str__(self) -> str:
+        return "BufferView<id={}, buffer={}, byteOffset={}, byteLength={}>".format(
+            self.id, self.bufferId, self.byteOffset, self.byteLength
+        )
 
 
 class GLTFBuffer:
