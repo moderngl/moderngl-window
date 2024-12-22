@@ -68,7 +68,7 @@ class TextWriter2D(BaseText):
             )
         )
 
-    def draw(self, pos: tuple[float, float, float], length: int = -1, size: float = 24.0) -> None:
+    def draw(self, pos: tuple[float, float], length: int = -1, size: float = 24.0) -> None:
         assert self.ctx is not None, "There was a problem, we do not have a context"
         assert self.ctx.fbo is not None, "The current context do not have a framebuffer"
         assert self._meta is not None, "We are missing the information needed to write text"
