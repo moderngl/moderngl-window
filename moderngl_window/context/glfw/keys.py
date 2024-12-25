@@ -23,6 +23,9 @@ class Keys(BaseKeys):
     RIGHT = glfw.KEY_RIGHT
     UP = glfw.KEY_UP
     DOWN = glfw.KEY_DOWN
+    LEFT_SHIFT = glfw.KEY_LEFT_SHIFT
+    RIGHT_SHIFT = glfw.KEY_RIGHT_SHIFT
+    LEFT_CTRL = glfw.KEY_LEFT_CONTROL
 
     TAB = glfw.KEY_TAB
     COMMA = glfw.KEY_COMMA
