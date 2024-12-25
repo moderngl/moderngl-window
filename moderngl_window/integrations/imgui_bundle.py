@@ -42,6 +42,7 @@ class ModernglWindowMixin:
             self.io.mouse_down[1] = 1
 
     def mouse_scroll_event(self, x_offset, y_offset):
+        self.io.mouse_wheel_h = x_offset
         self.io.mouse_wheel = y_offset
 
     def mouse_press_event(self, x, y, button):
