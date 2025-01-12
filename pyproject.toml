@@ -60,6 +60,7 @@ pyqt5 = ["PyQt5"]
 PySide2 = ["PySide2<6"]
 pdf = ["ReportLab>=1.2"]
 av = ["av"]
+draco = ["DracoPy"]
 
 [project.urls]
 Source = "https://github.com/moderngl/moderngl_window"
