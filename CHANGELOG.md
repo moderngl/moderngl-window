@@ -2,7 +2,10 @@
 
 ## 3.1.0
 
-* Support for daco compressed meshes in glTF2 files
+* Add basic support for draco compression glTF2 through DracoPy (@einarf)
+* Added missing GLTF keys (LEFT_SHIFT, RIGHT_SHIFT, LEFT_CTRL) (@fangjunzhou)
+* Pass horizontal mouse scroll to imgui (@fangjunzhou)
+* Typing improvements (@nocarryr)
 
 ## 3.0.3
 
