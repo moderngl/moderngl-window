@@ -2,6 +2,7 @@
 Wrapper for a loaded scene with properties.
 """
 
+from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING, Any, Optional
 

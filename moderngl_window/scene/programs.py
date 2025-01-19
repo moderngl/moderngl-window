@@ -59,7 +59,7 @@ class MeshProgram:
         self.program["m_cam"].write(camera_matrix)
         mesh.vao.render(self.program)
 
-    def apply(self, mesh: Mesh) -> "MeshProgram" | None:
+    def apply(self, mesh: Mesh) -> MeshProgram | None:
         """
         Determine if this ``MeshProgram`` should be applied to the mesh.
         Can return self or some ``MeshProgram`` instance to support dynamic ``MeshProgram`` creation
@@ -140,7 +140,7 @@ class ColorLightProgram(MeshProgram):
         self.program["m_cam"].write(camera_matrix)
         mesh.vao.render(self.program)
 
-    def apply(self, mesh: Mesh) -> "MeshProgram" | None:
+    def apply(self, mesh: Mesh) -> MeshProgram | None:
         if not mesh.material:
             return None
 
@@ -233,7 +233,7 @@ class TextureVertexColorProgram(MeshProgram):
         self.program["m_cam"].write(camera_matrix)
         mesh.vao.render(self.program)
 
-    def apply(self, mesh: Mesh) -> "MeshProgram" | None:
+    def apply(self, mesh: Mesh) -> MeshProgram | None:
         if not mesh.material:
             return None
 
@@ -291,7 +291,7 @@ class TextureLightProgram(MeshProgram):
         self.program["m_cam"].write(camera_matrix)
         mesh.vao.render(self.program)
 
-    def apply(self, mesh: Mesh) -> "MeshProgram" | None:
+    def apply(self, mesh: Mesh) -> MeshProgram | None:
         if not mesh.material:
             return None
 
@@ -342,5 +342,5 @@ class FallbackProgram(MeshProgram):
 
         mesh.vao.render(self.program)
 
-    def apply(self, mesh: Mesh) -> "MeshProgram" | None:
+    def apply(self, mesh: Mesh) -> MeshProgram | None:
         return self
