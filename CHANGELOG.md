@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.1
+
+Fixed broken annotations for python 3.9
+
 ## 3.1.0
 
 * Add basic support for draco compression glTF2 through DracoPy (@einarf)

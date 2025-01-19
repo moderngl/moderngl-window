@@ -19,7 +19,7 @@ from moderngl_window.timers.clock import Timer
 from moderngl_window.utils.keymaps import AZERTY, QWERTY, KeyMap, KeyMapFactory  # noqa
 from moderngl_window.utils.module_loading import import_string
 
-__version__ = "3.1.0"
+__version__ = "3.1.1"
 
 IGNORE_DIRS = [
     "__pycache__",
