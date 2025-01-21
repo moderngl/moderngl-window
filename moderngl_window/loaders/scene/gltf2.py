@@ -406,7 +406,8 @@ class GLTFMeta:
         if extUse is not None:
             for ext in extUse:
                 if ext not in supported:
-                    raise ValueError(f"Extension '{ext}' not supported")
+                    # raise ValueError(f"Extension '{ext}' not supported")
+                    logger.warning(f"Used (but not required) extension '{ext}' is not supported")
 
     def buffers_exist(self) -> None:
         """Checks if the bin files referenced exist"""
