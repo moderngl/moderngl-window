@@ -406,7 +406,8 @@ class GLTFMeta:
         if extUse is not None:
             for ext in extUse:
                 if ext not in supported:
-                    raise ValueError(f"Extension '{ext}' not supported")
+                    # raise ValueError(f"Extension '{ext}' not supported")
+                    logger.warning(f"Used (but not required) extension '{ext}' is not supported")
 
     def buffers_exist(self) -> None:
         """Checks if the bin files referenced exist"""
@@ -620,12 +621,13 @@ class VBOInfo:
     def __init__(
         self,
         buffer: Optional[GLTFBuffer] = None,
-        buffer_view: Optional[GLTFBuffer] = None,
+        buffer_view: Optional[GLTFBufferView] = None,
         byte_length: int = 0,
         byte_offset: int = 0,
         component_type: ComponentType = ComponentType("", 0, 0),
         components: int = 0,
         count: int = 0,
+        accessor_byte_offset: int = 0,
     ):
         self.buffer = buffer  # reference to the buffer
         self.buffer_view = buffer_view
@@ -634,6 +636,7 @@ class VBOInfo:
         self.component_type = component_type  # Datatype of each component
         self.components = components
         self.count = count  # number of elements of the component type size
+        self.accessor_byte_offset = accessor_byte_offset
 
         # list of (name, components) tuples
         self.attributes: list[Any] = []
@@ -651,10 +654,11 @@ class VBOInfo:
         """Create the VBO"""
         assert self.buffer is not None, "No buffer defined"
         dtype = NP_COMPONENT_DTYPE[self.component_type.value]
-        data = numpy.frombuffer(
-            self.buffer.read(byte_length=self.byte_length, byte_offset=self.byte_offset),
-            count=self.count * self.components,
+        data = self.buffer_view.read(
+            byte_offset=self.accessor_byte_offset,
             dtype=dtype,
+            count=self.count * self.components,
+            accessorType=self.components,
         )
         return dtype, data
 
@@ -710,6 +714,7 @@ class GLTFAccessor:
                 byte_offset=self.byteOffset,
                 dtype=dtype,
                 count=self.count * ACCESSOR_TYPE[self.type],
+                accessorType=self.type,
             ),
         )
 
@@ -720,7 +725,7 @@ class GLTFAccessor:
         """
         return self.bufferView.read_raw(byte_offset=self.byteOffset)
 
-    def info(self) -> tuple[GLTFBuffer, GLTFBufferView, int, int, ComponentType, int, int]:
+    def info(self) -> tuple[GLTFBuffer, GLTFBufferView, int, int, ComponentType, int, int, int]:
         """
         Get underlying buffer info for this accessor
 
@@ -736,6 +741,7 @@ class GLTFAccessor:
             self.componentType,
             ACCESSOR_TYPE[self.type],
             self.count,
+            self.byteOffset,
         )
 
     def __str__(self) -> str:
@@ -755,13 +761,47 @@ class GLTFBufferView:
         # Valid: 34962 (ARRAY_BUFFER) and 34963 (ELEMENT_ARRAY_BUFFER) or None
 
     def read(
-        self, byte_offset: int = 0, dtype: Optional[type[object]] = None, count: int = 0
+        self, byte_offset: int = 0, dtype: Optional[type[object]] = None, count: int = 0, accessorType: Optional[Union[str, int]] = None
     ) -> npt.NDArray[Any]:
         data = self.buffer.read(
             byte_offset=byte_offset + self.byteOffset,
             byte_length=self.byteLength,
         )
-        vbo = numpy.frombuffer(data, count=count, dtype=dtype)
+        # de-interleave buffer with byteStride:
+        # adapted from
+        # https://github.com/mikedh/trimesh/blob/2fcb2b2ea8085d253e692ecd4f71b8f450890d51/trimesh/exchange/gltf.py#L1433
+        # The MIT License (MIT), Copyright (c) 2023 Michael Dawson-Haggerty
+        if self.byteStride:
+            per_item = ACCESSOR_TYPE[accessorType] if isinstance(accessorType, str) else accessorType
+            per_count = numpy.abs(numpy.prod(per_item))  # number of items when flattened, i.e. a (4, 4) MAT4 has 16
+            item_count = int(count / per_item)
+
+            cl_dtype = numpy.dtype(dtype)
+            shape = numpy.append(item_count, per_item)
+
+            # how many bytes for each chunk
+            stride = self.byteStride
+            # we want to get the bytes for every row
+            per_row = per_count * cl_dtype.itemsize
+            # the total block we're looking at
+            length = (item_count - 1) * stride + per_row
+            # apply as_strided for fast construction of strided array
+            # and copy to ensure contiguous layout
+            assert stride > 0, "byteStride should be positive"
+            assert 0 <= length <= len(data)
+            vbo = numpy.array(
+                numpy.lib.stride_tricks.as_strided(
+                    numpy.frombuffer(
+                        data, dtype=numpy.uint8, offset=0, count=length
+                    ),
+                    [item_count, per_row],
+                    [stride, 1],
+                )
+                .view(cl_dtype)
+                .reshape(shape)
+            )
+        else:
+            vbo = numpy.frombuffer(data, count=count, dtype=dtype)
         return vbo
 
     def read_raw(self, byte_offset: int = 0) -> bytes:
