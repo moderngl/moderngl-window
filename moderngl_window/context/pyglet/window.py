@@ -51,7 +51,10 @@ class Window(BaseWindow):
         )
 
         if self.fullscreen:
-            display = pyglet.canvas.get_display()
+            if hasattr(pyglet, 'canvas'):
+                display = pyglet.canvas.get_display()
+            else:
+                display = pyglet.display.get_display()
             screen = display.get_default_screen()
             self._width, self._height = screen.width, screen.height
 
