@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 import weakref
 from argparse import ArgumentParser, Namespace
@@ -798,6 +799,8 @@ class BaseWindow:
         Args:
             icon_path (str): path to the icon
         """
+        if os.getenv("XDG_SESSION_TYPE") == "wayland":
+            return
         loader = IconLoader(TextureDescription(path=icon_path))
         resolved_path = loader.find_icon()
         self._set_icon(resolved_path)
