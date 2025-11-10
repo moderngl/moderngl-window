@@ -78,7 +78,7 @@ class WindowEvents(mglw.WindowConfig):
         # Create an image control by passing in the OpenGL texture ID (glo)
         # and pass in the image size as well.
         # The texture needs to he registered using register_texture for this to work
-        imgui.image(self.fbo.color_attachments[0].glo, self.fbo.size)
+        imgui.image(imgui.ImTextureRef(self.fbo.color_attachments[0].glo), self.fbo.size)
         imgui.end()
 
         imgui.render()

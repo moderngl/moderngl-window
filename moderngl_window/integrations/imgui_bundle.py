@@ -5,6 +5,12 @@ from imgui_bundle import imgui
 from imgui_bundle.python_backends import compute_fb_scale
 
 
+def _log_texture(msg: str):
+    pass
+    # import logging
+    # logging.warning(msg)
+
+
 class ModernglWindowMixin:
     io: imgui.IO
 
@@ -74,39 +80,7 @@ class ModernglWindowMixin:
         io.add_input_character(ord(char))
 
 
-class BaseOpenGLRenderer(object):
-    def __init__(self):
-        if not imgui.get_current_context():
-            raise RuntimeError(
-                "No valid ImGui context. Use imgui.create_context() first and/or "
-                "imgui.set_current_context()."
-            )
-        self.io = imgui.get_io()
-
-        self._font_texture = None
-
-        self.io.delta_time = 1.0 / 60.0
-
-        self._create_device_objects()
-        self.refresh_font_texture()
-
-    def render(self, draw_data):
-        raise NotImplementedError
-
-    def refresh_font_texture(self):
-        raise NotImplementedError
-
-    def _create_device_objects(self):
-        raise NotImplementedError
-
-    def _invalidate_device_objects(self):
-        raise NotImplementedError
-
-    def shutdown(self):
-        self._invalidate_device_objects()
-
-
-class ModernGLRenderer(BaseOpenGLRenderer):
+class ModernGLRenderer:
     VERTEX_SHADER_SRC = """
         #version 330
         uniform mat4 ProjMtx;
@@ -134,12 +108,11 @@ class ModernGLRenderer(BaseOpenGLRenderer):
 
     def __init__(self, *args, **kwargs):
         self._prog = None
-        self._fbo = None
-        self._font_texture = None
         self._vertex_buffer = None
         self._index_buffer = None
         self._vao = None
-        self._textures = {}
+        self._textures: dict[int, moderngl.Texture] = {}
+
         self.wnd = kwargs.get("wnd")
         self.ctx: moderngl.Context = (
             self.wnd.ctx if self.wnd and self.wnd.ctx else kwargs.get("ctx")
@@ -148,57 +121,105 @@ class ModernGLRenderer(BaseOpenGLRenderer):
         if not self.ctx:
             raise RuntimeError("Missing moderngl context")
 
-        super().__init__()
+        # Create base ImGui device objects (shaders, buffers)
+        self._create_device_objects()
+
+        # Basic IO setup
+        self.io = imgui.get_io()
+        self.io.delta_time = 1.0 / 60.0
+
+        # Honor ImGui v1.92 RendererHasTextures
+        io = imgui.get_io()
+        io.backend_flags |= imgui.BackendFlags_.renderer_has_textures.value
+        max_texture_size = self.ctx.info["GL_MAX_TEXTURE_SIZE"]
+        pio = imgui.get_platform_io()
+        pio.renderer_texture_max_width = max_texture_size
+        pio.renderer_texture_max_height = max_texture_size
 
         if hasattr(self, "wnd") and self.wnd:
             self.resize(*self.wnd.buffer_size)
         elif "display_size" in kwargs:
             self.io.display_size = kwargs.get("display_size")
 
-    def register_texture(self, texture: moderngl.Texture):
-        """Make the imgui renderer aware of the texture"""
-        self._textures[texture.glo] = texture
+    # -------------------------------------------------------------------------
+    # --- ImGui v1.92 Texture Lifecycle ---------------------------------------
+    # -------------------------------------------------------------------------
 
-    def remove_texture(self, texture: moderngl.Texture):
-        """Remove the texture from the imgui renderer"""
-        del self._textures[texture.glo]
+    def _update_textures(self) -> None:
+        """Sync ImGui texture registry with backend."""
+        for tex in imgui.get_platform_io().textures:
+            if tex.status != imgui.ImTextureStatus.ok:
+                self._update_texture(tex)
 
-    def refresh_font_texture(self):
-        font_matrix = self.io.fonts.get_tex_data_as_rgba32()
-        width = font_matrix.shape[1]
-        height = font_matrix.shape[0]
-        pixels = font_matrix.data
+    def _destroy_all_textures(self) -> None:
+        """Force-destroy all ImGui-managed textures."""
+        for t in list(imgui.get_platform_io().textures):
+            if t.ref_count <= 1:
+                t.status = imgui.ImTextureStatus.want_destroy
+                self._update_texture(t)
 
-        if self._font_texture:
-            self.remove_texture(self._font_texture)
-            self._font_texture.release()
+    def _update_texture(self, tex: imgui.ImTextureData) -> None:
+        """Handle texture creation, update, or deletion as requested by ImGui."""
+        if tex.status == imgui.ImTextureStatus.want_create:
+            _log_texture(f"UpdateTexture #{tex.unique_id}: WantCreate {tex.width}x{tex.height}")
+            assert tex.tex_id == 0 and tex.backend_user_data is None
+            assert tex.format == imgui.ImTextureFormat.rgba32
+            new_tex_id = self._tex_create(tex)
+            tex.set_tex_id(new_tex_id)
+            tex.status = imgui.ImTextureStatus.ok
 
-        self._font_texture = self.ctx.texture((width, height), 4, data=pixels)
-        self.register_texture(self._font_texture)
-        self.io.fonts.tex_id = self._font_texture.glo
-        self.io.fonts.clear_tex_data()
+        elif tex.status == imgui.ImTextureStatus.want_updates:
+            _log_texture(f"UpdateTexture #{tex.unique_id}: WantUpdate {len(tex.updates)}")
+            full_pixels = tex.get_pixels_array()
+            for r in tex.updates:
+                self._tex_update_subrect(tex, r, full_pixels)
+            tex.status = imgui.ImTextureStatus.ok
 
-    def _create_device_objects(self):
-        self._prog = self.ctx.program(
-            vertex_shader=self.VERTEX_SHADER_SRC,
-            fragment_shader=self.FRAGMENT_SHADER_SRC,
-        )
-        self.projMat = self._prog["ProjMtx"]
-        self._prog["Texture"].value = 0
-        self._vertex_buffer = self.ctx.buffer(reserve=imgui.VERTEX_SIZE * 65536)
-        self._index_buffer = self.ctx.buffer(reserve=imgui.INDEX_SIZE * 65536)
-        self._vao = self.ctx.vertex_array(
-            self._prog,
-            [(self._vertex_buffer, "2f 2f 4f1", "Position", "UV", "Color")],
-            index_buffer=self._index_buffer,
-            index_element_size=imgui.INDEX_SIZE,
-        )
+        elif tex.status == imgui.ImTextureStatus.want_destroy:
+            _log_texture(f"UpdateTexture #{tex.unique_id}: WantDestroy")
+            self._tex_delete(tex.tex_id)
+            tex.set_tex_id(0)
+            tex.status = imgui.ImTextureStatus.destroyed
 
-    def render(self, draw_data: imgui.ImDrawData):
+    def _tex_create(self, tex: imgui.ImTextureData) -> int:
+        """Allocate a new OpenGL texture for an ImGui ImTextureData object."""
+        pixels = tex.get_pixels_array()
+        obj = self.ctx.texture((tex.width, tex.height), 4, pixels)
+        obj.filter = (moderngl.LINEAR, moderngl.LINEAR)
+        obj.repeat_x = False
+        obj.repeat_y = False
+        self._textures[obj.glo] = obj
+        return obj.glo
+
+    def _tex_update_subrect(self, tex: imgui.ImTextureData, r, full_pixels) -> None:
+        """Update a sub-rectangle of an existing texture."""
+        obj = self._textures.get(tex.tex_id)
+        if not obj:
+            _log_texture(f"Missing texture #{tex.unique_id} during update")
+            return
+        sub = full_pixels.reshape(tex.height, tex.width,
+                                  tex.bytes_per_pixel)[r.y:r.y + r.h, r.x:r.x + r.w]
+        obj.write(sub.tobytes(), viewport=(r.x, r.y, r.w, r.h))
+
+    def _tex_delete(self, tex_id: int) -> None:
+        """Delete an OpenGL texture associated with ImGui."""
+        obj = self._textures.pop(tex_id, None)
+        if obj:
+            obj.release()
+
+    # -------------------------------------------------------------------------
+    # --- Rendering ------------------------------------------------------------
+    # -------------------------------------------------------------------------
+
+    def render(self, draw_data: imgui.ImDrawData) -> None:
+        """Render the ImGui draw lists using ModernGL."""
         io = self.io
         display_width, display_height = io.display_size
         fb_width = int(display_width * io.display_framebuffer_scale[0])
         fb_height = int(display_height * io.display_framebuffer_scale[1])
+
+        # Update ImGui’s texture state before drawing
+        self._update_textures()
 
         if fb_width == 0 or fb_height == 0:
             return
@@ -228,8 +249,6 @@ class ModernGLRenderer(BaseOpenGLRenderer):
         self.ctx.blend_equation = moderngl.FUNC_ADD
         self.ctx.blend_func = moderngl.SRC_ALPHA, moderngl.ONE_MINUS_SRC_ALPHA
 
-        self._font_texture.use()
-
         for commands in draw_data.cmd_lists:
             # Write the vertex and index buffer data without copying it
             vtx_type = ctypes.c_byte * commands.vtx_buffer.size() * imgui.VERTEX_SIZE
@@ -241,16 +260,13 @@ class ModernGLRenderer(BaseOpenGLRenderer):
 
             idx_pos = 0
             for command in commands.cmd_buffer:
-                texture = self._textures.get(command.texture_id)
+                tex_id = command.get_tex_id()
+                texture = self._textures.get(tex_id)
                 if texture is None:
                     raise ValueError(
-                        (
-                            "Texture {} is not registered. Please add to renderer using "
-                            "register_texture(..). "
-                            "Current textures: {}".format(command.texture_id, list(self._textures))
-                        )
+                        f"Texture {tex_id} is not registered. "
+                        f"Add via register_texture(..). Current: {list(self._textures)}"
                     )
-
                 texture.use(0)
 
                 x, y, z, w = command.clip_rect
@@ -260,20 +276,51 @@ class ModernGLRenderer(BaseOpenGLRenderer):
 
         self.ctx.scissor = None
 
-    def _invalidate_device_objects(self):
-        if self._font_texture:
-            self._font_texture.release()
-        if self._vertex_buffer:
-            self._vertex_buffer.release()
-        if self._index_buffer:
-            self._index_buffer.release()
-        if self._vao:
-            self._vao.release()
-        if self._prog:
-            self._prog.release()
+    # -------------------------------------------------------------------------
+    # --- Device Objects -------------------------------------------------------
+    # -------------------------------------------------------------------------
 
-        self.io.fonts.tex_id = 0
-        self._font_texture = None
+    def _create_device_objects(self):
+        """Create shaders, buffers, and VAO."""
+        self._prog = self.ctx.program(
+            vertex_shader=self.VERTEX_SHADER_SRC,
+            fragment_shader=self.FRAGMENT_SHADER_SRC,
+        )
+        self.projMat = self._prog["ProjMtx"]
+        self._prog["Texture"].value = 0
+        self._vertex_buffer = self.ctx.buffer(reserve=imgui.VERTEX_SIZE * 65536)
+        self._index_buffer = self.ctx.buffer(reserve=imgui.INDEX_SIZE * 65536)
+        self._vao = self.ctx.vertex_array(
+            self._prog,
+            [(self._vertex_buffer, "2f 2f 4f1", "Position", "UV", "Color")],
+            index_buffer=self._index_buffer,
+            index_element_size=imgui.INDEX_SIZE,
+        )
+
+    def _invalidate_device_objects(self):
+        """Free all GL resources."""
+        for obj in (self._vertex_buffer, self._index_buffer, self._vao, self._prog):
+            if obj:
+                obj.release()
+
+    # -------------------------------------------------------------------------
+    # --- Public API -----------------------------------------------------------
+    # -------------------------------------------------------------------------
+
+    def register_texture(self, texture: moderngl.Texture) -> None:
+        """Make ImGui aware of an existing ModernGL texture."""
+        self._textures[texture.glo] = texture
+
+    def remove_texture(self, texture: moderngl.Texture) -> None:
+        """Unregister a ModernGL texture from ImGui."""
+        self._textures.pop(texture.glo, None)
+
+    def shutdown(self) -> None:
+        """Release all GL and ImGui resources."""
+        self._destroy_all_textures()
+        imgui.get_platform_io().textures.clear()
+        imgui.get_io().backend_flags &= ~imgui.BackendFlags_.renderer_has_textures.value
+        self._invalidate_device_objects()
 
 
 class ModernglWindowRenderer(ModernGLRenderer, ModernglWindowMixin):
