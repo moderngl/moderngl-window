@@ -1,6 +1,7 @@
 import moderngl
 import numpy
 from headless import HeadlessTestCase
+from unittest.mock import PropertyMock, patch
 
 from moderngl_window.opengl.vao import VAO, BufferInfo, VAOError
 
@@ -68,6 +69,61 @@ class VaoTestCase(HeadlessTestCase):
         """Create vao with illegal draw mode"""
         with self.assertRaises(VAOError):
             VAO(mode=1337)
+
+    def test_program_id_collision(self):
+        """Reused numeric names must not select another program's VAO."""
+        mesh = VAO("program_cache", mode=moderngl.POINTS)
+        first_buffer = mesh.buffer(numpy.array([1, 2], dtype="f4"), "1f", "first")
+        second_buffer = mesh.buffer(numpy.array([10, 20], dtype="f4"), "1f", "second")
+        first = self.ctx.program(
+            vertex_shader="""
+                #version 330
+                in float first;
+                out float value;
+                void main() { value = first * 2.0; }
+            """,
+            varyings=["value"],
+        )
+        second = self.ctx.program(
+            vertex_shader="""
+                #version 330
+                in float second;
+                out float value;
+                void main() { value = second * 3.0; }
+            """,
+            varyings=["value"],
+        )
+        output = self.ctx.buffer(reserve=8)
+        try:
+            # Make numeric-name reuse deterministic without depending on the
+            # driver's allocation policy. The linked programs and GPU work are real.
+            with patch.object(moderngl.Program, "glo", new_callable=PropertyMock, return_value=1):
+                first_vao = mesh.instance(first)
+                self.assertIs(mesh.instance(first), first_vao)
+                mesh.transform(first, output, vertices=2)
+                numpy.testing.assert_array_equal(
+                    numpy.frombuffer(output.read(), dtype="f4"), [2, 4]
+                )
+
+                mesh.transform(second, output, vertices=2)
+                numpy.testing.assert_array_equal(
+                    numpy.frombuffer(output.read(), dtype="f4"), [30, 60]
+                )
+                second_vao = mesh.instance(second)
+                self.assertIsNot(second_vao, first_vao)
+                self.assertIs(mesh.instance(second), second_vao)
+            self.assertEqual(len(mesh.vaos), 2)
+        finally:
+            mesh.release(buffer=False)
+            output.release()
+            first.release()
+            second.release()
+        self.assertEqual(mesh.vaos, {})
+        # Releasing the cached VAOs must honor buffer=False.
+        self.assertEqual(first_buffer.read(), numpy.array([1, 2], dtype="f4").tobytes())
+        self.assertEqual(second_buffer.read(), numpy.array([10, 20], dtype="f4").tobytes())
+        first_buffer.release()
+        second_buffer.release()
 
     def test_add_illegal_buffer(self):
         """Attempt to add illegal buffer"""

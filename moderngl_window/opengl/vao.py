@@ -326,7 +326,9 @@ class VAO:
         Returns:
             ``moderngl.VertexArray``: instance
         """
-        vao = self.vaos.get(program.glo)
+        # Numeric OpenGL names can be reused after a program is released.
+        program_key = program.mglo
+        vao = self.vaos.get(program_key)
         if vao is not None and isinstance(vao, moderngl.VertexArray):
             return vao
 
@@ -379,7 +381,7 @@ class VAO:
         else:
             vao = self.ctx.vertex_array(program, vao_content)
 
-        self.vaos[program.glo] = vao
+        self.vaos[program_key] = vao
         return vao
 
     def release(self, buffer: bool = True) -> None:
