@@ -45,6 +45,10 @@ class BufferFormat:
         """int: total byte size if this type"""
         return self.components * self.bytes_per_component
 
+    @property
+    def is_padding(self) -> bool:
+        return "x" in self.format
+
     def pad_str(self) -> str:
         """Padding string used my moderngl in interleaved buffers"""
         return "{}x{}".format(self.components, self.bytes_per_component)
@@ -87,7 +91,7 @@ def attribute_format(attr_format: str) -> BufferFormat:
             )
 
     # Parse out out component count and actual format
-    parts = re.split(r"([fiudn])", fmt)
+    parts = re.split(r"([fiudnx])", fmt)
     components = 1
     if parts[0].isalnum():
         components = int(parts[0])
@@ -106,6 +110,8 @@ def attribute_format(attr_format: str) -> BufferFormat:
 
 
 def parse_attribute_formats(frmt: str) -> list[BufferFormat]:
+    # ModernGL permits whitespace before the buffer-wide usage suffix.
+    frmt = re.sub(r"\s*/\s*", "/", frmt)
     return [attribute_format(attr) for attr in frmt.split()]
 
 
@@ -126,6 +132,12 @@ def buffer_format(frmt: str) -> BufferFormat:
 
 
 BUFFER_FORMATS = {
+    # Padding defaults to one byte, unlike numeric formats.
+    "x": BufferFormat("x", 1, 1),
+    "x1": BufferFormat("x1", 1, 1),
+    "x2": BufferFormat("x2", 1, 2),
+    "x4": BufferFormat("x4", 1, 4),
+    "x8": BufferFormat("x8", 1, 8),
     # Floats
     "f": BufferFormat("f", 1, 4),
     "f1": BufferFormat("f1", 1, 1),

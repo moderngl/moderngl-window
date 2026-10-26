@@ -38,6 +38,7 @@ class BufferInfo:
         """
         self.buffer = buffer
         self.attrib_formats = types.parse_attribute_formats(buffer_format)
+        self.divisor = buffer_format.partition("/")[2].strip()
         self.attributes = attributes
         self.per_instance = per_instance
 
@@ -63,12 +64,18 @@ class BufferInfo:
             From the third to the end, it is the attributes of the class"""
         formats = []
         attrs = []
-        for attrib_format, attrib in zip(self.attrib_formats, self.attributes):
+        attribute_names = iter(self.attributes)
+        for attrib_format in self.attrib_formats:
+            if attrib_format.is_padding:
+                formats.append(attrib_format.pad_str())
+                continue
+
+            attrib = next(attribute_names)
             if attrib not in attributes:
                 formats.append(attrib_format.pad_str())
                 continue
 
-            formats.append(attrib_format.format)
+            formats.append(attrib_format.format.partition("/")[0])
             attrs.append(attrib)
 
             attributes.remove(attrib)
@@ -76,9 +83,10 @@ class BufferInfo:
         if len(attrs) == 0:
             return None
 
+        divisor = self.divisor or ("i" if self.per_instance else "")
         return (
             self.buffer,
-            "{}{}".format(" ".join(formats), "/i" if self.per_instance else ""),
+            "{}{}".format(" ".join(formats), "/{}".format(divisor) if divisor else ""),
             *attrs,
         )
 
@@ -280,8 +288,8 @@ class VAO:
         if isinstance(buffer, bytes):
             buffer = self.ctx.buffer(data=buffer)
 
-        formats = buffer_format.split()
-        if len(formats) != len(attribute_names):
+        formats = types.parse_attribute_formats(buffer_format)
+        if sum(not fmt.is_padding for fmt in formats) != len(attribute_names):
             raise VAOError(
                 "Format '{}' does not describe attributes {}".format(buffer_format, attribute_names)
             )
