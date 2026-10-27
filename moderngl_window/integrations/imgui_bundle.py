@@ -14,6 +14,9 @@ class ModernglWindowMixin:
 
     def key_event(self, key, action, modifiers):
         keys = self.wnd.keys
+        self.io.add_key_event(imgui.Key.mod_shift, down=bool(modifiers.shift))
+        self.io.add_key_event(imgui.Key.mod_ctrl, down=bool(modifiers.ctrl))
+        self.io.add_key_event(imgui.Key.mod_alt, down=bool(modifiers.alt))
 
         if key in self.REVERSE_KEYMAP:
             down = action == keys.ACTION_PRESS

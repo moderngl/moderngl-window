@@ -13,6 +13,9 @@ class ModernglWindowMixin:
 
     def key_event(self, key, action, modifiers):
         keys = self.wnd.keys
+        self.io.key_shift = bool(modifiers.shift)
+        self.io.key_ctrl = bool(modifiers.ctrl)
+        self.io.key_alt = bool(modifiers.alt)
 
         if action == keys.ACTION_PRESS:
             if key in self.REVERSE_KEY_MAP:
