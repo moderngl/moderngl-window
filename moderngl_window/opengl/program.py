@@ -360,7 +360,7 @@ class ShaderSource:
                 try:
                     name = line.split()[1]
                     value = defines.get(name)
-                    if not value:
+                    if value is None:
                         continue
 
                     self.lines[nr] = f"#define {name} {value}"
