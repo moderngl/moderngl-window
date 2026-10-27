@@ -68,15 +68,18 @@ class Loader(PillowLoader):
         return FaceInfo(width=image.size[0], height=image.size[1], data=data, components=components)
 
     def _validate(self, faces: list[FaceInfo]) -> Any:
-        """Validates each face ensuring components and size it the same"""
+        """Validate that all faces have matching components and square dimensions."""
         components = faces[0].components
+        size = (faces[0].width, faces[0].height)
+        if size[0] != size[1]:
+            raise ImproperlyConfigured("Cubemap face textures must be square")
         data_size = len(faces[0].data)
         for face in faces:
             if face.components != components:
                 raise ImproperlyConfigured(
                     "Cubemap face textures have different number of components"
                 )
-            if len(face.data) != data_size:
+            if (face.width, face.height) != size or len(face.data) != data_size:
                 raise ImproperlyConfigured("Cubemap face textures must all have the same size")
 
         return components
