@@ -234,7 +234,7 @@ class Window(BaseWindow):
         self._buffer_width = width
         self._buffer_height = height
 
-        if self._ctx:
+        if getattr(self, "_ctx", None):
             self.set_default_viewport()
 
         # Make sure we notify the example about the resize
