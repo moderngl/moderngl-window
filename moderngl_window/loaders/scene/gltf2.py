@@ -9,6 +9,7 @@ import struct
 from collections import namedtuple
 from pathlib import Path
 from typing import Any, Optional, Union
+from urllib.parse import unquote
 
 import glm
 import moderngl
@@ -414,7 +415,7 @@ class GLTFMeta:
             if not buff.is_separate_file:
                 continue
 
-            path = self.path.parent / buff.uri
+            path = self.path.parent / unquote(buff.uri)
             if not path.exists():
                 raise FileNotFoundError(
                     f"Buffer {path} referenced in {self.path} not found"
@@ -816,7 +817,7 @@ class GLTFBuffer:
             self.data = base64.b64decode(self.uri[self.uri.find(",") + 1 :])
             return
 
-        with open(str(self.path / (self.uri if self.uri is not None else "")), "rb") as fd:
+        with open(str(self.path / unquote(self.uri if self.uri is not None else "")), "rb") as fd:
             self.data = fd.read()
 
     def read(self, byte_offset: int = 0, byte_length: int = 0) -> bytes:
@@ -905,7 +906,7 @@ class GLTFImage:
             image = Image.open(io.BytesIO(base64.b64decode(data)))
             logger.info("Loading embedded image")
         else:
-            path = path / Path(self.uri if self.uri is not None else "")
+            path = path / Path(unquote(self.uri if self.uri is not None else ""))
             logger.info("Loading: %s", self.uri)
             image = Image.open(path)
 
