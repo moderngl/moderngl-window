@@ -871,14 +871,14 @@ class GLTFNode:
 class GLTFMaterial:
     def __init__(self, data: dict[str, Any]):
         self.name = data.get("name")
-        # Defaults to true if not defined
-        self.doubleSided = data.get("doubleSided") or True
+        # glTF materials default to single-sided.
+        self.doubleSided = data.get("doubleSided", False)
 
-        pbr = data["pbrMetallicRoughness"]
-        self.baseColorFactor = pbr.get("baseColorFactor")
+        pbr = data.get("pbrMetallicRoughness", {})
+        self.baseColorFactor = pbr.get("baseColorFactor", [1.0, 1.0, 1.0, 1.0])
         self.baseColorTexture = pbr.get("baseColorTexture")
-        self.metallicFactor = pbr.get("metallicFactor")
-        self.emissiveFactor = data.get("emissiveFactor")
+        self.metallicFactor = pbr.get("metallicFactor", 1.0)
+        self.emissiveFactor = data.get("emissiveFactor", [0.0, 0.0, 0.0])
 
 
 class GLTFImage:
