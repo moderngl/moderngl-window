@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* Load GLB files without a BIN chunk when buffers are external or embedded as data URIs.
+
 ## 3.1.1
 
 Fixed broken annotations for python 3.9

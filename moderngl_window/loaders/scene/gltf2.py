@@ -178,19 +178,32 @@ class Loader(BaseLoader):
 
             json_meta = fd.read(chunk_0_length).decode()
 
-            # chunk 1 - binary buffer
-            chunk_1_length = struct.unpack("<I", fd.read(4))[0]
-            chunk_1_type = fd.read(4)
-            if chunk_1_type != b"BIN\x00":
-                raise ValueError(
-                    "Expected BIN chunk, not {!r} in file {}".format(chunk_1_type, self.path)
-                )
+            # chunk 1 - optional binary buffer. Resources may instead be
+            # external files or data URIs in the JSON chunk.
+            json_data = json.loads(json_meta)
+            binary_buffer = None
+            chunk_1_header = fd.read(8)
+            if chunk_1_header:
+                if len(chunk_1_header) != 8:
+                    raise ValueError(f"Incomplete GLB binary chunk header in file {self.path}")
+                chunk_1_length, chunk_1_type = struct.unpack("<I4s", chunk_1_header)
+                if chunk_1_type != b"BIN\x00":
+                    raise ValueError(
+                        "Expected BIN chunk, not {!r} in file {}".format(chunk_1_type, self.path)
+                    )
+                binary_buffer = fd.read(chunk_1_length)
+                if len(binary_buffer) != chunk_1_length:
+                    raise ValueError(f"Incomplete GLB binary chunk data in file {self.path}")
+
+            buffers = json_data.get("buffers", [])
+            if binary_buffer is None and buffers and "uri" not in buffers[0]:
+                raise ValueError(f"GLB buffer requires a BIN chunk in file {self.path}")
 
             self.gltf = GLTFMeta(
                 str(self.path),
-                json.loads(json_meta),
+                json_data,
                 self.meta,
-                binary_buffer=fd.read(chunk_1_length),
+                binary_buffer=binary_buffer,
             )
 
     def load_images(self) -> None:
